@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:h2:~/Development/databases/flighttrackerdb
+    username: sa
+    password:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    multipart:
+      max-file-size: 5MB
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
+server:
+  jsp-servlet:
+    init-parameters:
+      development: true
+      trimSpaces: true
