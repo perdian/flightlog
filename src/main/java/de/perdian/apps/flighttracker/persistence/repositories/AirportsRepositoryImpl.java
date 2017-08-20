@@ -42,7 +42,7 @@ class AirportsRepositoryImpl implements AirportsRepository {
         Resource countriesResource = this.getResourceLoader().getResource("classpath:de/perdian/apps/flighttracker/data/countries.dat");
         log.info("Loading countries from resource: {}", countriesResource);
         Map<String, String> countryCodesByTitle = new LinkedHashMap<>();
-        try (BufferedReader countriesReader = new BufferedReader(new InputStreamReader(countriesResource.getInputStream()))) {
+        try (BufferedReader countriesReader = new BufferedReader(new InputStreamReader(countriesResource.getInputStream(), "UTF-8"))) {
             for (String countryLine = countriesReader.readLine(); countryLine != null; countryLine = countriesReader.readLine()) {
                 List<String> countryFields = OpenflightsHelper.tokenizeLine(countryLine);
                 String countryName = countryFields.get(0);
@@ -57,7 +57,7 @@ class AirportsRepositoryImpl implements AirportsRepository {
 
         List<AirportEntity> airportBeans = new ArrayList<>();
         Map<String, AirportEntity> airportBeansByIataCode = new LinkedHashMap<>();
-        try (BufferedReader airportsReader = new BufferedReader(new InputStreamReader(airportsResource.getInputStream()))) {
+        try (BufferedReader airportsReader = new BufferedReader(new InputStreamReader(airportsResource.getInputStream(), "UTF-8"))) {
             for (String airportLine = airportsReader.readLine(); airportLine != null; airportLine = airportsReader.readLine()) {
                 try {
 

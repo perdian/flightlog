@@ -42,7 +42,7 @@ class AirlinesRepositoryImpl implements AirlinesRepository {
 
         List<AirlineEntity> airlineBeans = new ArrayList<>();
         Map<String, AirlineEntity> airlineBeansByIataCode = new LinkedHashMap<>();
-        try (BufferedReader airlinesReader = new BufferedReader(new InputStreamReader(airlinesResource.getInputStream()))) {
+        try (BufferedReader airlinesReader = new BufferedReader(new InputStreamReader(airlinesResource.getInputStream(), "UTF-8"))) {
             for (String airlineLine = airlinesReader.readLine(); airlineLine != null; airlineLine = airlinesReader.readLine()) {
                 try {
 
