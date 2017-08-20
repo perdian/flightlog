@@ -10,7 +10,7 @@
 
         <h1 class="ui header"><fmt:message key="import" />: <fmt:message key="flugstatistikde" /></h1>
 
-        <spring:form modelAttribute="importEditor" servletRelativeAction="/importexport/import/flugstatistikde" cssClass="ui form">
+        <spring:form modelAttribute="importEditor" servletRelativeAction="/import/flugstatistikde" cssClass="ui form">
 
             <h3 class="ui dividing header"><fmt:message key="source" /></h3>
             <div class="fields">

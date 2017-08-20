@@ -10,7 +10,7 @@
 
         <h1 class="ui header"><fmt:message key="verifyImportedFlights" /></h1>
 
-        <spring:form modelAttribute="importEditor" servletRelativeAction="/importexport/import/execute" cssClass="ui form">
+        <spring:form modelAttribute="importEditor" servletRelativeAction="/import/execute" cssClass="ui form">
 
             <h3 class="ui dividing header"><fmt:message key="actions" /></h3>
             <div class="sixteen wide">
