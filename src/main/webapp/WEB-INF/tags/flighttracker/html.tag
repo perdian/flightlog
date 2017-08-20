@@ -4,7 +4,7 @@
 <html>
 
     <fmt:setBundle basename="de.perdian.apps.flighttracker.i18n.messages" scope="request" />
-    <c:url var="contextPath" scope="request" value="" />
+    <c:url var="contextPath" scope="request" value="/" />
 
     <jsp:doBody />
 
