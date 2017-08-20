@@ -37,6 +37,7 @@
         <jquery.version>3.2.1</jquery.version>
         <jsoup.version>1.10.3</jsoup.version>
         <logback.version>1.2.3</logback.version>
+        <mysql.version>6.0.6</mysql.version>
         <xsoup.version>0.3.1</xsoup.version>
     </properties>
 
@@ -84,6 +85,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version><!--$NO-MVN-MAN-VER$ -->
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version><!--$NO-MVN-MAN-VER$ -->
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
