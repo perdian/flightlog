@@ -26,7 +26,7 @@ To create the WAR file simply execute the default Maven build command:
 
 Then copy the WAR file to wherever your servlet container is located:
 
-    $ cp target/flighttracker-1.0.0-SNAPSHOT.war /where/your/container/is/webapps/flighttracker.war
+    $ cp target/flighttracker.war /where/your/container/is/webapps/flighttracker.war
 
 That's it! Start your servlet container and the flighttracker should be up and running.
 
@@ -37,7 +37,7 @@ That's it! Start your servlet container and the flighttracker should be up and r
 You can also launch the application directly from within the WAR file as Spring Boot application:
 
     $ mvn clean package
-    $ java -jar target/flighttracker-1.0.0-SNAPSHOT.war
+    $ java -jar target/flighttracker.war
 
 When running this directly the embedded Tomcat will provide the application directly from the root:
 
