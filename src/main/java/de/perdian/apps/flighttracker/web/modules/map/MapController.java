@@ -15,7 +15,7 @@ public class MapController {
 
     private MapService mapService = null;
 
-    @RequestMapping(value = "/map/data", produces = "application/json")
+    @RequestMapping(value = "/map/data", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public MapModel mapData(@RequestParam(name = "year", required = false) Integer year) {
         MapQuery mapQuery = new MapQuery();

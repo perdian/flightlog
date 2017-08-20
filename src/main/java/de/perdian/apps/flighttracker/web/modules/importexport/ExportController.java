@@ -23,17 +23,17 @@ public class ExportController {
 
     private ImportExportService importExportService = null;
 
-    @RequestMapping(value = "/export/xml", produces = "application/xml")
+    @RequestMapping(value = "/export/xml", produces = "application/xml;charset=UTF-8")
     public void doXml(HttpServletResponse response) throws Exception {
         this.doExport(new XmlDataWriter(), "application/xml", ".xml", response);
     }
 
-    @RequestMapping(value = "/export/json", produces = "application/json")
+    @RequestMapping(value = "/export/json", produces = "application/json;charset=UTF-8")
     public void doJson(HttpServletResponse response) throws Exception {
         this.doExport(new JsonDataWriter(), "application/json", ".json", response);
     }
 
-    @RequestMapping(value = "/export/openflightscsv", produces = "text/csv")
+    @RequestMapping(value = "/export/openflightscsv", produces = "text/csv;charset=UTF-8")
     public void doOpenflightsCsv(HttpServletResponse response) throws Exception {
         this.doExport(new OpenflightsCsvDataWriter(), "text/csv", ".csv", response);
     }

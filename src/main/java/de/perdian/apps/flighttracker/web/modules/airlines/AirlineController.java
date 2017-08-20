@@ -22,7 +22,7 @@ public class AirlineController {
 
     private AirlinesRepository airlinesRepository = null;
 
-    @RequestMapping(path = "/airline/{airlineCode}", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(path = "/airline/{airlineCode}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
     public Airline doAirline(@PathVariable("airlineCode") String airlineCode) {
         AirlineEntity airlineEntity = this.getAirlinesRepository().loadAirlineByIataCode(airlineCode);
         if (airlineEntity == null) {

@@ -22,7 +22,7 @@ public class AirportController {
 
     private AirportsRepository airportsRepository = null;
 
-    @RequestMapping(path = "/airport/{airportCode}", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(path = "/airport/{airportCode}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
     public Airport doAirport(@PathVariable("airportCode") String airportCode) {
         AirportEntity airportEntity = this.getAirportsRepository().loadAirportByIataCode(airportCode);
         if (airportEntity == null) {
