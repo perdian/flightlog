@@ -43,14 +43,38 @@ When running this directly the embedded Tomcat will provide the application dire
 
     http://localhost:8080/
 
+# Database configuration
+
+By default flighttracker uses a hardcoded H2 embedded database which stores its files in the `~/Development/databases/` folder on the machine on which the web application is running.
+
+If you want to change this to the database of your choice you have to provide a separate Spring Boot configuration file using one of the methods document in the Spring Boot documentation: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html.
+
+For example if you would like to define a MySQL database running on the local machine when executing the flighttracker application directly as Spring Boot application the command line should be changed to:
+
+    $ java -jar target/flighttracker.war -Dspring.config.location=file:/where/your/config/file/is/located/flighttracker.yml
+
+The actual configuration file must conform to the Spring Boot JPA definition of a datasource.
+
+An example for creating a configuration file using a MySQL database will look like this:
+
+    spring:
+      datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1/DATABASE_NAME?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+        username: DATABASE_USER_USERNAME
+        password: DATABASE_USER_PASSWORD
+      jpa:
+        hibernate:
+          ddl-auto: update
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.MySQLDialect
+
+The MySQL JDBC driver is already part of the flighttracker WAR distribution. For any other database you'll need to provide the JDBC drivers yourself and make sure the server has appropriate access to these drivers.
 
 # Known limitations
 
 There are a few known limitations which will hopefully be addressed in future versions:
-
-## Database configuration
-
-Currently the hardcoded H2 embedded database always stores its files in the `~/Development/databases/` folder on the machine on which the web application is running. As all the values are configured within Spring Boots `application.yml` it shouldn't be too difficult to overwrite them with some better suited and configurable values.
 
 ## Clientability
 
