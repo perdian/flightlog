@@ -33,7 +33,7 @@ public class AirportController {
             airport.setLatitude(airportEntity.getLatitude());
             airport.setLongitude(airportEntity.getLongitude());
             airport.setName(airportEntity.getName());
-            airport.setTimezoneId(airportEntity.getTimezoneId());
+            airport.setTimezoneId(airportEntity.getTimezoneId() == null ? null : airportEntity.getTimezoneId().toString());
             return airport;
         }
     }

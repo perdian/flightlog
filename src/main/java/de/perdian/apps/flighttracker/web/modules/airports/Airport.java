@@ -1,7 +1,6 @@
 package de.perdian.apps.flighttracker.web.modules.airports;
 
 import java.io.Serializable;
-import java.time.ZoneId;
 
 public class Airport implements Serializable {
 
@@ -11,7 +10,7 @@ public class Airport implements Serializable {
     private String name = null;
     private Float longitude = null;
     private Float latitude = null;
-    private ZoneId timezoneId = null;
+    private String timezoneId = null;
 
     public String getCode() {
         return this.code;
@@ -41,10 +40,10 @@ public class Airport implements Serializable {
         this.latitude = latitude;
     }
 
-    public ZoneId getTimezoneId() {
+    public String getTimezoneId() {
         return this.timezoneId;
     }
-    void setTimezoneId(ZoneId timezoneId) {
+    void setTimezoneId(String timezoneId) {
         this.timezoneId = timezoneId;
     }
 
