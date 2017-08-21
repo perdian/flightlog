@@ -102,8 +102,8 @@
                         </td>
                         <td>
                             <div class="ui vertical mini buttons">
-                                <a class="ui primary button" href="${contextPath}/flights/edit/${flight.entityId}"><fmt:message key="edit" /></a>
-                                <a class="ui negative button" href="${contextPath}/flights/delete/${flight.entityId}"><fmt:message key="delete" /></a>
+                                <a class="ui primary button" href="${contextPath}flights/edit/${flight.entityId}"><fmt:message key="edit" /></a>
+                                <a class="ui negative button" href="${contextPath}flights/delete/${flight.entityId}"><fmt:message key="delete" /></a>
                             </div>
                         </td>
                     </tr>

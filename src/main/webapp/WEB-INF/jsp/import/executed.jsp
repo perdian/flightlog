@@ -10,7 +10,7 @@
         <h1 class="ui header"><fmt:message key="importCompleted" /></h1>
 
         <h3 class="ui dividing header"><fmt:message key="importedFlights" />: <c:out value="${fn:length(importEditor.items)}" /></h3>
-        <a class="ui primary button" href="${contextPath}/flights/list"><fmt:message key="listFlights" /></a>
+        <a class="ui primary button" href="${contextPath}flights/list"><fmt:message key="listFlights" /></a>
 
     </ft:body>
 </ft:html>

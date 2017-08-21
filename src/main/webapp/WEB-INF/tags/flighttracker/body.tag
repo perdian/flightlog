@@ -6,9 +6,9 @@
     <nav class="ui inverted menu">
 
         <div class="active item"><strong>Flighttracker</strong></div>
-        <a class="item" href="${contextPath}/"><fmt:message key="overview" /></a>
-        <a class="item" href="${contextPath}/flights/list"><fmt:message key="listFlights" /></a>
-        <a class="item" href="${contextPath}/flights/add"><fmt:message key="addFlight" /></a>
+        <a class="item" href="${contextPath}"><fmt:message key="overview" /></a>
+        <a class="item" href="${contextPath}flights/list"><fmt:message key="listFlights" /></a>
+        <a class="item" href="${contextPath}flights/add"><fmt:message key="addFlight" /></a>
 
         <div class="ui simple dropdown item">
             <fmt:message key="tools" /><c:out value=" " /><i class="dropdown icon"></i><c:out value=" " />
@@ -16,16 +16,16 @@
                 <div class="ui dropdown item">
                     <i class="dropdown icon"></i><c:out value=" " /><fmt:message key="import" /><c:out value=" " />
                     <div class="menu">
-                        <a class="item" href="${contextPath}/import/file"><fmt:message key="file" /></a>
-                        <a class="item" href="${contextPath}/import/flugstatistikde"><fmt:message key="flugstatistikde" /></a>
+                        <a class="item" href="${contextPath}import/file"><fmt:message key="file" /></a>
+                        <a class="item" href="${contextPath}import/flugstatistikde"><fmt:message key="flugstatistikde" /></a>
                     </div>
                 </div>
                 <div class="ui dropdown item">
                     <i class="dropdown icon"></i><c:out value=" " /><fmt:message key="export" /><c:out value=" " />
                     <div class="menu">
-                        <a class="item" href="${contextPath}/export/xml"><fmt:message key="fileType.XML" /></a>
-                        <a class="item" href="${contextPath}/export/json"><fmt:message key="fileType.JSON" /></a>
-                        <a class="item" href="${contextPath}/export/openflightscsv"><fmt:message key="fileType.OPENFLIGHTSCSV" /></a>
+                        <a class="item" href="${contextPath}export/xml"><fmt:message key="fileType.XML" /></a>
+                        <a class="item" href="${contextPath}export/json"><fmt:message key="fileType.JSON" /></a>
+                        <a class="item" href="${contextPath}export/openflightscsv"><fmt:message key="fileType.OPENFLIGHTSCSV" /></a>
                     </div>
                 </div>
             </div>
