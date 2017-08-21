@@ -1,35 +1,47 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <body>
 
     <nav class="ui inverted menu">
 
-        <div class="active item"><strong>Flighttracker</strong></div>
-        <a class="item" href="${contextPath}"><fmt:message key="overview" /></a>
-        <a class="item" href="${contextPath}flights/list"><fmt:message key="listFlights" /></a>
-        <a class="item" href="${contextPath}flights/add"><fmt:message key="addFlight" /></a>
+        <div class="active item"><strong><fmt:message key="flightTracker.pageTitle" /></strong></div>
 
-        <div class="ui simple dropdown item">
-            <fmt:message key="tools" /><c:out value=" " /><i class="dropdown icon"></i><c:out value=" " />
-            <div class="menu">
-                <div class="ui dropdown item">
-                    <i class="dropdown icon"></i><c:out value=" " /><fmt:message key="import" /><c:out value=" " />
-                    <div class="menu">
-                        <a class="item" href="${contextPath}import/file"><fmt:message key="file" /></a>
-                        <a class="item" href="${contextPath}import/flugstatistikde"><fmt:message key="flugstatistikde" /></a>
+        <sec:authorize access="isAuthenticated()">
+
+            <a class="item" href="${contextPath}"><fmt:message key="overview" /></a>
+            <a class="item" href="${contextPath}flights/list"><fmt:message key="listFlights" /></a>
+            <a class="item" href="${contextPath}flights/add"><fmt:message key="addFlight" /></a>
+
+            <div class="ui simple dropdown item">
+                <fmt:message key="tools" /><c:out value=" " /><i class="dropdown icon"></i><c:out value=" " />
+                <div class="menu">
+                    <div class="ui dropdown item">
+                        <i class="dropdown icon"></i><c:out value=" " /><fmt:message key="import" /><c:out value=" " />
+                        <div class="menu">
+                            <a class="item" href="${contextPath}import/file"><fmt:message key="file" /></a>
+                            <a class="item" href="${contextPath}import/flugstatistikde"><fmt:message key="flugstatistikde" /></a>
+                        </div>
                     </div>
-                </div>
-                <div class="ui dropdown item">
-                    <i class="dropdown icon"></i><c:out value=" " /><fmt:message key="export" /><c:out value=" " />
-                    <div class="menu">
-                        <a class="item" href="${contextPath}export/xml"><fmt:message key="fileType.XML" /></a>
-                        <a class="item" href="${contextPath}export/json"><fmt:message key="fileType.JSON" /></a>
-                        <a class="item" href="${contextPath}export/openflightscsv"><fmt:message key="fileType.OPENFLIGHTSCSV" /></a>
+                    <div class="ui dropdown item">
+                        <i class="dropdown icon"></i><c:out value=" " /><fmt:message key="export" /><c:out value=" " />
+                        <div class="menu">
+                            <a class="item" href="${contextPath}export/xml"><fmt:message key="fileType.XML" /></a>
+                            <a class="item" href="${contextPath}export/json"><fmt:message key="fileType.JSON" /></a>
+                            <a class="item" href="${contextPath}export/openflightscsv"><fmt:message key="fileType.OPENFLIGHTSCSV" /></a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="ui simple dropdown item">
+                <fmt:message key="user" /><c:out value=" " /><i class="dropdown icon"></i><c:out value=" " />
+                <div class="ui menu">
+                    <a class="item" href="${contextPath}logout"><fmt:message key="logout" /></a>
+                </div>
+            </div>
+
+        </sec:authorize>
 
     </nav>
 

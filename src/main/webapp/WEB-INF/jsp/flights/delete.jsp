@@ -12,6 +12,8 @@
 
         <form method="post" action="<c:url value="/flights/delete/${flight.entityId}" />">
 
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
             <h3 class="ui dividing header"><fmt:message key="flightData" /></h3>
             <div class="ui grid">
                 <div class="four wide column">

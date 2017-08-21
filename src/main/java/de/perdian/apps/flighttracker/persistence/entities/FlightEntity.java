@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -25,6 +26,7 @@ public class FlightEntity implements Serializable {
     static final long serialVersionUID = 1L;
 
     private Long id = null;
+    private UserEntity user = null;
     private String departureAirportCode = null;
     private LocalDate departureDateLocal = null;
     private LocalTime departureTimeLocal = null;
@@ -80,6 +82,14 @@ public class FlightEntity implements Serializable {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @ManyToOne(optional = true)
+    public UserEntity getUser() {
+        return this.user;
+    }
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     @Column(length = 3)

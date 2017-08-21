@@ -20,7 +20,10 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
-
+  
+security:
+  enable-csrf: true
+  
 server:
   jsp-servlet:
     init-parameters:
