@@ -3,6 +3,7 @@ package de.perdian.apps.flighttracker.business.modules.flights.model;
 import java.io.Serializable;
 import java.time.Duration;
 
+import de.perdian.apps.flighttracker.persistence.entities.UserEntity;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
 import de.perdian.apps.flighttracker.support.types.SeatType;
@@ -12,6 +13,7 @@ public class FlightBean implements Serializable {
     static final long serialVersionUID = 1L;
 
     private Long entityId = null;
+    private UserEntity user = null;
     private AirportContactBean departureContact = null;
     private AirportContactBean arrivalContact = null;
     private AircraftBean aircraft = null;
@@ -31,6 +33,7 @@ public class FlightBean implements Serializable {
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append("[entityId=").append(this.getEntityId());
+        result.append(",user=").append(this.getUser());
         result.append(",flightNumber=").append(this.getFlightNumber());
         result.append(",departureContact=").append(this.getDepartureContact());
         result.append(",arrivalContact=").append(this.getArrivalContact());
@@ -42,6 +45,13 @@ public class FlightBean implements Serializable {
     }
     public void setEntityId(Long entityId) {
         this.entityId = entityId;
+    }
+
+    public UserEntity getUser() {
+        return this.user;
+    }
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public AirportContactBean getDepartureContact() {

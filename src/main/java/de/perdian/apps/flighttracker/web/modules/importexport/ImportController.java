@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,6 +32,7 @@ import de.perdian.apps.flighttracker.persistence.entities.AirportEntity;
 import de.perdian.apps.flighttracker.persistence.repositories.AirlinesRepository;
 import de.perdian.apps.flighttracker.persistence.repositories.AirportsRepository;
 import de.perdian.apps.flighttracker.support.FlighttrackerHelper;
+import de.perdian.apps.flighttracker.web.security.FlighttrackerUser;
 import de.perdian.apps.flighttracker.web.support.messages.MessageSeverity;
 import de.perdian.apps.flighttracker.web.support.messages.Messages;
 
@@ -167,7 +169,7 @@ public class ImportController {
     }
 
     @RequestMapping(value = "/import/execute", method = RequestMethod.POST)
-    public String doExecute(@ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
+    public String doExecute(@AuthenticationPrincipal FlighttrackerUser user, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
 
         List<DataItem> activeDataItems = importEditor.getItems().stream()
             .filter(item -> item.isActive())
@@ -175,7 +177,7 @@ public class ImportController {
             .collect(Collectors.toList());
 
         log.info("Importing {} flights", activeDataItems.size());
-        this.getImportExportService().importDataItems(activeDataItems);
+        this.getImportExportService().importDataItems(activeDataItems, user == null ? null : user.getUserEntitiy());
 
         return "/import/executed";
 

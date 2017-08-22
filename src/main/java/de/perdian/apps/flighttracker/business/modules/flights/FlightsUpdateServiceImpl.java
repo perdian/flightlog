@@ -83,6 +83,7 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
         flightEntity.setCabinClass(flightBean.getCabinClass());
         flightEntity.setSeatNumber(flightBean.getSeatNumber());
         flightEntity.setSeatType(flightBean.getSeatType());
+        flightEntity.setUser(flightBean.getUser());
 
         this.getFlightsRepository().save(flightEntity);
 

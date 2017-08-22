@@ -20,6 +20,29 @@ public class UserEntity implements Serializable {
     private String password = null;
     private String authenticationSource = null;
 
+    @Override
+    public int hashCode() {
+        return this.getUserId() == null ? 0 : this.getUserId().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        } else {
+            return this.getUserId() != null && (that instanceof UserEntity) && this.getUserId().equals(((UserEntity)that).getUserId());
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[userId=").append(this.getUserId());
+        result.append(",username=").append(this.getUsername());
+        result.append(",authenticationSource=").append(this.getAuthenticationSource());
+        return result.append("]").toString();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getUserId() {

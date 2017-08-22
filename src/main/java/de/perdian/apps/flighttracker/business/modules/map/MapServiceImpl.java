@@ -71,6 +71,7 @@ public class MapServiceImpl implements MapService {
 
     private FlightsQuery createFlightsQuery(MapQuery mapQuery) {
         FlightsQuery flightsQuery = new FlightsQuery();
+        flightsQuery.setRestrictUsers(mapQuery.getRestrictUsers());
         if (mapQuery.getYear() != null) {
             flightsQuery.setMinimumDepartureDateLocal(LocalDate.of(mapQuery.getYear(), 1, 1));
             flightsQuery.setMaximumArrivalDateLocal(LocalDate.of(mapQuery.getYear(), 12, 31));

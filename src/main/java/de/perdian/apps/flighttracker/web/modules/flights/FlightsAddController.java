@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import de.perdian.apps.flighttracker.business.modules.flights.FlightsUpdateService;
 import de.perdian.apps.flighttracker.business.modules.flights.model.FlightBean;
+import de.perdian.apps.flighttracker.web.security.FlighttrackerUser;
 import de.perdian.apps.flighttracker.web.support.messages.MessageSeverity;
 import de.perdian.apps.flighttracker.web.support.messages.Messages;
 
@@ -34,10 +36,11 @@ public class FlightsAddController {
     }
 
     @RequestMapping(value = "/flights/add", method = RequestMethod.POST)
-    public String doAddPost(@Valid @ModelAttribute("flightEditor") FlightEditor flightEditor, BindingResult bindingResult, @ModelAttribute Messages messages, Locale locale) {
+    public String doAddPost(@AuthenticationPrincipal FlighttrackerUser user, @Valid @ModelAttribute("flightEditor") FlightEditor flightEditor, BindingResult bindingResult, @ModelAttribute Messages messages, Locale locale) {
         if (!bindingResult.hasErrors()) {
 
             FlightBean flightBean = new FlightBean();
+            flightBean.setUser(user == null ? null : user.getUserEntitiy());
             flightEditor.copyValuesInto(flightBean);
             FlightBean insertedFlightBean = this.getFlightsUpdateService().saveFlight(flightBean);
 

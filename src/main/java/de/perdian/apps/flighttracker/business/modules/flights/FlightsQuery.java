@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import de.perdian.apps.flighttracker.persistence.entities.FlightEntity;
+import de.perdian.apps.flighttracker.persistence.entities.UserEntity;
 
 public class FlightsQuery implements Serializable {
 
@@ -30,6 +31,7 @@ public class FlightsQuery implements Serializable {
     private Collection<String> restrictArrivalAirportCodes = null;
     private LocalDate minimumArrivalDateLocal = null;
     private LocalDate maximumArrivalDateLocal = null;
+    private Collection<UserEntity> restrictUsers = null;
 
     @Override
     public String toString() {
@@ -42,6 +44,7 @@ public class FlightsQuery implements Serializable {
         toStringBuilder.append("restrictArrivalAirportCodes", this.getRestrictArrivalAirportCodes());
         toStringBuilder.append("minimumArrivalDateLocal", this.getMinimumArrivalDateLocal());
         toStringBuilder.append("maximumArrivalDateLocal", this.getMaximumArrivalDateLocal());
+        toStringBuilder.append("restrictUsers", this.getRestrictUsers());
         return toStringBuilder.toString();
     }
 
@@ -70,6 +73,11 @@ public class FlightsQuery implements Serializable {
         }
         if (this.getRestrictIdentifiers() != null && !this.getRestrictIdentifiers().isEmpty()) {
             predicateList.add(root.get("id").in(this.getRestrictIdentifiers()));
+        }
+        if (this.getRestrictUsers() != null && !this.getRestrictUsers().isEmpty()) {
+            predicateList.add(root.get("user").in(this.getRestrictUsers()));
+        } else {
+            predicateList.add(cb.isNull(root.get("user")));
         }
         return cb.and(predicateList.toArray(new Predicate[0]));
     }
@@ -144,5 +152,11 @@ public class FlightsQuery implements Serializable {
         this.maximumArrivalDateLocal = maximumArrivalDateLocal;
     }
 
+    public Collection<UserEntity> getRestrictUsers() {
+        return this.restrictUsers;
+    }
+    public void setRestrictUsers(Collection<UserEntity> restrictUsers) {
+        this.restrictUsers = restrictUsers;
+    }
 
 }

@@ -2,6 +2,7 @@ package de.perdian.apps.flighttracker.web.modules.flights;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.perdian.apps.flighttracker.business.modules.flights.FlightsQuery;
 import de.perdian.apps.flighttracker.business.modules.flights.FlightsQueryService;
+import de.perdian.apps.flighttracker.web.security.FlighttrackerUser;
 
 @Controller
 public class FlightsListController {
@@ -17,14 +19,15 @@ public class FlightsListController {
     private MessageSource messageSource = null;
 
     @RequestMapping(value = "/flights/list")
-    public String doList(Model model) {
-        return this.doList(0, model);
+    public String doList(@AuthenticationPrincipal FlighttrackerUser user, Model model) {
+        return this.doList(user, 0, model);
     }
 
     @RequestMapping(value = "/flights/list/{page}")
-    public String doList(@PathVariable("page") int page, Model model) {
+    public String doList(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("page") int page, Model model) {
 
         FlightsQuery flightsQuery = new FlightsQuery();
+        flightsQuery.setRestrictUsers(user == null ? null : user.toUserEntities());
         flightsQuery.setPageSize(Integer.valueOf(100));
         flightsQuery.setPage(page);
 

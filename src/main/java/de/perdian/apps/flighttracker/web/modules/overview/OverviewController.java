@@ -27,6 +27,7 @@ public class OverviewController {
 
     @ModelAttribute(name = "overview")
     public OverviewBean overview(@AuthenticationPrincipal FlighttrackerUser authenticationPrincipal, @ModelAttribute("overviewQuery") OverviewQuery overviewQuery) {
+        overviewQuery.setRestrictUsers(authenticationPrincipal == null ? null : authenticationPrincipal.toUserEntities());
         return this.getOverviewService().loadOverview(overviewQuery);
     }
 

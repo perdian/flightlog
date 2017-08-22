@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ import de.perdian.apps.flighttracker.business.modules.flights.FlightsQueryServic
 import de.perdian.apps.flighttracker.business.modules.flights.FlightsUpdateService;
 import de.perdian.apps.flighttracker.business.modules.flights.model.FlightBean;
 import de.perdian.apps.flighttracker.persistence.support.PaginatedList;
+import de.perdian.apps.flighttracker.web.security.FlighttrackerUser;
 import de.perdian.apps.flighttracker.web.support.messages.MessageSeverity;
 import de.perdian.apps.flighttracker.web.support.messages.Messages;
 
@@ -34,9 +36,10 @@ public class FlightsEditController {
     private FlightsUpdateService flightsUpdateService = null;
 
     @RequestMapping(value = "/flights/edit/{id}", method = RequestMethod.GET)
-    public String doEditGet(@PathVariable("id") Long id, @RequestParam(name = "updated", required = false) Boolean updated, @ModelAttribute Messages messages, Locale locale, Model model) {
+    public String doEditGet(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("id") Long id, @RequestParam(name = "updated", required = false) Boolean updated, @ModelAttribute Messages messages, Locale locale, Model model) {
 
         FlightsQuery flightsQuery = new FlightsQuery();
+        flightsQuery.setRestrictUsers(user == null ? null : user.toUserEntities());
         flightsQuery.setRestrictIdentifiers(Arrays.asList(id));
         PaginatedList<FlightBean> flights = this.getFlightsQueryService().loadFlights(flightsQuery);
         FlightBean flight = flights.getItem(0).orElse(null);
@@ -52,10 +55,11 @@ public class FlightsEditController {
     }
 
     @RequestMapping(value = "/flights/edit/{id}", method = RequestMethod.POST)
-    public String doEditPost(@PathVariable("id") Long id, @Valid @ModelAttribute("flightEditor") FlightEditor flightEditor, BindingResult bindingResult, @ModelAttribute Messages messages, Locale locale, Model model) {
+    public String doEditPost(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("id") Long id, @Valid @ModelAttribute("flightEditor") FlightEditor flightEditor, BindingResult bindingResult, @ModelAttribute Messages messages, Locale locale, Model model) {
         if (!bindingResult.hasErrors()) {
 
             FlightsQuery targetFlightsQuery = new FlightsQuery();
+            targetFlightsQuery.setRestrictUsers(user == null ? null : user.toUserEntities());
             targetFlightsQuery.setRestrictIdentifiers(Arrays.asList(id));
             PaginatedList<FlightBean> flights = this.getFlightsQueryService().loadFlights(targetFlightsQuery);
             FlightBean flight = flights.getItem(0).orElse(null);
@@ -71,14 +75,15 @@ public class FlightsEditController {
             }
         } else {
             messages.addMessage(MessageSeverity.ERROR, this.getMessageSource().getMessage("updateError", null, locale), this.getMessageSource().getMessage("cannotAddFlightDueToBindingErrors", null, locale));
-            return this.doEditGet(id, null, messages, locale, model);
+            return this.doEditGet(user, id, null, messages, locale, model);
         }
     }
 
     @RequestMapping(value = "/flights/delete/{id}", method = RequestMethod.GET)
-    public String doDeleteGet(@PathVariable("id") Long id, Model model) {
+    public String doDeleteGet(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("id") Long id, Model model) {
 
         FlightsQuery flightsQuery = new FlightsQuery();
+        flightsQuery.setRestrictUsers(user == null ? null : user.toUserEntities());
         flightsQuery.setRestrictIdentifiers(Arrays.asList(id));
         FlightBean flight = this.getFlightsQueryService().loadFlights(flightsQuery).getItem(0).orElse(null);
         if (flight == null) {
@@ -90,8 +95,9 @@ public class FlightsEditController {
     }
 
     @RequestMapping(value = "/flights/delete/{id}", method = RequestMethod.POST)
-    public String doDeletePost(@PathVariable("id") Long id, @ModelAttribute Messages messages, Locale locale, Model model) {
+    public String doDeletePost(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("id") Long id, @ModelAttribute Messages messages, Locale locale, Model model) {
         FlightsQuery flightsQuery = new FlightsQuery();
+        flightsQuery.setRestrictUsers(user == null ? null : user.toUserEntities());
         flightsQuery.setRestrictIdentifiers(Arrays.asList(id));
         FlightBean flight = this.getFlightsQueryService().loadFlights(flightsQuery).getItem(0).orElse(null);
         if (flight == null) {

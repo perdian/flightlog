@@ -30,6 +30,7 @@ class OverviewServiceImpl implements OverviewService {
 
     private List<FlightBean> loadFlights(OverviewQuery overviewQuery) {
         FlightsQuery flightsQuery = new FlightsQuery();
+        flightsQuery.setRestrictUsers(overviewQuery.getRestrictUsers());
         if (overviewQuery.getYear() != null) {
             flightsQuery.setMinimumDepartureDateLocal(LocalDate.of(overviewQuery.getYear(), 1, 1));
             flightsQuery.setMaximumArrivalDateLocal(LocalDate.of(overviewQuery.getYear(), 12, 31));

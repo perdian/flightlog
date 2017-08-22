@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.perdian.apps.flighttracker.business.modules.importexport.data.DataItem;
 import de.perdian.apps.flighttracker.persistence.entities.FlightEntity;
+import de.perdian.apps.flighttracker.persistence.entities.UserEntity;
 import de.perdian.apps.flighttracker.persistence.repositories.FlightsRepository;
 
 @Service
@@ -24,7 +25,7 @@ class ImportExportServiceImpl implements ImportExportService {
 
     @Override
     @Transactional
-    public void importDataItems(List<DataItem> dataItems) {
+    public void importDataItems(List<DataItem> dataItems, UserEntity user) {
         for (DataItem dataItem : dataItems) {
 
             FlightEntity targetEntitiy = this.getFlightsRepository().findAll((root, query, cb) -> {
@@ -35,8 +36,13 @@ class ImportExportServiceImpl implements ImportExportService {
                 predicateList.add(cb.equal(root.get("arrivalDateLocal"), dataItem.getArrivalDateLocal()));
                 predicateList.add(cb.equal(root.get("airlineCode"), dataItem.getAirlineCode()));
                 predicateList.add(cb.equal(root.get("flightNumber"), dataItem.getFlightNumber()));
+                predicateList.add(user == null ? cb.isNull(root.get("user")) : cb.equal(root.get("user"), user));
                 return cb.and(predicateList.toArray(new Predicate[0]));
-            }).stream().findFirst().orElseGet(FlightEntity::new);
+            }).stream().findFirst().orElseGet(() -> {
+                FlightEntity flightEntity = new FlightEntity();
+                flightEntity.setUser(user);
+                return flightEntity;
+            });
 
             this.copyValues(dataItem, targetEntitiy);
             this.getFlightsRepository().save(targetEntitiy);
@@ -68,8 +74,15 @@ class ImportExportServiceImpl implements ImportExportService {
     }
 
     @Override
-    public List<DataItem> exportDataItems() {
-        return StreamSupport.stream(this.getFlightsRepository().findAll().spliterator(), false)
+    public List<DataItem> exportDataItems(UserEntity user) {
+
+        Iterable<FlightEntity> flightEntities = this.getFlightsRepository().findAll((root, query, cb) -> {
+            List<Predicate> predicateList = new ArrayList<>();
+            predicateList.add(user == null ? cb.isNull(root.get("user")) : cb.equal(root.get("user"), user));
+            return cb.and(predicateList.toArray(new Predicate[0]));
+        });
+
+        return StreamSupport.stream(flightEntities.spliterator(), false)
             .map(entity -> this.copyValues(entity, new DataItem()))
             .collect(Collectors.toList());
     }
