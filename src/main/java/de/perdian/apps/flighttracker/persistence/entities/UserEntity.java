@@ -17,8 +17,8 @@ public class UserEntity implements Serializable {
 
     private Long userId = null;
     private String username = null;
+    private String password = null;
     private String authenticationSource = null;
-    private String authenticationSourceId = null;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,19 +38,19 @@ public class UserEntity implements Serializable {
     }
 
     @Column(length = 64)
+    public String getPassword() {
+        return this.password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Column(length = 64)
     public String getAuthenticationSource() {
         return this.authenticationSource;
     }
     public void setAuthenticationSource(String authenticationSource) {
         this.authenticationSource = authenticationSource;
-    }
-
-    @Column(length = 64)
-    public String getAuthenticationSourceId() {
-        return this.authenticationSourceId;
-    }
-    public void setAuthenticationSourceId(String authenticationSourceId) {
-        this.authenticationSourceId = authenticationSourceId;
     }
 
 }

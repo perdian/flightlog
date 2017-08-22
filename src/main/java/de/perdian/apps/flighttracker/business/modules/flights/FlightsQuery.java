@@ -2,10 +2,19 @@ package de.perdian.apps.flighttracker.business.modules.flights;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import de.perdian.apps.flighttracker.persistence.entities.FlightEntity;
 
 public class FlightsQuery implements Serializable {
 
@@ -34,6 +43,35 @@ public class FlightsQuery implements Serializable {
         toStringBuilder.append("minimumArrivalDateLocal", this.getMinimumArrivalDateLocal());
         toStringBuilder.append("maximumArrivalDateLocal", this.getMaximumArrivalDateLocal());
         return toStringBuilder.toString();
+    }
+
+    Predicate toPredicate(Root<FlightEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+        List<Predicate> predicateList = new ArrayList<>();
+        if (this.getMaximumArrivalDateLocal() != null) {
+            predicateList.add(cb.lessThanOrEqualTo(root.get("arrivalDateLocal"), this.getMaximumArrivalDateLocal()));
+        }
+        if (this.getMaximumDepartureDateLocal() != null) {
+            predicateList.add(cb.lessThanOrEqualTo(root.get("departureDateLocal"), this.getMaximumDepartureDateLocal()));
+        }
+        if (this.getMinimumArrivalDateLocal() != null) {
+            predicateList.add(cb.greaterThanOrEqualTo(root.get("arrivalDateLocal"), this.getMinimumArrivalDateLocal()));
+        }
+        if (this.getMinimumDepartureDateLocal() != null) {
+            predicateList.add(cb.greaterThanOrEqualTo(root.get("departureDateLocal"), this.getMinimumDepartureDateLocal()));
+        }
+        if (this.getRestrictArrivalAirportCodes() != null && !this.getRestrictArrivalAirportCodes().isEmpty()) {
+            predicateList.add(root.get("arrivalAirportCode").in(this.getRestrictArrivalAirportCodes()));
+        }
+        if (this.getRestrictDepartureAirportCodes() != null && !this.getRestrictDepartureAirportCodes().isEmpty()) {
+            predicateList.add(root.get("departureAirportCode").in(this.getRestrictDepartureAirportCodes()));
+        }
+        if (this.getRestrictFlightNumbers() != null && !this.getRestrictFlightNumbers().isEmpty()) {
+            predicateList.add(root.get("flightNumber").in(this.getRestrictFlightNumbers()));
+        }
+        if (this.getRestrictIdentifiers() != null && !this.getRestrictIdentifiers().isEmpty()) {
+            predicateList.add(root.get("id").in(this.getRestrictIdentifiers()));
+        }
+        return cb.and(predicateList.toArray(new Predicate[0]));
     }
 
     public Integer getPage() {

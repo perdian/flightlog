@@ -2,18 +2,11 @@ package de.perdian.apps.flighttracker.business.modules.flights;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +45,7 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         Sort sort = new Sort(new Sort.Order(Direction.DESC, "departureDateLocal"), new Sort.Order(Direction.DESC, "departureTimeLocal"), new Sort.Order(Direction.DESC, "id"));
         PageRequest pageRequest = new PageRequest(flightsQuery.getPage() == null ? 0 : flightsQuery.getPage(), flightsQuery.getPageSize() == null ? Integer.MAX_VALUE : flightsQuery.getPageSize(), sort);
 
-        Specification<FlightEntity> flightEntitiesSpecification = (root, query, cb) -> this.createFlightsPredicate(flightsQuery, root, query, cb);
+        Specification<FlightEntity> flightEntitiesSpecification = (root, query, cb) -> flightsQuery.toPredicate(root, query, cb);
         Page<FlightEntity> flightEntities = this.getFlightsRepository().findAll(flightEntitiesSpecification, pageRequest);
 
         PaginatedList<FlightBean> resultList = new PaginatedList<>();
@@ -65,35 +58,6 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
     @Override
     public FlightBean loadFlightById(Long id) {
         return this.convertFlightEntitiy(this.getFlightsRepository().findOne(id));
-    }
-
-    private Predicate createFlightsPredicate(FlightsQuery flightsQuery, Root<FlightEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        List<Predicate> predicateList = new ArrayList<>();
-        if (flightsQuery.getMaximumArrivalDateLocal() != null) {
-            predicateList.add(cb.lessThanOrEqualTo(root.get("arrivalDateLocal"), flightsQuery.getMaximumArrivalDateLocal()));
-        }
-        if (flightsQuery.getMaximumDepartureDateLocal() != null) {
-            predicateList.add(cb.lessThanOrEqualTo(root.get("departureDateLocal"), flightsQuery.getMaximumDepartureDateLocal()));
-        }
-        if (flightsQuery.getMinimumArrivalDateLocal() != null) {
-            predicateList.add(cb.greaterThanOrEqualTo(root.get("arrivalDateLocal"), flightsQuery.getMinimumArrivalDateLocal()));
-        }
-        if (flightsQuery.getMinimumDepartureDateLocal() != null) {
-            predicateList.add(cb.greaterThanOrEqualTo(root.get("departureDateLocal"), flightsQuery.getMinimumDepartureDateLocal()));
-        }
-        if (flightsQuery.getRestrictArrivalAirportCodes() != null && !flightsQuery.getRestrictArrivalAirportCodes().isEmpty()) {
-            predicateList.add(root.get("arrivalAirportCode").in(flightsQuery.getRestrictArrivalAirportCodes()));
-        }
-        if (flightsQuery.getRestrictDepartureAirportCodes() != null && !flightsQuery.getRestrictDepartureAirportCodes().isEmpty()) {
-            predicateList.add(root.get("departureAirportCode").in(flightsQuery.getRestrictDepartureAirportCodes()));
-        }
-        if (flightsQuery.getRestrictFlightNumbers() != null && !flightsQuery.getRestrictFlightNumbers().isEmpty()) {
-            predicateList.add(root.get("flightNumber").in(flightsQuery.getRestrictFlightNumbers()));
-        }
-        if (flightsQuery.getRestrictIdentifiers() != null && !flightsQuery.getRestrictIdentifiers().isEmpty()) {
-            predicateList.add(root.get("id").in(flightsQuery.getRestrictIdentifiers()));
-        }
-        return cb.and(predicateList.toArray(new Predicate[0]));
     }
 
     private FlightBean convertFlightEntitiy(FlightEntity flightEntitiy) {

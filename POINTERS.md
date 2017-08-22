@@ -8,3 +8,7 @@ TODO
 
 
 http://www.baeldung.com/spring-security-authentication-with-a-database
+
+
+TODO:
+- Respect @AuthenticationPrincipal in controller evaluations

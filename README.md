@@ -72,13 +72,44 @@ An example for creating a configuration file using a MySQL database will look li
 
 The MySQL JDBC driver is already part of the flighttracker WAR distribution. For any other database you'll need to provide the JDBC drivers yourself and make sure the server has appropriate access to these drivers.
 
+# Authentication
+
+By default the application doesn't come with any built in application and works in an open single user mode: All flights are implicitely associated to a single user.
+
+Currently there are two options to configure authentication: Using the internal database or using an LDAP backend.
+
+## Internal database
+
+Using the internal database is the easiest option and requires only one additional configuration parameter (see database configuration how to make additional configuration parameters available to the application).
+
+    flighttracker:
+      authentication:
+        type: internaldatabase
+
+Now the application will authenticate using the entries in the internal database.
+
+For each login the application will look for an entry within the `user` table that has `internaldatabase` as value of the `authentication_source`, a `username` column value equal to the value entered in the login form and a `password` column value equal to the SHA-256 hash (hex encoded) of the password entered in the login form.
+
+## LDAP
+
+Using a LDAP backend requires some additional options to be set as configuration parameters:
+
+    flighttracker:
+      authentication:
+        type: ldap
+        ldap:
+          url: ldap://127.0.0.1
+          baseDn: dc=example,dc=com
+          userDn: ou=users
+          bindDn: cn=x,dc=example,dc=com
+          bindPassword: yourbindpassword
+          usernameField: uid
+
+The login will be made against the LDAP backend configured. After that a dummy user will be inserted into the local database with the `authentication_source` column set to `ldap` and the `username` column set to the username used during the login. The `password` column will remain `null`.
+
 # Known limitations
 
 There are a few known limitations which will hopefully be addressed in future versions:
-
-## Clientability
-
-Right now there is no way to have multiple users share an instance of the flighttracker application. I've already planned to introduce a `userId` to the `flight` table and introduce Spring Security to make sure the user object is available. But as you can see nothing has been implemented yet.
 
 ## World map
 

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import de.perdian.apps.flighttracker.persistence.entities.UserEntity;
 
 @Repository
-public interface UserRepository extends CrudRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
+public interface UsersRepository extends CrudRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
 
 }
