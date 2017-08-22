@@ -26,7 +26,7 @@
                             <td><fmt:message key="${localizationPrefix}.${item.title}" /></td>
                             <td class="right aligned"><fmt:formatNumber value="${item.value}" pattern="#,##0" /></td>
                             <td class="right aligned">
-                                <c:if test="${item.percentage ne null}">
+                                <c:if test="${item.percentage ne null and item.percentage gt 0}">
                                     <fmt:formatNumber value="${item.percentage}" pattern="#,##0" />&nbsp;%
                                 </c:if>
                             </td>

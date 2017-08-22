@@ -46,12 +46,12 @@ class StatisticsTopItemsComputer {
             .map(entry -> {
 
                 int currentValue = entry.getValue().intValue();
-                double percentageValue = (100d / flights.size()) * currentValue;
+                Double percentageValue = currentValue <= 0 ? null : (100d / flights.size()) * currentValue;
 
                 StatisticsTopItem topItem = new StatisticsTopItem();
                 topItem.setTitle(entry.getKey());
                 topItem.setDescription(this.getDescriptionFunction() == null ? null : this.getDescriptionFunction().apply(entry.getKey()));
-                topItem.setValue(currentValue);
+                topItem.setValue(currentValue < 0 ? null : currentValue);
                 topItem.setPercentage(percentageValue);
                 return topItem;
 

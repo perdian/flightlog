@@ -38,7 +38,7 @@ class StatisticsDistributionComputer<E extends Enum<E>> {
             StatisticsTopItem resultItem = new StatisticsTopItem();
             resultItem.setTitle(valueEntry.getKey().name());
             resultItem.setValue(valueEntry.getValue());
-            resultItem.setPercentage((100d / flights.size()) * valueEntry.getValue().intValue());
+            resultItem.setPercentage(valueEntry.getValue().intValue() <= 0 ? null : (100d / flights.size()) * valueEntry.getValue().intValue());
             resultList.add(resultItem);
 
         }
