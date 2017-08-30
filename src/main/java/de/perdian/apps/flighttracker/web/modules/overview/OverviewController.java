@@ -1,7 +1,5 @@
 package de.perdian.apps.flighttracker.web.modules.overview;
 
-import java.util.TreeSet;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,18 +33,6 @@ public class OverviewController {
     public OverviewQuery overviewQuery() {
         OverviewQuery overviewQuery = new OverviewQuery();
         return overviewQuery;
-    }
-
-    @ModelAttribute(name = "overviewQueryHelper")
-    public OverviewQueryHelper overviewQueryHelper() {
-
-        TreeSet<Integer> availableYears = new TreeSet<>((i1, i2) -> Integer.compare(i2, i1));
-        availableYears.addAll(this.getFlightsQueryService().loadActiveYears());
-
-        OverviewQueryHelper queryHelper = new OverviewQueryHelper();
-        queryHelper.setAvailableYears(availableYears);
-        return queryHelper;
-
     }
 
     OverviewService getOverviewService() {

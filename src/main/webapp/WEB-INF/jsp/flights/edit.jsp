@@ -8,7 +8,13 @@
     <ft:head />
     <ft:body>
 
-        <h1 class="ui header"><fmt:message key="editFlight" /></h1>
+        <h2 class="ui header">
+            <i class="edit icon"></i>
+            <div class="content">
+                <fmt:message key="editFlight" />
+                <div class="sub header"><fmt:message key="enterDetailsForFlight" /></div>
+            </div>
+        </h2>
 
         <spring:form modelAttribute="flightEditor" servletRelativeAction="/flights/edit/${flightEditor.entityId}" cssClass="ui form">
 
@@ -16,7 +22,10 @@
 
             <h3 class="ui dividing header"><fmt:message key="actions" /></h3>
             <div class="sixteen wide">
-                <button class="ui primary button"><fmt:message key="save" /></button>
+                <button class="ui primary button">
+                    <i class="save icon"></i>
+                    <fmt:message key="save" />
+                </button>
             </div>
 
         </spring:form>

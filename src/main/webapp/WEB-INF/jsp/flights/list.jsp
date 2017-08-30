@@ -8,7 +8,15 @@
     <ft:head />
     <ft:body>
 
-        <h1 class="ui header"><fmt:message key="listFlights" /></h1>
+        <h2 class="ui header">
+            <i class="plane icon"></i>
+            <div class="content">
+                <fmt:message key="listFlights" />
+                <div class="sub header"><fmt:message key="allAvailableFlights" /></div>
+            </div>
+        </h2>
+
+        <div class="ui divider"></div>
 
         <c:if test="${flights.pagination.totalPages gt 1}">
             <div class="ui centered grid">
@@ -100,10 +108,10 @@
                                 </c:choose>
                             </div>
                         </td>
-                        <td>
+                        <td nowrap="nowrap">
                             <div class="ui vertical mini buttons">
-                                <a class="ui primary button" href="${contextPath}flights/edit/${flight.entityId}"><fmt:message key="edit" /></a>
-                                <a class="ui negative button" href="${contextPath}flights/delete/${flight.entityId}"><fmt:message key="delete" /></a>
+                                <a class="ui primary button" href="${contextPath}flights/edit/${flight.entityId}"><i class="edit icon"></i><fmt:message key="edit" /></a>
+                                <a class="ui negative button" href="${contextPath}flights/delete/${flight.entityId}"><i class="remove icon"></i><fmt:message key="delete" /></a>
                             </div>
                         </td>
                     </tr>

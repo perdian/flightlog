@@ -4,34 +4,37 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="ft" tagdir="/WEB-INF/tags/flighttracker" %>
 
-<h3 class="ui dividing header"><fmt:message key="departure" /> / <fmt:message key="arrival" /></h3>
+<div class="ui horizontal divider"><fmt:message key="departure" /> / <fmt:message key="arrival" /></div>
+
 <div class="fields">
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureAirportCode" labelKey="departureAirportCode" />
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureDateLocal" labelKey="departureDate" placeholder="yyyy-MM-dd" />
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureTimeLocal" labelKey="departureTime" placeholder="HH:mm" />
+    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureAirportCode" labelKey="airportCode" />
     <div class="ten wide field">
         <label><fmt:message key="departureAirport" /></label>
         <input name="departureAirportName" id="departureAirportName" tabIndex="-1" readonly="readonly" placeholder="<fmt:message key="airportNameWillBeComputedAutomatically" />" value="<c:out value="${flightEditor.departureAirportName}" />" />
         <script type="text/javascript">
             $("#departureAirportCode").change(function() {
-                var airportCode = $(this).val().toUpperCase();
+                var airportCode = $(this).val().trim().toUpperCase();
                 $(this).val(airportCode);
                 $("#departureAirportName").val(null);
-                $.ajax({
-                    url: "<c:url value="/airport/" />" + airportCode,
-                }).done(function(data) {
-                    $("#departureAirportName").val(data.name);
-                }).fail(function() {
-                    $("#departureAirportName").val("<fmt:message key="airportNameCannotBeComputedAutomatically" />");
-                });
+                if (airportCode.length > 0) {
+                    $.ajax({
+                        url: "<c:url value="/airport/" />" + airportCode,
+                    }).done(function(data) {
+                        $("#departureAirportName").val(data.name);
+                    }).fail(function() {
+                        $("#departureAirportName").val("<fmt:message key="airportNameCannotBeComputedAutomatically" />");
+                    });
+                }
             });
         </script>
     </div>
 </div>
 <div class="fields">
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalAirportCode" labelKey="arrivalAirportCode" />
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalDateLocal" labelKey="arrivalDate" placeholder="yyyy-MM-dd" />
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalTimeLocal" labelKey="arrivalTime" placeholder="HH:mm" />
+    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalAirportCode" labelKey="airportCode" />
     <div class="ten wide field">
         <label><fmt:message key="arrivalAirport" /></label>
         <input name="arrivalAirportName" id="arrivalAirportName" tabIndex="-1" readonly="readonly" placeholder="<fmt:message key="airportNameWillBeComputedAutomatically" />" value="<c:out value="${flightEditor.arrivalAirportName}" />" />
@@ -40,62 +43,28 @@
                 var airportCode = $(this).val().toUpperCase();
                 $(this).val(airportCode);
                 $("#arrivalAirportName").val(null);
-                $.ajax({
-                    url: "<c:url value="/airport/" />" + airportCode,
-                }).done(function(data) {
-                    $("#arrivalAirportName").val(data.name);
-                }).fail(function() {
-                    $("#arrivalAirportName").val("<fmt:message key="airportNameCannotBeComputedAutomatically" />");
-                });
+                if (airportCode.length > 0) {
+                    $.ajax({
+                        url: "<c:url value="/airport/" />" + airportCode,
+                    }).done(function(data) {
+                        $("#arrivalAirportName").val(data.name);
+                    }).fail(function() {
+                        $("#arrivalAirportName").val("<fmt:message key="airportNameCannotBeComputedAutomatically" />");
+                    });
+                }
             });
         </script>
     </div>
 </div>
 <div class="fields">
 
-    <div class="two wide field">
-        <label><fmt:message key="distance" /></label>
-        <div class="ui right labeled input">
-            <spring:input path="flightDistance" placeholder="..." />
-            <div class="ui basic label">
-                <fmt:message key="km" />
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-
-        function recomputeDistance() {
-
-            $("#flightDistance").val("");
-
-            var departureAirportCode = $("#departureAirportCode").val();
-            var arrivalAirportCode = $("#arrivalAirportCode").val();
-
-            if (departureAirportCode.length > 0 && arrivalAirportCode.length > 0) {
-                $.ajax({
-                    url: "<c:url value="/flights/computedistance" />",
-                    data: {
-                        departureAirportCode: departureAirportCode,
-                        arrivalAirportCode: arrivalAirportCode
-                    }
-                }).done(function(data) {
-                    if (data != null && data > 0) {
-                        $("#flightDistance").val(data);
-                    }
-                });
-            }
-
-        }
-
-        $("#departureAirportCode").change(recomputeDistance);
-        $("#arrivalAirportCode").change(recomputeDistance);
-
-    </script>
+    <div class="two wide field">&nbsp;</div>
 
     <div class="two wide field">
         <label><fmt:message key="duration" /></label>
         <div class="ui right labeled input">
-            <spring:input path="flightDuration" placeholder="..." />
+            <fmt:message key="flightDurationPlaceholder" var="flightDurationPlaceholder" />
+            <spring:input path="flightDuration" placeholder="${flightDurationPlaceholder}" />
             <div class="ui basic label">
                 <fmt:message key="hoursUnitSign" />
             </div>
@@ -142,9 +111,50 @@
 
     </script>
 
+    <div class="two wide field">
+        <label><fmt:message key="distance" /></label>
+        <div class="ui right labeled input">
+            <fmt:message key="flightDistancePlaceholder" var="flightDistancePlaceholder" />
+            <spring:input path="flightDistance" placeholder="${flightDistancePlaceholder}" />
+            <div class="ui basic label">
+                <fmt:message key="km" />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        function recomputeDistance() {
+
+            $("#flightDistance").val("");
+
+            var departureAirportCode = $("#departureAirportCode").val();
+            var arrivalAirportCode = $("#arrivalAirportCode").val();
+
+            if (departureAirportCode.length > 0 && arrivalAirportCode.length > 0) {
+                $.ajax({
+                    url: "<c:url value="/flights/computedistance" />",
+                    data: {
+                        departureAirportCode: departureAirportCode,
+                        arrivalAirportCode: arrivalAirportCode
+                    }
+                }).done(function(data) {
+                    if (data != null && data > 0) {
+                        $("#flightDistance").val(data);
+                    }
+                });
+            }
+
+        }
+
+        $("#departureAirportCode").change(recomputeDistance);
+        $("#arrivalAirportCode").change(recomputeDistance);
+
+    </script>
+
 </div>
 
-<h3 class="ui dividing header"><fmt:message key="otherData" /></h3>
+<div class="ui horizontal divider"><fmt:message key="otherData" /></div>
+
 <div class="fields">
 
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="airlineCode" labelKey="airlineCode" />

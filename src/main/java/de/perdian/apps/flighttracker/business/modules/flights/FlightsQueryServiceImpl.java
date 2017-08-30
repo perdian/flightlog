@@ -2,11 +2,7 @@ package de.perdian.apps.flighttracker.business.modules.flights;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,14 +167,6 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
             return result.toString();
 
         }
-    }
-
-    @Override
-    public Collection<Integer> loadActiveYears() {
-        return StreamSupport.stream(this.getFlightsRepository().findAll().spliterator(), false)
-            .flatMap(flight -> Arrays.asList(flight.getDepartureDateLocal() == null ? null : flight.getDepartureDateLocal().getYear(), flight.getArrivalDateLocal() == null ? null : flight.getArrivalDateLocal().getYear()).stream())
-            .filter(Objects::nonNull)
-            .collect(Collectors.toSet());
     }
 
     FlightsRepository getFlightsRepository() {

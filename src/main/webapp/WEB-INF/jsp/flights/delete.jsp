@@ -8,13 +8,19 @@
     <ft:head />
     <ft:body>
 
-        <h1 class="ui header"><fmt:message key="deleteFlight" /></h1>
+        <h2 class="ui header">
+            <i class="remove icon"></i>
+            <div class="content">
+                <fmt:message key="deleteFlight" />
+                <div class="sub header"><fmt:message key="verifyDeleteFlight" /></div>
+            </div>
+        </h2>
 
         <form method="post" action="<c:url value="/flights/delete/${flight.entityId}" />">
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-            <h3 class="ui dividing header"><fmt:message key="flightData" /></h3>
+            <div class="ui horizontal divider"><fmt:message key="flightData" /></div>
             <div class="ui grid">
                 <div class="four wide column">
                     <h4><fmt:message key="flightData" /></h4>
@@ -62,11 +68,12 @@
                 </div>
             </div>
 
-
-
-            <h3 class="ui dividing header"><fmt:message key="actions" /></h3>
+            <div class="ui horizontal divider"><fmt:message key="actions" /></div>
             <div class="sixteen wide">
-                <button class="ui negative button"><fmt:message key="delete" /></button>
+                <button class="ui negative button">
+                    <i class="remove icon"></i>
+                    <fmt:message key="delete" />
+                </button>
             </div>
 
         </form>

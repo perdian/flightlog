@@ -8,16 +8,47 @@
     <ft:head />
     <ft:body>
 
-        <h1 class="ui header"><fmt:message key="verifyImportedFlights" /></h1>
+        <h2 class="ui header">
+            <i class="cube icon"></i>
+            <div class="content">
+                <fmt:message key="import" />
+                <div class="sub header"><fmt:message key="verifyImportedFlights" /></div>
+            </div>
+        </h2>
+
+        <div class="ui steps">
+            <div class="step">
+                <i class="file outline icon"></i>
+                <div class="content">
+                    <div class="title"><fmt:message key="selectSource" /></div>
+                </div>
+            </div>
+            <div class="active step">
+                <i class="search icon"></i>
+                <div class="content">
+                    <div class="title"><fmt:message key="verify" /></div>
+                    <div class="description"><fmt:message key="verifyImportedFlights" /></div>
+                </div>
+            </div>
+            <div class="disabled step">
+                <i class="checkmark icon"></i>
+                <div class="content">
+                    <div class="title"><fmt:message key="completed" /></div>
+                </div>
+            </div>
+        </div>
 
         <spring:form modelAttribute="importEditor" servletRelativeAction="/import/execute" cssClass="ui form">
 
-            <h3 class="ui dividing header"><fmt:message key="actions" /></h3>
+            <div class="ui horizontal divider"><fmt:message key="actions" /></div>
             <div class="sixteen wide">
-                <button class="ui primary button"><fmt:message key="importFlights" /></button>
+                <button class="ui primary button">
+                    <i class="cube icon"></i>
+                    <fmt:message key="importFlights" />
+                </button>
             </div>
 
-            <h3 class="ui dividing header"><fmt:message key="flights" /></h3>
+            <div class="ui horizontal divider"><fmt:message key="flights" /></div>
             <table class="ui celled striped compact table">
                 <thead>
                     <tr>
@@ -80,9 +111,12 @@
                 </tbody>
             </table>
 
-            <h3 class="ui dividing header"><fmt:message key="actions" /></h3>
+            <div class="ui horizontal divider"><fmt:message key="actions" /></div>
             <div class="sixteen wide">
-                <button class="ui primary button"><fmt:message key="importFlights" /></button>
+                <button class="ui primary button">
+                    <i class="cube icon"></i>
+                    <fmt:message key="importFlights" />
+                </button>
             </div>
 
         </spring:form>
