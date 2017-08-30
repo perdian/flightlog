@@ -20,7 +20,7 @@
 
             <jsp:include page="include/flight-data.jsp" />
 
-            <h3 class="ui dividing header"><fmt:message key="actions" /></h3>
+            <div class="ui horizontal divider"><fmt:message key="actions" /></div>
             <div class="sixteen wide">
                 <button class="ui primary button">
                     <i class="save icon"></i>
