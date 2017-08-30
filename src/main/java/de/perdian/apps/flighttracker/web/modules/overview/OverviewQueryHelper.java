@@ -13,8 +13,8 @@ public class OverviewQueryHelper implements Serializable {
     static final long serialVersionUID = 1L;
 
     private Set<Integer> availableYears = Collections.emptySet();
-    private List<OverviewQueryHelperItem> availableAirlineCodes = null;
-    private List<OverviewQueryHelperItem> availableAirportCodes = null;
+    private List<OverviewQueryHelperItem> availableAirlines = null;
+    private List<OverviewQueryHelperItem> availableAirports = null;
     private List<OverviewQueryHelperItem> availableAircraftTypes = null;
     private List<OverviewQueryHelperItem> availableCabinClasses = null;
     private List<OverviewQueryHelperItem> availableFlightReasons = null;
@@ -33,18 +33,18 @@ public class OverviewQueryHelper implements Serializable {
         this.availableYears = availableYears;
     }
 
-    public List<OverviewQueryHelperItem> getAvailableAirlineCodes() {
-        return this.availableAirlineCodes;
+    public List<OverviewQueryHelperItem> getAvailableAirlines() {
+        return this.availableAirlines;
     }
-    public void setAvailableAirlineCodes(List<OverviewQueryHelperItem> availableAirlineCodes) {
-        this.availableAirlineCodes = availableAirlineCodes;
+    public void setAvailableAirlines(List<OverviewQueryHelperItem> availableAirlines) {
+        this.availableAirlines = availableAirlines;
     }
 
-    public List<OverviewQueryHelperItem> getAvailableAirportCodes() {
-        return this.availableAirportCodes;
+    public List<OverviewQueryHelperItem> getAvailableAirports() {
+        return this.availableAirports;
     }
-    public void setAvailableAirportCodes(List<OverviewQueryHelperItem> availableAirportCodes) {
-        this.availableAirportCodes = availableAirportCodes;
+    public void setAvailableAirports(List<OverviewQueryHelperItem> availableAirports) {
+        this.availableAirports = availableAirports;
     }
 
     public List<OverviewQueryHelperItem> getAvailableAircraftTypes() {

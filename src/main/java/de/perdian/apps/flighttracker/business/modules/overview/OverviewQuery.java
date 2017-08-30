@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import de.perdian.apps.flighttracker.persistence.entities.UserEntity;
-import de.perdian.apps.flighttracker.support.types.CabinClass;
 
 public class OverviewQuery implements Serializable {
 
@@ -14,7 +13,7 @@ public class OverviewQuery implements Serializable {
     private String airlineCode = null;
     private String airportCode = null;
     private String aircraftType = null;
-    private CabinClass cabinClass = null;
+    private String cabinClass = null;
     private Collection<UserEntity> restrictUsers = null;
 
     public Integer getYear() {
@@ -35,28 +34,28 @@ public class OverviewQuery implements Serializable {
         return this.airlineCode;
     }
     public void setAirlineCode(String airlineCode) {
-        this.airlineCode = airlineCode;
+        this.airlineCode = ".".equalsIgnoreCase(airlineCode) ? null : airlineCode;
     }
 
     public String getAirportCode() {
         return this.airportCode;
     }
     public void setAirportCode(String airportCode) {
-        this.airportCode = airportCode;
+        this.airportCode = ".".equalsIgnoreCase(airportCode) ? null : airportCode;
     }
 
     public String getAircraftType() {
         return this.aircraftType;
     }
     public void setAircraftType(String aircraftType) {
-        this.aircraftType = aircraftType;
+        this.aircraftType = ".".equalsIgnoreCase(aircraftType) ? null : aircraftType;
     }
 
-    public CabinClass getCabinClass() {
+    public String getCabinClass() {
         return this.cabinClass;
     }
-    public void setCabinClass(CabinClass cabinClass) {
-        this.cabinClass = cabinClass;
+    public void setCabinClass(String cabinClass) {
+        this.cabinClass = ".".equalsIgnoreCase(cabinClass) ? null : cabinClass;
     }
 
 }

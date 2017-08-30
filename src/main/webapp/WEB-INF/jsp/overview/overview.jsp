@@ -148,29 +148,24 @@
                 <ft:map />
             </div>
             <div class="four wide column">
-                <spring:form modelAttribute="overviewQuery" servletRelativeAction="/">
+                <spring:form modelAttribute="overviewQuery" servletRelativeAction="/" cssClass="ui form">
                     <h3><fmt:message key="filterFlights" /></h3>
-                    <table class="ui compact table">
-                        <tbody>
-                            <tr>
-                                <td><fmt:message key="year" /></td>
-                                <td>
-                                    <spring:select path="year" cssClass="ui dropdown">
-                                        <option value=""><fmt:message key="allYears" /></option>
-                                        <spring:options items="${overviewQueryHelper.availableYears}" />
-                                    </spring:select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><fmt:message key="airline" /></td>
-                                <td>
-                                    <spring:select path="airlineCode" cssClass="ui dropdown">
-                                        <option value=""><fmt:message key="allAirlines" /></option>
-                                    </spring:select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="field">
+                        <label><fmt:message key="year" /></label>
+                        <spring:select path="year" cssClass="ui dropdown">
+                            <option value="."><fmt:message key="allYears" /></option>
+                            <spring:options items="${overviewQueryHelper.availableYears}" />
+                        </spring:select>
+                    </div>
+                    <div class="field">
+                        <label><fmt:message key="airline" /></label>
+                        <spring:select path="airlineCode" cssClass="ui dropdown">
+                            <option value="."><fmt:message key="allAirlines" /></option>
+                            <c:forEach items="${overviewQueryHelper.availableAirlines}" var="airline">
+                                <spring:option value="${airline.value}"><c:out value="${airline.title}" /></spring:option>
+                            </c:forEach>
+                        </spring:select>
+                    </div>
                     <button type="submit" class="ui tiny primary button">
                         <i class="search icon"></i>
                         <fmt:message key="filterFlights" />

@@ -7,6 +7,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -32,8 +33,8 @@ public class OverviewQueryHelperFactory {
 
         OverviewQueryHelper queryHelper = new OverviewQueryHelper();
         queryHelper.setAvailableYears(this.collectAvailableYears(flights));
-        queryHelper.setAvailableAirlineCodes(this.collectAvailableAirlines(flights));
-        queryHelper.setAvailableAirportCodes(this.collectAvailableAirports(flights));
+        queryHelper.setAvailableAirlines(this.collectAvailableAirlines(flights));
+        queryHelper.setAvailableAirports(this.collectAvailableAirports(flights));
         queryHelper.setAvailableAircraftTypes(this.collectAvailableAircraftTypes(flights));
         queryHelper.setAvailableCabinClasses(this.collectAvailableCabinClasses(flights));
         queryHelper.setAvailableFlightReasons(this.collectAvailableFlightReasons(flights));
@@ -58,7 +59,14 @@ public class OverviewQueryHelperFactory {
     }
 
     private List<OverviewQueryHelperItem> collectAvailableAirlines(List<FlightBean> flights) {
-        return null;
+        return flights.stream()
+            .map(FlightBean::getAirline)
+            .filter(Objects::nonNull)
+            .filter(airline -> !StringUtils.isEmpty(airline.getCode()) && !StringUtils.isEmpty(airline.getName()))
+            .map(airline -> new OverviewQueryHelperItem(airline.getName(), airline.getCode()))
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
     }
 
     private SortedSet<Integer> collectAvailableYears(List<FlightBean> flights) {
