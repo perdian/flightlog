@@ -8,6 +8,9 @@ import java.util.Set;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import de.perdian.apps.flighttracker.support.types.CabinClass;
+import de.perdian.apps.flighttracker.support.types.FlightReason;
+
 public class OverviewQueryHelper implements Serializable {
 
     static final long serialVersionUID = 1L;
@@ -16,8 +19,8 @@ public class OverviewQueryHelper implements Serializable {
     private List<OverviewQueryHelperItem> availableAirlines = null;
     private List<OverviewQueryHelperItem> availableAirports = null;
     private List<OverviewQueryHelperItem> availableAircraftTypes = null;
-    private List<OverviewQueryHelperItem> availableCabinClasses = null;
-    private List<OverviewQueryHelperItem> availableFlightReasons = null;
+    private List<CabinClass> availableCabinClasses = null;
+    private List<FlightReason> availableFlightReasons = null;
 
     @Override
     public String toString() {
@@ -54,17 +57,17 @@ public class OverviewQueryHelper implements Serializable {
         this.availableAircraftTypes = availableAircraftTypes;
     }
 
-    public List<OverviewQueryHelperItem> getAvailableCabinClasses() {
+    public List<CabinClass> getAvailableCabinClasses() {
         return this.availableCabinClasses;
     }
-    public void setAvailableCabinClasses(List<OverviewQueryHelperItem> availableCabinClasses) {
+    public void setAvailableCabinClasses(List<CabinClass> availableCabinClasses) {
         this.availableCabinClasses = availableCabinClasses;
     }
 
-    public List<OverviewQueryHelperItem> getAvailableFlightReasons() {
+    public List<FlightReason> getAvailableFlightReasons() {
         return this.availableFlightReasons;
     }
-    public void setAvailableFlightReasons(List<OverviewQueryHelperItem> availableFlightReasons) {
+    public void setAvailableFlightReasons(List<FlightReason> availableFlightReasons) {
         this.availableFlightReasons = availableFlightReasons;
     }
 

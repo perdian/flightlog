@@ -27,6 +27,10 @@ class StatisticsTopItemsComputer {
     }
 
     List<StatisticsTopItem> computeTopItems(List<FlightBean> flights) {
+        return this.computeTopItems(flights, 1d);
+    }
+
+    List<StatisticsTopItem> computeTopItems(List<FlightBean> flights, double factor) {
 
         Comparator<Map.Entry<String, AtomicInteger>> valueComparator = (e1, e2) -> -1 * Integer.compare(e1.getValue().intValue(), e2.getValue().intValue());
         Comparator<Map.Entry<String, AtomicInteger>> keyComparator = (e1, e2) -> e1.getKey().compareTo(e2.getKey());
@@ -46,7 +50,7 @@ class StatisticsTopItemsComputer {
             .map(entry -> {
 
                 int currentValue = entry.getValue().intValue();
-                Double percentageValue = currentValue <= 0 ? null : (100d / flights.size()) * currentValue;
+                Double percentageValue = currentValue <= 0 ? null : (100d / flights.size()) * currentValue * factor;
 
                 StatisticsTopItem topItem = new StatisticsTopItem();
                 topItem.setTitle(entry.getKey());

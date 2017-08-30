@@ -55,7 +55,7 @@ public class StatisticsContributor implements OverviewContributor {
         statistics.setSlowestFlight(this.computeMaxFlight(flights, -1, FlightBean::getAverageSpeed));
         statistics.setTopAircraftTypes(new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getAircraft().getType())).computeTopItems(flights));
         statistics.setTopAirlines(new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getAirline().getCode())).descriptionFunction(this::computeAirlineName).computeTopItems(flights));
-        statistics.setTopAirports(new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode(), flight.getArrivalContact().getAirport().getCode())).descriptionFunction(this::computeAirportName).computeTopItems(flights));
+        statistics.setTopAirports(new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode(), flight.getArrivalContact().getAirport().getCode())).descriptionFunction(this::computeAirportName).computeTopItems(flights, 0.5d));
         statistics.setTopRoutes(new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode() + " - " + flight.getArrivalContact().getAirport().getCode())).computeTopItems(flights));
         statistics.setDistributionOfCabinClasses(new StatisticsDistributionComputer<>(CabinClass.class).propertyFunction(FlightBean::getCabinClass).computeDistribution(flights));
         statistics.setDistributionOfSeatTypes(new StatisticsDistributionComputer<>(SeatType.class).propertyFunction(FlightBean::getSeatType).computeDistribution(flights));

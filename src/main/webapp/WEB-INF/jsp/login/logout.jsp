@@ -8,12 +8,19 @@
     <ft:head />
     <ft:body>
 
-        <h2><fmt:message key="logout" /></h2>
+        <h2 class="ui header">
+            <i class="user icon"></i>
+            <div class="content">
+                <fmt:message key="logout" />
+                <div class="sub header"><fmt:message key="youHaveBeenLoggedOut" /></div>
+            </div>
+        </h2>
+
+        <div class="ui divider"></div>
 
         <p>
             <fmt:message key="youHaveBeenLoggedOut" />
         </p>
-
 
     </ft:body>
 </ft:html>

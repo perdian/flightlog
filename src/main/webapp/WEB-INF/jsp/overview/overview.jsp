@@ -153,7 +153,7 @@
                     <div class="field">
                         <label><fmt:message key="year" /></label>
                         <spring:select path="year" cssClass="ui dropdown">
-                            <option value="."><fmt:message key="allYears" /></option>
+                            <option value="0"><fmt:message key="allYears" /></option>
                             <spring:options items="${overviewQueryHelper.availableYears}" />
                         </spring:select>
                     </div>
@@ -166,10 +166,45 @@
                             </c:forEach>
                         </spring:select>
                     </div>
-                    <button type="submit" class="ui tiny primary button">
-                        <i class="search icon"></i>
-                        <fmt:message key="filterFlights" />
-                    </button>
+                    <div class="field">
+                        <label><fmt:message key="airport" /></label>
+                        <spring:select path="airportCode" cssClass="ui dropdown">
+                            <option value="."><fmt:message key="allAirports" /></option>
+                            <c:forEach items="${overviewQueryHelper.availableAirports}" var="airport">
+                                <spring:option value="${airport.value}"><c:out value="${airport.title}" /></spring:option>
+                            </c:forEach>
+                        </spring:select>
+                    </div>
+                    <div class="field">
+                        <label><fmt:message key="cabinClass" /></label>
+                        <spring:select path="cabinClass" cssClass="ui dropdown">
+                            <option value="."><fmt:message key="allCabinClasses" /></option>
+                            <c:forEach items="${overviewQueryHelper.availableCabinClasses}" var="cabinClass">
+                                <spring:option value="${cabinClass.name()}"><fmt:message key="cabinClass.${cabinClass.name()}" /></spring:option>
+                            </c:forEach>
+                        </spring:select>
+                    </div>
+                    <div class="field">
+                        <label><fmt:message key="flightReason" /></label>
+                        <spring:select path="flightReason" cssClass="ui dropdown">
+                            <option value="."><fmt:message key="allFlightReasons" /></option>
+                            <c:forEach items="${overviewQueryHelper.availableFlightReasons}" var="flightReason">
+                                <spring:option value="${flightReason.name()}"><fmt:message key="flightReason.${flightReason.name()}" /></spring:option>
+                            </c:forEach>
+                        </spring:select>
+                    </div>
+                    <div class="ui tiny buttons">
+                        <button type="submit" class="ui tiny primary button">
+                            <i class="search icon"></i>
+                            <fmt:message key="filterFlights" />
+                        </button>
+                        <c:if test="${overviewQuery.filterActive}">
+                            <a href="<c:url value="/" />" class="ui tiny button">
+                                <i class="remove icon"></i>
+                                <fmt:message key="resetFilter" />
+                            </a>
+                        </c:if>
+                    </div>
                 </spring:form>
             </div>
         </div>
@@ -192,8 +227,8 @@
                 </thead>
                 <tbody>
                     <ft:flightInfoRow titleKey="longestFlightByDuration" flight="${overview.statistics.longestFlightByDuration}" />
-                    <ft:flightInfoRow titleKey="shortestFlightByDuration" flight="${overview.statistics.shortestFlightByDuration}" />
                     <ft:flightInfoRow titleKey="longestFlightByDistance" flight="${overview.statistics.longestFlightByDistance}" />
+                    <ft:flightInfoRow titleKey="shortestFlightByDuration" flight="${overview.statistics.shortestFlightByDuration}" />
                     <ft:flightInfoRow titleKey="shortestFlightByDistance" flight="${overview.statistics.shortestFlightByDistance}" />
                     <ft:flightInfoRow titleKey="fastestFlight" flight="${overview.statistics.fastestFlight}" />
                     <ft:flightInfoRow titleKey="slowestFlight" flight="${overview.statistics.slowestFlight}" />

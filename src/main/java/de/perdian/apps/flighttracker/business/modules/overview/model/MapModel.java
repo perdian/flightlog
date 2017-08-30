@@ -1,4 +1,4 @@
-package de.perdian.apps.flighttracker.business.modules.map.model;
+package de.perdian.apps.flighttracker.business.modules.overview.model;
 
 import java.io.Serializable;
 import java.util.List;

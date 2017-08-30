@@ -15,7 +15,7 @@
 		],
         view: new ol.View({
             center: ol.proj.fromLonLat([0, 35]),
-            zoom: 2.2
+            zoom: 2
         })
 	});
 
@@ -23,7 +23,11 @@
 	$.ajax({
 	    url: dataUrl,
 	    data: {
-	        year: "<c:out value="${overviewQuery.year}" />"
+	        year: "<c:out value="${overviewQuery.year}" />",
+	        airlineCode: "<c:out value="${overviewQuery.airlineCode}" />",
+	        airportCode: "<c:out value="${overviewQuery.airportCode}" />",
+	        cabinClass: "<c:out value="${overviewQuery.cabinClass}" />",
+	        flightReason: "<c:out value="${overviewQuery.flightReason}" />"
 	    },
 	    success: function(result) {
 

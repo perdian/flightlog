@@ -16,6 +16,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import de.perdian.apps.flighttracker.persistence.entities.FlightEntity;
 import de.perdian.apps.flighttracker.persistence.entities.UserEntity;
+import de.perdian.apps.flighttracker.support.types.CabinClass;
+import de.perdian.apps.flighttracker.support.types.FlightReason;
 
 public class FlightsQuery implements Serializable {
 
@@ -32,6 +34,11 @@ public class FlightsQuery implements Serializable {
     private LocalDate minimumArrivalDateLocal = null;
     private LocalDate maximumArrivalDateLocal = null;
     private Collection<UserEntity> restrictUsers = null;
+    private Collection<String> restrictAirportCodes = null;
+    private Collection<String> restrictAirlineCodes = null;
+    private Collection<String> restrictAircraftTypes = null;
+    private Collection<CabinClass> restrictCabinClasses = null;
+    private Collection<FlightReason> restrictFlightReasons = null;
 
     @Override
     public String toString() {
@@ -45,6 +52,10 @@ public class FlightsQuery implements Serializable {
         toStringBuilder.append("minimumArrivalDateLocal", this.getMinimumArrivalDateLocal());
         toStringBuilder.append("maximumArrivalDateLocal", this.getMaximumArrivalDateLocal());
         toStringBuilder.append("restrictUsers", this.getRestrictUsers());
+        toStringBuilder.append("restrictAirportCodes", this.getRestrictAirportCodes());
+        toStringBuilder.append("restrictAirlineCodes", this.getRestrictAirlineCodes());
+        toStringBuilder.append("restrictCabinClasses", this.getRestrictCabinClasses());
+        toStringBuilder.append("restrictFlightReasons", this.getRestrictFlightReasons());
         return toStringBuilder.toString();
     }
 
@@ -78,6 +89,21 @@ public class FlightsQuery implements Serializable {
             predicateList.add(root.get("user").in(this.getRestrictUsers()));
         } else {
             predicateList.add(cb.isNull(root.get("user")));
+        }
+        if (this.getRestrictIdentifiers() != null && !this.getRestrictIdentifiers().isEmpty()) {
+            predicateList.add(root.get("id").in(this.getRestrictIdentifiers()));
+        }
+        if (this.getRestrictAirlineCodes() != null && !this.getRestrictAirlineCodes().isEmpty()) {
+            predicateList.add(root.get("airlineCode").in(this.getRestrictAirlineCodes()));
+        }
+        if (this.getRestrictAirportCodes() != null && !this.getRestrictAirportCodes().isEmpty()) {
+            predicateList.add(cb.or(root.get("departureAirportCode").in(this.getRestrictAirportCodes()), root.get("arrivalAirportCode").in(this.getRestrictAirportCodes())));
+        }
+        if (this.getRestrictCabinClasses() != null && !this.getRestrictCabinClasses().isEmpty()) {
+            predicateList.add(root.get("cabinClass").in(this.getRestrictCabinClasses()));
+        }
+        if (this.getRestrictFlightReasons() != null && !this.getRestrictFlightReasons().isEmpty()) {
+            predicateList.add(root.get("flightReason").in(this.getRestrictFlightReasons()));
         }
         return cb.and(predicateList.toArray(new Predicate[0]));
     }
@@ -157,6 +183,41 @@ public class FlightsQuery implements Serializable {
     }
     public void setRestrictUsers(Collection<UserEntity> restrictUsers) {
         this.restrictUsers = restrictUsers;
+    }
+
+    public Collection<String> getRestrictAirportCodes() {
+        return this.restrictAirportCodes;
+    }
+    public void setRestrictAirportCodes(Collection<String> restrictAirportCodes) {
+        this.restrictAirportCodes = restrictAirportCodes;
+    }
+
+    public Collection<String> getRestrictAirlineCodes() {
+        return this.restrictAirlineCodes;
+    }
+    public void setRestrictAirlineCodes(Collection<String> restrictAirlineCodes) {
+        this.restrictAirlineCodes = restrictAirlineCodes;
+    }
+
+    public Collection<String> getRestrictAircraftTypes() {
+        return this.restrictAircraftTypes;
+    }
+    public void setRestrictAircraftTypes(Collection<String> restrictAircraftTypes) {
+        this.restrictAircraftTypes = restrictAircraftTypes;
+    }
+
+    public Collection<CabinClass> getRestrictCabinClasses() {
+        return this.restrictCabinClasses;
+    }
+    public void setRestrictCabinClasses(Collection<CabinClass> restrictCabinClasses) {
+        this.restrictCabinClasses = restrictCabinClasses;
+    }
+
+    public Collection<FlightReason> getRestrictFlightReasons() {
+        return this.restrictFlightReasons;
+    }
+    public void setRestrictFlightReasons(Collection<FlightReason> restrictFlightReasons) {
+        this.restrictFlightReasons = restrictFlightReasons;
     }
 
 }

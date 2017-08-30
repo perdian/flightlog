@@ -1,5 +1,6 @@
 package de.perdian.apps.flighttracker.web.modules.overview;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +16,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import de.perdian.apps.flighttracker.business.modules.flights.FlightsQuery;
 import de.perdian.apps.flighttracker.business.modules.flights.FlightsQueryService;
+import de.perdian.apps.flighttracker.business.modules.flights.model.AirportBean;
+import de.perdian.apps.flighttracker.business.modules.flights.model.AirportContactBean;
 import de.perdian.apps.flighttracker.business.modules.flights.model.FlightBean;
+import de.perdian.apps.flighttracker.support.types.CabinClass;
+import de.perdian.apps.flighttracker.support.types.FlightReason;
 import de.perdian.apps.flighttracker.web.security.FlighttrackerUser;
 
 @ControllerAdvice(assignableTypes = OverviewController.class)
@@ -36,30 +41,47 @@ public class OverviewQueryHelperFactory {
         queryHelper.setAvailableAirlines(this.collectAvailableAirlines(flights));
         queryHelper.setAvailableAirports(this.collectAvailableAirports(flights));
         queryHelper.setAvailableAircraftTypes(this.collectAvailableAircraftTypes(flights));
-        queryHelper.setAvailableCabinClasses(this.collectAvailableCabinClasses(flights));
-        queryHelper.setAvailableFlightReasons(this.collectAvailableFlightReasons(flights));
+        queryHelper.setAvailableCabinClasses(Arrays.asList(CabinClass.values()));
+        queryHelper.setAvailableFlightReasons(Arrays.asList(FlightReason.values()));
         return queryHelper;
 
     }
 
     private List<OverviewQueryHelperItem> collectAvailableAircraftTypes(List<FlightBean> flights) {
-        return null;
-    }
-
-    private List<OverviewQueryHelperItem> collectAvailableFlightReasons(List<FlightBean> flights) {
-        return null;
-    }
-
-    private List<OverviewQueryHelperItem> collectAvailableCabinClasses(List<FlightBean> flights) {
-        return null;
+        return flights.stream()
+            .map(FlightBean::getAircraft)
+            .filter(Objects::nonNull)
+            .filter(aircraft -> !StringUtils.isEmpty(aircraft.getType()))
+            .map(aircraft -> new OverviewQueryHelperItem(aircraft.getName(), aircraft.getName()))
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
     }
 
     private List<OverviewQueryHelperItem> collectAvailableAirports(List<FlightBean> flights) {
-        return null;
+
+        List<AirportBean> allAirports = new ArrayList<>();
+        flights.stream()
+            .map(FlightBean::getDepartureContact)
+            .map(AirportContactBean::getAirport)
+            .forEach(allAirports::add);
+        flights.stream()
+            .map(FlightBean::getArrivalContact)
+            .map(AirportContactBean::getAirport)
+            .forEach(allAirports::add);
+
+        return allAirports.stream()
+            .filter(Objects::nonNull)
+            .filter(airport -> !StringUtils.isEmpty(airport.getCode()) && !StringUtils.isEmpty(airport.getName()))
+            .map(airport -> new OverviewQueryHelperItem(airport.getName(), airport.getCode()))
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
+
     }
 
     private List<OverviewQueryHelperItem> collectAvailableAirlines(List<FlightBean> flights) {
-        return flights.stream()
+       return flights.stream()
             .map(FlightBean::getAirline)
             .filter(Objects::nonNull)
             .filter(airline -> !StringUtils.isEmpty(airline.getCode()) && !StringUtils.isEmpty(airline.getName()))

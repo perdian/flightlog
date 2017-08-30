@@ -8,12 +8,18 @@
     <ft:head />
     <ft:body>
 
-        <h2><fmt:message key="login" /></h2>
+        <h2 class="ui header">
+            <i class="user icon"></i>
+            <div class="content">
+                <fmt:message key="login" />
+                <div class="sub header"><fmt:message key="enterYourCredentials" /></div>
+            </div>
+        </h2>
 
         <form action="login" method="post" class="ui form">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-            <h3 class="ui dividing header"><fmt:message key="source" /></h3>
+            <div class="ui divider"></div>
             <div class="fields">
                 <div class="six wide field">
                     <label><fmt:message key="username" /></label>
@@ -25,7 +31,7 @@
                 </div>
                 <div class="one wide field">
                     <label>&nbsp;</label>
-                    <input class="ui button" type="submit" value="<fmt:message key="login" />" />
+                    <input class="ui primary button" type="submit" value="<fmt:message key="login" />" />
                 </div>
             </div>
         </form>
