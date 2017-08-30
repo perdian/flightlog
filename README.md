@@ -113,7 +113,7 @@ There are a few known limitations which will hopefully be addressed in future ve
 
 ## World map
 
-Right now flights traveling eastwards from the US or westwards of Asia/Australia are not correctly rendered by the Openlayers map. The data is being available in the JSON but somehow the map doesn't render it correctly.
+Right now flights traveling westwards from the US or eastwards of Asia/Australia are not correctly rendered by the Openlayers map. The data is being available in the JSON but somehow the map doesn't render it correctly.
 
 # Credits
 
