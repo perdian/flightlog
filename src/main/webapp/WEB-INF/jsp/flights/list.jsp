@@ -59,13 +59,19 @@
                             </c:if>
                         </td>
                         <td>
-                            <strong style="min-width: 40px; display: inline-block;"><c:out value="${flight.departureContact.airport.code}" /></strong>
+                            <c:if test="${fn:length(flight.departureContact.airport.countryCode) gt 0}">
+                                <i class="${fn:toLowerCase(flight.departureContact.airport.countryCode)} flag"></i>
+                            </c:if>
+                            <strong><c:out value="${flight.departureContact.airport.code}" /></strong>
                             <c:if test="${fn:length(flight.departureContact.airport.name) gt 0}">
                                 <small><br /><c:out value="${flight.departureContact.airport.name}" /></small>
                             </c:if>
                         </td>
                         <td>
-                            <strong style="min-width: 40px; display: inline-block;"><c:out value="${flight.arrivalContact.airport.code}" /></strong>
+                            <c:if test="${fn:length(flight.arrivalContact.airport.countryCode) gt 0}">
+                                <i class="${fn:toLowerCase(flight.arrivalContact.airport.countryCode)} flag"></i>
+                            </c:if>
+                            <strong><c:out value="${flight.arrivalContact.airport.code}" /></strong>
                             <c:if test="${fn:length(flight.arrivalContact.airport.name) gt 0}">
                                 <small><br /><c:out value="${flight.arrivalContact.airport.name}" /></small>
                             </c:if>

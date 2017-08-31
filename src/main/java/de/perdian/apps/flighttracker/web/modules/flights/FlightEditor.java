@@ -23,10 +23,12 @@ public class FlightEditor implements Serializable {
 
     private Long entityId = null;
     private String departureAirportCode = null;
+    private String departureAirportCountryCode = null;
     private String departureAirportName = null;
     private String departureDateLocal = null;
     private String departureTimeLocal = null;
     private String arrivalAirportCode = null;
+    private String arrivalAirportCountryCode = null;
     private String arrivalAirportName = null;
     private String arrivalDateLocal = null;
     private String arrivalTimeLocal = null;
@@ -55,12 +57,14 @@ public class FlightEditor implements Serializable {
         this.setAirlineCode(flight.getAirline() == null ? null : flight.getAirline().getCode());
         this.setAirlineName(flight.getAirline() == null ? null : flight.getAirline().getName());
         this.setArrivalAirportCode(flight.getArrivalContact() == null || flight.getArrivalContact().getAirport() == null ? null : flight.getArrivalContact().getAirport().getCode());
+        this.setArrivalAirportCountryCode(flight.getArrivalContact() == null || flight.getArrivalContact().getAirport() == null ? null : flight.getArrivalContact().getAirport().getCountryCode());
         this.setArrivalAirportName(flight.getArrivalContact() == null || flight.getArrivalContact().getAirport() == null ? null : flight.getArrivalContact().getAirport().getName());
         this.setArrivalDateLocal(flight.getArrivalContact() == null || flight.getArrivalContact().getDateLocal() == null ? null : FlighttrackerHelper.formatDate(flight.getArrivalContact().getDateLocal()));
         this.setArrivalTimeLocal(flight.getArrivalContact() == null || flight.getArrivalContact().getTimeLocal() == null ? null : FlighttrackerHelper.formatTime(flight.getArrivalContact().getTimeLocal()));
         this.setCabinClass(flight.getCabinClass() == null ? null : flight.getCabinClass().name());
         this.setComment(flight.getComment());
         this.setDepartureAirportCode(flight.getDepartureContact() == null || flight.getDepartureContact().getAirport() == null ? null : flight.getDepartureContact().getAirport().getCode());
+        this.setDepartureAirportCountryCode(flight.getDepartureContact() == null || flight.getDepartureContact().getAirport() == null ? null : flight.getDepartureContact().getAirport().getCountryCode());
         this.setDepartureAirportName(flight.getDepartureContact() == null || flight.getDepartureContact().getAirport() == null ? null : flight.getDepartureContact().getAirport().getName());
         this.setDepartureDateLocal(flight.getDepartureContact() == null || flight.getDepartureContact().getDateLocal() == null ? null : FlighttrackerHelper.formatDate(flight.getDepartureContact().getDateLocal()));
         this.setDepartureTimeLocal(flight.getDepartureContact() == null || flight.getDepartureContact().getTimeLocal() == null ? null : FlighttrackerHelper.formatTime(flight.getDepartureContact().getTimeLocal()));
@@ -129,6 +133,13 @@ public class FlightEditor implements Serializable {
         this.departureAirportCode = departureAirportCode;
     }
 
+    public String getDepartureAirportCountryCode() {
+        return this.departureAirportCountryCode;
+    }
+    public void setDepartureAirportCountryCode(String departureAirportCountryCode) {
+        this.departureAirportCountryCode = departureAirportCountryCode;
+    }
+
     public String getDepartureAirportName() {
         return this.departureAirportName;
     }
@@ -159,6 +170,13 @@ public class FlightEditor implements Serializable {
     }
     public void setArrivalAirportCode(String arrivalAirportCode) {
         this.arrivalAirportCode = arrivalAirportCode;
+    }
+
+    public String getArrivalAirportCountryCode() {
+        return this.arrivalAirportCountryCode;
+    }
+    public void setArrivalAirportCountryCode(String arrivalAirportCountryCode) {
+        this.arrivalAirportCountryCode = arrivalAirportCountryCode;
     }
 
     public String getArrivalAirportName() {

@@ -6,6 +6,9 @@
 <tr>
     <td><fmt:message key="${titleKey}" /></td>
     <td>
+        <c:if test="${fn:length(flight.departureContact.airport.countryCode) gt 0}">
+            <i class="${fn:toLowerCase(flight.departureContact.airport.countryCode)} flag"></i>
+        </c:if>
         <c:out value="${flight.departureContact.airport.code}" />
         <c:if test="${flight.departureContact.airport.name ne null}">
             <br><small><c:out value="${flight.departureContact.airport.name}" /></small>
@@ -21,6 +24,9 @@
         </c:if>
      </td>
     <td>
+        <c:if test="${fn:length(flight.arrivalContact.airport.countryCode) gt 0}">
+            <i class="${fn:toLowerCase(flight.arrivalContact.airport.countryCode)} flag"></i>
+        </c:if>
         <c:out value="${flight.arrivalContact.airport.code}" />
         <c:if test="${flight.arrivalContact.airport.name ne null}">
             <br><small><c:out value="${flight.arrivalContact.airport.name}" /></small>

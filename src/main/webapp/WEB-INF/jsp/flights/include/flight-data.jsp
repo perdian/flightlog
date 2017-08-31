@@ -10,19 +10,26 @@
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureDateLocal" labelKey="departureDate" placeholder="yyyy-MM-dd" />
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureTimeLocal" labelKey="departureTime" placeholder="HH:mm" />
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureAirportCode" labelKey="airportCode" />
+    <c:if test="${fn:length(flightEditor.departureAirportCountryCode) gt 0}">
+        <c:set var="departureAirportFlagCssClass" value="${fn:toLowerCase(flightEditor.departureAirportCountryCode)} flag" />
+    </c:if>
     <div class="ten wide field">
-        <label><fmt:message key="departureAirport" /></label>
+        <label><fmt:message key="departureAirport" /><c:out escapeXml="false" value=" &nbsp; " /><i class="${departureAirportFlagCssClass}" id="departureAirportFlag"></i></label>
         <input name="departureAirportName" id="departureAirportName" tabIndex="-1" readonly="readonly" placeholder="<fmt:message key="airportNameWillBeComputedAutomatically" />" value="<c:out value="${flightEditor.departureAirportName}" />" />
         <script type="text/javascript">
             $("#departureAirportCode").change(function() {
                 var airportCode = $(this).val().trim().toUpperCase();
                 $(this).val(airportCode);
                 $("#departureAirportName").val(null);
+                $("#departureAirportFlag").removeAttr("class")
                 if (airportCode.length > 0) {
                     $.ajax({
                         url: "<c:url value="/airport/" />" + airportCode,
                     }).done(function(data) {
                         $("#departureAirportName").val(data.name);
+                        if (data.countryCode != null && data.countryCode.length > 0) {
+                            $("#departureAirportFlag").attr("class", data.countryCode.toLowerCase() + " flag");
+                        }
                     }).fail(function() {
                         $("#departureAirportName").val("<fmt:message key="airportNameCannotBeComputedAutomatically" />");
                     });
@@ -35,19 +42,26 @@
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalDateLocal" labelKey="arrivalDate" placeholder="yyyy-MM-dd" />
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalTimeLocal" labelKey="arrivalTime" placeholder="HH:mm" />
     <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalAirportCode" labelKey="airportCode" />
+    <c:if test="${fn:length(flightEditor.arrivalAirportCountryCode) gt 0}">
+        <c:set var="arrivalAirportFlagCssClass" value="${fn:toLowerCase(flightEditor.arrivalAirportCountryCode)} flag" />
+    </c:if>
     <div class="ten wide field">
-        <label><fmt:message key="arrivalAirport" /></label>
+        <label><fmt:message key="arrivalAirport" /><c:out escapeXml="false" value=" &nbsp; " /><i class="${arrivalAirportFlagCssClass}" id="arrivalAirportFlag"></i></label>
         <input name="arrivalAirportName" id="arrivalAirportName" tabIndex="-1" readonly="readonly" placeholder="<fmt:message key="airportNameWillBeComputedAutomatically" />" value="<c:out value="${flightEditor.arrivalAirportName}" />" />
         <script type="text/javascript">
             $("#arrivalAirportCode").change(function() {
                 var airportCode = $(this).val().toUpperCase();
                 $(this).val(airportCode);
                 $("#arrivalAirportName").val(null);
+                $("#departureAirportFlag").removeAttr("class")
                 if (airportCode.length > 0) {
                     $.ajax({
                         url: "<c:url value="/airport/" />" + airportCode,
                     }).done(function(data) {
                         $("#arrivalAirportName").val(data.name);
+                        if (data.countryCode != null && data.countryCode.length > 0) {
+                            $("#arrivalAirportFlag").attr("class", data.countryCode.toLowerCase() + " flag");
+                        }
                     }).fail(function() {
                         $("#arrivalAirportName").val("<fmt:message key="airportNameCannotBeComputedAutomatically" />");
                     });

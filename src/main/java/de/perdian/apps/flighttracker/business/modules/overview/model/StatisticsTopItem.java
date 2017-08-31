@@ -2,6 +2,8 @@ package de.perdian.apps.flighttracker.business.modules.overview.model;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +14,7 @@ public class StatisticsTopItem implements Serializable {
 
     private String title = null;
     private String description = null;
+    private Map<String, Object> context = null;
     private Number value = null;
     private Number percentage = null;
 
@@ -49,6 +52,19 @@ public class StatisticsTopItem implements Serializable {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void addToContext(String key, Object value) {
+        if (this.getContext() == null) {
+            this.setContext(new LinkedHashMap<>());
+        }
+        this.getContext().put(key, value);
+    }
+    public Map<String, Object> getContext() {
+        return this.context;
+    }
+    public void setContext(Map<String, Object> context) {
+        this.context = context;
     }
 
     public Number getValue() {

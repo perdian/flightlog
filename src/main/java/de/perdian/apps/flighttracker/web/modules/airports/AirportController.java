@@ -30,6 +30,7 @@ public class AirportController {
         } else {
             Airport airport = new Airport();
             airport.setCode(airportEntity.getIataCode());
+            airport.setCountryCode(airportEntity.getCountryCode());
             airport.setLatitude(airportEntity.getLatitude());
             airport.setLongitude(airportEntity.getLongitude());
             airport.setName(airportEntity.getName());

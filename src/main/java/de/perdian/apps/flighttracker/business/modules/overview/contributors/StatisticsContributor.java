@@ -15,6 +15,7 @@ import de.perdian.apps.flighttracker.business.modules.flights.model.FlightBean;
 import de.perdian.apps.flighttracker.business.modules.overview.OverviewContributor;
 import de.perdian.apps.flighttracker.business.modules.overview.model.OverviewBean;
 import de.perdian.apps.flighttracker.business.modules.overview.model.StatisticsBean;
+import de.perdian.apps.flighttracker.business.modules.overview.model.StatisticsTopItem;
 import de.perdian.apps.flighttracker.persistence.entities.AirlineEntity;
 import de.perdian.apps.flighttracker.persistence.entities.AirportEntity;
 import de.perdian.apps.flighttracker.persistence.repositories.AirlinesRepository;
@@ -55,7 +56,7 @@ public class StatisticsContributor implements OverviewContributor {
         statistics.setSlowestFlight(this.computeMaxFlight(flights, -1, FlightBean::getAverageSpeed));
         statistics.setTopAircraftTypes(new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getAircraft().getType())).computeTopItems(flights));
         statistics.setTopAirlines(new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getAirline().getCode())).descriptionFunction(this::computeAirlineName).computeTopItems(flights));
-        statistics.setTopAirports(new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode(), flight.getArrivalContact().getAirport().getCode())).descriptionFunction(this::computeAirportName).computeTopItems(flights, 0.5d));
+        statistics.setTopAirports(this.computeTopAirports(flights));
         statistics.setTopRoutes(new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode() + " - " + flight.getArrivalContact().getAirport().getCode())).computeTopItems(flights));
         statistics.setDistributionOfCabinClasses(new StatisticsDistributionComputer<>(CabinClass.class).propertyFunction(FlightBean::getCabinClass).computeDistribution(flights));
         statistics.setDistributionOfSeatTypes(new StatisticsDistributionComputer<>(SeatType.class).propertyFunction(FlightBean::getSeatType).computeDistribution(flights));
@@ -73,6 +74,17 @@ public class StatisticsContributor implements OverviewContributor {
 
         overview.setStatistics(statistics);
 
+    }
+
+    private List<StatisticsTopItem> computeTopAirports(List<FlightBean> flights) {
+        List<StatisticsTopItem> topItems = new StatisticsTopItemsComputer(10).groupingFunction(flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode(), flight.getArrivalContact().getAirport().getCode())).descriptionFunction(this::computeAirportName).factor(0.5d).computeTopItems(flights);
+        topItems.forEach(topItem -> {
+            AirportEntity airportEntity = this.getAirportsRepository().loadAirportByIataCode(topItem.getTitle());
+            if (airportEntity != null) {
+                topItem.addToContext("countryCode", airportEntity.getCountryCode());
+            }
+        });
+        return topItems;
     }
 
     private Integer computeNumberOfFlightsByDistance(List<FlightBean> flights, Number min, Number max) {

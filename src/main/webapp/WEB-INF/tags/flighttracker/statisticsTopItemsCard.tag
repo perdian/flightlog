@@ -4,6 +4,7 @@
 <%@ attribute name="titleKey" type="java.lang.String" required="true" %>
 <%@ attribute name="valueKey" type="java.lang.String" required="true" %>
 <%@ attribute name="items" type="java.util.Collection" required="true" %>
+<%@ attribute name="showFlag" type="java.lang.Boolean" required="false" %>
 
 <h3><fmt:message key="${titleKey}" /></h3>
 <table class="ui striped compact table">
@@ -20,6 +21,9 @@
             <tr>
                 <td class="right aligned"><c:out value="${itemStatus.index + 1}" /></td>
                 <td>
+                    <c:if test="${fn:length(item.context['countryCode']) gt 0}">
+                        <i class="${fn:toLowerCase(item.context['countryCode'])} flag"></i>
+                    </c:if>
                     <c:out value="${item.title}" />
                     <c:if test="${fn:length(item.description) gt 0}">
                         <small><br /><c:out value="${item.description}" /></small>

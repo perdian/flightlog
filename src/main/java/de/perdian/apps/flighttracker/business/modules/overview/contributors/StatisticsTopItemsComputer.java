@@ -20,6 +20,7 @@ class StatisticsTopItemsComputer {
 
     private Function<FlightBean, Collection<String>> groupingFunction = null;
     private Function<String, String> descriptionFunction = null;
+    private double factor = 1d;
     private int maxResults = 0;
 
     StatisticsTopItemsComputer(Integer maxResults) {
@@ -27,10 +28,6 @@ class StatisticsTopItemsComputer {
     }
 
     List<StatisticsTopItem> computeTopItems(List<FlightBean> flights) {
-        return this.computeTopItems(flights, 1d);
-    }
-
-    List<StatisticsTopItem> computeTopItems(List<FlightBean> flights, double factor) {
 
         Comparator<Map.Entry<String, AtomicInteger>> valueComparator = (e1, e2) -> -1 * Integer.compare(e1.getValue().intValue(), e2.getValue().intValue());
         Comparator<Map.Entry<String, AtomicInteger>> keyComparator = (e1, e2) -> e1.getKey().compareTo(e2.getKey());
@@ -50,7 +47,7 @@ class StatisticsTopItemsComputer {
             .map(entry -> {
 
                 int currentValue = entry.getValue().intValue();
-                Double percentageValue = currentValue <= 0 ? null : (100d / flights.size()) * currentValue * factor;
+                Double percentageValue = currentValue <= 0 ? null : (100d / flights.size()) * currentValue * this.getFactor();
 
                 StatisticsTopItem topItem = new StatisticsTopItem();
                 topItem.setTitle(entry.getKey());
@@ -61,6 +58,11 @@ class StatisticsTopItemsComputer {
 
             })
             .collect(Collectors.toList());
+    }
+
+    StatisticsTopItemsComputer factor(Double factor) {
+        this.setFactor(factor == null ? 1d : factor);
+        return this;
     }
 
     StatisticsTopItemsComputer groupingFunction(Function<FlightBean, Collection<String>> function) {
@@ -83,6 +85,13 @@ class StatisticsTopItemsComputer {
     }
     private void setDescriptionFunction(Function<String, String> descriptionFunction) {
         this.descriptionFunction = descriptionFunction;
+    }
+
+    private double getFactor() {
+        return this.factor;
+    }
+    private void setFactor(double factor) {
+        this.factor = factor;
     }
 
     private int getMaxResults() {

@@ -7,6 +7,7 @@ public class Airport implements Serializable {
     static final long serialVersionUID = 1L;
 
     private String code = null;
+    private String countryCode = null;
     private String name = null;
     private Float longitude = null;
     private Float latitude = null;
@@ -17,6 +18,13 @@ public class Airport implements Serializable {
     }
     void setCode(String code) {
         this.code = code;
+    }
+
+    public String getCountryCode() {
+        return this.countryCode;
+    }
+    void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     public String getName() {
