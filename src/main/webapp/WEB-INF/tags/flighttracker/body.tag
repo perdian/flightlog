@@ -64,6 +64,11 @@
 
     </main>
 
+    <div class="ui tiny inverted menu">
+        <div class="active item"><strong><fmt:message key="flightTracker.pageTitle" /></strong></div>
+        <a class="right aligned item" href="https://github.com/perdian/flighttracker" target="_blank">https://github.com/perdian/flighttracker</a>
+    </div>
+
     <script type="text/javascript">
 	    	$('select.dropdown').dropdown();
     </script>
