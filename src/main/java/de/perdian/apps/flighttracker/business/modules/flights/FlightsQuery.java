@@ -28,11 +28,8 @@ public class FlightsQuery implements Serializable {
     private Collection<Long> restrictIdentifiers = null;
     private Collection<String> restrictFlightNumbers = null;
     private Collection<String> restrictDepartureAirportCodes = null;
-    private LocalDate minimumDepartureDateLocal = null;
-    private LocalDate maximumDepartureDateLocal = null;
     private Collection<String> restrictArrivalAirportCodes = null;
-    private LocalDate minimumArrivalDateLocal = null;
-    private LocalDate maximumArrivalDateLocal = null;
+    private Collection<TimePeriod> restrictTimePeriods = null;
     private Collection<UserEntity> restrictUsers = null;
     private Collection<String> restrictAirportCodes = null;
     private Collection<String> restrictAirlineCodes = null;
@@ -46,11 +43,8 @@ public class FlightsQuery implements Serializable {
         toStringBuilder.append("restrictIdentifiers", this.getRestrictIdentifiers());
         toStringBuilder.append("restrictFlightNumbers", this.getRestrictDepartureAirportCodes());
         toStringBuilder.append("restrictDepartureAirportCodes", this.getRestrictDepartureAirportCodes());
-        toStringBuilder.append("minimumDepartureDateLocal", this.getMinimumDepartureDateLocal());
-        toStringBuilder.append("maximumDepartureDateLocal", this.getMaximumDepartureDateLocal());
         toStringBuilder.append("restrictArrivalAirportCodes", this.getRestrictArrivalAirportCodes());
-        toStringBuilder.append("minimumArrivalDateLocal", this.getMinimumArrivalDateLocal());
-        toStringBuilder.append("maximumArrivalDateLocal", this.getMaximumArrivalDateLocal());
+        toStringBuilder.append("restrictTimePeriods", this.getRestrictTimePeriods());
         toStringBuilder.append("restrictUsers", this.getRestrictUsers());
         toStringBuilder.append("restrictAirportCodes", this.getRestrictAirportCodes());
         toStringBuilder.append("restrictAirlineCodes", this.getRestrictAirlineCodes());
@@ -61,23 +55,18 @@ public class FlightsQuery implements Serializable {
 
     Predicate toPredicate(Root<FlightEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicateList = new ArrayList<>();
-        if (this.getMaximumArrivalDateLocal() != null) {
-            predicateList.add(cb.lessThanOrEqualTo(root.get("arrivalDateLocal"), this.getMaximumArrivalDateLocal()));
-        }
-        if (this.getMaximumDepartureDateLocal() != null) {
-            predicateList.add(cb.lessThanOrEqualTo(root.get("departureDateLocal"), this.getMaximumDepartureDateLocal()));
-        }
-        if (this.getMinimumArrivalDateLocal() != null) {
-            predicateList.add(cb.greaterThanOrEqualTo(root.get("arrivalDateLocal"), this.getMinimumArrivalDateLocal()));
-        }
-        if (this.getMinimumDepartureDateLocal() != null) {
-            predicateList.add(cb.greaterThanOrEqualTo(root.get("departureDateLocal"), this.getMinimumDepartureDateLocal()));
-        }
         if (this.getRestrictArrivalAirportCodes() != null && !this.getRestrictArrivalAirportCodes().isEmpty()) {
             predicateList.add(root.get("arrivalAirportCode").in(this.getRestrictArrivalAirportCodes()));
         }
         if (this.getRestrictDepartureAirportCodes() != null && !this.getRestrictDepartureAirportCodes().isEmpty()) {
             predicateList.add(root.get("departureAirportCode").in(this.getRestrictDepartureAirportCodes()));
+        }
+        if (this.getRestrictTimePeriods() != null && !this.getRestrictTimePeriods().isEmpty()) {
+            List<Predicate> timePeriodsPredicateList = new ArrayList<>();
+            for (TimePeriod timePeriod : this.getRestrictTimePeriods()) {
+                timePeriodsPredicateList.add(timePeriod.toPredicate(root, query, cb));
+            }
+            predicateList.add(cb.or(timePeriodsPredicateList.toArray(new Predicate[0])));
         }
         if (this.getRestrictFlightNumbers() != null && !this.getRestrictFlightNumbers().isEmpty()) {
             predicateList.add(root.get("flightNumber").in(this.getRestrictFlightNumbers()));
@@ -106,6 +95,72 @@ public class FlightsQuery implements Serializable {
             predicateList.add(root.get("flightReason").in(this.getRestrictFlightReasons()));
         }
         return cb.and(predicateList.toArray(new Predicate[0]));
+    }
+
+    public static class TimePeriod implements Serializable {
+
+        static final long serialVersionUID = 1L;
+
+        private LocalDate minimumDepartureDateLocal = null;
+        private LocalDate maximumDepartureDateLocal = null;
+        private LocalDate minimumArrivalDateLocal = null;
+        private LocalDate maximumArrivalDateLocal = null;
+
+        @Override
+        public String toString() {
+            ToStringBuilder toStringBuilder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+            toStringBuilder.append("minimumDepartureDateLocal", this.getMinimumDepartureDateLocal());
+            toStringBuilder.append("maximumDepartureDateLocal", this.getMaximumDepartureDateLocal());
+            toStringBuilder.append("minimumArrivalDateLocal", this.getMinimumArrivalDateLocal());
+            toStringBuilder.append("maximumArrivalDateLocal", this.getMaximumArrivalDateLocal());
+            return toStringBuilder.toString();
+        }
+
+        public Predicate toPredicate(Root<FlightEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+            List<Predicate> predicateList = new ArrayList<>();
+            if (this.getMaximumArrivalDateLocal() != null) {
+                predicateList.add(cb.lessThanOrEqualTo(root.get("arrivalDateLocal"), this.getMaximumArrivalDateLocal()));
+            }
+            if (this.getMaximumDepartureDateLocal() != null) {
+                predicateList.add(cb.lessThanOrEqualTo(root.get("departureDateLocal"), this.getMaximumDepartureDateLocal()));
+            }
+            if (this.getMinimumArrivalDateLocal() != null) {
+                predicateList.add(cb.greaterThanOrEqualTo(root.get("arrivalDateLocal"), this.getMinimumArrivalDateLocal()));
+            }
+            if (this.getMinimumDepartureDateLocal() != null) {
+                predicateList.add(cb.greaterThanOrEqualTo(root.get("departureDateLocal"), this.getMinimumDepartureDateLocal()));
+            }
+            return cb.and(predicateList.toArray(new Predicate[0]));
+        }
+
+        public LocalDate getMinimumDepartureDateLocal() {
+            return this.minimumDepartureDateLocal;
+        }
+        public void setMinimumDepartureDateLocal(LocalDate minimumDepartureDateLocal) {
+            this.minimumDepartureDateLocal = minimumDepartureDateLocal;
+        }
+
+        public LocalDate getMaximumDepartureDateLocal() {
+            return this.maximumDepartureDateLocal;
+        }
+        public void setMaximumDepartureDateLocal(LocalDate maximumDepartureDateLocal) {
+            this.maximumDepartureDateLocal = maximumDepartureDateLocal;
+        }
+
+        public LocalDate getMinimumArrivalDateLocal() {
+            return this.minimumArrivalDateLocal;
+        }
+        public void setMinimumArrivalDateLocal(LocalDate minimumArrivalDateLocal) {
+            this.minimumArrivalDateLocal = minimumArrivalDateLocal;
+        }
+
+        public LocalDate getMaximumArrivalDateLocal() {
+            return this.maximumArrivalDateLocal;
+        }
+        public void setMaximumArrivalDateLocal(LocalDate maximumArrivalDateLocal) {
+            this.maximumArrivalDateLocal = maximumArrivalDateLocal;
+        }
+
     }
 
     public Integer getPage() {
@@ -143,20 +198,6 @@ public class FlightsQuery implements Serializable {
         this.restrictDepartureAirportCodes = restrictDepartureAirportCodes;
     }
 
-    public LocalDate getMinimumDepartureDateLocal() {
-        return this.minimumDepartureDateLocal;
-    }
-    public void setMinimumDepartureDateLocal(LocalDate minimumDepartureDateLocal) {
-        this.minimumDepartureDateLocal = minimumDepartureDateLocal;
-    }
-
-    public LocalDate getMaximumDepartureDateLocal() {
-        return this.maximumDepartureDateLocal;
-    }
-    public void setMaximumDepartureDateLocal(LocalDate maximumDepartureDateLocal) {
-        this.maximumDepartureDateLocal = maximumDepartureDateLocal;
-    }
-
     public Collection<String> getRestrictArrivalAirportCodes() {
         return this.restrictArrivalAirportCodes;
     }
@@ -164,18 +205,11 @@ public class FlightsQuery implements Serializable {
         this.restrictArrivalAirportCodes = restrictArrivalAirportCodes;
     }
 
-    public LocalDate getMinimumArrivalDateLocal() {
-        return this.minimumArrivalDateLocal;
+    public Collection<TimePeriod> getRestrictTimePeriods() {
+        return this.restrictTimePeriods;
     }
-    public void setMinimumArrivalDateLocal(LocalDate minimumArrivalDateLocal) {
-        this.minimumArrivalDateLocal = minimumArrivalDateLocal;
-    }
-
-    public LocalDate getMaximumArrivalDateLocal() {
-        return this.maximumArrivalDateLocal;
-    }
-    public void setMaximumArrivalDateLocal(LocalDate maximumArrivalDateLocal) {
-        this.maximumArrivalDateLocal = maximumArrivalDateLocal;
+    public void setRestrictTimePeriods(Collection<TimePeriod> restrictTimePeriods) {
+        this.restrictTimePeriods = restrictTimePeriods;
     }
 
     public Collection<UserEntity> getRestrictUsers() {

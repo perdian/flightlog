@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ft" tagdir="/WEB-INF/tags/flighttracker" %>
 
 <div id="map" class="map" tabindex="0"></div>
 <script type="text/javascript">
@@ -21,13 +22,16 @@
 
 	var dataUrl = "<c:url value='/map/data' />";
 	$.ajax({
-	    url: dataUrl,
+        type: "POST",
+        traditional: true,
+        url: dataUrl,
 	    data: {
-	        year: "<c:out value="${overviewQuery.year}" />",
-	        airlineCode: "<c:out value="${overviewQuery.airlineCode}" />",
-	        airportCode: "<c:out value="${overviewQuery.airportCode}" />",
-	        cabinClass: "<c:out value="${overviewQuery.cabinClass}" />",
-	        flightReason: "<c:out value="${overviewQuery.flightReason}" />"
+	        year: <ft:jsonArray value="${overviewQuery.year}" />,
+	        airlineCode: <ft:jsonArray value="${overviewQuery.airlineCode}" />,
+            airportCode: <ft:jsonArray value="${overviewQuery.airportCode}" />,
+            cabinClass: <ft:jsonArray value="${overviewQuery.cabinClass}" />,
+            flightReason: <ft:jsonArray value="${overviewQuery.flightReason}" />,
+	        "${_csrf.parameterName}": "${_csrf.token}"
 	    },
 	    success: function(result) {
 

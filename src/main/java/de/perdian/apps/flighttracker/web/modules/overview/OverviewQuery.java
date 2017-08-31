@@ -1,70 +1,69 @@
 package de.perdian.apps.flighttracker.web.modules.overview;
 
 import java.io.Serializable;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.List;
 
 public class OverviewQuery implements Serializable {
 
     static final long serialVersionUID = 1L;
 
-    private Integer year = null;
-    private String airlineCode = null;
-    private String airportCode = null;
-    private String aircraftType = null;
-    private String cabinClass = null;
-    private String flightReason = null;
+    private List<String> year = null;
+    private List<String> airlineCode = null;
+    private List<String> airportCode = null;
+    private List<String> aircraftType = null;
+    private List<String> cabinClass = null;
+    private List<String> flightReason = null;
 
     public boolean isFilterActive() {
         boolean filterActive = false;
-        filterActive |= this.getYear() != null && !Integer.valueOf(0).equals(this.getYear());
-        filterActive |= !StringUtils.isEmpty(this.getAirlineCode()) && !".".equalsIgnoreCase(this.getAirlineCode());
-        filterActive |= !StringUtils.isEmpty(this.getAirportCode()) && !".".equalsIgnoreCase(this.getAirportCode());
-        filterActive |= !StringUtils.isEmpty(this.getAircraftType()) && !".".equalsIgnoreCase(this.getAircraftType());
-        filterActive |= !StringUtils.isEmpty(this.getCabinClass()) && !".".equalsIgnoreCase(this.getCabinClass());
-        filterActive |= !StringUtils.isEmpty(this.getFlightReason()) && !".".equalsIgnoreCase(this.getFlightReason());
+        filterActive |= this.getYear() != null && !this.getYear().isEmpty();
+        filterActive |= this.getAirlineCode() != null && !this.getAirlineCode().isEmpty();
+        filterActive |= this.getAirportCode() != null && !this.getAirportCode().isEmpty();
+        filterActive |= this.getAircraftType() != null && !this.getAircraftType().isEmpty();
+        filterActive |= this.getCabinClass() != null && !this.getCabinClass().isEmpty();
+        filterActive |= this.getFlightReason() != null && !this.getFlightReason().isEmpty();
         return filterActive;
     }
 
-    public Integer getYear() {
+    public List<String> getYear() {
         return this.year;
     }
-    public void setYear(Integer year) {
-        this.year = Integer.valueOf(0).equals(year) ? null : year;
+    public void setYear(List<String> year) {
+        this.year = year;
     }
 
-    public String getAirlineCode() {
+    public List<String> getAirlineCode() {
         return this.airlineCode;
     }
-    public void setAirlineCode(String airlineCode) {
+    public void setAirlineCode(List<String> airlineCode) {
         this.airlineCode = airlineCode;
     }
 
-    public String getAirportCode() {
+    public List<String> getAirportCode() {
         return this.airportCode;
     }
-    public void setAirportCode(String airportCode) {
+    public void setAirportCode(List<String> airportCode) {
         this.airportCode = airportCode;
     }
 
-    public String getAircraftType() {
+    public List<String> getAircraftType() {
         return this.aircraftType;
     }
-    public void setAircraftType(String aircraftType) {
+    public void setAircraftType(List<String> aircraftType) {
         this.aircraftType = aircraftType;
     }
 
-    public String getCabinClass() {
+    public List<String> getCabinClass() {
         return this.cabinClass;
     }
-    public void setCabinClass(String cabinClass) {
+    public void setCabinClass(List<String> cabinClass) {
         this.cabinClass = cabinClass;
     }
 
-    public String getFlightReason() {
+    public List<String> getFlightReason() {
         return this.flightReason;
     }
-    public void setFlightReason(String flightReason) {
+    public void setFlightReason(List<String> flightReason) {
         this.flightReason = flightReason;
     }
 

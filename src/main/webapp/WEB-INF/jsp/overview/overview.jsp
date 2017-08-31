@@ -152,15 +152,15 @@
                     <h3><fmt:message key="filterFlights" /></h3>
                     <div class="field">
                         <label><fmt:message key="year" /></label>
-                        <spring:select path="year" cssClass="ui dropdown">
-                            <option value="0"><fmt:message key="allYears" /></option>
+                        <spring:select path="year" cssClass="ui dropdown" multiple="multiple">
+                            <option value=""><fmt:message key="allYears" /></option>
                             <spring:options items="${overviewQueryHelper.availableYears}" />
                         </spring:select>
                     </div>
                     <div class="field">
                         <label><fmt:message key="airline" /></label>
-                        <spring:select path="airlineCode" cssClass="ui dropdown">
-                            <option value="."><fmt:message key="allAirlines" /></option>
+                        <spring:select path="airlineCode" cssClass="ui dropdown" multiple="multiple">
+                            <option value=""><fmt:message key="allAirlines" /></option>
                             <c:forEach items="${overviewQueryHelper.availableAirlines}" var="airline">
                                 <spring:option value="${airline.value}"><c:out value="${airline.title}" /></spring:option>
                             </c:forEach>
@@ -168,8 +168,8 @@
                     </div>
                     <div class="field">
                         <label><fmt:message key="airport" /></label>
-                        <spring:select path="airportCode" cssClass="ui dropdown">
-                            <option value="."><fmt:message key="allAirports" /></option>
+                        <spring:select path="airportCode" cssClass="ui dropdown" multiple="multiple">
+                            <option value=""><fmt:message key="allAirports" /></option>
                             <c:forEach items="${overviewQueryHelper.availableAirports}" var="airport">
                                 <spring:option value="${airport.value}"><c:out value="${airport.title}" /></spring:option>
                             </c:forEach>
@@ -177,8 +177,8 @@
                     </div>
                     <div class="field">
                         <label><fmt:message key="cabinClass" /></label>
-                        <spring:select path="cabinClass" cssClass="ui dropdown">
-                            <option value="."><fmt:message key="allCabinClasses" /></option>
+                        <spring:select path="cabinClass" cssClass="ui dropdown" multiple="multiple">
+                            <option value=""><fmt:message key="allCabinClasses" /></option>
                             <c:forEach items="${overviewQueryHelper.availableCabinClasses}" var="cabinClass">
                                 <spring:option value="${cabinClass.name()}"><fmt:message key="cabinClass.${cabinClass.name()}" /></spring:option>
                             </c:forEach>
@@ -186,8 +186,8 @@
                     </div>
                     <div class="field">
                         <label><fmt:message key="flightReason" /></label>
-                        <spring:select path="flightReason" cssClass="ui dropdown">
-                            <option value="."><fmt:message key="allFlightReasons" /></option>
+                        <spring:select path="flightReason" cssClass="ui dropdown" multiple="multiple">
+                            <option value=""><fmt:message key="allFlightReasons" /></option>
                             <c:forEach items="${overviewQueryHelper.availableFlightReasons}" var="flightReason">
                                 <spring:option value="${flightReason.name()}"><fmt:message key="flightReason.${flightReason.name()}" /></spring:option>
                             </c:forEach>
