@@ -52,7 +52,7 @@ public class OverviewQueryHelperFactory {
             .map(FlightBean::getAircraft)
             .filter(Objects::nonNull)
             .filter(aircraft -> !StringUtils.isEmpty(aircraft.getType()))
-            .map(aircraft -> new OverviewQueryHelperItem(aircraft.getName(), aircraft.getName()))
+            .map(aircraft -> new OverviewQueryHelperItem(aircraft.getType(), aircraft.getType()))
             .distinct()
             .sorted()
             .collect(Collectors.toList());

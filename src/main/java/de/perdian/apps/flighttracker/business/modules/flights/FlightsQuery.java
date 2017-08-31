@@ -85,6 +85,9 @@ public class FlightsQuery implements Serializable {
         if (this.getRestrictAirlineCodes() != null && !this.getRestrictAirlineCodes().isEmpty()) {
             predicateList.add(root.get("airlineCode").in(this.getRestrictAirlineCodes()));
         }
+        if (this.getRestrictAircraftTypes() != null && !this.getRestrictAircraftTypes().isEmpty()) {
+            predicateList.add(root.get("aircraftType").in(this.getRestrictAircraftTypes()));
+        }
         if (this.getRestrictAirportCodes() != null && !this.getRestrictAirportCodes().isEmpty()) {
             predicateList.add(cb.or(root.get("departureAirportCode").in(this.getRestrictAirportCodes()), root.get("arrivalAirportCode").in(this.getRestrictAirportCodes())));
         }

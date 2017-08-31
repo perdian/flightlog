@@ -29,6 +29,7 @@
 	        year: <ft:jsonArray value="${overviewQuery.year}" />,
 	        airlineCode: <ft:jsonArray value="${overviewQuery.airlineCode}" />,
             airportCode: <ft:jsonArray value="${overviewQuery.airportCode}" />,
+            aircraftType: <ft:jsonArray value="${overviewQuery.aircraftType}" />,
             cabinClass: <ft:jsonArray value="${overviewQuery.cabinClass}" />,
             flightReason: <ft:jsonArray value="${overviewQuery.flightReason}" />,
 	        "${_csrf.parameterName}": "${_csrf.token}"

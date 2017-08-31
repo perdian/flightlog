@@ -176,6 +176,15 @@
                         </spring:select>
                     </div>
                     <div class="field">
+                        <label><fmt:message key="aircraftType" /></label>
+                        <spring:select path="aircraftType" cssClass="ui dropdown" multiple="multiple">
+                            <option value=""><fmt:message key="allAircraftTypes" /></option>
+                            <c:forEach items="${overviewQueryHelper.availableAircraftTypes}" var="aircraftType">
+                                <spring:option value="${aircraftType.value}"><c:out value="${aircraftType.title}" /></spring:option>
+                            </c:forEach>
+                        </spring:select>
+                    </div>
+                    <div class="field">
                         <label><fmt:message key="cabinClass" /></label>
                         <spring:select path="cabinClass" cssClass="ui dropdown" multiple="multiple">
                             <option value=""><fmt:message key="allCabinClasses" /></option>
