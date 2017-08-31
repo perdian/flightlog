@@ -10,7 +10,7 @@
 <%@ attribute name="placeholder" type="java.lang.String" required="false" %>
 
 <ft:field cssClass="${cssClass}" bean="${bean}" path="${path}" labelKey="${labelKey}">
-    <spring:select path="${path}">
+    <spring:select path="${path}" cssClass="ui compact dropdown">
         <jsp:doBody />
     </spring:select>
 </ft:field>

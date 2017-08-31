@@ -201,7 +201,7 @@
             <option ${flightEditor.seatType eq seatTypeValue ? 'selected=\"selected\"' : ''} value="${seatTypeValue}"><fmt:message key="seatType.${seatTypeValue}" /></option>
         </c:forEach>
     </ft:select>
-    <ft:select cssClass="two wide field" bean="flightEditor" path="cabinClass" labelKey="cabinClass">
+    <ft:select cssClass="three wide field" bean="flightEditor" path="cabinClass" labelKey="cabinClass">
         <option></option>
         <c:forEach items="${flightEditorHelper.cabinClassValues}" var="cabinClassValue">
             <option ${flightEditor.cabinClass eq cabinClassValue ? 'selected=\"selected\"' : ''} value="${cabinClassValue}"><fmt:message key="cabinClass.${cabinClassValue}" /></option>
@@ -213,5 +213,5 @@
             <option ${flightEditor.flightReason eq flightReasonValue ? 'selected=\"selected\"' : ''} value="${flightReasonValue}"><fmt:message key="flightReason.${flightReasonValue}" /></option>
         </c:forEach>
     </ft:select>
-    <ft:inputfield cssClass="eight wide field" bean="flightEditor" path="comment" labelKey="comment" />
+    <ft:inputfield cssClass="seven wide field" bean="flightEditor" path="comment" labelKey="comment" />
 </div>
