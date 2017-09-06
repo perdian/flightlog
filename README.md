@@ -15,7 +15,7 @@ The flighttracker is bundled either as a simple Java web application (a WAR arch
 
 First clone the repository and switch to the created directory:
 
-    $ git clone https://github.com/perdian/flighttracker.git
+    $ git clone <https://github.com/perdian/flighttracker.git>
     $ cd flighttracker
 
 ## WAR
@@ -30,7 +30,7 @@ Then copy the WAR file to wherever your servlet container is located:
 
 That's it! Start your servlet container and the flighttracker should be up and running.
 
-    http://localhost:8080/flighttracker/
+    <http://localhost:8080/flighttracker/>
 
 ## Spring Boot
 
@@ -41,13 +41,13 @@ You can also launch the application directly from within the WAR file as Spring 
 
 When running this directly the embedded Tomcat will provide the application directly from the root:
 
-    http://localhost:8080/
+    <http://localhost:8080/>
 
 # Database configuration
 
 By default flighttracker uses a hardcoded H2 embedded database which stores its files in the `~/Development/databases/` folder on the machine on which the web application is running.
 
-If you want to change this to the database of your choice you have to provide a separate Spring Boot configuration file using one of the methods document in the Spring Boot documentation: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html.
+If you want to change this to the database of your choice you have to provide a separate Spring Boot configuration file using one of the methods document in the Spring Boot documentation: <https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html>.
 
 For example if you would like to define a MySQL database running on the local machine when executing the flighttracker application directly as Spring Boot application the command line should be changed to:
 
@@ -90,7 +90,7 @@ Now the application will authenticate using the entries in the internal database
 
 For each login the application will look for an entry within the `user` table that has `internaldatabase` as value of the `authentication_source`, a `username` column value equal to the value entered in the login form and a `password` column value equal to the SHA-256 hash (hex encoded) of the password entered in the login form.
 
-## LDAP
+# LDAP
 
 Using a LDAP backend requires some additional options to be set as configuration parameters:
 
@@ -121,14 +121,14 @@ This application would not be possible without the great work of other open sour
 
 A big thank you therefore goes to:
 
-* Openflights.org for its collection of airport and airline data as well as inspiration of how to display the flights on the map (https://openflights.org/data.html).
-* Openlayers for the ground work in providing the world map (https://openlayers.org/).
-* arc.js for handling the pain of computing a great circle between two airports (https://github.com/springmeyer/arc.js/).
-* Semantic UI for its beautiful frontend components (https://semantic-ui.com/).
-* JQuery for the ultimate DOM manipulation tool (https://jquery.com/).
-* Spring Boot for the heavy lifting in the backend (https://projects.spring.io/spring-boot/).
-* Hibernate for the best SQL abstraction layer (http://hibernate.org/).
+* Openflights.org for its collection of airport and airline data as well as inspiration of how to display the flights on the map (<https://openflights.org/data.html>).
+* Openlayers for the ground work in providing the world map (<https://openlayers.org/>).
+* arc.js for handling the pain of computing a great circle between two airports (<https://github.com/springmeyer/arc.js/>).
+* Semantic UI for its beautiful frontend components (<https://semantic-ui.com/>).
+* JQuery for the ultimate DOM manipulation tool (<https://jquery.com/>).
+* Spring Boot for the heavy lifting in the backend (<https://projects.spring.io/spring-boot/>).
+* Hibernate for the best SQL abstraction layer (<http://hibernate.org/>).
 
 # License
 
-The flighttracker is licensed under the Apache Licence 2.0 (http://www.apache.org/licenses/).
+The flighttracker is licensed under the Apache Licence 2.0 (<http://www.apache.org/licenses/>).

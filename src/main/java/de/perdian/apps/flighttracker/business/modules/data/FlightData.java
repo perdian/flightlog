@@ -1,0 +1,84 @@
+package de.perdian.apps.flighttracker.business.modules.data;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class FlightData implements Serializable {
+
+    static final long serialVersionUID = 1L;
+
+    private String departureAirportCode = null;
+    private LocalDate departureDateLocal = null;
+    private LocalTime departureTimeLocal = null;
+    private String arrivalAirportCode = null;
+    private LocalDate arrivalDateLocal = null;
+    private LocalTime arrivalTimeLocal = null;
+    private String aircraftType = null;
+    private String aircraftName = null;
+    private String aircraftRegistration = null;
+
+    public String getDepartureAirportCode() {
+        return this.departureAirportCode;
+    }
+    public void setDepartureAirportCode(String departureAirportCode) {
+        this.departureAirportCode = departureAirportCode;
+    }
+    public LocalDate getDepartureDateLocal() {
+        return this.departureDateLocal;
+    }
+
+    public void setDepartureDateLocal(LocalDate departureDateLocal) {
+        this.departureDateLocal = departureDateLocal;
+    }
+
+    public LocalTime getDepartureTimeLocal() {
+        return this.departureTimeLocal;
+    }
+    public void setDepartureTimeLocal(LocalTime departureTimeLocal) {
+        this.departureTimeLocal = departureTimeLocal;
+    }
+
+    public String getArrivalAirportCode() {
+        return this.arrivalAirportCode;
+    }
+    public void setArrivalAirportCode(String arrivalAirportCode) {
+        this.arrivalAirportCode = arrivalAirportCode;
+    }
+
+    public LocalDate getArrivalDateLocal() {
+        return this.arrivalDateLocal;
+    }
+    public void setArrivalDateLocal(LocalDate arrivalDateLocal) {
+        this.arrivalDateLocal = arrivalDateLocal;
+    }
+
+    public LocalTime getArrivalTimeLocal() {
+        return this.arrivalTimeLocal;
+    }
+    public void setArrivalTimeLocal(LocalTime arrivalTimeLocal) {
+        this.arrivalTimeLocal = arrivalTimeLocal;
+    }
+
+    public String getAircraftType() {
+        return this.aircraftType;
+    }
+    public void setAircraftType(String aircraftType) {
+        this.aircraftType = aircraftType;
+    }
+
+    public String getAircraftName() {
+        return this.aircraftName;
+    }
+    public void setAircraftName(String aircraftName) {
+        this.aircraftName = aircraftName;
+    }
+
+    public String getAircraftRegistration() {
+        return this.aircraftRegistration;
+    }
+    public void setAircraftRegistration(String aircraftRegistration) {
+        this.aircraftRegistration = aircraftRegistration;
+    }
+
+}
