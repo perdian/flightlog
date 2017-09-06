@@ -93,23 +93,42 @@
                         <label><fmt:message key="departureDate" /></label>
                         <input name="wizDepartureDateLocal" placeholder="yyyy-MM-dd" />
                     </div>
-                    <div class="three wide field">
+                    <div class="two wide field">
                         <label><fmt:message key="departureTime" /></label>
                         <input name="wizDepartureTimeLocal" placeholder="HH:mm" />
                     </div>
-                    <div class="three wide field">
-                        <label><fmt:message key="departureAirportCode" /></label>
-                        <input name="wizDepartureAirportCode" />
-                    </div>
-                    <div class="three wide field">
-                        <label><fmt:message key="arrivalAirportCode" /></label>
-                        <input name="wizArrivalAirportCode" />
+                    <div class="two wide field">
+                        <label><fmt:message key="arrivalTime" /></label>
+                        <input name="wizArrivalTimeLocal" placeholder="HH:mm" />
                     </div>
                     <div class="two wide field">
-                        <label><fmt:message key="airlineCode" /></label>
-                        <input name="wizAirlineCode" />
+                        <label><fmt:message key="depAirport" /></label>
+                        <input name="wizDepartureAirportCode" id="wizDepartureAirportCode" />
+                        <script type="text/javascript">
+                            $("#wizDepartureAirportCode").change(function() {
+                                $(this).val($(this).val().trim().toUpperCase());
+                            });
+                        </script>
                     </div>
                     <div class="two wide field">
+                        <label><fmt:message key="arrAirport" /></label>
+                        <input name="wizArrivalAirportCode" id="wizArrivalAirportCode" />
+                        <script type="text/javascript">
+                            $("#wizArrivalAirportCode").change(function() {
+                                $(this).val($(this).val().trim().toUpperCase());
+                            });
+                        </script>
+                    </div>
+                    <div class="two wide field">
+                        <label><fmt:message key="airline" /></label>
+                        <input name="wizAirlineCode" id="wizAirlineCode" />
+                        <script type="text/javascript">
+                            $("#wizAirlineCode").change(function() {
+                                $(this).val($(this).val().trim().toUpperCase());
+                            });
+                        </script>
+                    </div>
+                    <div class="three wide field">
                         <label><fmt:message key="flightNumber" /></label>
                         <input name="wizFlightNumber" />
                     </div>

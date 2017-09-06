@@ -8,9 +8,10 @@ public class FlightsWizardData implements Serializable {
 
     private String wizDepartureDateLocal = null;
     private String wizDepartureTimeLocal = null;
+    private String wizDepartureAirportCode = null;
     private String wizAirlineCode = null;
     private String wizFlightNumber = null;
-    private String wizDepartureAirportCode = null;
+    private String wizArrivalTimeLocal = null;
     private String wizArrivalAirportCode = null;
 
     public String getWizDepartureDateLocal() {
@@ -27,6 +28,13 @@ public class FlightsWizardData implements Serializable {
         this.wizDepartureTimeLocal = wizDepartureTimeLocal;
     }
 
+    public String getWizDepartureAirportCode() {
+        return this.wizDepartureAirportCode;
+    }
+    public void setWizDepartureAirportCode(String wizDepartureAirportCode) {
+        this.wizDepartureAirportCode = wizDepartureAirportCode;
+    }
+
     public String getWizAirlineCode() {
         return this.wizAirlineCode;
     }
@@ -41,11 +49,11 @@ public class FlightsWizardData implements Serializable {
         this.wizFlightNumber = wizFlightNumber;
     }
 
-    public String getWizDepartureAirportCode() {
-        return this.wizDepartureAirportCode;
+    public String getWizArrivalTimeLocal() {
+        return this.wizArrivalTimeLocal;
     }
-    public void setWizDepartureAirportCode(String wizDepartureAirportCode) {
-        this.wizDepartureAirportCode = wizDepartureAirportCode;
+    public void setWizArrivalTimeLocal(String wizArrivalTimeLocal) {
+        this.wizArrivalTimeLocal = wizArrivalTimeLocal;
     }
 
     public String getWizArrivalAirportCode() {
