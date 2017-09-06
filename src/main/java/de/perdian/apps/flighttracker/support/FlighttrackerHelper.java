@@ -92,7 +92,7 @@ public class FlighttrackerHelper {
     }
 
     public static String formatDate(TemporalAccessor date) {
-        return DATE_FORMATTER.format(date);
+        return date == null ? null : DATE_FORMATTER.format(date);
     }
 
     public static LocalTime parseLocalTime(String timeValue) {
@@ -100,7 +100,7 @@ public class FlighttrackerHelper {
     }
 
     public static String formatTime(TemporalAccessor time) {
-        return TIME_FORMATTER.format(time);
+        return time == null ? null : TIME_FORMATTER.format(time);
     }
 
     public static <E extends Enum<E>> E parseEnum(Class<E> enumClass, String value) {
