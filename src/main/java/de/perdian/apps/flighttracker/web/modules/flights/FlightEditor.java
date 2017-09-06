@@ -143,7 +143,7 @@ public class FlightEditor implements Serializable {
     public String getDepartureAirportName() {
         return this.departureAirportName;
     }
-    private void setDepartureAirportName(String departureAirportName) {
+    void setDepartureAirportName(String departureAirportName) {
         this.departureAirportName = departureAirportName;
     }
 
@@ -182,7 +182,7 @@ public class FlightEditor implements Serializable {
     public String getArrivalAirportName() {
         return this.arrivalAirportName;
     }
-    private void setArrivalAirportName(String arrivalAirportName) {
+    void setArrivalAirportName(String arrivalAirportName) {
         this.arrivalAirportName = arrivalAirportName;
     }
 

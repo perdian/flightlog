@@ -11,6 +11,7 @@
         <a class="item" href="${contextPath}"><fmt:message key="overview" /></a>
         <a class="item" href="${contextPath}flights/list"><fmt:message key="listFlights" /></a>
         <a class="item" href="${contextPath}flights/add"><fmt:message key="addFlight" /></a>
+        <a class="item" href="${contextPath}" onclick="JavaScript:$('#add-flight-wizard').modal('show');return false;"><fmt:message key="wizard" /></a>
 
         <div class="ui simple dropdown item">
             <fmt:message key="tools" /><c:out value=" " /><i class="dropdown icon"></i><c:out value=" " />
@@ -72,5 +73,62 @@
     <script type="text/javascript">
 	    	$('select.dropdown').dropdown();
     </script>
+
+    <form id="add-flight-wizard" class="ui tiny modal" method="post" action="${contextPath}flights/add/wizard">
+        <i class="close icon"></i>
+
+        <div class="ui icon header">
+            <i class="wizard icon"></i>
+            <fmt:message key="addFlightWizard" />
+        </div>
+
+        <div class="content">
+            <div class="description">
+                <p><fmt:message key="addFlightWizard.description" /></p>
+            </div>
+            <div class="ui divider"></div>
+            <div class="ui form">
+                <div class="fields">
+                    <div class="three wide field">
+                        <label><fmt:message key="departureDate" /></label>
+                        <input name="wizDepartureDateLocal" placeholder="yyyy-MM-dd" />
+                    </div>
+                    <div class="three wide field">
+                        <label><fmt:message key="departureTime" /></label>
+                        <input name="wizDepartureTimeLocal" placeholder="HH:mm" />
+                    </div>
+                    <div class="three wide field">
+                        <label><fmt:message key="departureAirportCode" /></label>
+                        <input name="wizDepartureAirportCode" />
+                    </div>
+                    <div class="three wide field">
+                        <label><fmt:message key="arrivalAirportCode" /></label>
+                        <input name="wizArrivalAirportCode" />
+                    </div>
+                    <div class="two wide field">
+                        <label><fmt:message key="airlineCode" /></label>
+                        <input name="wizAirlineCode" />
+                    </div>
+                    <div class="two wide field">
+                        <label><fmt:message key="flightNumber" /></label>
+                        <input name="wizFlightNumber" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui black deny icon button">
+                <i class="x icon"></i>
+                <fmt:message key="cancel" />
+            </div>
+            <button type="submit" class="ui positive icon button">
+                <i class="wizard icon"></i>
+                <fmt:message key="proceed" />
+            </button>
+        </div>
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+    </form>
 
 </body>

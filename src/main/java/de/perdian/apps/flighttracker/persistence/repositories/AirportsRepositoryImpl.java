@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +105,7 @@ class AirportsRepositoryImpl implements AirportsRepository {
 
     @Override
     public AirportEntity loadAirportByIataCode(String iataAirportCode) {
-        return this.getAirportBeansByIataCode().get(iataAirportCode);
+        return StringUtils.isEmpty(iataAirportCode) ? null : this.getAirportBeansByIataCode().get(iataAirportCode);
     }
 
     ResourceLoader getResourceLoader() {

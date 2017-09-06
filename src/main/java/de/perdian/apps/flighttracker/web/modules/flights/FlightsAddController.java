@@ -24,6 +24,7 @@ public class FlightsAddController {
 
     private MessageSource messageSource = null;
     private FlightsUpdateService flightsUpdateService = null;
+    private FlightsWizardService flightsWizardService = null;
 
     @ModelAttribute
     public FlightEditor flightEditor() {
@@ -33,6 +34,12 @@ public class FlightsAddController {
     @RequestMapping(value = "/flights/add", method = RequestMethod.GET)
     public String doAddGet() {
         return "/flights/add";
+    }
+
+    @RequestMapping(value = "/flights/add/wizard", method = RequestMethod.POST)
+    public String doAddGetWizard(@ModelAttribute("flightEditor") FlightEditor flightEditor, FlightsWizardData wizardData) {
+        this.getFlightsWizardService().enhanceFlightEditor(flightEditor, wizardData);
+        return this.doAddGet();
     }
 
     @RequestMapping(value = "/flights/add", method = RequestMethod.POST)
@@ -66,6 +73,14 @@ public class FlightsAddController {
     @Autowired
     void setFlightsUpdateService(FlightsUpdateService flightsUpdateService) {
         this.flightsUpdateService = flightsUpdateService;
+    }
+
+    FlightsWizardService getFlightsWizardService() {
+        return this.flightsWizardService;
+    }
+    @Autowired
+    void setFlightsWizardService(FlightsWizardService flightsWizardService) {
+        this.flightsWizardService = flightsWizardService;
     }
 
 }
