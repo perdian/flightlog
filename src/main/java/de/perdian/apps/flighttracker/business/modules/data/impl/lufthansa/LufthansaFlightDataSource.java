@@ -54,6 +54,7 @@ public class LufthansaFlightDataSource implements FlightDataSource {
                     FlightData responseFlightData = new FlightData();
                     responseFlightData.setArrivalAirportCode(todaysFlightData.getArrivalAirportCode());
                     responseFlightData.setDepartureAirportCode(todaysFlightData.getDepartureAirportCode());
+                    responseFlightData.setAircraftType(todaysFlightData.getAircraftType());
                     return responseFlightData;
                 }
             }
@@ -89,6 +90,11 @@ public class LufthansaFlightDataSource implements FlightDataSource {
                             JsonNode arrivalNode = flightNode.get("Arrival");
                             LocalDateTime arrivalTime = this.extractDateTime(arrivalNode, "ActualTimeLocal", "ScheduledTimeLocal");
 
+                            JsonNode equipmentNode = flightNode.get("Equipment");
+                            JsonNode aircraftCodeNode = equipmentNode == null ? null : equipmentNode.get("AircraftCode");
+                            String aircraftCode = aircraftCodeNode == null ? null : aircraftCodeNode.asText();
+                            String aircraftType = this.extractAircraftType(aircraftCode, httpClient, accessToken);
+
                             FlightData flightData = new FlightData();
                             flightData.setDepartureAirportCode(departureNode.get("AirportCode").asText());
                             flightData.setDepartureDateLocal(departureTime == null ? null : departureTime.toLocalDate());
@@ -96,16 +102,17 @@ public class LufthansaFlightDataSource implements FlightDataSource {
                             flightData.setArrivalAirportCode(arrivalNode.get("AirportCode").asText());
                             flightData.setArrivalDateLocal(arrivalTime == null ? null : arrivalTime.toLocalDate());
                             flightData.setArrivalTimeLocal(arrivalTime == null ? null : arrivalTime.toLocalTime());
+                            flightData.setAircraftType(aircraftType);
                             return flightData;
 
                         }
                     } else {
-                        log.debug("Invalid response returned from Lufthansa for flight status for flight '{}{}': {}", airlineCode, flightNumber, httpResponse.getStatusLine());
+                        log.debug("Invalid response returned from Lufthansa for flight status for flight '{}{}' on {}: {}", airlineCode, flightNumber, departureDate, httpResponse.getStatusLine());
                     }
                 }
 
             } catch (Exception e) {
-                log.debug("Cannot fetch flight information from Lufthansa for flight {}{}", airlineCode, flightNumber, e);
+                log.debug("Cannot fetch flight information from Lufthansa for flight '{}{}' on {}", airlineCode, flightNumber, departureDate, e);
             }
         }
         return null;
@@ -123,6 +130,29 @@ public class LufthansaFlightDataSource implements FlightDataSource {
                 } catch (Exception e) {
                     log.trace("Invalid date time value: " + dateTimeValue, e);
                 }
+            }
+        }
+        return null;
+    }
+
+    private String extractAircraftType(String aircraftCode, CloseableHttpClient httpClient, LufthansaAccessToken accessToken2) {
+        if (!StringUtils.isEmpty(aircraftCode)) {
+            String httpGetUrl = "https://api.lufthansa.com/v1/references/aircraft/" + aircraftCode;
+            HttpGet httpGet = new HttpGet(httpGetUrl.toString());
+            httpGet.setHeader("Authorization", "Bearer " + this.accessToken.getValue());
+            try (CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
+                if (httpResponse.getStatusLine().getStatusCode() == 200) {
+
+                    // {"AircraftResource":{"AircraftSummaries":{"AircraftSummary":{"AircraftCode":"74H","Names":{"Name":{"@LanguageCode":"EN","$":"Boeing 747-8i"}},"AirlineEquipCode":"747-8i","MediaLinks":{"MediaLink":{"@LanguageCode":"EN","$":"291853146"}},"Comments":{"Comment":[{"@LanguageCode":"EN","$":"New First & Business Class"},{"@LanguageCode":"DE","$":"Neue First & Business Class"}]},"OnBoardEquipment":{"InflightEntertainment":true,"Compartment":[{"ClassCode":"F","ClassDesc":"FirstClass","FlyNet":true,"SeatPower":true,"Usb":true,"LiveTv":true},{"ClassCode":"C","ClassDesc":"BusinessClass","FlyNet":true,"SeatPower":true,"Usb":true,"LiveTv":true},{"ClassCode":"E","ClassDesc":"PremiumEconomy","FlyNet":true,"SeatPower":true,"Usb":true,"LiveTv":true},{"ClassCode":"Y","ClassDesc":"Economy","FlyNet":true,"SeatPower":true,"Usb":true,"LiveTv":true}]}}},"Meta":{"@Version":"1.0.0","Link":[{"@Href":"https://api.lufthansa.com/v1/references/aircraft/74H","@Rel":"self"},{"@Href":"http://www.lufthansa.com/mediapool/pdf/46/media_291853146.pdf","@Rel":"alternate"}]}}}
+
+                    JsonNode responseNode = this.getObjectMapper().readTree(httpResponse.getEntity().getContent());
+                    return responseNode.get("AircraftResource").get("AircraftSummaries").get("AircraftSummary").get("Names").get("Name").get("$").asText();
+
+                } else {
+                    log.debug("Invalid response returned from Lufthansa for aircraft code '{}': {}", aircraftCode, httpResponse.getStatusLine());
+                }
+            } catch (Exception e) {
+                log.debug("Cannot fetch aircraft information from Lufthansa for aircraft code '{}'", aircraftCode, e);
             }
         }
         return null;
