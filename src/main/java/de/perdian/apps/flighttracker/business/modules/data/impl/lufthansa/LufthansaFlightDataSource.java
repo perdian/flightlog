@@ -52,8 +52,8 @@ public class LufthansaFlightDataSource implements FlightDataSource {
                 FlightData todaysFlightData = this.lookupFlightDataFromLufthansa(airlineCode, flightNumber, LocalDate.now(this.getClock()));
                 if (todaysFlightData != null) {
                     FlightData responseFlightData = new FlightData();
-                    responseFlightData.setArrivalAirportCode(responseFlightData.getArrivalAirportCode());
-                    responseFlightData.setDepartureAirportCode(responseFlightData.getDepartureAirportCode());
+                    responseFlightData.setArrivalAirportCode(todaysFlightData.getArrivalAirportCode());
+                    responseFlightData.setDepartureAirportCode(todaysFlightData.getDepartureAirportCode());
                     return responseFlightData;
                 }
             }
@@ -75,36 +75,30 @@ public class LufthansaFlightDataSource implements FlightDataSource {
                 HttpGet httpGet = new HttpGet(httpGetUrl.toString());
                 httpGet.setHeader("Authorization", "Bearer " + accessToken.getValue());
 
+                // {"FlightStatusResource":{"Flights":{"Flight":{"Departure":{"AirportCode":"FRA","ScheduledTimeLocal":{"DateTime":"2017-09-07T11:00"},"ScheduledTimeUTC":{"DateTime":"2017-09-07T09:00Z"},"ActualTimeLocal":{"DateTime":"2017-09-07T11:28"},"ActualTimeUTC":{"DateTime":"2017-09-07T09:28Z"},"TimeStatus":{"Code":"DL","Definition":"Flight Delayed"},"Terminal":{"Name":1,"Gate":"C14"}},"Arrival":{"AirportCode":"JFK","ScheduledTimeLocal":{"DateTime":"2017-09-07T13:30"},"ScheduledTimeUTC":{"DateTime":"2017-09-07T17:30Z"},"EstimatedTimeLocal":{"DateTime":"2017-09-07T14:05"},"EstimatedTimeUTC":{"DateTime":"2017-09-07T18:05Z"},"TimeStatus":{"Code":"DL","Definition":"Flight Delayed"},"Terminal":{"Name":1}},"MarketingCarrier":{"AirlineID":"LH","FlightNumber":400},"OperatingCarrier":{"AirlineID":"LH","FlightNumber":400},"Equipment":{"AircraftCode":744},"FlightStatus":{"Code":"DP","Definition":"Flight Departed"}}},"Meta":{"@Version":"1.0.0","Link":[{"@Href":"https://api.lufthansa.com/v1/operations/flightstatus/LH400/2017-09-07","@Rel":"self"},{"@Href":"https://api.lufthansa.com/v1/references/airports/{airportCode}","@Rel":"related"}]}}}
+
                 try (CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
                     if (httpResponse.getStatusLine().getStatusCode() == 200) {
                         JsonNode responseNode = this.getObjectMapper().readTree(httpResponse.getEntity().getContent());
                         JsonNode flightsNode = responseNode.get("FlightStatusResource").get("Flights");
                         if (flightsNode.size() == 1) {
 
-                            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-
-                            JsonNode flightNode = flightsNode.get(0);
+                            JsonNode flightNode = flightsNode.get("Flight");
                             JsonNode departureNode = flightNode.get("Departure");
-                            JsonNode scheduledTimeNode =  departureNode.get("ActualTimeLocal");
-                            LocalDateTime departureTime = LocalDateTime.parse(scheduledTimeNode.get("DateTime").asText(), dateTimeFormatter);
-
-                            JsonNode actualTimeNode = departureNode.get("ActualTimeLocal");
-                            if (actualTimeNode != null) {
-                                String actualTimeValue = actualTimeNode
-                            }
-
-                            // {"FlightStatusResource":{"Flights":{"Flight":{"Departure":{"AirportCode":"FRA","ScheduledTimeLocal":{"DateTime":"2017-09-07T11:00"},"ScheduledTimeUTC":{"DateTime":"2017-09-07T09:00Z"},"ActualTimeLocal":{"DateTime":"2017-09-07T11:28"},"ActualTimeUTC":{"DateTime":"2017-09-07T09:28Z"},"TimeStatus":{"Code":"DL","Definition":"Flight Delayed"},"Terminal":{"Name":1,"Gate":"C14"}},"Arrival":{"AirportCode":"JFK","ScheduledTimeLocal":{"DateTime":"2017-09-07T13:30"},"ScheduledTimeUTC":{"DateTime":"2017-09-07T17:30Z"},"EstimatedTimeLocal":{"DateTime":"2017-09-07T14:05"},"EstimatedTimeUTC":{"DateTime":"2017-09-07T18:05Z"},"TimeStatus":{"Code":"DL","Definition":"Flight Delayed"},"Terminal":{"Name":1}},"MarketingCarrier":{"AirlineID":"LH","FlightNumber":400},"OperatingCarrier":{"AirlineID":"LH","FlightNumber":400},"Equipment":{"AircraftCode":744},"FlightStatus":{"Code":"DP","Definition":"Flight Departed"}}},"Meta":{"@Version":"1.0.0","Link":[{"@Href":"https://api.lufthansa.com/v1/operations/flightstatus/LH400/2017-09-07","@Rel":"self"},{"@Href":"https://api.lufthansa.com/v1/references/airports/{airportCode}","@Rel":"related"}]}}}
-
-                            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+                            LocalDateTime departureTime = this.extractDateTime(departureNode, "ActualTimeLocal", "ScheduledTimeLocal");
+                            JsonNode arrivalNode = flightNode.get("Arrival");
+                            LocalDateTime arrivalTime = this.extractDateTime(arrivalNode, "ActualTimeLocal", "ScheduledTimeLocal");
 
                             FlightData flightData = new FlightData();
-                            flightData.setDepartureAirportCode(flightNode.get("Departure").get("AirportCode").asText());
-                            flightData.setDepartureDateLocal(departureTime.toLocalDate());
-                            flightData.setDepartureTimeLocal(departureTime.toLocalTime());
+                            flightData.setDepartureAirportCode(departureNode.get("AirportCode").asText());
+                            flightData.setDepartureDateLocal(departureTime == null ? null : departureTime.toLocalDate());
+                            flightData.setDepartureTimeLocal(departureTime == null ? null : departureTime.toLocalTime());
+                            flightData.setArrivalAirportCode(arrivalNode.get("AirportCode").asText());
+                            flightData.setArrivalDateLocal(arrivalTime == null ? null : arrivalTime.toLocalDate());
+                            flightData.setArrivalTimeLocal(arrivalTime == null ? null : arrivalTime.toLocalTime());
                             return flightData;
 
                         }
-                        System.err.println(responseNode.toString());
                     } else {
                         log.debug("Invalid response returned from Lufthansa for flight status for flight '{}{}': {}", airlineCode, flightNumber, httpResponse.getStatusLine());
                     }
@@ -117,8 +111,21 @@ public class LufthansaFlightDataSource implements FlightDataSource {
         return null;
     }
 
-    private LocalDateTime extractDateTime() {
-
+    private LocalDateTime extractDateTime(JsonNode parentNode, String... childNodeNames) {
+        for (String childNodeName : childNodeNames) {
+            JsonNode childNode = parentNode.get(childNodeName);
+            JsonNode dateTimeNode = childNode == null ? null : childNode.get("DateTime");
+            String dateTimeValue = dateTimeNode == null ? null : dateTimeNode.asText();
+            if (!StringUtils.isEmpty(dateTimeValue)) {
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+                try {
+                    return LocalDateTime.parse(dateTimeValue, dateTimeFormatter);
+                } catch (Exception e) {
+                    log.trace("Invalid date time value: " + dateTimeValue, e);
+                }
+            }
+        }
+        return null;
     }
 
     private LufthansaAccessToken lookupAccessToken() {

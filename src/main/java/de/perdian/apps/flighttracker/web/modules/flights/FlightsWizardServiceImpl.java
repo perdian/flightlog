@@ -48,6 +48,10 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
                         arrivalDateLocal = flightData.getArrivalDateLocal();
                         arrivalTimeLocal = flightData.getArrivalTimeLocal();
                     }
+                    if (flightData.getDepartureDateLocal() != null && flightData.getDepartureTimeLocal() != null) {
+                        departureDateLocal = flightData.getDepartureDateLocal();
+                        departureTimeLocal = flightData.getDepartureTimeLocal();
+                    }
                 }
             }
         }
