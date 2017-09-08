@@ -89,6 +89,19 @@
             <div class="ui divider"></div>
             <div class="ui form">
                 <div class="fields">
+                    <div class="two wide field">
+                        <label><fmt:message key="airline" /></label>
+                        <input name="wizAirlineCode" id="wizAirlineCode" />
+                        <script type="text/javascript">
+                            $("#wizAirlineCode").change(function() {
+                                $(this).val($(this).val().trim().toUpperCase());
+                            });
+                        </script>
+                    </div>
+                    <div class="three wide field">
+                        <label><fmt:message key="flightNumber" /></label>
+                        <input name="wizFlightNumber" />
+                    </div>
                     <div class="three wide field">
                         <label><fmt:message key="departureDate" /></label>
                         <input name="wizDepartureDateLocal" placeholder="yyyy-MM-dd" />
@@ -118,19 +131,6 @@
                                 $(this).val($(this).val().trim().toUpperCase());
                             });
                         </script>
-                    </div>
-                    <div class="two wide field">
-                        <label><fmt:message key="airline" /></label>
-                        <input name="wizAirlineCode" id="wizAirlineCode" />
-                        <script type="text/javascript">
-                            $("#wizAirlineCode").change(function() {
-                                $(this).val($(this).val().trim().toUpperCase());
-                            });
-                        </script>
-                    </div>
-                    <div class="three wide field">
-                        <label><fmt:message key="flightNumber" /></label>
-                        <input name="wizFlightNumber" />
                     </div>
                 </div>
             </div>
