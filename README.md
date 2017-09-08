@@ -88,7 +88,7 @@ Using the internal database is the easiest option and requires only one addition
 
 Now the application will authenticate using the entries in the internal database.
 
-For each login the application will look for an entry within the `user` table that has `internaldatabase` as value of the `authentication_source`, a `username` column value equal to the value entered in the login form and a `password` column value equal to the SHA-256 hash (hex encoded) of the password entered in the login form.
+For each login the application will look for an entry within the `user` table that has `internaldatabase` as value of the `type`, a `username` column value equal to the value entered in the login form and a `password` column value equal to the SHA-256 hash (hex encoded) of the password entered in the login form.
 
 # LDAP
 
