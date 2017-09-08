@@ -107,6 +107,27 @@ Using a LDAP backend requires some additional options to be set as configuration
 
 The login will be made against the LDAP backend configured. After that a dummy user will be inserted into the local database with the `authentication_source` column set to `ldap` and the `username` column set to the username used during the login. The `password` column will remain `null`.
 
+# External data providers
+
+The flight creation wizard allows fetching data from external source (like airlines) to be fetched and included into the generated flight.
+
+As there is no free API for retrieving flight information specific solutions have to be integrated. Right now the following providers have been integrated but need to be configured explicitely.
+
+If no special configurations have been made these providers will not be able to contribute any data but all functionality will still work correctly. Any additional data providers are purely optional.
+
+## Lufthansa
+
+For accessing Lufthansa you need to configure the following Spring Boot configuration parameters:
+
+    flighttracker:
+      data:
+        lufthansa:
+          client_id: CLIENT_ID
+          client_secret: CLIENT_SECRET
+
+The `client_id` and `client_secret` can be obtained by registering a new application on the
+Lufthansa developer portal (https://developer.lufthansa.com/).
+
 # Known limitations
 
 There are a few known limitations which will hopefully be addressed in future versions:
