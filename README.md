@@ -128,6 +128,19 @@ For accessing Lufthansa you need to configure the following Spring Boot configur
 The `client_id` and `client_secret` can be obtained by registering a new application on the
 Lufthansa developer portal (https://developer.lufthansa.com/).
 
+# Automatic backup
+
+The system can automatically create a backup archive of the complete data (users including their stored flights). To enable the backup two properties need to be set in the `application.yml` configuration file:
+
+    flighttracker:
+      backup:
+        cron: 0 0 5 * * 1
+        target: file:/data/flighttracker/backup/
+
+The `cron` value defines the times when the backup operations should run and the `target` values defines the directory where the backup archives are being written into.
+
+The backup archives themselves adhere to the naming convention `flighttracker-backup-<date>.xml` where `<date>` will be replaced with the date on which the backup is being performed.
+
 # Known limitations
 
 There are a few known limitations which will hopefully be addressed in future versions:
