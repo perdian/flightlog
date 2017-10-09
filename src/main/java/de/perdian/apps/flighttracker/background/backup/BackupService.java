@@ -5,7 +5,7 @@ import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.time.Instant;
+import java.time.Clock;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -43,6 +43,7 @@ class BackupService {
     private TaskScheduler taskScheduler = null;
     private UsersQueryService usersQueryService = null;
     private ImportExportService importExportService = null;
+    private Clock clock = Clock.systemUTC();
 
     @PostConstruct
     void initialize() {
@@ -56,12 +57,12 @@ class BackupService {
         }
     }
 
-    private void executeBackup(Path target) {
+    void executeBackup(Path target) {
         try {
 
             DateTimeFormatter targetDateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss").withZone(ZoneId.of("UTC"));
             StringBuilder targetFileName = new StringBuilder();
-            targetFileName.append("flighttracker-backup-").append(targetDateFormatter.format(Instant.now())).append(".zip");
+            targetFileName.append("flighttracker-backup-").append(targetDateFormatter.format(this.getClock().instant())).append(".zip");
             Path targetFile = target.resolve(targetFileName.toString());
             log.info("Executing backup into target file: {}", targetFile);
 
@@ -147,6 +148,13 @@ class BackupService {
     @Autowired
     void setImportExportService(ImportExportService importExportService) {
         this.importExportService = importExportService;
+    }
+
+    Clock getClock() {
+        return this.clock;
+    }
+    void setClock(Clock clock) {
+        this.clock = clock;
     }
 
 }
