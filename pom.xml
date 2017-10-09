@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.6.RELEASE</version>
+        <version>1.5.7.RELEASE</version>
     </parent>
 
     <groupId>de.perdian.apps.flighttracker</groupId>
@@ -33,10 +33,14 @@
     <properties>
         <commons-lang3.version>3.6</commons-lang3.version>
         <h2.version>1.4.196</h2.version>
+        <hamcrest.version>1.3</hamcrest.version>
         <httpclient.version>4.5.3</httpclient.version>
+        <jimfs.version>1.1</jimfs.version>
         <jquery.version>3.2.1</jquery.version>
         <jsoup.version>1.10.3</jsoup.version>
+        <junit.version>4.12</junit.version>
         <logback.version>1.2.3</logback.version>
+        <mockito.version>1.10.19</mockito.version>
         <mysql.version>6.0.6</mysql.version>
         <xsoup.version>0.3.1</xsoup.version>
     </properties>
@@ -144,6 +148,29 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version><!--$NO-MVN-MAN-VER$ -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version><!--$NO-MVN-MAN-VER$ -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.jimfs</groupId>
+            <artifactId>jimfs</artifactId>
+            <version>${jimfs.version}</version><!--$NO-MVN-MAN-VER$ -->
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${hamcrest.version}</version><!--$NO-MVN-MAN-VER$ -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -177,7 +204,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 
