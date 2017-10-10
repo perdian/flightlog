@@ -28,6 +28,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.perdian.apps.flighttracker.business.modules.data.FlightData;
 import de.perdian.apps.flighttracker.business.modules.data.FlightDataSource;
+import de.perdian.apps.flighttracker.persistence.entities.AircraftTypeEntity;
+import de.perdian.apps.flighttracker.persistence.repositories.AircraftTypesRepository;
 
 @Component
 public class LufthansaFlightDataSource implements FlightDataSource {
@@ -36,6 +38,7 @@ public class LufthansaFlightDataSource implements FlightDataSource {
     private ObjectMapper objectMapper = new ObjectMapper();
     private List<String> lufthansaAirlineCodes = Arrays.asList("LH");
     private LufthansaConfiguration configuration = null;
+    private AircraftTypesRepository aircraftTypesRepository = null;
     private LufthansaAccessToken accessToken = null;
     private Clock clock = Clock.systemUTC();
 
@@ -93,7 +96,8 @@ public class LufthansaFlightDataSource implements FlightDataSource {
                             JsonNode equipmentNode = flightNode.get("Equipment");
                             JsonNode aircraftCodeNode = equipmentNode == null ? null : equipmentNode.get("AircraftCode");
                             String aircraftCode = aircraftCodeNode == null ? null : aircraftCodeNode.asText();
-                            String aircraftType = this.extractAircraftType(aircraftCode, httpClient, accessToken);
+                            AircraftTypeEntity aircraftTypeResolved = this.getAircraftTypesRepository().loadAircraftTypeByCode(aircraftCode);
+                            String aircraftType = aircraftTypeResolved == null ? this.extractAircraftType(aircraftCode, httpClient, accessToken) : aircraftTypeResolved.getTitle();
 
                             FlightData flightData = new FlightData();
                             flightData.setDepartureAirportCode(departureNode.get("AirportCode").asText());
@@ -205,6 +209,14 @@ public class LufthansaFlightDataSource implements FlightDataSource {
     @Autowired
     void setConfiguration(LufthansaConfiguration configuration) {
         this.configuration = configuration;
+    }
+
+    AircraftTypesRepository getAircraftTypesRepository() {
+        return this.aircraftTypesRepository;
+    }
+    @Autowired
+    void setAircraftTypesRepository(AircraftTypesRepository aircraftTypesRepository) {
+        this.aircraftTypesRepository = aircraftTypesRepository;
     }
 
     ObjectMapper getObjectMapper() {
