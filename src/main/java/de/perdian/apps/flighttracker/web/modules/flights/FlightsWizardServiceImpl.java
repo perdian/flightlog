@@ -9,8 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.perdian.apps.flighttracker.business.modules.data.FlightData;
-import de.perdian.apps.flighttracker.business.modules.data.FlightDataService;
+import de.perdian.apps.flighttracker.business.modules.wizard.WizardData;
+import de.perdian.apps.flighttracker.business.modules.wizard.WizardDataService;
 import de.perdian.apps.flighttracker.persistence.entities.AirlineEntity;
 import de.perdian.apps.flighttracker.persistence.entities.AirportEntity;
 import de.perdian.apps.flighttracker.persistence.repositories.AirlinesRepository;
@@ -20,7 +20,7 @@ import de.perdian.apps.flighttracker.support.FlighttrackerHelper;
 @Service
 class FlightsWizardServiceImpl implements FlightsWizardService {
 
-    private FlightDataService flightDataService = null;
+    private WizardDataService wizardDataService = null;
     private AirportsRepository airportsRepository = null;
     private AirlinesRepository airlinesRepository = null;
 
@@ -34,26 +34,26 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
         String airlineCode = Optional.ofNullable(data.getWizAirlineCode()).map(String::toUpperCase).orElse(null);
         String flightNumber = data.getWizFlightNumber();
         if (!StringUtils.isEmpty(airlineCode) && !StringUtils.isEmpty(flightNumber)) {
-            FlightData flightData = this.getFlightDataService().lookupFlightData(airlineCode, flightNumber, departureDateLocal);
-            if (flightData != null) {
+            WizardData wizardData = this.getWizardDataService().createData(airlineCode, flightNumber, departureDateLocal);
+            if (wizardData != null) {
 
-                editor.setAircraftType(flightData.getAircraftType());
-                editor.setAircraftRegistration(flightData.getAircraftRegistration());
-                editor.setAircraftName(flightData.getAircraftName());
-                editor.setDepartureDateLocal(FlighttrackerHelper.formatDate(flightData.getDepartureDateLocal()));
-                editor.setDepartureTimeLocal(FlighttrackerHelper.formatTime(flightData.getDepartureTimeLocal()));
-                editor.setDepartureAirportCode(flightData.getDepartureAirportCode());
-                editor.setArrivalAirportCode(flightData.getArrivalAirportCode());
-                editor.setArrivalDateLocal(FlighttrackerHelper.formatDate(flightData.getArrivalDateLocal()));
-                editor.setArrivalTimeLocal(FlighttrackerHelper.formatTime(flightData.getArrivalTimeLocal()));
+                editor.setAircraftType(wizardData.getAircraftType());
+                editor.setAircraftRegistration(wizardData.getAircraftRegistration());
+                editor.setAircraftName(wizardData.getAircraftName());
+                editor.setDepartureDateLocal(FlighttrackerHelper.formatDate(wizardData.getDepartureDateLocal()));
+                editor.setDepartureTimeLocal(FlighttrackerHelper.formatTime(wizardData.getDepartureTimeLocal()));
+                editor.setDepartureAirportCode(wizardData.getDepartureAirportCode());
+                editor.setArrivalAirportCode(wizardData.getArrivalAirportCode());
+                editor.setArrivalDateLocal(FlighttrackerHelper.formatDate(wizardData.getArrivalDateLocal()));
+                editor.setArrivalTimeLocal(FlighttrackerHelper.formatTime(wizardData.getArrivalTimeLocal()));
 
-                AirportEntity departureAirport = StringUtils.isEmpty(flightData.getDepartureAirportCode()) ? null : this.getAirportsRepository().loadAirportByIataCode(flightData.getDepartureAirportCode().toUpperCase());
+                AirportEntity departureAirport = StringUtils.isEmpty(wizardData.getDepartureAirportCode()) ? null : this.getAirportsRepository().loadAirportByIataCode(wizardData.getDepartureAirportCode().toUpperCase());
                 if (departureAirport != null) {
                     editor.setDepartureAirportCode(departureAirport.getIataCode());
                     editor.setDepartureAirportCountryCode(departureAirport.getCountryCode());
                     editor.setDepartureAirportName(departureAirport.getName());
                 }
-                AirportEntity arrivalAirport = StringUtils.isEmpty(flightData.getArrivalAirportCode()) ? null : this.getAirportsRepository().loadAirportByIataCode(flightData.getArrivalAirportCode().toUpperCase());
+                AirportEntity arrivalAirport = StringUtils.isEmpty(wizardData.getArrivalAirportCode()) ? null : this.getAirportsRepository().loadAirportByIataCode(wizardData.getArrivalAirportCode().toUpperCase());
                 if (arrivalAirport != null) {
                     editor.setArrivalAirportCode(arrivalAirport.getIataCode());
                     editor.setArrivalAirportCountryCode(arrivalAirport.getCountryCode());
@@ -65,9 +65,9 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
                     Integer flightDistance = FlighttrackerHelper.computeDistanceInKilometers(departureAirport.getLongitude(), departureAirport.getLatitude(), arrivalAirport.getLongitude(), arrivalAirport.getLatitude());
                     editor.setFlightDistance(flightDistance == null ? null : flightDistance.toString());
 
-                    if (flightData.getDepartureDateLocal() != null && flightData.getDepartureTimeLocal() != null && flightData.getArrivalDateLocal() != null && flightData.getArrivalTimeLocal() != null) {
-                        Instant departureInstant = flightData.getDepartureTimeLocal().atDate(flightData.getDepartureDateLocal()).atZone(departureAirport.getTimezoneId()).toInstant();
-                        Instant arrivalInstant = flightData.getArrivalTimeLocal().atDate(flightData.getArrivalDateLocal()).atZone(arrivalAirport.getTimezoneId()).toInstant();
+                    if (wizardData.getDepartureDateLocal() != null && wizardData.getDepartureTimeLocal() != null && wizardData.getArrivalDateLocal() != null && wizardData.getArrivalTimeLocal() != null) {
+                        Instant departureInstant = wizardData.getDepartureTimeLocal().atDate(wizardData.getDepartureDateLocal()).atZone(departureAirport.getTimezoneId()).toInstant();
+                        Instant arrivalInstant = wizardData.getArrivalTimeLocal().atDate(wizardData.getArrivalDateLocal()).atZone(arrivalAirport.getTimezoneId()).toInstant();
                         editor.setFlightDuration(FlighttrackerHelper.formatDuration(Duration.between(departureInstant, arrivalInstant)));
                     }
 
@@ -82,12 +82,12 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
 
     }
 
-    FlightDataService getFlightDataService() {
-        return this.flightDataService;
+    WizardDataService getWizardDataService() {
+        return this.wizardDataService;
     }
     @Autowired
-    void setFlightDataService(FlightDataService flightDataService) {
-        this.flightDataService = flightDataService;
+    void setWizardDataService(WizardDataService wizardDataService) {
+        this.wizardDataService = wizardDataService;
     }
 
     AirportsRepository getAirportsRepository() {

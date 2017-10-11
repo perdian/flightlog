@@ -1,10 +1,10 @@
-package de.perdian.apps.flighttracker.business.modules.data;
+package de.perdian.apps.flighttracker.business.modules.wizard;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class FlightData implements Serializable {
+public class WizardData implements Serializable {
 
     static final long serialVersionUID = 1L;
 

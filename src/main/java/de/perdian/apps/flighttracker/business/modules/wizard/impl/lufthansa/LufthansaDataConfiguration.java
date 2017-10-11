@@ -1,11 +1,11 @@
-package de.perdian.apps.flighttracker.business.modules.data.impl.lufthansa;
+package de.perdian.apps.flighttracker.business.modules.wizard.impl.lufthansa;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "flighttracker.data.lufthansa")
 @Component
-class LufthansaConfiguration {
+class LufthansaDataConfiguration {
 
     private String clientId = null;
     private String clientSecret = null;

@@ -1,4 +1,4 @@
-package de.perdian.apps.flighttracker.business.modules.data.impl.flightradar24;
+package de.perdian.apps.flighttracker.business.modules.wizard.impl.flightradar24;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.Ordered;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "flighttracker.data.flightradar24")
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class Flightradar24Configuration {
+class Flightradar24DataConfiguration {
 
     private boolean enabled = false;
 
