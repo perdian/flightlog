@@ -3,8 +3,6 @@ package de.perdian.apps.flighttracker.web.modules.flights;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,86 +27,58 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
     @Override
     public void enhanceFlightEditor(FlightEditor editor, FlightsWizardData data) {
 
+        editor.setAirlineCode(data.getWizAirlineCode());
+        editor.setFlightNumber(data.getWizFlightNumber());
+
         LocalDate departureDateLocal = FlighttrackerHelper.parseLocalDate(data.getWizDepartureDateLocal());
-        LocalTime departureTimeLocal = FlighttrackerHelper.parseLocalTime(data.getWizDepartureTimeLocal());
-        LocalDate arrivalDateLocal = null;
-        LocalTime arrivalTimeLocal = FlighttrackerHelper.parseLocalTime(data.getWizArrivalTimeLocal());
-        String departureAirportCode = Optional.ofNullable(data.getWizDepartureAirportCode()).map(String::toUpperCase).orElse(null);
-        String arrivalAirportCode = Optional.ofNullable(data.getWizArrivalAirportCode()).map(String::toUpperCase).orElse(null);
         String airlineCode = Optional.ofNullable(data.getWizAirlineCode()).map(String::toUpperCase).orElse(null);
         String flightNumber = data.getWizFlightNumber();
-        Duration duration = null;
         if (!StringUtils.isEmpty(airlineCode) && !StringUtils.isEmpty(flightNumber)) {
             FlightData flightData = this.getFlightDataService().lookupFlightData(airlineCode, flightNumber, departureDateLocal);
             if (flightData != null) {
+
                 editor.setAircraftType(flightData.getAircraftType());
                 editor.setAircraftRegistration(flightData.getAircraftRegistration());
                 editor.setAircraftName(flightData.getAircraftName());
-                if (StringUtils.isEmpty(departureAirportCode) && StringUtils.isEmpty(arrivalAirportCode)) {
-                    departureAirportCode = flightData.getDepartureAirportCode();
-                    arrivalAirportCode = flightData.getArrivalAirportCode();
-                    if (flightData.getArrivalDateLocal() != null && flightData.getArrivalTimeLocal() != null) {
-                        arrivalDateLocal = flightData.getArrivalDateLocal();
-                        arrivalTimeLocal = flightData.getArrivalTimeLocal();
+                editor.setDepartureDateLocal(FlighttrackerHelper.formatDate(flightData.getDepartureDateLocal()));
+                editor.setDepartureTimeLocal(FlighttrackerHelper.formatTime(flightData.getDepartureTimeLocal()));
+                editor.setDepartureAirportCode(flightData.getDepartureAirportCode());
+                editor.setArrivalAirportCode(flightData.getArrivalAirportCode());
+                editor.setArrivalDateLocal(FlighttrackerHelper.formatDate(flightData.getArrivalDateLocal()));
+                editor.setArrivalTimeLocal(FlighttrackerHelper.formatTime(flightData.getArrivalTimeLocal()));
+
+                AirportEntity departureAirport = StringUtils.isEmpty(flightData.getDepartureAirportCode()) ? null : this.getAirportsRepository().loadAirportByIataCode(flightData.getDepartureAirportCode().toUpperCase());
+                if (departureAirport != null) {
+                    editor.setDepartureAirportCode(departureAirport.getIataCode());
+                    editor.setDepartureAirportCountryCode(departureAirport.getCountryCode());
+                    editor.setDepartureAirportName(departureAirport.getName());
+                }
+                AirportEntity arrivalAirport = StringUtils.isEmpty(flightData.getArrivalAirportCode()) ? null : this.getAirportsRepository().loadAirportByIataCode(flightData.getArrivalAirportCode().toUpperCase());
+                if (arrivalAirport != null) {
+                    editor.setArrivalAirportCode(arrivalAirport.getIataCode());
+                    editor.setArrivalAirportCountryCode(arrivalAirport.getCountryCode());
+                    editor.setArrivalAirportName(arrivalAirport.getName());
+                }
+
+                if (departureAirport != null && arrivalAirport != null) {
+
+                    Integer flightDistance = FlighttrackerHelper.computeDistanceInKilometers(departureAirport.getLongitude(), departureAirport.getLatitude(), arrivalAirport.getLongitude(), arrivalAirport.getLatitude());
+                    editor.setFlightDistance(flightDistance == null ? null : flightDistance.toString());
+
+                    if (flightData.getDepartureDateLocal() != null && flightData.getDepartureTimeLocal() != null && flightData.getArrivalDateLocal() != null && flightData.getArrivalTimeLocal() != null) {
+                        Instant departureInstant = flightData.getDepartureTimeLocal().atDate(flightData.getDepartureDateLocal()).atZone(departureAirport.getTimezoneId()).toInstant();
+                        Instant arrivalInstant = flightData.getArrivalTimeLocal().atDate(flightData.getArrivalDateLocal()).atZone(arrivalAirport.getTimezoneId()).toInstant();
+                        editor.setFlightDuration(FlighttrackerHelper.formatDuration(Duration.between(departureInstant, arrivalInstant)));
                     }
-                    if (flightData.getDepartureDateLocal() != null && flightData.getDepartureTimeLocal() != null) {
-                        departureDateLocal = flightData.getDepartureDateLocal();
-                        departureTimeLocal = flightData.getDepartureTimeLocal();
+
+                    AirlineEntity airlineEntity = this.getAirlinesRepository().loadAirlineByIataCode(data.getWizAirlineCode());
+                    if (airlineEntity != null) {
+                        editor.setAirlineName(airlineEntity.getName());
                     }
+
                 }
             }
         }
-        AirportEntity departureAirport = this.getAirportsRepository().loadAirportByIataCode(departureAirportCode);
-        AirportEntity arrivalAirport = this.getAirportsRepository().loadAirportByIataCode(arrivalAirportCode);
-        AirlineEntity airline = this.getAirlinesRepository().loadAirlineByIataCode(airlineCode);
-
-        if (departureAirport != null && arrivalAirport != null) {
-
-            Integer flightDistance = FlighttrackerHelper.computeDistanceInKilometers(departureAirport.getLongitude(), departureAirport.getLatitude(), arrivalAirport.getLongitude(), arrivalAirport.getLatitude());
-            editor.setFlightDistance(flightDistance == null ? null : flightDistance.toString());
-
-            if (departureDateLocal != null && departureTimeLocal != null && departureAirport.getTimezoneId() != null && arrivalAirport.getTimezoneId() != null) {
-                Instant departureInstant = departureTimeLocal.atDate(departureDateLocal).atZone(departureAirport.getTimezoneId()).toInstant();
-                if (arrivalDateLocal == null && arrivalTimeLocal != null) {
-                    Instant arrivalInstantWithDepartureDate = arrivalTimeLocal.atDate(departureDateLocal).atZone(arrivalAirport.getTimezoneId()).toInstant();
-                    Duration durationBetweenDepartureAndArrival = Duration.between(departureInstant, arrivalInstantWithDepartureDate);
-                    if (durationBetweenDepartureAndArrival.toHours() < 0) {
-                        arrivalDateLocal = arrivalInstantWithDepartureDate.plus(1, ChronoUnit.DAYS).atZone(arrivalAirport.getTimezoneId()).toLocalDate();
-                    } else if (durationBetweenDepartureAndArrival.toHours() >= 24) {
-                        arrivalDateLocal = arrivalInstantWithDepartureDate.minus(1, ChronoUnit.DAYS).atZone(arrivalAirport.getTimezoneId()).toLocalDate();
-                    } else {
-                        arrivalDateLocal = arrivalInstantWithDepartureDate.atZone(arrivalAirport.getTimezoneId()).toLocalDate();
-                    }
-                } else if (arrivalDateLocal == null && flightDistance != null) {
-
-                    // Let's assume our plane travels at 800 km per hour and extrapolate the time when it will arrive
-                    double hoursRequiredForFlightDistance = flightDistance.doubleValue() / 800d;
-                    Instant approxArrivalInstant = departureInstant.plus((long)hoursRequiredForFlightDistance, ChronoUnit.HOURS);
-                    arrivalDateLocal = approxArrivalInstant.atZone(arrivalAirport.getTimezoneId()).toLocalDate();
-
-                }
-                if (arrivalDateLocal != null && arrivalTimeLocal != null) {
-                    Instant arrivalInstant = arrivalTimeLocal.atDate(arrivalDateLocal).atZone(arrivalAirport.getTimezoneId()).toInstant();
-                    duration = Duration.between(departureInstant, arrivalInstant);
-                }
-            }
-
-        }
-
-        editor.setDepartureDateLocal(FlighttrackerHelper.formatDate(departureDateLocal));
-        editor.setDepartureTimeLocal(FlighttrackerHelper.formatTime(departureTimeLocal));
-        editor.setDepartureAirportCode(departureAirport == null ? departureAirportCode : departureAirport.getIataCode());
-        editor.setDepartureAirportCountryCode(departureAirport == null ? null : departureAirport.getCountryCode());
-        editor.setDepartureAirportName(departureAirport == null ? null : departureAirport.getName());
-        editor.setArrivalAirportCode(arrivalAirport == null ? arrivalAirportCode : arrivalAirport.getIataCode());
-        editor.setArrivalAirportCountryCode(arrivalAirport == null ? null : arrivalAirport.getCountryCode());
-        editor.setArrivalAirportName(arrivalAirport == null ? null : arrivalAirport.getName());
-        editor.setArrivalDateLocal(arrivalDateLocal == null ? null : FlighttrackerHelper.formatDate(arrivalDateLocal));
-        editor.setArrivalTimeLocal(arrivalTimeLocal == null ? null : FlighttrackerHelper.formatTime(arrivalTimeLocal));
-        editor.setAirlineCode(airline == null ? airlineCode : airline.getIataCode());
-        editor.setAirlineName(airline == null ? null : airline.getName());
-        editor.setFlightNumber(flightNumber);
-        editor.setFlightDuration(duration == null ? null : FlighttrackerHelper.formatDuration(duration));
 
     }
 
