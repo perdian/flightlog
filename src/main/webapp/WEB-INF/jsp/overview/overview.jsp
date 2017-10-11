@@ -206,7 +206,7 @@
                     <div class="field">
                         <label><fmt:message key="flightDistance" /></label>
                         <spring:select path="flightDistance" cssClass="ui dropdown" multiple="multiple">
-                            <option value=""><fmt:message key="allFlightReasons" /></option>
+                            <option value=""><fmt:message key="allFlightDistances" /></option>
                             <c:forEach items="${overviewQueryHelper.availableFlightDistances}" var="flightDistance">
                                 <spring:option value="${flightDistance.name()}"><fmt:message key="flightDistance.${flightDistance.name()}" /></spring:option>
                             </c:forEach>
