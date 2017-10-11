@@ -74,7 +74,7 @@
 	    	$('select.dropdown').dropdown();
     </script>
 
-    <form id="add-flight-wizard" class="ui tiny modal" method="post" action="${contextPath}flights/add/wizard">
+    <form id="add-flight-wizard" class="ui mini modal" method="post" action="${contextPath}flights/add/wizard">
         <i class="close icon"></i>
 
         <div class="ui icon header">
@@ -105,32 +105,6 @@
                     <div class="three wide field">
                         <label><fmt:message key="departureDate" /></label>
                         <input name="wizDepartureDateLocal" placeholder="yyyy-MM-dd" />
-                    </div>
-                    <div class="two wide field">
-                        <label><fmt:message key="departureTime" /></label>
-                        <input name="wizDepartureTimeLocal" placeholder="HH:mm" />
-                    </div>
-                    <div class="two wide field">
-                        <label><fmt:message key="arrivalTime" /></label>
-                        <input name="wizArrivalTimeLocal" placeholder="HH:mm" />
-                    </div>
-                    <div class="two wide field">
-                        <label><fmt:message key="depAirport" /></label>
-                        <input name="wizDepartureAirportCode" id="wizDepartureAirportCode" />
-                        <script type="text/javascript">
-                            $("#wizDepartureAirportCode").change(function() {
-                                $(this).val($(this).val().trim().toUpperCase());
-                            });
-                        </script>
-                    </div>
-                    <div class="two wide field">
-                        <label><fmt:message key="arrAirport" /></label>
-                        <input name="wizArrivalAirportCode" id="wizArrivalAirportCode" />
-                        <script type="text/javascript">
-                            $("#wizArrivalAirportCode").change(function() {
-                                $(this).val($(this).val().trim().toUpperCase());
-                            });
-                        </script>
                     </div>
                 </div>
             </div>

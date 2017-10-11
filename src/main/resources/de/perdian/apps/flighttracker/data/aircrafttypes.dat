@@ -1,0 +1,365 @@
+# Compiled from https://de.wikipedia.org/wiki/Liste_der_Flugzeugtypencodes
+100,F100,Fokker 100
+141,B461,BAe 146-100
+142,B462,BAe 146-200
+143,B463,BAe 146-300
+146,,BAe 146
+14F,,BAe 146
+14X,B461,BAe 146
+14Y,B462,BAe 146
+14Z,B463,BAe 146
+310,A310,Airbus A310
+312,A310,Airbus A310-200
+313,A310,Airbus A310-300
+318,A318,Airbus A318
+319,A319,Airbus A319
+,A19N,Airbus A319 neo
+31F,A310,Airbus A310
+31X,A310,Airbus A310
+31Y,A310,Airbus A310
+320,A320,Airbus A320
+,A20N,Airbus A320 neo
+321,A321,Airbus A321
+32A,A320,Airbus A320
+32B,A321,Airbus A321
+,A21N,Airbus A321 neo
+32S,,
+330,A330,Airbus A330
+332,A332,Airbus A330-200
+333,A333,Airbus A330-300
+340,A340,Airbus A340
+342,A342,Airbus A340-200
+343,A343,Airbus A340-300
+345,A345,Airbus A340-500
+346,A346,Airbus A340-600
+350,A350,Airbus A350
+358,A358,Airbus A350-800
+359,A359,Airbus A350-900
+351,A35K,Airbus A350-1000
+388,A388,Airbus A380-800
+38F,,Airbus A380
+703,B703,Boeing 707-300
+707,,Boeing 707/720
+70F,B703,Boeing 707
+70M,B703,Boeing 707
+717,B712,Boeing 717
+721,B721,Boeing 727-100
+722,B722,Boeing 727-200
+727,,Boeing 727
+72B,B721,Boeing 727-100
+72C,B722,Boeing 727-200
+72F,,Boeing 727
+72M,,Boeing 727
+72S,B722,Boeing 727-200
+72X,B721,Boeing 727-100
+72Y,B722,Boeing 727-200
+731,B731,Boeing 737-100
+732,B732,Boeing 737-200
+733,B733,Boeing 737-300
+73C,B733,Boeing 737-300
+734,B734,Boeing 737-400
+735,B735,Boeing 737-500
+736,B736,Boeing 737-600
+737,,Boeing 737
+738,B738,Boeing 737-800
+739,B739,Boeing 737-900
+73F,,Boeing 737
+73G,B737,Boeing 737-700
+73H,B738,Boeing 737-800
+73M,B732,Boeing 737-200
+73W,B737,Boeing 737-700
+73X,B732,Boeing 737-200
+73Y,B733,Boeing 737-300
+741,B741,Boeing 747-100
+742,B742,Boeing 747-200
+743,B743,Boeing 747-300
+744,B744,Boeing 747-400
+747,,Boeing 747
+74H,B748,Boeing 747-8i
+74C,B742,Boeing 747-200
+74D,B743,Boeing 747-300
+74E,B744,Boeing 747-400
+74F,,Boeing 747
+74J,B744,Boeing 747-400
+74L,N74S,Boeing 747SP
+74M,,Boeing 747
+74R,B74R,Boeing 747SR
+74T,B741,Boeing 747-100
+74U,B743,Boeing 747-300
+74V,B74R,Boeing 747SR
+74X,B742,Boeing 747-200
+74Y,B744,Boeing 747-400
+752,B752,Boeing 757-200
+75L,B752,Boeing 757-200
+753,B753,Boeing 757-300
+75T,,Boeing 757-300
+75W,,Boeing 757-200
+757,,Boeing 757
+75F,B752,Boeing 757
+75M,B752,Boeing 757
+762,B762,Boeing 767-200
+763,B763,Boeing 767-300
+764,B764,Boeing 767-400
+767,,Boeing 767
+76F,,Boeing 767
+76W,B763,Boeing 767-300
+76X,B762,Boeing 767-200
+76Y,B763,Boeing 767-300
+772,B772,Boeing 777-200
+773,B773,Boeing 777-300
+77W,B77W,Boeing 777-300
+77L,,Boeing 777-200
+777,,Boeing 777
+778,,Boeing 777-8
+779,,Boeing 777-9
+788,B788,Boeing 787-8
+789,B789,Boeing 787-9
+781,B781,Boeing 787-10
+7M7,B37M,Boeing 737 MAX 7
+7M8,B38M,Boeing 737 MAX 8
+7M9,B39M,Boeing 737 MAX 9
+880,,Convair CV-880
+990,,Convair CV-990
+A26,AN26,Antonow An-26
+A28,AN28,Antonow An-28
+A30,AN30,Antonow An-30
+A32,AN32,Antonow An-32
+A40,A140,Antonow An-140
+A4F,A124,Antonow An-124
+A81,A148,Antonow An-148
+AB3,A30B,Airbus A300
+AB4,A30B,Airbus A300B2/B4/C4
+AB6,A306,Airbus A300B4-600
+ABB,A3ST,Airbus A300B4-600ST Beluga
+ABF,A30B,Airbus A300
+ABX,A30B,Airbus A300C4/F4
+ABY,A306,Airbus A300C4-600
+ACD,,Gulfstream/Rockwell (Aero) Commander
+ACP,AC68,Gulfstream/Rockwell (Aero) Commander
+ACT,AC90,Gulfstream/Rockwell (Aero) Turbo Commander
+ALM,LOAD,Ayres LM200 Loadmaster
+AN4,AN24,Antonow An-24
+AN6,,Antonow An-26 / An-30 / An-32
+AN7,AN72,Antonow An-72 / An-74
+ANF,AN12,Antonow An-12
+APH,,Eurocopter (Aerospatiale) SA330 Puma
+AR1,RJ1H,Avro RJ100
+AR7,RJ70,Avro RJ70
+AR8,RJ85,Avro RJ85
+ARJ,,Avro RJ70 / RJ85 / RJ100
+ARX,,Avro RJX85 / RJX100
+AT4,AT43,ATR 42-300/320
+AT5,AT45,ATR 42-500
+AT7,AT72,ATR 72
+,ATL,Avions Pierre Robin ATL
+ATP,ATP,British Aerospace ATP
+ATR,,ATR 42 / ATR 72
+AX1,RX1H,Avro RJX100
+AX8,RX85,Avro RJX85
+B11,BA11,British Aerospace (BAC) One Eleven
+B12,BA11,British Aerospace (BAC) One Eleven 200
+B13,BA11,British Aerospace (BAC) One Eleven 300
+B14,BA11,British Aerospace (BAC) One Eleven 400/475
+B15,BA11,British Aerospace (BAC) One Eleven 500
+B72,B720,Boeing 720B
+BE1,B190,Beechcraft 1900
+BE2,,Beechcraft
+BEC,,Beechcraft
+BEH,B190,Beechcraft 1900
+BEP,,Beechcraft
+BES,B190,Beechcraft 1900
+BET,,Beechcraft
+BH2,,Bell Helicopters
+BNI,BN2P,Pilatus Britten-Norman BN-2A/B Islander
+BNT,TRIS,Pilatus Britten-Norman BN-2A Mk III Trislander
+BUS,,Bus
+CCJ,CL60,Canadair Challenger 600
+CCX,GLEX,Canadair Global Express XRS
+CD2,NOMA,Government Aircraft Factories N22B
+CL4,CL44,Canadair CL-44
+CN1,,Cessna
+CN2,,Cessna
+CNA,,Cessna
+CNC,,Cessna
+CNJ,,Cessna
+CNT,,Cessna
+CR1,CRJ1,Bombardier CRJ100
+CR2,CRJ2,Bombardier CRJ200
+CR7,CRJ7,Bombardier CRJ700
+CR9,CRJ9,Bombardier CRJ900
+CRK,CRJX,Bombardier CRJ1000
+CRJ,,Canadair Regional Jet
+CRV,S210,Aerospatiale (Sud Aviation) Se.210 Caravelle
+CS2,C212,CASA / IPTN 212 Aviocar
+CS5,CN35,CASA / IPTN CN-235
+CV4,CVLP,Convair CV-440 Metropolitan
+CV5,CVLT,Convair CV-580
+CV8,,Convair CV-880 Golden Arrow
+CV9,,Convair CV-990 (Coronado)
+CVF,,Convair CV-240
+CVR,,Convair CV-240
+CVV,CVLP,Convair CV-240
+CVX,CVLP,Convair CV-440
+CVY,CVLT,Convair CV-580
+CWC,C46,Curtiss C-46
+D10,DC10,Douglas DC-10
+D11,DC10,Douglas DC-10
+D1C,DC10,Douglas DC-10
+D1F,DC10,Douglas DC-10
+D1M,DC10,Douglas DC-10
+D1X,DC10,Douglas DC-10
+D1Y,DC10,Douglas DC-10-
+D28,D228,Fairchild Dornier 228
+D38,D328,Fairchild Dornier 328
+D3F,DC3,Douglas DC-3
+D6F,DC6,Douglas DC-6
+D8F,,Douglas DC-8
+D8L,DC86,Douglas DC-8
+D8M,,Douglas DC-8
+D8Q,DC87,Douglas DC-8
+D8T,DC85,Douglas DC-8
+D8X,,Douglas DC-8
+D8Y,DC87,Douglas DC-8
+D91,DC91,Douglas DC-9
+D92,DC92,Douglas DC-9
+D93,DC93,Douglas DC-9
+D94,DC94,Douglas DC-9
+D95,DC95,Douglas DC-9
+D9C,DC93,Douglas DC-9
+D9F,DC94,Douglas DC-9
+D9F,,Douglas DC-9
+D9X,DC91,Douglas DC-9
+DC3,DC3,Douglas DC-3
+DC6,DC6,Douglas DC-6
+DC8,,Douglas DC-8
+DC9,DC9,Douglas DC-9
+DF2,,Dassault (Breguet Mystere) Falcon
+DF3,,Dassault (Breguet Mystere) Falcon
+DFL,,Dassault (Breguet Mystere) Falcon
+DH1,DH8A,De Havilland Canada DHC-8-100
+DH2,DH8B,De Havilland Canada DHC-8-200
+DH3,DH8C,De Havilland Canada DHC-8-300
+DH4,DH8D,De Havilland Canada DHC-8-400
+DH6,COMT,De Havilland D.H.106 Comet
+DH7,DHC7,De Havilland Canada DHC-7
+DH8,,De Havilland Canada DHC-8
+DHB,,De Havilland Canada DHC-2
+DHC,DHC4,De Havilland Canada DHC-4
+DHD,DOVE,De Havilland D.H.104 Dove
+DHH,HERN,De Havilland D.H.114 Heron
+DHL,DHC3,De Havilland Canada DHC-3
+DHO,DHC3,De Havilland Canada DHC-3
+DHP,DHC2,De Havilland Canada DHC-2
+DHR,DH2T,De Havilland Canada DHC-2
+DHS,DHC3,De Havilland Canada DHC-3
+DHT,DHC6,De Havilland Canada DHC-6
+E70,E170,Embraer 170
+E90,E190,Embraer 190
+EM2,E120,Embraer EMB 120
+EMB,E110,Embraer EMB 110
+EMJ,,Embraer 170
+ER3,E135,Embraer ERJ 135
+ER4,E145,Embraer ERJ 145
+ERD,,Embraer ERJ 140
+ERJ,,Embraer ERJ 135/140/145
+F21,F28,Fokker F-28 Fellowship
+F22,F28,Fokker F-28 Fellowship
+F23,F28,Fokker F-28 Fellowship
+F24,F28,Fokker F-28 Fellowship
+F27,F27,Fokker F-27 Friendship
+F28,F28,Fokker F-28 Fellowship
+F50,F50,Fokker 50
+F70,F70,Fokker 70
+FA7,,Fairchild Dornier 728JET
+FK7,F27,Fairchild FH.227
+FRJ,J328,Fairchild Dornier 328JET
+GRG,G21,Grumman G.21 Goose
+GRJ,,Gulfstream Aerospace G-1159 Gulfstream
+GRM,G73T,Grumman G.73 Turbo Mallard
+GRS,G159,Gulfstream Aerospace G-159 Gulfstream
+H25,,British Aerospace (Hawker Siddeley)
+HEC,COUC,Helio H-250 Courier
+HOV,,Hovercraft
+HS7,A748,Hawker Siddeley
+I14,I114,Iljuschin Il-114
+I93,IL96,Iljuschin Il-96
+I9F,IL96,Iljuschin Il-96
+I9M,IL96,Iljuschin Il-96M
+I9X,IL96,Iljuschin Il-96
+I9Y,IL96,Iljuschin Il-96T
+IL6,IL62,Iljuschin Il-62
+IL7,IL76,Iljuschin Il-76
+IL8,IL18,Iljuschin Il-18
+IL9,IL96,Iljuschin Il-96
+ILW,IL86,Iljuschin Il-86
+J31,JS31,British Aerospace Jetstream 31
+J32,JS32,British Aerospace Jetstream 32
+J41,JS41,British Aerospace Jetstream 41
+JST,,British Aerospace Jetstream 31/32/41
+JU5,JU52,Junkers Ju 52
+L10,L101,Lockheed L-1011 TriStar
+L11,L101,Lockheed L-1011 Tristar
+L15,L101,Lockheed L-1011 Tristar
+L1F,L101,Lockheed L-1011 Tristar
+L49,CONI,Lockheed L-1049 Super Constellation
+L4T,L410,LET 410
+LCH,,Launch - Boat
+LMO,,Limousine
+LOE,L188,Lockheed L-188 Electra
+LOF,L188,Lockheed L-188 Electra
+LOH,C130,Lockheed L-182/282/382 (L-100) Hercules
+LOM,L188,Lockheed L-188 Electra
+LRJ,,Gates Learjet
+M11,MD11,McDonnell Douglas MD-11
+M1F,MD11,McDonnell Douglas MD-11
+M1M,MD11,McDonnell Douglas MD-11
+M80,MD80,McDonnell Douglas MD-80
+M81,MD81,McDonnell Douglas MD-81
+M82,MD82,McDonnell Douglas MD-82
+M83,MD83,McDonnell Douglas MD-83
+M87,MD87,McDonnell Douglas MD-87
+M88,MD88,McDonnell Douglas MD-88
+M90,MD90,McDonnell Douglas MD-90
+MBH,B105,Eurocopter (MBB) Bo 105
+MD9,EXPL,MD Helicopters MD900 Explorer
+MIH,MI8,MIL Mi-8 / Mi-17 / Mi-171 / Mil-172
+MU2,MU2,Mitsubishi Mu-2
+ND2,N262,Aerospatiale (Nord) 262
+NDC,S601,Aerospatiale SN.601 Corvette
+NDE,,Eurocopter (Aerospatiale) AS350 Ecureuil / AS355 Ecureuil 2
+NDH,S65C,Eurocopter (Aerospatiale) SA365C / SA365N Dauphin 2
+PA1,,Piper
+PA2,,Piper
+PAG,,Piper
+PAT,,Piper
+PL2,PC12,Pilatus PC-12
+PL6,PC6T,Pilatus PC-6 Turbo Porter
+PN6,P68,Partenavia P.68
+,R200,Avions Pierre Robin R2000 Serie
+RFS,,LKW,
+S20,SB20,Saab 2000
+S58,S58T,Sikorsky S-58T
+S61,S61,Sikorsky S-61
+S76,S76,Sikorsky S-76
+SF3,SF34,Saab SF340A/B
+SH3,SH33,Shorts 330 (SD3-30)
+SH6,SH36,Shorts 360 (SD3-60)
+SHB,BELF,Shorts SC-5 Belfast
+SHS,SC7,Shorts SC-7 Skyvan
+SSC,CONC,Aerospatiale/BAC Concorde
+SU1,,Suchoi Superjet 100
+SU7,,Suchoi Superjet 100
+SU9,,Suchoi Superjet 100
+SWM,SW3/SW4,Fairchild (Swearingen) SA26
+T20,T204,Tupolew Tu-204/214
+TRD,TRID,Hawker Siddeley Trident (HS-121)
+TRN,,Train
+TU3,T134,Tupolew Tu-134
+TU5,T154,Tupolew Tu-154
+VCV,VISC,Vickers Viscount
+WWP,WW24,Israel Aircraft Industries 1124 Westwind
+YK2,YK42,Jakowlew Jak-42
+YK4,YK40,Jakowlew Jak-40
+YN2,Y12,Harbin Yunshuji Y12
+YN7,AN24,Xian Yunshuji Y7
+YS1,YS11,NAMC YS-11

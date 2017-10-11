@@ -1,8 +1,8 @@
-package de.perdian.apps.flighttracker.business.modules.data;
+package de.perdian.apps.flighttracker.business.modules.wizard;
 
 import java.time.LocalDate;
 
-public interface FlightDataService {
+public interface WizardDataService {
 
     /**
      * Try to lookup all available data about the given flight on the
@@ -23,6 +23,6 @@ public interface FlightDataService {
      *      times during a single day by an airline) the result will also
      *      be {@code null} to avoid any strange behaviour.
      */
-    FlightData lookupFlightData(String airlineCode, String flightNumber, LocalDate departureDate);
+    WizardData createData(String airlineCode, String flightNumber, LocalDate departureDate);
 
 }

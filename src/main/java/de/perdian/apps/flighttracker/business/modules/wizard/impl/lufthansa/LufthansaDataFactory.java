@@ -1,7 +1,8 @@
-package de.perdian.apps.flighttracker.business.modules.data.impl.lufthansa;
+package de.perdian.apps.flighttracker.business.modules.wizard.impl.lufthansa;
 
 import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,35 +27,38 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.perdian.apps.flighttracker.business.modules.data.FlightData;
-import de.perdian.apps.flighttracker.business.modules.data.FlightDataSource;
+import de.perdian.apps.flighttracker.business.modules.wizard.WizardData;
+import de.perdian.apps.flighttracker.business.modules.wizard.WizardDataFactory;
+import de.perdian.apps.flighttracker.persistence.entities.AircraftTypeEntity;
+import de.perdian.apps.flighttracker.persistence.repositories.AircraftTypesRepository;
 
 @Component
-public class LufthansaFlightDataSource implements FlightDataSource {
+public class LufthansaDataFactory implements WizardDataFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(LufthansaFlightDataSource.class);
+    private static final Logger log = LoggerFactory.getLogger(LufthansaDataFactory.class);
     private ObjectMapper objectMapper = new ObjectMapper();
     private List<String> lufthansaAirlineCodes = Arrays.asList("LH");
-    private LufthansaConfiguration configuration = null;
+    private LufthansaDataConfiguration configuration = null;
+    private AircraftTypesRepository aircraftTypesRepository = null;
     private LufthansaAccessToken accessToken = null;
     private Clock clock = Clock.systemUTC();
 
     @Override
-    public FlightData lookupFlightData(String airlineCode, String flightNumber, LocalDate departureDate) {
+    public WizardData createData(String airlineCode, String flightNumber, LocalDate departureDate) {
         if (!StringUtils.isEmpty(airlineCode) && this.getLufthansaAirlineCodes().contains(airlineCode.toUpperCase())) {
 
             // First we try to get the flight status for the specific departure date passed as parameter.
             // If we can't get any information using this we try the same request with the current date.
-            FlightData specificFlightData = departureDate == null ? null : this.lookupFlightDataFromLufthansa(airlineCode, flightNumber, departureDate);
-            if (specificFlightData != null) {
-                return specificFlightData;
+            WizardData specificData = departureDate == null ? null : this.lookupFlightDataFromLufthansa(airlineCode, flightNumber, departureDate);
+            if (specificData != null) {
+                return specificData;
             } else {
-                FlightData todaysFlightData = this.lookupFlightDataFromLufthansa(airlineCode, flightNumber, LocalDate.now(this.getClock()));
-                if (todaysFlightData != null) {
-                    FlightData responseFlightData = new FlightData();
-                    responseFlightData.setArrivalAirportCode(todaysFlightData.getArrivalAirportCode());
-                    responseFlightData.setDepartureAirportCode(todaysFlightData.getDepartureAirportCode());
-                    responseFlightData.setAircraftType(todaysFlightData.getAircraftType());
+                WizardData todaysData = this.lookupFlightDataFromLufthansa(airlineCode, flightNumber, LocalDate.now(this.getClock()));
+                if (todaysData != null) {
+                    WizardData responseFlightData = new WizardData();
+                    responseFlightData.setArrivalAirportCode(todaysData.getArrivalAirportCode());
+                    responseFlightData.setDepartureAirportCode(todaysData.getDepartureAirportCode());
+                    responseFlightData.setAircraftType(todaysData.getAircraftType());
                     return responseFlightData;
                 }
             }
@@ -63,7 +67,7 @@ public class LufthansaFlightDataSource implements FlightDataSource {
         return null;
     }
 
-    private FlightData lookupFlightDataFromLufthansa(String airlineCode, String flightNumber, LocalDate departureDate) {
+    private WizardData lookupFlightDataFromLufthansa(String airlineCode, String flightNumber, LocalDate departureDate) {
         LufthansaAccessToken accessToken = this.lookupAccessToken();
         if (accessToken != null) {
             try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
@@ -93,17 +97,18 @@ public class LufthansaFlightDataSource implements FlightDataSource {
                             JsonNode equipmentNode = flightNode.get("Equipment");
                             JsonNode aircraftCodeNode = equipmentNode == null ? null : equipmentNode.get("AircraftCode");
                             String aircraftCode = aircraftCodeNode == null ? null : aircraftCodeNode.asText();
-                            String aircraftType = this.extractAircraftType(aircraftCode, httpClient, accessToken);
+                            AircraftTypeEntity aircraftTypeResolved = this.getAircraftTypesRepository().loadAircraftTypeByCode(aircraftCode);
+                            String aircraftType = aircraftTypeResolved == null ? this.extractAircraftType(aircraftCode, httpClient, accessToken) : aircraftTypeResolved.getTitle();
 
-                            FlightData flightData = new FlightData();
-                            flightData.setDepartureAirportCode(departureNode.get("AirportCode").asText());
-                            flightData.setDepartureDateLocal(departureTime == null ? null : departureTime.toLocalDate());
-                            flightData.setDepartureTimeLocal(departureTime == null ? null : departureTime.toLocalTime());
-                            flightData.setArrivalAirportCode(arrivalNode.get("AirportCode").asText());
-                            flightData.setArrivalDateLocal(arrivalTime == null ? null : arrivalTime.toLocalDate());
-                            flightData.setArrivalTimeLocal(arrivalTime == null ? null : arrivalTime.toLocalTime());
-                            flightData.setAircraftType(aircraftType);
-                            return flightData;
+                            WizardData data = new WizardData();
+                            data.setDepartureAirportCode(departureNode.get("AirportCode").asText());
+                            data.setDepartureDateLocal(departureTime == null ? null : departureTime.toLocalDate());
+                            data.setDepartureTimeLocal(departureTime == null ? null : departureTime.toLocalTime());
+                            data.setArrivalAirportCode(arrivalNode.get("AirportCode").asText());
+                            data.setArrivalDateLocal(arrivalTime == null ? null : arrivalTime.toLocalDate());
+                            data.setArrivalTimeLocal(arrivalTime == null ? null : arrivalTime.toLocalTime());
+                            data.setAircraftType(aircraftType);
+                            return data;
 
                         }
                     } else {
@@ -199,12 +204,41 @@ public class LufthansaFlightDataSource implements FlightDataSource {
         }
     }
 
-    LufthansaConfiguration getConfiguration() {
+    class LufthansaAccessToken {
+
+        private String value = null;
+        private Instant expirationTime = null;
+
+        String getValue() {
+            return this.value;
+        }
+        void setValue(String value) {
+            this.value = value;
+        }
+
+        Instant getExpirationTime() {
+            return this.expirationTime;
+        }
+        void setExpirationTime(Instant expirationTime) {
+            this.expirationTime = expirationTime;
+        }
+
+    }
+
+    LufthansaDataConfiguration getConfiguration() {
         return this.configuration;
     }
     @Autowired
-    void setConfiguration(LufthansaConfiguration configuration) {
+    void setConfiguration(LufthansaDataConfiguration configuration) {
         this.configuration = configuration;
+    }
+
+    AircraftTypesRepository getAircraftTypesRepository() {
+        return this.aircraftTypesRepository;
+    }
+    @Autowired
+    void setAircraftTypesRepository(AircraftTypesRepository aircraftTypesRepository) {
+        this.aircraftTypesRepository = aircraftTypesRepository;
     }
 
     ObjectMapper getObjectMapper() {

@@ -1,10 +1,10 @@
-package de.perdian.apps.flighttracker.business.modules.data;
+package de.perdian.apps.flighttracker.business.modules.wizard;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class FlightData implements Serializable {
+public class WizardData implements Serializable {
 
     static final long serialVersionUID = 1L;
 
@@ -17,6 +17,21 @@ public class FlightData implements Serializable {
     private String aircraftType = null;
     private String aircraftName = null;
     private String aircraftRegistration = null;
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[departureAirportCode=").append(this.getDepartureAirportCode());
+        result.append(",departureDateLocal=").append(this.getDepartureDateLocal());
+        result.append(",departureTimeLocal=").append(this.getDepartureTimeLocal());
+        result.append(",arrivalAirportCode=").append(this.getArrivalAirportCode());
+        result.append(",arrivalDateLocal=").append(this.getArrivalDateLocal());
+        result.append(",arrivalTimeLocal=").append(this.getArrivalTimeLocal());
+        result.append(",aircraftType=").append(this.getAircraftType());
+        result.append(",aircraftRegistration=").append(this.getAircraftRegistration());
+        result.append(",aircraftName=").append(this.getAircraftName());
+        return result.append("]").toString();
+    }
 
     public String getDepartureAirportCode() {
         return this.departureAirportCode;
