@@ -35,6 +35,7 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
         Resource aircraftTypesResource = this.getResourceLoader().getResource("classpath:de/perdian/apps/flighttracker/data/aircrafttypes.dat");
         log.info("Loading aircraftTypes from resource: {}", aircraftTypesResource);
 
+        int totalAircraftTypesLoaded = 0;
         Map<String, AircraftTypeEntity> aircraftTypeBeansByIataCode = new LinkedHashMap<>();
         Map<String, AircraftTypeEntity> aircraftTypeBeansByIcaoCode = new LinkedHashMap<>();
         try (BufferedReader aircraftTypesReader = new BufferedReader(new InputStreamReader(aircraftTypesResource.getInputStream(), "UTF-8"))) {
@@ -60,6 +61,7 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
                             if (!StringUtils.isEmpty(icaoCode)) {
                                 aircraftTypeBeansByIcaoCode.putIfAbsent(icaoCode, aircraftTypeBean);
                             }
+                            totalAircraftTypesLoaded++;
 
                         }
                     }
@@ -70,8 +72,7 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
         }
         this.setAircraftTypeBeansByIataCode(aircraftTypeBeansByIataCode);
         this.setAircraftTypeBeansByIcaoCode(aircraftTypeBeansByIcaoCode);
-        log.debug("Loaded {} aircraftTypes with ICAO code from resource: {}", aircraftTypeBeansByIcaoCode.size(), aircraftTypesResource);
-        log.debug("Loaded {} aircraftTypes with IATA code from resource: {}", aircraftTypeBeansByIataCode.size(), aircraftTypesResource);
+        log.debug("Loaded {} aircraftTypes from resource: {}", totalAircraftTypesLoaded, aircraftTypesResource);
 
     }
 

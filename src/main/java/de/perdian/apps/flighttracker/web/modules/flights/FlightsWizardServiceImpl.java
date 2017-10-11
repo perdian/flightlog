@@ -37,11 +37,13 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
         String arrivalAirportCode = Optional.ofNullable(data.getWizArrivalAirportCode()).map(String::toUpperCase).orElse(null);
         String airlineCode = Optional.ofNullable(data.getWizAirlineCode()).map(String::toUpperCase).orElse(null);
         String flightNumber = data.getWizFlightNumber();
-        String aircraftType = null;
         Duration duration = null;
         if (!StringUtils.isEmpty(airlineCode) && !StringUtils.isEmpty(flightNumber)) {
             FlightData flightData = this.getFlightDataService().lookupFlightData(airlineCode, flightNumber, departureDateLocal);
             if (flightData != null) {
+                editor.setAircraftType(flightData.getAircraftType());
+                editor.setAircraftRegistration(flightData.getAircraftRegistration());
+                editor.setAircraftName(flightData.getAircraftName());
                 if (StringUtils.isEmpty(departureAirportCode) && StringUtils.isEmpty(arrivalAirportCode)) {
                     departureAirportCode = flightData.getDepartureAirportCode();
                     arrivalAirportCode = flightData.getArrivalAirportCode();
@@ -53,7 +55,6 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
                         departureDateLocal = flightData.getDepartureDateLocal();
                         departureTimeLocal = flightData.getDepartureTimeLocal();
                     }
-                    aircraftType = flightData.getAircraftType();
                 }
             }
         }
@@ -104,7 +105,6 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
         editor.setArrivalAirportName(arrivalAirport == null ? null : arrivalAirport.getName());
         editor.setArrivalDateLocal(arrivalDateLocal == null ? null : FlighttrackerHelper.formatDate(arrivalDateLocal));
         editor.setArrivalTimeLocal(arrivalTimeLocal == null ? null : FlighttrackerHelper.formatTime(arrivalTimeLocal));
-        editor.setAircraftType(aircraftType);
         editor.setAirlineCode(airline == null ? airlineCode : airline.getIataCode());
         editor.setAirlineName(airline == null ? null : airline.getName());
         editor.setFlightNumber(flightNumber);

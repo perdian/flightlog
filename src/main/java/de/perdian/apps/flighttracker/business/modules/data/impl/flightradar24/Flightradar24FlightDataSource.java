@@ -1,7 +1,5 @@
 package de.perdian.apps.flighttracker.business.modules.data.impl.flightradar24;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -22,8 +20,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import de.perdian.apps.flighttracker.business.modules.data.FlightData;
@@ -42,55 +38,29 @@ public class Flightradar24FlightDataSource implements FlightDataSource {
 
     private AircraftTypesRepository aircraftTypesRepository = null;
     private AirportsRepository airportsRepository = null;
+    private Flightradar24Configuration configuration = null;
     private Clock clock = Clock.systemUTC();
-
-    public static void main(String[] args) throws Exception {
-
-        Constructor<?> aircraftTypesRepositoryConstructor = Class.forName("de.perdian.apps.flighttracker.persistence.repositories.AircraftTypesRepositoryImpl").getDeclaredConstructors()[0];
-        aircraftTypesRepositoryConstructor.setAccessible(true);
-        AircraftTypesRepository aircraftTypesRepository = (AircraftTypesRepository)aircraftTypesRepositoryConstructor.newInstance();
-        Method asetResourceLoaderMethod = aircraftTypesRepository.getClass().getDeclaredMethod("setResourceLoader", ResourceLoader.class);
-        asetResourceLoaderMethod.setAccessible(true);
-        asetResourceLoaderMethod.invoke(aircraftTypesRepository, new DefaultResourceLoader());
-        Method ainitMethod = aircraftTypesRepository.getClass().getDeclaredMethod("initialize");
-        ainitMethod.setAccessible(true);
-        ainitMethod.invoke(aircraftTypesRepository);
-
-        Constructor<?> airportsRepositoryConstructor = Class.forName("de.perdian.apps.flighttracker.persistence.repositories.AirportsRepositoryImpl").getDeclaredConstructors()[0];
-        airportsRepositoryConstructor.setAccessible(true);
-        AirportsRepository airportsRepository = (AirportsRepository)airportsRepositoryConstructor.newInstance();
-        Method bsetResourceLoaderMethod = airportsRepository.getClass().getDeclaredMethod("setResourceLoader", ResourceLoader.class);
-        bsetResourceLoaderMethod.setAccessible(true);
-        bsetResourceLoaderMethod.invoke(airportsRepository, new DefaultResourceLoader());
-        Method binitMethod = airportsRepository.getClass().getDeclaredMethod("initialize");
-        binitMethod.setAccessible(true);
-        binitMethod.invoke(airportsRepository);
-
-        Flightradar24FlightDataSource dataSource = new Flightradar24FlightDataSource();
-        dataSource.setAircraftTypesRepository(aircraftTypesRepository);
-        dataSource.setAirportsRepository(airportsRepository);
-
-        System.err.println(dataSource.lookupFlightData("AY", "69", LocalDate.now().minusDays(2)));
-
-    }
 
     @Override
     public FlightData lookupFlightData(String airlineCode, String flightNumber, LocalDate departureDate) {
+        if (this.getConfiguration().isEnabled()) {
+            try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-        // TODO: Check if we are enabled
+                String httpGetUrl = "https://www.flightradar24.com/data/flights/" + airlineCode + flightNumber;
+                log.info("Querying flightradar24 for flight {}{} on {} using URL: ", airlineCode, flightNumber, departureDate, httpGetUrl);
 
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet("https://www.flightradar24.com/data/flights/" + airlineCode + flightNumber);
-            try (CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
-                 String httpResponseContent = EntityUtils.toString(httpResponse.getEntity());
-                 Document htmlDocument = Jsoup.parse(httpResponseContent);
-                 Elements dataTableElements = Xsoup.select(htmlDocument, "//table[@id='tbl-datatable']").getElements();
-                 if (dataTableElements.size() > 0) {
-                     return this.lookupFlightDataFromDataTable(dataTableElements.get(0), airlineCode, flightNumber, departureDate);
-                 }
+                try (CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(httpGetUrl))) {
+                     String httpResponseContent = EntityUtils.toString(httpResponse.getEntity());
+                     Document htmlDocument = Jsoup.parse(httpResponseContent);
+                     Elements dataTableElements = Xsoup.select(htmlDocument, "//table[@id='tbl-datatable']").getElements();
+                     if (dataTableElements.size() > 0) {
+                         return this.lookupFlightDataFromDataTable(dataTableElements.get(0), airlineCode, flightNumber, departureDate);
+                     }
+                }
+
+            } catch (Exception e) {
+                log.debug("Cannot retreive data from flightradar24 for flight {}{} on {}", airlineCode, flightNumber, departureDate, e);
             }
-        } catch (Exception e) {
-            log.warn("Cannot retreive data from flightradar24 for flight {}{} on {}", airlineCode, flightNumber, departureDate, e);
         }
         return null;
     }
@@ -100,11 +70,24 @@ public class Flightradar24FlightDataSource implements FlightDataSource {
         Elements trElements = dataTableElement.getElementsByTag("tr");
         Element trElementForSpecificDate = currentDate.isBefore(departureDate) ? null : this.lookupDataTableRowForDate(trElements, departureDate);
         if (trElementForSpecificDate != null) {
-            return this.lookupFlightDataFromDataTableRow(trElementForSpecificDate, true, airlineCode, flightNumber, departureDate);
+            return this.lookupFlightDataFromDataTableRow(trElementForSpecificDate, airlineCode, flightNumber, departureDate);
         } else {
             Element trElementForCurrentDate = this.lookupDataTableRowForDate(trElements, LocalDate.now().minusDays(1));
             if (trElementForCurrentDate != null) {
-                return this.lookupFlightDataFromDataTableRow(trElementForSpecificDate, false, airlineCode, flightNumber, departureDate);
+                FlightData currentDateFlightData = this.lookupFlightDataFromDataTableRow(trElementForCurrentDate, airlineCode, flightNumber, departureDate);
+                if (currentDateFlightData != null) {
+
+                    // As the departure and arrival times as well as the aircraft registry is not actually the
+                    // right one for the departure date passed as parameter to the method but instead the values
+                    // from yesterday, we'll only use the values which we assume are the same (which currently
+                    // are the airport codes plus the originally queried departure date)
+                    FlightData resultFlightData = new FlightData();
+                    resultFlightData.setArrivalAirportCode(currentDateFlightData.getArrivalAirportCode());
+                    resultFlightData.setDepartureAirportCode(currentDateFlightData.getDepartureAirportCode());
+                    resultFlightData.setDepartureDateLocal(departureDate);
+                    return resultFlightData;
+
+                }
             }
         }
         return null;
@@ -124,10 +107,7 @@ public class Flightradar24FlightDataSource implements FlightDataSource {
         return null;
     }
 
-    private FlightData lookupFlightDataFromDataTableRow(Element trElement, boolean fullData, String airlineCode, String flightNumber, LocalDate departureDate) {
-
-        System.err.println(trElement);
-        System.err.println("----");
+    private FlightData lookupFlightDataFromDataTableRow(Element trElement, String airlineCode, String flightNumber, LocalDate departureDate) {
 
         FlightData flightData = new FlightData();
         flightData.setDepartureDateLocal(departureDate);
@@ -187,8 +167,6 @@ public class Flightradar24FlightDataSource implements FlightDataSource {
 
             }
 
-            System.err.println(actualDepartureTimeValue);
-
         }
 
         return flightData;
@@ -211,10 +189,17 @@ public class Flightradar24FlightDataSource implements FlightDataSource {
         this.airportsRepository = airportsRepository;
     }
 
+    Flightradar24Configuration getConfiguration() {
+        return this.configuration;
+    }
+    @Autowired
+    void setConfiguration(Flightradar24Configuration configuration) {
+        this.configuration = configuration;
+    }
+
     Clock getClock() {
         return this.clock;
     }
-    @Autowired
     void setClock(Clock clock) {
         this.clock = clock;
     }
