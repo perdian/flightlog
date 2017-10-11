@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import de.perdian.apps.flighttracker.support.types.CabinClass;
+import de.perdian.apps.flighttracker.support.types.FlightDistance;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
 
 public class OverviewQueryHelper implements Serializable {
@@ -21,6 +22,7 @@ public class OverviewQueryHelper implements Serializable {
     private List<OverviewQueryHelperItem> availableAircraftTypes = null;
     private List<CabinClass> availableCabinClasses = null;
     private List<FlightReason> availableFlightReasons = null;
+    private List<FlightDistance> availableFlightDistances = null;
 
     @Override
     public String toString() {
@@ -69,6 +71,13 @@ public class OverviewQueryHelper implements Serializable {
     }
     public void setAvailableFlightReasons(List<FlightReason> availableFlightReasons) {
         this.availableFlightReasons = availableFlightReasons;
+    }
+
+    public List<FlightDistance> getAvailableFlightDistances() {
+        return this.availableFlightDistances;
+    }
+    public void setAvailableFlightDistances(List<FlightDistance> availableFlightDistances) {
+        this.availableFlightDistances = availableFlightDistances;
     }
 
 }

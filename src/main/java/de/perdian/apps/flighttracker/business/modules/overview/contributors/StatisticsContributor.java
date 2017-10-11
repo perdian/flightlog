@@ -3,7 +3,9 @@ package de.perdian.apps.flighttracker.business.modules.overview.contributors;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -21,6 +23,7 @@ import de.perdian.apps.flighttracker.persistence.entities.AirportEntity;
 import de.perdian.apps.flighttracker.persistence.repositories.AirlinesRepository;
 import de.perdian.apps.flighttracker.persistence.repositories.AirportsRepository;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
+import de.perdian.apps.flighttracker.support.types.FlightDistance;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
 import de.perdian.apps.flighttracker.support.types.SeatType;
 
@@ -62,10 +65,7 @@ public class StatisticsContributor implements OverviewContributor {
         statistics.setDistributionOfSeatTypes(new StatisticsDistributionComputer<>(SeatType.class).propertyFunction(FlightBean::getSeatType).computeDistribution(flights));
         statistics.setDistributionOfFlightReasons(new StatisticsDistributionComputer<>(FlightReason.class).propertyFunction(FlightBean::getFlightReason).computeDistribution(flights));
         statistics.setNumberOfFlights(flights.size());
-        statistics.setNumberOfFlightsShort(this.computeNumberOfFlightsByDistance(flights, null, 1500));
-        statistics.setNumberOfFlightsMedium(this.computeNumberOfFlightsByDistance(flights, 1500, 3500));
-        statistics.setNumberOfFlightsLong(this.computeNumberOfFlightsByDistance(flights, 3500, 10000));
-        statistics.setNumberOfFlightsUltraLong(this.computeNumberOfFlightsByDistance(flights, 10000, null));
+        statistics.setNumberOfFlightsByDistance(this.computeNumberOfFlightsByDistance(flights));
         statistics.setNumberOfDifferentAircraftTypes(this.countDifferentValues(flights, flight -> Arrays.asList(flight.getAircraft().getType())));
         statistics.setNumberOfDifferentAirlines(this.countDifferentValues(flights, flight -> Arrays.asList(flight.getAirline().getCode())));
         statistics.setNumberOfDifferentAirports(this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode(), flight.getDepartureContact().getAirport().getCode())));
@@ -87,13 +87,16 @@ public class StatisticsContributor implements OverviewContributor {
         return topItems;
     }
 
-    private Integer computeNumberOfFlightsByDistance(List<FlightBean> flights, Number min, Number max) {
-        return (int)flights.stream()
-            .filter(flight -> flight.getFlightDistance() != null)
-            .mapToInt(flight -> flight.getFlightDistance())
-            .filter(distance -> min == null ? true : distance > min.intValue())
-            .filter(distance -> max == null ? true : distance <= max.intValue())
-            .count();
+    private Map<FlightDistance, Integer> computeNumberOfFlightsByDistance(List<FlightBean> flights) {
+        Map<FlightDistance, Integer> resultMap = new LinkedHashMap<>();
+        for (FlightDistance flightDistance : FlightDistance.values()) {
+            resultMap.put(flightDistance, (int)flights.stream()
+                .filter(flight -> flight.getFlightDistance() != null)
+                .mapToInt(flight -> flight.getFlightDistance())
+                .filter(value -> flightDistance.matches(value)).count()
+            );
+        }
+        return resultMap;
     }
 
     private int computeDistanceInKilometers(List<FlightBean> flights) {

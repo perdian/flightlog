@@ -2,8 +2,10 @@ package de.perdian.apps.flighttracker.business.modules.overview.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import de.perdian.apps.flighttracker.business.modules.flights.model.FlightBean;
+import de.perdian.apps.flighttracker.support.types.FlightDistance;
 
 public class StatisticsBean implements Serializable {
 
@@ -20,10 +22,7 @@ public class StatisticsBean implements Serializable {
     private Double durationInMonths = null;
     private Double durationInYears = null;
     private Integer numberOfFlights = null;
-    private Integer numberOfFlightsShort = null;
-    private Integer numberOfFlightsMedium = null;
-    private Integer numberOfFlightsLong = null;
-    private Integer numberOfFlightsUltraLong = null;
+    private Map<FlightDistance, Integer> numberOfFlightsByDistance = null;
     private FlightBean longestFlightByDistance = null;
     private FlightBean shortestFlightByDistance = null;
     private FlightBean longestFlightByDuration = null;
@@ -120,32 +119,11 @@ public class StatisticsBean implements Serializable {
         this.numberOfFlights = numberOfFlights;
     }
 
-    public Integer getNumberOfFlightsShort() {
-        return this.numberOfFlightsShort;
+    public Map<FlightDistance, Integer> getNumberOfFlightsByDistance() {
+        return this.numberOfFlightsByDistance;
     }
-    public void setNumberOfFlightsShort(Integer numberOfFlightsShort) {
-        this.numberOfFlightsShort = numberOfFlightsShort;
-    }
-
-    public Integer getNumberOfFlightsMedium() {
-        return this.numberOfFlightsMedium;
-    }
-    public void setNumberOfFlightsMedium(Integer numberOfFlightsMedium) {
-        this.numberOfFlightsMedium = numberOfFlightsMedium;
-    }
-
-    public Integer getNumberOfFlightsLong() {
-        return this.numberOfFlightsLong;
-    }
-    public void setNumberOfFlightsLong(Integer numberOfFlightsLong) {
-        this.numberOfFlightsLong = numberOfFlightsLong;
-    }
-
-    public Integer getNumberOfFlightsUltraLong() {
-        return this.numberOfFlightsUltraLong;
-    }
-    public void setNumberOfFlightsUltraLong(Integer numberOfFlightsUltraLong) {
-        this.numberOfFlightsUltraLong = numberOfFlightsUltraLong;
+    public void setNumberOfFlightsByDistance(Map<FlightDistance, Integer> numberOfFlightsByDistance) {
+        this.numberOfFlightsByDistance = numberOfFlightsByDistance;
     }
 
     public FlightBean getLongestFlightByDistance() {

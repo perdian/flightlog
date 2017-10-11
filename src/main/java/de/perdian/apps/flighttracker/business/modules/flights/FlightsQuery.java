@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,6 +18,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import de.perdian.apps.flighttracker.persistence.entities.FlightEntity;
 import de.perdian.apps.flighttracker.persistence.entities.UserEntity;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
+import de.perdian.apps.flighttracker.support.types.FlightDistance;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
 
 public class FlightsQuery implements Serializable {
@@ -36,6 +38,7 @@ public class FlightsQuery implements Serializable {
     private Collection<String> restrictAircraftTypes = null;
     private Collection<CabinClass> restrictCabinClasses = null;
     private Collection<FlightReason> restrictFlightReasons = null;
+    private Collection<FlightDistance> restrictFlightDistances = null;
 
     @Override
     public String toString() {
@@ -50,6 +53,7 @@ public class FlightsQuery implements Serializable {
         toStringBuilder.append("restrictAirlineCodes", this.getRestrictAirlineCodes());
         toStringBuilder.append("restrictCabinClasses", this.getRestrictCabinClasses());
         toStringBuilder.append("restrictFlightReasons", this.getRestrictFlightReasons());
+        toStringBuilder.append("restrictFlightDistances", this.getRestrictFlightDistances());
         return toStringBuilder.toString();
     }
 
@@ -96,6 +100,15 @@ public class FlightsQuery implements Serializable {
         }
         if (this.getRestrictFlightReasons() != null && !this.getRestrictFlightReasons().isEmpty()) {
             predicateList.add(root.get("flightReason").in(this.getRestrictFlightReasons()));
+        }
+        if (this.getRestrictFlightDistances() != null && !this.getRestrictFlightDistances().isEmpty()) {
+            List<Predicate> flightDistancesPredicateList = new ArrayList<>();
+            for (FlightDistance flightDistance : this.getRestrictFlightDistances()) {
+                int minValue = Optional.ofNullable(flightDistance.getMinValue()).orElse(0);
+                int maxValue = Optional.ofNullable(flightDistance.getMaxValue()).orElse(Integer.MAX_VALUE);
+                flightDistancesPredicateList.add(cb.between(root.get("flightDistance"), minValue, maxValue));
+            }
+            predicateList.add(cb.or(flightDistancesPredicateList.toArray(new Predicate[0])));
         }
         return cb.and(predicateList.toArray(new Predicate[0]));
     }
@@ -255,6 +268,13 @@ public class FlightsQuery implements Serializable {
     }
     public void setRestrictFlightReasons(Collection<FlightReason> restrictFlightReasons) {
         this.restrictFlightReasons = restrictFlightReasons;
+    }
+
+    public Collection<FlightDistance> getRestrictFlightDistances() {
+        return this.restrictFlightDistances;
+    }
+    public void setRestrictFlightDistances(Collection<FlightDistance> restrictFlightDistances) {
+        this.restrictFlightDistances = restrictFlightDistances;
     }
 
 }

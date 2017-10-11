@@ -20,6 +20,7 @@ import de.perdian.apps.flighttracker.business.modules.flights.model.AirportBean;
 import de.perdian.apps.flighttracker.business.modules.flights.model.AirportContactBean;
 import de.perdian.apps.flighttracker.business.modules.flights.model.FlightBean;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
+import de.perdian.apps.flighttracker.support.types.FlightDistance;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
 import de.perdian.apps.flighttracker.web.security.FlighttrackerUser;
 
@@ -43,6 +44,7 @@ public class OverviewQueryHelperFactory {
         queryHelper.setAvailableAircraftTypes(this.collectAvailableAircraftTypes(flights));
         queryHelper.setAvailableCabinClasses(Arrays.asList(CabinClass.values()));
         queryHelper.setAvailableFlightReasons(Arrays.asList(FlightReason.values()));
+        queryHelper.setAvailableFlightDistances(Arrays.asList(FlightDistance.values()));
         return queryHelper;
 
     }

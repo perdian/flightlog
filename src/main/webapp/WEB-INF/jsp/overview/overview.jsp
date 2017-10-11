@@ -79,7 +79,7 @@
                 </table>
             </div>
             <div class="four wide column">
-                <h3><fmt:message key="flights" /></h3>
+                <h3><fmt:message key="flightDistance" /></h3>
                 <table class="ui very basic compact table">
                     <tbody>
                         <tr>
@@ -87,26 +87,27 @@
                             <td>&nbsp;</td>
                             <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfFlights}" pattern="#,##0" /></td>
                         </tr>
-                        <tr>
-                            <td><fmt:message key="shortHaul" /></td>
-                            <td><small><fmt:message key="upTo" /><c:out value=" " /><fmt:formatNumber value="1500" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" /></small></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfFlightsShort}" pattern="#,##0" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="mediumHaul" /></td>
-                            <td><small><fmt:formatNumber value="1500" pattern="#,##0" /><c:out value=" - " /><fmt:formatNumber value="3500" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" /></small></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfFlightsMedium}" pattern="#,##0" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="longHaul" /></td>
-                            <td><small><fmt:formatNumber value="3500" pattern="#,##0" /><c:out value=" - " /><fmt:formatNumber value="10000" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" /></small></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfFlightsLong}" pattern="#,##0" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="ultraLongHaul" /></td>
-                            <td><small><fmt:message key="moreThan" /><c:out value=" " /><fmt:formatNumber value="10000" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" /></small></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfFlightsUltraLong}" pattern="#,##0" /></td>
-                        </tr>
+                        <c:forEach items="${overview.statistics.numberOfFlightsByDistance}" var="numberOfFlights">
+                            <tr>
+                                <td><fmt:message key="flightDistance.${numberOfFlights.key}" /></td>
+                                <td>
+                                    <small>
+                                        <c:choose>
+                                            <c:when test="${numberOfFlights.key.minValue eq null}">
+                                                <fmt:message key="upTo" /><c:out value=" " /><fmt:formatNumber value="${numberOfFlights.key.maxValue}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" />
+                                            </c:when>
+                                            <c:when test="${numberOfFlights.key.maxValue eq null}">
+                                                <fmt:message key="moreThan" /><c:out value=" " /><fmt:formatNumber value="${numberOfFlights.key.minValue}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" />
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${numberOfFlights.key.minValue}" pattern="#,##0" /><c:out value=" - " /><fmt:formatNumber value="${numberOfFlights.key.maxValue}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" />
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </small>
+                                </td>
+                                <td class="right aligned"><fmt:formatNumber value="${numberOfFlights.value}" pattern="#,##0" /></td>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
             </div>
@@ -199,6 +200,15 @@
                             <option value=""><fmt:message key="allFlightReasons" /></option>
                             <c:forEach items="${overviewQueryHelper.availableFlightReasons}" var="flightReason">
                                 <spring:option value="${flightReason.name()}"><fmt:message key="flightReason.${flightReason.name()}" /></spring:option>
+                            </c:forEach>
+                        </spring:select>
+                    </div>
+                    <div class="field">
+                        <label><fmt:message key="flightDistance" /></label>
+                        <spring:select path="flightDistance" cssClass="ui dropdown" multiple="multiple">
+                            <option value=""><fmt:message key="allFlightReasons" /></option>
+                            <c:forEach items="${overviewQueryHelper.availableFlightDistances}" var="flightDistance">
+                                <spring:option value="${flightDistance.name()}"><fmt:message key="flightDistance.${flightDistance.name()}" /></spring:option>
                             </c:forEach>
                         </spring:select>
                     </div>

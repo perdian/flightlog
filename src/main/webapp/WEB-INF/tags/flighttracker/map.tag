@@ -16,7 +16,7 @@
 		],
         view: new ol.View({
             center: ol.proj.fromLonLat([0, 35]),
-            zoom: 2
+            zoom: 1.85
         })
 	});
 
@@ -32,6 +32,7 @@
             aircraftType: <ft:jsonArray value="${overviewQuery.aircraftType}" />,
             cabinClass: <ft:jsonArray value="${overviewQuery.cabinClass}" />,
             flightReason: <ft:jsonArray value="${overviewQuery.flightReason}" />,
+            flightDistance: <ft:jsonArray value="${overviewQuery.flightDistance}" />,
 	        "${_csrf.parameterName}": "${_csrf.token}"
 	    },
 	    success: function(result) {
