@@ -79,7 +79,7 @@
                 </table>
             </div>
             <div class="four wide column">
-                <h3><fmt:message key="flightDistance" /></h3>
+                <h3><fmt:message key="flightsByDistance" /></h3>
                 <table class="ui very basic compact table">
                     <tbody>
                         <tr>
