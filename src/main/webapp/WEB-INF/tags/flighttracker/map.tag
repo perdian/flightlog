@@ -51,9 +51,10 @@
                     { x: endLongitude, y: endLatitude }
                 );
                 var arcLine = arcGenerator.Arc(100 /* number of vertices */, {offset: 10});
-                if (arcLine.geometries.length === 1) {
 
-                    var line = new ol.geom.LineString(arcLine.geometries[0].coords);
+                for (var j=0; j < arcLine.geometries.length; j++) {
+
+                    var line = new ol.geom.LineString(arcLine.geometries[j].coords);
                     line.transform(ol.proj.get('EPSG:4326'), ol.proj.get('EPSG:3857'));
 
                     var routeStyle = new ol.style.Style({

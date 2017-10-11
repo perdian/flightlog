@@ -141,14 +141,6 @@ The `cron` value defines the times when the backup operations should run and the
 
 The backup archives themselves adhere to the naming convention `flighttracker-backup-<date>.xml` where `<date>` will be replaced with the date on which the backup is being performed.
 
-# Known limitations
-
-There are a few known limitations which will hopefully be addressed in future versions:
-
-## World map
-
-Right now flights traveling westwards from the US or eastwards of Asia/Australia are not correctly rendered by the Openlayers map. The data is being available in the JSON but somehow the map doesn't render it correctly.
-
 # Credits
 
 This application would not be possible without the great work of other open source projects.
