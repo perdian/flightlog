@@ -47,7 +47,7 @@ public class Flightradar24FlightDataSource implements FlightDataSource {
             try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
                 String httpGetUrl = "https://www.flightradar24.com/data/flights/" + airlineCode + flightNumber;
-                log.info("Querying flightradar24 for flight {}{} on {} using URL: ", airlineCode, flightNumber, departureDate, httpGetUrl);
+                log.info("Querying flightradar24 for flight {}{} on {} using URL: {}", airlineCode, flightNumber, departureDate, httpGetUrl);
 
                 try (CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(httpGetUrl))) {
                      String httpResponseContent = EntityUtils.toString(httpResponse.getEntity());
