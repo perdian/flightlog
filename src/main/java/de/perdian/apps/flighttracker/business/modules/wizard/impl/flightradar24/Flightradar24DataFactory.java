@@ -4,6 +4,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -147,11 +148,11 @@ public class Flightradar24DataFactory implements WizardDataFactory {
             Element actualDepartureTimeElement = tdElements.size() <= 7 ? null : tdElements.get(7);
             String actualDepartureTimeValue = actualDepartureTimeElement == null ? null : actualDepartureTimeElement.text().trim();
             if (!StringUtils.isEmpty(actualDepartureTimeValue) && !"-".equalsIgnoreCase(actualDepartureTimeValue)) {
-
-                LocalTime actualDepartureTimeLocal = LocalTime.parse(actualDepartureTimeValue);
-                wizardData.setDepartureTimeLocal(actualDepartureTimeLocal);
-
                 if (departureAirportEntity.getTimezoneId() != null && arrivalAirportEntity.getTimezoneId() != null) {
+
+                    ZonedDateTime actualDeparturetimeUtc = LocalTime.parse(actualDepartureTimeValue).atDate(departureDate).atZone(ZoneId.of("UTC"));
+                    LocalTime actualDepartureTimeLocal = actualDeparturetimeUtc.withZoneSameInstant(departureAirportEntity.getTimezoneId()).toLocalTime();
+                    wizardData.setDepartureTimeLocal(actualDepartureTimeLocal);
 
                     Element flightDurationElement = tdElements.size() <= 5 ? null : tdElements.get(5);
                     String flightDurationValue = flightDurationElement == null ? null : flightDurationElement.text().trim();
@@ -164,7 +165,6 @@ public class Flightradar24DataFactory implements WizardDataFactory {
                     wizardData.setArrivalTimeLocal(actualArrivalTimeZonedAtArrival.toLocalTime());
 
                 }
-
             }
 
         }
