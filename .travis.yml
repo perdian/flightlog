@@ -1,0 +1,6 @@
+language: java
+script:
+  - mvn clean package -B
+sudo: false
+notifications:
+  email: false
