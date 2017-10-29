@@ -48,7 +48,7 @@ public class Flightradar24DataFactory implements WizardDataFactory {
             try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
                 String httpGetUrl = "https://www.flightradar24.com/data/flights/" + airlineCode + flightNumber;
-                log.info("Querying flightradar24 for flight {}{} on {} using URL: {}", airlineCode, flightNumber, departureDate, httpGetUrl);
+                log.debug("Querying flightradar24 for flight {}{} on {} using URL: {}", airlineCode, flightNumber, departureDate, httpGetUrl);
 
                 try (CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(httpGetUrl))) {
                      String httpResponseContent = EntityUtils.toString(httpResponse.getEntity());
