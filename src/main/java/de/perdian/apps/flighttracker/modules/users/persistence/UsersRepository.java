@@ -1,0 +1,10 @@
+package de.perdian.apps.flighttracker.modules.users.persistence;
+
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UsersRepository extends CrudRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
+
+}

@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ attribute name="titleKey" type="java.lang.String" required="true" %>
-<%@ attribute name="flight" type="de.perdian.apps.flighttracker.business.modules.flights.model.FlightBean" required="true" %>
+<%@ attribute name="flight" type="de.perdian.apps.flighttracker.modules.flights.model.FlightBean" required="true" %>
 <tr>
     <td><fmt:message key="${titleKey}" /></td>
     <td>
