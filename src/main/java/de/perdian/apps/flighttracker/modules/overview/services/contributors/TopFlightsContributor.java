@@ -64,7 +64,7 @@ class TopFlightsContributor implements OverviewContributor {
             OverviewItemString description = OverviewItemString.forText(descriptionFunction == null ? null : descriptionFunction.apply(entry.getKey()));
             Number value = currentValue < 0 ? null : currentValue;
 
-            return new OverviewItem(title, description, value, percentageValue);
+            return new OverviewItem(title, description, value, null, percentageValue);
 
         }).collect(Collectors.toList());
     }

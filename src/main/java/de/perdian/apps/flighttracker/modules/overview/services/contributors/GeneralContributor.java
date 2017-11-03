@@ -32,11 +32,11 @@ class GeneralContributor implements OverviewContributor {
         double durationInDays = duration.toMinutes() / (60d * 24d);
 
         List<OverviewItem> generalItems = new ArrayList<>();
-        generalItems.add(new OverviewItem(OverviewItemString.forKey("totalNumber"), null, flights.size(), null));
-        generalItems.add(new OverviewItem(OverviewItemString.forKey("distanceInKm"), null, distanceInKilometers, null));
-        generalItems.add(new OverviewItem(OverviewItemString.forKey("distanceInMiles"), null, distanceInMiles, null));
-        generalItems.add(new OverviewItem(OverviewItemString.forKey("durationInHours"), null, durationInHours, null));
-        generalItems.add(new OverviewItem(OverviewItemString.forKey("durationInDays"), null, durationInDays, null));
+        generalItems.add(new OverviewItem(OverviewItemString.forKey("totalNumber"), null, flights.size(), null, null));
+        generalItems.add(new OverviewItem(OverviewItemString.forKey("distanceInKm"), null, distanceInKilometers, null, null));
+        generalItems.add(new OverviewItem(OverviewItemString.forKey("distanceInMiles"), null, distanceInMiles, null, null));
+        generalItems.add(new OverviewItem(OverviewItemString.forKey("durationInHours"), null, durationInHours, null, null));
+        generalItems.add(new OverviewItem(OverviewItemString.forKey("durationInDays"), null, durationInDays, "#,##0.0", null));
         overviewBean.setGeneral(generalItems);
 
     }

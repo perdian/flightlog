@@ -51,7 +51,7 @@ class DistributionsContributor implements OverviewContributor {
             Number value = valueEntry.getValue();
             Number percentage = valueEntry.getValue().intValue() <= 0 ? null : (100d / flights.size()) * valueEntry.getValue().intValue();
 
-            resultList.add(new OverviewItem(title, null, value, percentage));
+            resultList.add(new OverviewItem(title, null, value, null, percentage));
 
         }
         return resultList;

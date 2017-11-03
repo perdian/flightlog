@@ -50,7 +50,7 @@
                                                 </c:choose>
                                             </td>
                                             <td class="right aligned">
-                                                <fmt:formatNumber value="${distance.value}" pattern="#,##0" />
+                                                <fmt:formatNumber value="${distance.value}" pattern="${distance.valueFormat}" />
                                             </td>
                                         </tr>
                                     </c:forEach>

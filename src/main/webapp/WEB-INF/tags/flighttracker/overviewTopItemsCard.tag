@@ -25,12 +25,12 @@
                     </c:if>
                 </td>
                 <td class="right aligned">
-                    <fmt:formatNumber value="${item.value}" pattern="#,##0" />
+                    <fmt:formatNumber value="${item.value}" pattern="${item.valueFormat}" />
                 </td>
                 <c:if test="${showPercentages}">
                     <td class="right aligned" width="15">
                         <c:if test="${item.percentage ne null}">
-                            (<fmt:formatNumber value="${item.percentage}" pattern="#,##0" />&nbsp;%)
+                            (<fmt:formatNumber value="${item.percentage}" pattern="0" />&nbsp;%)
                         </c:if>
                     </td>
                 </c:if>

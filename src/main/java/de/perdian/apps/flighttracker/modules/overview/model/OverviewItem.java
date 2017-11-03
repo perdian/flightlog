@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class OverviewItem implements Serializable {
 
     static final long serialVersionUID = 1L;
@@ -14,12 +16,14 @@ public class OverviewItem implements Serializable {
     private OverviewItemString description = null;
     private Map<String, Object> context = null;
     private Number value = null;
+    private String valueFormat = null;
     private Number percentage = null;
 
-    public OverviewItem(OverviewItemString title, OverviewItemString description, Number value, Number percentage) {
+    public OverviewItem(OverviewItemString title, OverviewItemString description, Number value, String valueFormat, Number percentage) {
         this.setTitle(title);
         this.setDescription(description);
         this.setValue(value);
+        this.setValueFormat(StringUtils.isEmpty(valueFormat) ? "#,##0" : valueFormat);
         this.setPercentage(percentage);
     }
 
@@ -75,6 +79,13 @@ public class OverviewItem implements Serializable {
     }
     private void setValue(Number value) {
         this.value = value;
+    }
+
+    public String getValueFormat() {
+        return this.valueFormat;
+    }
+    private void setValueFormat(String valueFormat) {
+        this.valueFormat = valueFormat;
     }
 
     public Number getPercentage() {

@@ -32,7 +32,7 @@ class DistancesContributor implements OverviewContributor {
 
         List<OverviewItem> resultList = new ArrayList<>(resultMap.size() + 1);
         for (Map.Entry<FlightDistance, Integer> resultEntry : resultMap.entrySet()) {
-            OverviewItem overviewItem = new OverviewItem(OverviewItemString.forKey("flightDistance." + resultEntry.getKey().name()), null, resultEntry.getValue(), 100d / flights.size() * resultEntry.getValue().doubleValue());
+            OverviewItem overviewItem = new OverviewItem(OverviewItemString.forKey("flightDistance." + resultEntry.getKey().name()), null, resultEntry.getValue(), null, 100d / flights.size() * resultEntry.getValue().doubleValue());
             overviewItem.addToContext("minValue", resultEntry.getKey().getMinValue());
             overviewItem.addToContext("maxValue", resultEntry.getKey().getMaxValue());
             resultList.add(overviewItem);

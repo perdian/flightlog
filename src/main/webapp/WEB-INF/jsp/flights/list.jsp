@@ -78,7 +78,7 @@
                         </td>
                         <td class="right aligned" nowrap="nowrap">
                             <c:if test="${flight.flightDistance ne null}">
-                                <div><fmt:formatNumber pattern="#,##0" value="${flight.flightDistance}" />&nbsp;<fmt:message key="km" /></div>
+                                <div><fmt:formatNumber value="${flight.flightDistance}" pattern="#,##0" />&nbsp;<fmt:message key="km" /></div>
                             </c:if>
                             <c:if test="${flight.flightDurationString ne null}">
                                 <div><c:out value="${flight.flightDurationString}" />&nbsp;<fmt:message key="hoursUnitSign" /></div>
