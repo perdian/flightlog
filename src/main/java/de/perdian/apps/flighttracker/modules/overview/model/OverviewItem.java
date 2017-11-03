@@ -6,17 +6,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
-
-public class StatisticsTopItem implements Serializable {
+public class OverviewItem implements Serializable {
 
     static final long serialVersionUID = 1L;
 
-    private String title = null;
-    private String description = null;
+    private OverviewItemString title = null;
+    private OverviewItemString description = null;
     private Map<String, Object> context = null;
     private Number value = null;
     private Number percentage = null;
+
+    public OverviewItem(OverviewItemString title, OverviewItemString description, Number value, Number percentage) {
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setValue(value);
+        this.setPercentage(percentage);
+    }
 
     @Override
     public String toString() {
@@ -25,32 +30,30 @@ public class StatisticsTopItem implements Serializable {
         if (this.getPercentage() != null) {
             result.append(" (").append(this.getPercentage().intValue()).append("%)");
         }
-        if (!StringUtils.isEmpty(this.getDescription())) {
-            result.append(" [").append(this.getDescription()).append("]");
-        }
+        result.append(" [").append(this.getDescription()).append("]");
         return result.toString();
     }
 
-    public static class ValueComparator implements Comparator<StatisticsTopItem> {
+    public static class ValueComparator implements Comparator<OverviewItem> {
 
         @Override
-        public int compare(StatisticsTopItem o1, StatisticsTopItem o2) {
+        public int compare(OverviewItem o1, OverviewItem o2) {
             return Objects.compare(o1.getValue(), o2.getValue(), (v1, v2) -> v1.intValue() == v2.intValue() ? 0 : v1.intValue() < v2.intValue() ? -1 : 1);
         }
 
     }
 
-    public String getTitle() {
+    public OverviewItemString getTitle() {
         return this.title;
     }
-    public void setTitle(String title) {
+    private void setTitle(OverviewItemString title) {
         this.title = title;
     }
 
-    public String getDescription() {
+    public OverviewItemString getDescription() {
         return this.description;
     }
-    public void setDescription(String description) {
+    private void setDescription(OverviewItemString description) {
         this.description = description;
     }
 
@@ -63,21 +66,21 @@ public class StatisticsTopItem implements Serializable {
     public Map<String, Object> getContext() {
         return this.context;
     }
-    public void setContext(Map<String, Object> context) {
+    private void setContext(Map<String, Object> context) {
         this.context = context;
     }
 
     public Number getValue() {
         return this.value;
     }
-    public void setValue(Number value) {
+    private void setValue(Number value) {
         this.value = value;
     }
 
     public Number getPercentage() {
         return this.percentage;
     }
-    public void setPercentage(Number percentage) {
+    private void setPercentage(Number percentage) {
         this.percentage = percentage;
     }
 

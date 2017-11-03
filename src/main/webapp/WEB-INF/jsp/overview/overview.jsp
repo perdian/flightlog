@@ -12,7 +12,6 @@
     </ft:head>
 	<ft:body>
 
-
         <h2 class="ui header">
             <i class="plane icon"></i>
             <div class="content">
@@ -24,130 +23,51 @@
         <div class="ui divider"></div>
 
         <div class="ui stackable grid">
-            <div class="four wide column">
-                <h3><fmt:message key="distanceFlown" /></h3>
-                <table class="ui very basic compact table">
-                    <tbody>
-                        <tr>
-                            <td><fmt:message key="inKilometers" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.distanceInKilometers}" pattern="#,##0" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="inMiles" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.distanceInMiles}" pattern="#,##0" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="earthOrbits" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.earthOrbits}" pattern="#,##0.0#" /> &times;</td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="earthToMoon" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.earthToMoon}" pattern="#,##0.0##" /> &times;</td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="earthToSun" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.earthToSun}" pattern="#,##0.0###" /> &times;</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="four wide column">
-                <h3><fmt:message key="flightDuration" /></h3>
-                <table class="ui very basic compact table">
-                    <tbody>
-                        <tr>
-                            <td><fmt:message key="hours" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.durationInHours}" pattern="#,##0" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="days" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.durationInDays}" pattern="#,##0.#" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="weeks" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.durationInWeeks}" pattern="#,##0.0#" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="months" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.durationInMonths}" pattern="#,##0.00" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="years" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.durationInYears}" pattern="#,##0.0#" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="four wide column">
-                <h3><fmt:message key="flightsByDistance" /></h3>
-                <table class="ui very basic compact table">
-                    <tbody>
-                        <tr>
-                            <td><fmt:message key="total" /></td>
-                            <td>&nbsp;</td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfFlights}" pattern="#,##0" /></td>
-                        </tr>
-                        <c:forEach items="${overview.statistics.numberOfFlightsByDistance}" var="numberOfFlights">
-                            <tr>
-                                <td><fmt:message key="flightDistance.${numberOfFlights.key}" /></td>
-                                <td>
-                                    <small>
-                                        <c:choose>
-                                            <c:when test="${numberOfFlights.key.minValue eq null}">
-                                                <fmt:message key="upTo" /><c:out value=" " /><fmt:formatNumber value="${numberOfFlights.key.maxValue}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" />
-                                            </c:when>
-                                            <c:when test="${numberOfFlights.key.maxValue eq null}">
-                                                <fmt:message key="moreThan" /><c:out value=" " /><fmt:formatNumber value="${numberOfFlights.key.minValue}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" />
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:formatNumber value="${numberOfFlights.key.minValue}" pattern="#,##0" /><c:out value=" - " /><fmt:formatNumber value="${numberOfFlights.key.maxValue}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" />
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </small>
-                                </td>
-                                <td class="right aligned"><fmt:formatNumber value="${numberOfFlights.value}" pattern="#,##0" /></td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-            <div class="four wide column">
-                <h3><fmt:message key="otherStatistics" /></h3>
-                <table class="ui very basic compact table">
-                    <tbody>
-                        <tr>
-                            <td><fmt:message key="numberOfDifferentAirports" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfDifferentAirports}" pattern="#,##0" /></td>
-                        </tr>
-                        <c:if test="${overview.statistics.numberOfDifferentCountries gt 0}">
-                            <tr>
-                                <td><fmt:message key="numberOfDifferentCountries" /></td>
-                                <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfDifferentCountries}" pattern="#,##0" /></td>
-                            </tr>
-                        </c:if>
-                        <tr>
-                            <td><fmt:message key="numberOfDifferentRoutes" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfDifferentRoutes}" pattern="#,##0" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="numberOfDifferentAirlines" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfDifferentAirlines}" pattern="#,##0" /></td>
-                        </tr>
-                        <tr>
-                            <td><fmt:message key="numberOfDifferentAircraftTypes" /></td>
-                            <td class="right aligned"><fmt:formatNumber value="${overview.statistics.numberOfDifferentAircraftTypes}" pattern="#,##0" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="ui divider"></div>
-
-        <div class="ui stackable grid">
             <div class="twelve wide column">
+                <div class="ui grid">
+                    <div class="three column row">
+                        <div class="column">
+                            <ft:overviewTopItemsCard titleKey="flightTotals" items="${overview.general}" />
+                        </div>
+                        <div class="column">
+                            <h3><fmt:message key="flightsByDistance" /></h3>
+                            <table class="ui very basic compact table">
+                                <tbody>
+                                    <c:forEach items="${overview.distances}" var="distance">
+                                        <tr>
+                                            <td><ft:overviewLocalize value="${distance.title}" /></td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${distance.context.minValue eq null and distance.context.maxValue ne null}">
+                                                        <small><c:out escapeXml="false" value="&lt; " /><fmt:formatNumber value="${distance.context.maxValue}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" /></small>
+                                                    </c:when>
+                                                    <c:when test="${distance.context.minValue ne null and distance.context.maxValue eq null}">
+                                                        <small><c:out escapeXml="false" value="&gt; " /><fmt:formatNumber value="${distance.context.minValue}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" /></small>
+                                                    </c:when>
+                                                    <c:when test="${distance.context.minValue ne null and distance.context.maxValue ne null}">
+                                                        <small><fmt:formatNumber value="${distance.context.minValue}" pattern="#,##0" /><c:out value=" - " /><fmt:formatNumber value="${distance.context.maxValue}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" /></small>
+                                                    </c:when>
+                                                </c:choose>
+                                            </td>
+                                            <td class="right aligned">
+                                                <fmt:formatNumber value="${distance.value}" pattern="#,##0" />
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="column">
+                            <ft:overviewTopItemsCard titleKey="otherStatistics" items="${overview.differents}" />
+                        </div>
+                    </div>
+                </div>
+
+                <br />
                 <ft:map />
+
             </div>
+
             <div class="four wide column">
                 <spring:form modelAttribute="overviewQuery" servletRelativeAction="/" cssClass="ui form">
                     <h3><fmt:message key="filterFlights" /></h3>
@@ -228,57 +148,97 @@
             </div>
         </div>
 
-        <c:if test="${overview.statistics.numberOfFlights gt 0}">
-            <div class="ui divider"></div>
-            <h3><fmt:message key="flightStatistics" /></h3>
-            <table class="ui compact table">
-                <thead>
+        <div class="ui divider"></div>
+
+        <table class="ui compact table">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th><fmt:message key="departureAirport" /></th>
+                    <th><fmt:message key="departureDate" /></th>
+                    <th><fmt:message key="arrivalAirport" /></th>
+                    <th><fmt:message key="arrivalDate" /></th>
+                    <th class="right aligned"><fmt:message key="duration" /></th>
+                    <th class="right aligned"><fmt:message key="distance" /></th>
+                    <th class="right aligned"><fmt:message key="averageSpeed" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items="${overview.maxFlights}" var="maxFlightEntry">
                     <tr>
-                        <th>&nbsp;</th>
-                        <th><fmt:message key="departureAirport" /></th>
-                        <th><fmt:message key="departureDate" /></th>
-                        <th><fmt:message key="arrivalAirport" /></th>
-                        <th><fmt:message key="arrivalDate" /></th>
-                        <th class="right aligned"><fmt:message key="duration" /></th>
-                        <th class="right aligned"><fmt:message key="distance" /></th>
-                        <th class="right aligned"><fmt:message key="averageSpeed" /></th>
+                        <td><fmt:message key="${maxFlightEntry.key}" /></td>
+                        <td>
+                            <c:if test="${fn:length(maxFlightEntry.value.departureContact.airport.countryCode) gt 0}">
+                                <i class="${fn:toLowerCase(maxFlightEntry.value.departureContact.airport.countryCode)} flag"></i>
+                            </c:if>
+                            <c:out value="${maxFlightEntry.value.departureContact.airport.code}" />
+                            <c:if test="${maxFlightEntry.value.departureContact.airport.name ne null}">
+                                <br><small><c:out value="${maxFlightEntry.value.departureContact.airport.name}" /></small>
+                            </c:if>
+                        </td>
+                        <td nowrap="nowrap">
+                            <c:out value="${maxFlightEntry.value.departureContact.dateLocal}" />
+                            <c:if test="${maxFlightEntry.value.departureContact.timeLocal ne null}">
+                                <c:out value=" ${maxFlightEntry.value.departureContact.timeLocal}" />
+                            </c:if>
+                            <c:if test="${maxFlightEntry.value.departureContact.airport.timezoneId ne null}">
+                                <br><small><c:out value="${maxFlightEntry.value.departureContact.airport.timezoneId}" /></small>
+                            </c:if>
+                         </td>
+                        <td>
+                            <c:if test="${fn:length(maxFlightEntry.value.arrivalContact.airport.countryCode) gt 0}">
+                                <i class="${fn:toLowerCase(maxFlightEntry.value.arrivalContact.airport.countryCode)} flag"></i>
+                            </c:if>
+                            <c:out value="${maxFlightEntry.value.arrivalContact.airport.code}" />
+                            <c:if test="${maxFlightEntry.value.arrivalContact.airport.name ne null}">
+                                <br><small><c:out value="${maxFlightEntry.value.arrivalContact.airport.name}" /></small>
+                            </c:if>
+                        </td>
+                        <td nowrap="nowrap">
+                            <c:out value="${maxFlightEntry.value.arrivalContact.dateLocal}" />
+                            <c:if test="${maxFlightEntry.value.arrivalContact.timeLocal ne null}">
+                                <c:out value=" ${maxFlightEntry.value.arrivalContact.timeLocal}" />
+                                <c:if test="${maxFlightEntry.value.arrivalContact.airport.timezoneId ne null}">
+                                    <br><small><c:out value="${maxFlightEntry.value.arrivalContact.airport.timezoneId}" /></small>
+                                </c:if>
+                            </c:if>
+                        </td>
+                        <td nowrap="nowrap" class="right aligned">
+                            <c:if test="${fn:length(maxFlightEntry.value.flightDurationString) gt 0}">
+                                <c:out value="${maxFlightEntry.value.flightDurationString}" /><c:out value=" " /><fmt:message key="hoursUnitSign" />
+                            </c:if>
+                        </td>
+                        <td nowrap="nowrap" class="right aligned">
+                            <c:if test="${maxFlightEntry.value.flightDistance ne null}">
+                                <fmt:formatNumber value="${maxFlightEntry.value.flightDistance}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" />
+                            </c:if>
+                        </td>
+                        <td nowrap="nowrap" class="right aligned">
+                            <c:if test="${maxFlightEntry.value.averageSpeed ne null}">
+                                <fmt:formatNumber value="${maxFlightEntry.value.averageSpeed}" pattern="#,##0" /><c:out value=" " /><fmt:message key="kmh" />
+                            </c:if>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <ft:flightInfoRow titleKey="longestFlightByDuration" flight="${overview.statistics.longestFlightByDuration}" />
-                    <ft:flightInfoRow titleKey="longestFlightByDistance" flight="${overview.statistics.longestFlightByDistance}" />
-                    <ft:flightInfoRow titleKey="shortestFlightByDuration" flight="${overview.statistics.shortestFlightByDuration}" />
-                    <ft:flightInfoRow titleKey="shortestFlightByDistance" flight="${overview.statistics.shortestFlightByDistance}" />
-                    <ft:flightInfoRow titleKey="fastestFlight" flight="${overview.statistics.fastestFlight}" />
-                    <ft:flightInfoRow titleKey="slowestFlight" flight="${overview.statistics.slowestFlight}" />
-                </tbody>
-            </table>
-        </c:if>
+                </c:forEach>
+            </tbody>
+        </table>
 
         <div class="ui divider"></div>
 
         <div class="ui stackable grid">
-            <div class="eight wide column">
-                <ft:statisticsTopItemsCard titleKey="topTenAirports" valueKey="airport" items="${overview.statistics.topAirports}" />
-            </div>
-            <div class="eight wide column">
-                <ft:statisticsTopItemsCard titleKey="topTenAirlines" valueKey="airline" items="${overview.statistics.topAirlines}" />
-            </div>
-            <div class="eight wide column">
-                <ft:statisticsTopItemsCard titleKey="topTenRoutes" valueKey="route" items="${overview.statistics.topRoutes}" />
-            </div>
-            <div class="eight wide column">
-                <ft:statisticsTopItemsCard titleKey="topTenAircraftTypes" valueKey="aircraftType" items="${overview.statistics.topAircraftTypes}" />
-            </div>
-            <div class="four wide column">
-                <ft:statisticsDistributionCard titleKey="cabinClasses" valueKey="cabinClass" localizationPrefix="cabinClass" items="${overview.statistics.distributionOfCabinClasses}" />
-            </div>
-            <div class="four wide column">
-                <ft:statisticsDistributionCard titleKey="flightReasons" valueKey="flightReason" localizationPrefix="flightReason" items="${overview.statistics.distributionOfFlightReasons}" />
-            </div>
-            <div class="four wide column">
-                <ft:statisticsDistributionCard titleKey="seatTypes" valueKey="seatType" localizationPrefix="seatType" items="${overview.statistics.distributionOfSeatTypes}" />
-            </div>
+            <c:forEach items="${overview.topFlights}" var="topEntry">
+                <div class="eight wide column">
+                    <ft:overviewTopItemsCard titleKey="${topEntry.key}" items="${topEntry.value}" showIndex="true" showPercentages="true" />
+                </div>
+            </c:forEach>
+        </div>
+
+        <div class="ui stackable grid">
+            <c:forEach items="${overview.distributions}" var="distributionEntry">
+                <div class="four wide column">
+                    <ft:overviewTopItemsCard titleKey="${distributionEntry.key}" items="${distributionEntry.value}" showIndex="false" showPercentages="true" />
+                </div>
+            </c:forEach>
         </div>
 
 	</ft:body>

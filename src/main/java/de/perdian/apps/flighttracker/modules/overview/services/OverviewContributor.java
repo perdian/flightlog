@@ -7,6 +7,6 @@ import de.perdian.apps.flighttracker.modules.overview.model.OverviewBean;
 
 public interface OverviewContributor {
 
-    void contribute(OverviewBean overview, List<FlightBean> flights);
+    void contributeTo(OverviewBean overviewBean, List<FlightBean> flights);
 
 }

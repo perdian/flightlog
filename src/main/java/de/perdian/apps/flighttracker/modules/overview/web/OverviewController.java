@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.perdian.apps.flighttracker.modules.flights.services.FlightsQuery;
-import de.perdian.apps.flighttracker.modules.flights.services.FlightsQueryService;
 import de.perdian.apps.flighttracker.modules.flights.services.FlightsQuery.TimePeriod;
+import de.perdian.apps.flighttracker.modules.flights.services.FlightsQueryService;
 import de.perdian.apps.flighttracker.modules.overview.model.MapModel;
 import de.perdian.apps.flighttracker.modules.overview.model.OverviewBean;
+import de.perdian.apps.flighttracker.modules.overview.services.MapService;
 import de.perdian.apps.flighttracker.modules.overview.services.OverviewService;
 import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerUser;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
@@ -29,6 +30,7 @@ import de.perdian.apps.flighttracker.support.types.FlightReason;
 public class OverviewController {
 
     private OverviewService overviewService = null;
+    private MapService mapService = null;
     private FlightsQueryService flightsQueryService = null;
 
     @RequestMapping(value = "/")
@@ -39,13 +41,12 @@ public class OverviewController {
     @RequestMapping(value = "/map/data", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public MapModel mapData(@AuthenticationPrincipal FlighttrackerUser authenticationPrincipal, @ModelAttribute("overviewQuery") OverviewQuery overviewQuery) {
-        return this.getOverviewService().loadMap(this.createFlightsQuery(authenticationPrincipal, overviewQuery));
+        return this.getMapService().loadMap(this.createFlightsQuery(authenticationPrincipal, overviewQuery));
     }
 
     @ModelAttribute(name = "overview")
     public OverviewBean overview(@AuthenticationPrincipal FlighttrackerUser authenticationPrincipal, @ModelAttribute("overviewQuery") OverviewQuery overviewQuery) {
         return this.getOverviewService().loadOverview(this.createFlightsQuery(authenticationPrincipal, overviewQuery));
-
     }
 
     private FlightsQuery createFlightsQuery(FlighttrackerUser authenticationPrincipal, OverviewQuery overviewQuery) {
@@ -98,6 +99,14 @@ public class OverviewController {
     @Autowired
     void setOverviewService(OverviewService overviewService) {
         this.overviewService = overviewService;
+    }
+
+    MapService getMapService() {
+        return this.mapService;
+    }
+    @Autowired
+    void setMapService(MapService mapService) {
+        this.mapService = mapService;
     }
 
     FlightsQueryService getFlightsQueryService() {
