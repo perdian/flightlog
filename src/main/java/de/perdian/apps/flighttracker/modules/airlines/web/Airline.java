@@ -9,6 +9,14 @@ public class Airline implements Serializable {
     private String code = null;
     private String name = null;
 
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[code=").append(this.getCode());
+        result.append(",name=").append(this.getName());
+        return result.append("]").toString();
+    }
+
     public String getCode() {
         return this.code;
     }
