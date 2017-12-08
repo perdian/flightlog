@@ -7,18 +7,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 
-import de.perdian.apps.flighttracker.configuration.LdapConfiguration;
-import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerSecurityConfigurerAdapter;
-import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerSecurityService;
+import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerWebSecurityConfigurerAdapter;
+import de.perdian.apps.flighttracker.modules.security.web.AuthenticationProviderSkeleton;
 
 @Configuration
 @ConditionalOnExpression("#{environment['flighttracker.authentication.type'] eq 'ldap'}")
-class LdapSecurityConfigurerAdapter extends FlighttrackerSecurityConfigurerAdapter {
+class LdapSecurityConfigurerAdapter extends FlighttrackerWebSecurityConfigurerAdapter {
 
     private LdapConfiguration ldapConfiguration = null;
 
     @Override
-    protected FlighttrackerSecurityService createSecurityService() {
+    protected AuthenticationProviderSkeleton createSecurityService() {
         return new LdapSecurityService();
     }
 

@@ -6,8 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-//@EnableWebSecurity
-public abstract class FlighttrackerSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+public abstract class FlighttrackerWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -39,10 +38,10 @@ public abstract class FlighttrackerSecurityConfigurerAdapter extends WebSecurity
     }
 
     @Bean
-    public FlighttrackerSecurityService flighttrackerSecurityService() {
+    public AuthenticationProviderSkeleton flighttrackerSecurityService() {
         return this.createSecurityService();
     }
 
-    protected abstract FlighttrackerSecurityService createSecurityService();
+    protected abstract AuthenticationProviderSkeleton createSecurityService();
 
 }

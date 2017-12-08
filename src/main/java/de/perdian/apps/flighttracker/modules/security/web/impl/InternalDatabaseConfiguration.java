@@ -1,4 +1,4 @@
-package de.perdian.apps.flighttracker.configuration;
+package de.perdian.apps.flighttracker.modules.security.web.impl;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

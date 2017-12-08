@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public abstract class FlighttrackerSecurityService implements AuthenticationProvider, UserDetailsService {
+public abstract class AuthenticationProviderSkeleton implements AuthenticationProvider, UserDetailsService {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

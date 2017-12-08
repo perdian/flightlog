@@ -10,15 +10,14 @@ import org.springframework.ldap.filter.Filter;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 
-import de.perdian.apps.flighttracker.configuration.LdapConfiguration;
-import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerSecurityService;
+import de.perdian.apps.flighttracker.modules.security.web.AuthenticationProviderSkeleton;
 import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerUser;
 import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.modules.users.services.UsersQuery;
 import de.perdian.apps.flighttracker.modules.users.services.UsersQueryService;
 import de.perdian.apps.flighttracker.modules.users.services.UsersUpdateService;
 
-class LdapSecurityService extends FlighttrackerSecurityService {
+class LdapSecurityService extends AuthenticationProviderSkeleton {
 
     private static final String AUTHENTICATION_SOURCE_IDENTIFIER = "ldap";
 
