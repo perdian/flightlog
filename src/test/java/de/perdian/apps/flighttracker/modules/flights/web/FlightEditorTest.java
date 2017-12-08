@@ -3,8 +3,8 @@ package de.perdian.apps.flighttracker.modules.flights.web;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.perdian.apps.flighttracker.modules.flights.FlightsTestHelper;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
@@ -17,24 +17,24 @@ public class FlightEditorTest {
     @Test
     public void constructor() {
         FlightEditor flightEditor = new FlightEditor(FlightsTestHelper.createDefaultFlightBean());
-        Assert.assertEquals(Long.valueOf(42), flightEditor.getEntityId());
-        Assert.assertEquals("Frankfurt am Main", flightEditor.getAircraftName());
-        Assert.assertEquals("D-AIMA", flightEditor.getAircraftRegistration());
-        Assert.assertEquals("Airbus A380-800", flightEditor.getAircraftType());
-        Assert.assertEquals("MCO", flightEditor.getArrivalAirportCode());
-        Assert.assertEquals("2017-12-08", flightEditor.getArrivalDateLocal());
-        Assert.assertEquals("13:12", flightEditor.getArrivalTimeLocal());
-        Assert.assertEquals("ECONOMY", flightEditor.getCabinClass());
-        Assert.assertEquals("this is a comment", flightEditor.getComment());
-        Assert.assertEquals("CGN", flightEditor.getDepartureAirportCode());
-        Assert.assertEquals("2017-12-08", flightEditor.getDepartureDateLocal());
-        Assert.assertEquals("08:10", flightEditor.getDepartureTimeLocal());
-        Assert.assertEquals("1234", flightEditor.getFlightDistance());
-        Assert.assertEquals("", flightEditor.getFlightDuration());
-        Assert.assertEquals("1234", flightEditor.getFlightNumber());
-        Assert.assertEquals("PRIVATE", flightEditor.getFlightReason());
-        Assert.assertEquals("42F", flightEditor.getSeatNumber());
-        Assert.assertEquals("WINDOW", flightEditor.getSeatType());
+        Assertions.assertEquals(Long.valueOf(42), flightEditor.getEntityId());
+        Assertions.assertEquals("Frankfurt am Main", flightEditor.getAircraftName());
+        Assertions.assertEquals("D-AIMA", flightEditor.getAircraftRegistration());
+        Assertions.assertEquals("Airbus A380-800", flightEditor.getAircraftType());
+        Assertions.assertEquals("MCO", flightEditor.getArrivalAirportCode());
+        Assertions.assertEquals("2017-12-08", flightEditor.getArrivalDateLocal());
+        Assertions.assertEquals("13:12", flightEditor.getArrivalTimeLocal());
+        Assertions.assertEquals("ECONOMY", flightEditor.getCabinClass());
+        Assertions.assertEquals("this is a comment", flightEditor.getComment());
+        Assertions.assertEquals("CGN", flightEditor.getDepartureAirportCode());
+        Assertions.assertEquals("2017-12-08", flightEditor.getDepartureDateLocal());
+        Assertions.assertEquals("08:10", flightEditor.getDepartureTimeLocal());
+        Assertions.assertEquals("1234", flightEditor.getFlightDistance());
+        Assertions.assertEquals("", flightEditor.getFlightDuration());
+        Assertions.assertEquals("1234", flightEditor.getFlightNumber());
+        Assertions.assertEquals("PRIVATE", flightEditor.getFlightReason());
+        Assertions.assertEquals("42F", flightEditor.getSeatNumber());
+        Assertions.assertEquals("WINDOW", flightEditor.getSeatType());
     }
 
     @Test
@@ -45,25 +45,25 @@ public class FlightEditorTest {
         FlightBean newFlightBean = new FlightBean();
         flightEditor.copyValuesInto(newFlightBean);
 
-        Assert.assertEquals("Frankfurt am Main", newFlightBean.getAircraft().getName());
-        Assert.assertEquals("D-AIMA", newFlightBean.getAircraft().getRegistration());
-        Assert.assertEquals("Airbus A380-800", newFlightBean.getAircraft().getType());
-        Assert.assertEquals("MCO", newFlightBean.getArrivalContact().getAirport().getCode());
-        Assert.assertEquals(LocalDate.of(2017, 12, 8), newFlightBean.getArrivalContact().getDateLocal());
-        Assert.assertNull(newFlightBean.getArrivalContact().getDateOffset());
-        Assert.assertEquals(LocalTime.of(13, 12), newFlightBean.getArrivalContact().getTimeLocal());
-        Assert.assertNull(newFlightBean.getAverageSpeed());
-        Assert.assertEquals(CabinClass.ECONOMY, newFlightBean.getCabinClass());
-        Assert.assertEquals("this is a comment", newFlightBean.getComment());
-        Assert.assertEquals("CGN", newFlightBean.getDepartureContact().getAirport().getCode());
-        Assert.assertEquals(LocalDate.of(2017, 12, 8), newFlightBean.getDepartureContact().getDateLocal());
-        Assert.assertNull(newFlightBean.getDepartureContact().getDateOffset());
-        Assert.assertEquals(LocalTime.of(8, 10), newFlightBean.getDepartureContact().getTimeLocal());
-        Assert.assertEquals(Integer.valueOf(1234), newFlightBean.getFlightDistance());
-        Assert.assertEquals("1234", newFlightBean.getFlightNumber());
-        Assert.assertEquals(FlightReason.PRIVATE, newFlightBean.getFlightReason());
-        Assert.assertEquals("42F", newFlightBean.getSeatNumber());
-        Assert.assertEquals(SeatType.WINDOW, newFlightBean.getSeatType());
+        Assertions.assertEquals("Frankfurt am Main", newFlightBean.getAircraft().getName());
+        Assertions.assertEquals("D-AIMA", newFlightBean.getAircraft().getRegistration());
+        Assertions.assertEquals("Airbus A380-800", newFlightBean.getAircraft().getType());
+        Assertions.assertEquals("MCO", newFlightBean.getArrivalContact().getAirport().getCode());
+        Assertions.assertEquals(LocalDate.of(2017, 12, 8), newFlightBean.getArrivalContact().getDateLocal());
+        Assertions.assertNull(newFlightBean.getArrivalContact().getDateOffset());
+        Assertions.assertEquals(LocalTime.of(13, 12), newFlightBean.getArrivalContact().getTimeLocal());
+        Assertions.assertNull(newFlightBean.getAverageSpeed());
+        Assertions.assertEquals(CabinClass.ECONOMY, newFlightBean.getCabinClass());
+        Assertions.assertEquals("this is a comment", newFlightBean.getComment());
+        Assertions.assertEquals("CGN", newFlightBean.getDepartureContact().getAirport().getCode());
+        Assertions.assertEquals(LocalDate.of(2017, 12, 8), newFlightBean.getDepartureContact().getDateLocal());
+        Assertions.assertNull(newFlightBean.getDepartureContact().getDateOffset());
+        Assertions.assertEquals(LocalTime.of(8, 10), newFlightBean.getDepartureContact().getTimeLocal());
+        Assertions.assertEquals(Integer.valueOf(1234), newFlightBean.getFlightDistance());
+        Assertions.assertEquals("1234", newFlightBean.getFlightNumber());
+        Assertions.assertEquals(FlightReason.PRIVATE, newFlightBean.getFlightReason());
+        Assertions.assertEquals("42F", newFlightBean.getSeatNumber());
+        Assertions.assertEquals(SeatType.WINDOW, newFlightBean.getSeatType());
 
     }
 

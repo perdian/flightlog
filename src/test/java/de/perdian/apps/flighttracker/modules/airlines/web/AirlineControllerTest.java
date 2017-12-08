@@ -1,7 +1,7 @@
 package de.perdian.apps.flighttracker.modules.airlines.web;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineEntity;
@@ -23,22 +23,21 @@ public class AirlineControllerTest {
         airlineController.setAirlinesRepository(airlinesRepository);
 
         Airline airline = airlineController.doAirline("LH");
-        Assert.assertEquals("LH", airline.getCode());
-        Assert.assertEquals("Lufthansa", airline.getName());
+        Assertions.assertEquals("LH", airline.getCode());
+        Assertions.assertEquals("Lufthansa", airline.getName());
 
         Mockito.verify(airlinesRepository).loadAirlineByIataCode(Mockito.eq("LH"));
         Mockito.verifyNoMoreInteractions(airlinesRepository);
 
     }
 
-    @Test(expected = AirlineNotFoundException.class)
+    @Test
     public void doAirlineNoAirlineFound() {
-
-        AirlineController airlineController = new AirlineController();
-        airlineController.setAirlinesRepository(Mockito.mock(AirlinesRepository.class));
-
-        airlineController.doAirline("LH");
-
+        Assertions.assertThrows(AirlineNotFoundException.class, () -> {
+            AirlineController airlineController = new AirlineController();
+            airlineController.setAirlinesRepository(Mockito.mock(AirlinesRepository.class));
+            airlineController.doAirline("LH");
+        });
     }
 
 }

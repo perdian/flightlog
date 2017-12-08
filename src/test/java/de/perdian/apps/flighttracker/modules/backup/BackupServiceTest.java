@@ -12,9 +12,10 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.scheduling.TaskScheduler;
@@ -22,8 +23,6 @@ import org.springframework.scheduling.support.CronTrigger;
 
 import com.google.common.jimfs.Jimfs;
 
-import de.perdian.apps.flighttracker.modules.backup.BackupConfiguration;
-import de.perdian.apps.flighttracker.modules.backup.BackupService;
 import de.perdian.apps.flighttracker.modules.importexport.data.DataItem;
 import de.perdian.apps.flighttracker.modules.importexport.services.ImportExportService;
 import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
@@ -49,7 +48,7 @@ public class BackupServiceTest {
 
             ArgumentCaptor<CronTrigger> triggerCaptor = ArgumentCaptor.forClass(CronTrigger.class);
             Mockito.verify(taskScheduler).schedule(Mockito.any(), triggerCaptor.capture());
-            Assert.assertEquals("0 0 5 * * 1", triggerCaptor.getValue().getExpression());
+            Assertions.assertEquals("0 0 5 * * 1", triggerCaptor.getValue().getExpression());
 
         }
     }
@@ -123,16 +122,16 @@ public class BackupServiceTest {
             backupService.executeBackup(dummyPath);
 
             Path backupFilePath = dummyPath.resolve("flighttracker-backup-20171009-101530.zip");
-            Assert.assertTrue(Files.exists(backupFilePath));
+            Assertions.assertTrue(Files.exists(backupFilePath));
             try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(backupFilePath))) {
                 List<String> zipEntryNames = new ArrayList<>();
                 for (ZipEntry zipEntry = zipInputStream.getNextEntry(); zipEntry != null; zipEntry = zipInputStream.getNextEntry()) {
                     zipEntryNames.add(zipEntry.getName());
                 }
-                Assert.assertEquals(3, zipEntryNames.size());
-                Assert.assertThat(zipEntryNames, Matchers.hasItem("user-undefined/flights.xml"));
-                Assert.assertThat(zipEntryNames, Matchers.hasItem("user-2/user.xml"));
-                Assert.assertThat(zipEntryNames, Matchers.hasItem("user-2/flights.xml"));
+                Assertions.assertEquals(3, zipEntryNames.size());
+                MatcherAssert.assertThat(zipEntryNames, Matchers.hasItem("user-undefined/flights.xml"));
+                MatcherAssert.assertThat(zipEntryNames, Matchers.hasItem("user-2/user.xml"));
+                MatcherAssert.assertThat(zipEntryNames, Matchers.hasItem("user-2/flights.xml"));
             }
 
         }

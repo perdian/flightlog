@@ -3,9 +3,10 @@ package de.perdian.apps.flighttracker.modules.airports.persistence;
 import java.io.IOException;
 import java.util.Collections;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 
 public class AirportsRepositoryImplTest {
@@ -18,9 +19,9 @@ public class AirportsRepositoryImplTest {
         AirportsRepositoryImpl repositoryImpl = new AirportsRepositoryImpl();
         repositoryImpl.setAirportBeansByIataCode(Collections.singletonMap("CGN", airportEntity));
 
-        Assert.assertEquals(airportEntity, repositoryImpl.loadAirportByIataCode("CGN"));
-        Assert.assertNull(repositoryImpl.loadAirportByIataCode("INVALID"));
-        Assert.assertNull(repositoryImpl.loadAirportByIataCode(null));
+        Assertions.assertEquals(airportEntity, repositoryImpl.loadAirportByIataCode("CGN"));
+        Assertions.assertNull(repositoryImpl.loadAirportByIataCode("INVALID"));
+        Assertions.assertNull(repositoryImpl.loadAirportByIataCode(null));
 
     }
 
@@ -31,8 +32,8 @@ public class AirportsRepositoryImplTest {
         repositoryImpl.setResourceLoader(new DefaultResourceLoader());
         repositoryImpl.initialize();
 
-        Assert.assertThat(repositoryImpl.getAirportBeansByIataCode().size(), Matchers.greaterThan(0));
-        Assert.assertEquals("Cologne Bonn Airport", repositoryImpl.getAirportBeansByIataCode().get("CGN").getName());
+        MatcherAssert.assertThat(repositoryImpl.getAirportBeansByIataCode().size(), Matchers.greaterThan(0));
+        Assertions.assertEquals("Cologne Bonn Airport", repositoryImpl.getAirportBeansByIataCode().get("CGN").getName());
 
     }
 

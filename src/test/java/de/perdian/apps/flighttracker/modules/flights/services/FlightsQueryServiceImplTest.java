@@ -7,9 +7,10 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsCollectionWithSize;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -39,39 +40,39 @@ public class FlightsQueryServiceImplTest {
         serviceImpl.setFlightsRepository(flightsRepository);
 
         FlightBean flightBean = serviceImpl.loadFlightById(Long.valueOf(4711));
-        Assert.assertNotNull(flightBean);
-        Assert.assertEquals("Frankfurt am Main", flightBean.getAircraft().getName());
-        Assert.assertEquals("D-AIMA", flightBean.getAircraft().getRegistration());
-        Assert.assertEquals("Airbus A380-800", flightBean.getAircraft().getType());
-        Assert.assertEquals("MCO", flightBean.getArrivalContact().getAirport().getCode());
-        Assert.assertEquals("US", flightBean.getArrivalContact().getAirport().getCountryCode());
-        Assert.assertEquals("Orlando International Airport", flightBean.getArrivalContact().getAirport().getName());
-        Assert.assertEquals(ZoneId.of("America/New_York"), flightBean.getArrivalContact().getAirport().getTimezoneId());
-        Assert.assertEquals(ZoneOffset.ofHours(-4), flightBean.getArrivalContact().getAirport().getTimezoneOffset());
-        Assert.assertEquals(LocalDate.of(2017, 12, 8), flightBean.getArrivalContact().getDateLocal());
-        Assert.assertNull(flightBean.getArrivalContact().getDateOffset());
-        Assert.assertEquals(LocalDate.of(2017, 12, 8).atTime(13, 12).atZone(ZoneId.of("America/New_York")).toInstant(), flightBean.getArrivalContact().getDateTimeUtc());
-        Assert.assertEquals(LocalTime.of(13, 12), flightBean.getArrivalContact().getTimeLocal());
-        Assert.assertEquals(164.5d, flightBean.getAverageSpeed(), 0.1);
-        Assert.assertEquals(CabinClass.ECONOMY, flightBean.getCabinClass());
-        Assert.assertEquals("this is a comment", flightBean.getComment());
-        Assert.assertEquals("CGN", flightBean.getDepartureContact().getAirport().getCode());
-        Assert.assertEquals("DE", flightBean.getDepartureContact().getAirport().getCountryCode());
-        Assert.assertEquals("Cologne Bonn Airport", flightBean.getDepartureContact().getAirport().getName());
-        Assert.assertEquals(ZoneId.of("Europe/Berlin"), flightBean.getDepartureContact().getAirport().getTimezoneId());
-        Assert.assertEquals(ZoneOffset.ofHours(2), flightBean.getDepartureContact().getAirport().getTimezoneOffset());
-        Assert.assertEquals(LocalDate.of(2017, 12, 8), flightBean.getDepartureContact().getDateLocal());
-        Assert.assertNull(flightBean.getDepartureContact().getDateOffset());
-        Assert.assertEquals(LocalDate.of(2017, 12, 8).atTime(8, 10).atZone(ZoneId.of("Europe/Berlin")).toInstant(), flightBean.getDepartureContact().getDateTimeUtc());
-        Assert.assertEquals(LocalTime.of(8, 10), flightBean.getDepartureContact().getTimeLocal());
-        Assert.assertEquals(Long.valueOf(42), flightBean.getEntityId());
-        Assert.assertEquals(Integer.valueOf(1234), flightBean.getFlightDistance());
-        Assert.assertEquals(Duration.ofHours(7).plusMinutes(30), flightBean.getFlightDuration());
-        Assert.assertEquals("7:30", flightBean.getFlightDurationString());
-        Assert.assertEquals("1234", flightBean.getFlightNumber());
-        Assert.assertEquals(FlightReason.PRIVATE, flightBean.getFlightReason());
-        Assert.assertEquals("42F", flightBean.getSeatNumber());
-        Assert.assertEquals(SeatType.WINDOW, flightBean.getSeatType());
+        Assertions.assertNotNull(flightBean);
+        Assertions.assertEquals("Frankfurt am Main", flightBean.getAircraft().getName());
+        Assertions.assertEquals("D-AIMA", flightBean.getAircraft().getRegistration());
+        Assertions.assertEquals("Airbus A380-800", flightBean.getAircraft().getType());
+        Assertions.assertEquals("MCO", flightBean.getArrivalContact().getAirport().getCode());
+        Assertions.assertEquals("US", flightBean.getArrivalContact().getAirport().getCountryCode());
+        Assertions.assertEquals("Orlando International Airport", flightBean.getArrivalContact().getAirport().getName());
+        Assertions.assertEquals(ZoneId.of("America/New_York"), flightBean.getArrivalContact().getAirport().getTimezoneId());
+        Assertions.assertEquals(ZoneOffset.ofHours(-4), flightBean.getArrivalContact().getAirport().getTimezoneOffset());
+        Assertions.assertEquals(LocalDate.of(2017, 12, 8), flightBean.getArrivalContact().getDateLocal());
+        Assertions.assertNull(flightBean.getArrivalContact().getDateOffset());
+        Assertions.assertEquals(LocalDate.of(2017, 12, 8).atTime(13, 12).atZone(ZoneId.of("America/New_York")).toInstant(), flightBean.getArrivalContact().getDateTimeUtc());
+        Assertions.assertEquals(LocalTime.of(13, 12), flightBean.getArrivalContact().getTimeLocal());
+        Assertions.assertEquals(164.5d, flightBean.getAverageSpeed(), 0.1);
+        Assertions.assertEquals(CabinClass.ECONOMY, flightBean.getCabinClass());
+        Assertions.assertEquals("this is a comment", flightBean.getComment());
+        Assertions.assertEquals("CGN", flightBean.getDepartureContact().getAirport().getCode());
+        Assertions.assertEquals("DE", flightBean.getDepartureContact().getAirport().getCountryCode());
+        Assertions.assertEquals("Cologne Bonn Airport", flightBean.getDepartureContact().getAirport().getName());
+        Assertions.assertEquals(ZoneId.of("Europe/Berlin"), flightBean.getDepartureContact().getAirport().getTimezoneId());
+        Assertions.assertEquals(ZoneOffset.ofHours(2), flightBean.getDepartureContact().getAirport().getTimezoneOffset());
+        Assertions.assertEquals(LocalDate.of(2017, 12, 8), flightBean.getDepartureContact().getDateLocal());
+        Assertions.assertNull(flightBean.getDepartureContact().getDateOffset());
+        Assertions.assertEquals(LocalDate.of(2017, 12, 8).atTime(8, 10).atZone(ZoneId.of("Europe/Berlin")).toInstant(), flightBean.getDepartureContact().getDateTimeUtc());
+        Assertions.assertEquals(LocalTime.of(8, 10), flightBean.getDepartureContact().getTimeLocal());
+        Assertions.assertEquals(Long.valueOf(42), flightBean.getEntityId());
+        Assertions.assertEquals(Integer.valueOf(1234), flightBean.getFlightDistance());
+        Assertions.assertEquals(Duration.ofHours(7).plusMinutes(30), flightBean.getFlightDuration());
+        Assertions.assertEquals("7:30", flightBean.getFlightDurationString());
+        Assertions.assertEquals("1234", flightBean.getFlightNumber());
+        Assertions.assertEquals(FlightReason.PRIVATE, flightBean.getFlightReason());
+        Assertions.assertEquals("42F", flightBean.getSeatNumber());
+        Assertions.assertEquals(SeatType.WINDOW, flightBean.getSeatType());
 
     }
 
@@ -83,8 +84,8 @@ public class FlightsQueryServiceImplTest {
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(Mockito.mock(FlightsRepository.class));
 
-        Assert.assertNull(serviceImpl.loadFlightById(Long.valueOf(42)));
-        Assert.assertNull(serviceImpl.loadFlightById(null));
+        Assertions.assertNull(serviceImpl.loadFlightById(Long.valueOf(42)));
+        Assertions.assertNull(serviceImpl.loadFlightById(null));
 
     }
 
@@ -102,8 +103,8 @@ public class FlightsQueryServiceImplTest {
 
         FlightsQuery flightsQuery = new FlightsQuery();
         PaginatedList<FlightBean> flightBeans = serviceImpl.loadFlights(flightsQuery);
-        Assert.assertNotNull(flightBeans);
-        Assert.assertThat(flightBeans.getItems(), IsCollectionWithSize.hasSize(1));
+        Assertions.assertNotNull(flightBeans);
+        MatcherAssert.assertThat(flightBeans.getItems(), IsCollectionWithSize.hasSize(1));
 
     }
 

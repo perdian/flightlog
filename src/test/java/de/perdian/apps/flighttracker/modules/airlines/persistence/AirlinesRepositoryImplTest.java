@@ -3,9 +3,10 @@ package de.perdian.apps.flighttracker.modules.airlines.persistence;
 import java.io.IOException;
 import java.util.Collections;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 
 public class AirlinesRepositoryImplTest {
@@ -19,9 +20,9 @@ public class AirlinesRepositoryImplTest {
         AirlinesRepositoryImpl repositoryImpl = new AirlinesRepositoryImpl();
         repositoryImpl.setAirlineBeansByIataCode(Collections.singletonMap("IATA_CODE", airlineEntity));
 
-        Assert.assertEquals(airlineEntity, repositoryImpl.loadAirlineByIataCode("IATA_CODE"));
-        Assert.assertNull(repositoryImpl.loadAirlineByIataCode("INVALID"));
-        Assert.assertNull(repositoryImpl.loadAirlineByIataCode(null));
+        Assertions.assertEquals(airlineEntity, repositoryImpl.loadAirlineByIataCode("IATA_CODE"));
+        Assertions.assertNull(repositoryImpl.loadAirlineByIataCode("INVALID"));
+        Assertions.assertNull(repositoryImpl.loadAirlineByIataCode(null));
 
     }
 
@@ -34,9 +35,9 @@ public class AirlinesRepositoryImplTest {
         AirlinesRepositoryImpl repositoryImpl = new AirlinesRepositoryImpl();
         repositoryImpl.setAirlineBeans(Collections.singletonList(airlineEntity));
 
-        Assert.assertEquals(airlineEntity, repositoryImpl.loadAirlineByName("Colonial Movers"));
-        Assert.assertNull(repositoryImpl.loadAirlineByName("INVALID"));
-        Assert.assertNull(repositoryImpl.loadAirlineByName(null));
+        Assertions.assertEquals(airlineEntity, repositoryImpl.loadAirlineByName("Colonial Movers"));
+        Assertions.assertNull(repositoryImpl.loadAirlineByName("INVALID"));
+        Assertions.assertNull(repositoryImpl.loadAirlineByName(null));
 
     }
 
@@ -47,9 +48,9 @@ public class AirlinesRepositoryImplTest {
         repositoryImpl.setResourceLoader(new DefaultResourceLoader());
         repositoryImpl.initialize();
 
-        Assert.assertThat(repositoryImpl.getAirlineBeans().size(), Matchers.greaterThan(0));
-        Assert.assertThat(repositoryImpl.getAirlineBeansByIataCode().size(), Matchers.greaterThan(0));
-        Assert.assertEquals("Lufthansa", repositoryImpl.getAirlineBeansByIataCode().get("LH").getName());
+        MatcherAssert.assertThat(repositoryImpl.getAirlineBeans().size(), Matchers.greaterThan(0));
+        MatcherAssert.assertThat(repositoryImpl.getAirlineBeansByIataCode().size(), Matchers.greaterThan(0));
+        Assertions.assertEquals("Lufthansa", repositoryImpl.getAirlineBeansByIataCode().get("LH").getName());
 
     }
 

@@ -3,9 +3,10 @@ package de.perdian.apps.flighttracker.modules.aircrafts.persistence;
 import java.io.IOException;
 import java.util.Collections;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 
 public class AircraftTypesRepositoryImplTest {
@@ -18,10 +19,10 @@ public class AircraftTypesRepositoryImplTest {
         repositoryImpl.setAircraftTypeBeansByIataCode(Collections.singletonMap("IATA_CODE", aircraftTypeEntity));
         repositoryImpl.setAircraftTypeBeansByIcaoCode(Collections.singletonMap("ICAO_CODE", aircraftTypeEntity));
 
-        Assert.assertEquals(aircraftTypeEntity, repositoryImpl.loadAircraftTypeByCode("IATA_CODE"));
-        Assert.assertEquals(aircraftTypeEntity, repositoryImpl.loadAircraftTypeByCode("ICAO_CODE"));
-        Assert.assertNull(repositoryImpl.loadAircraftTypeByCode("INVALID"));
-        Assert.assertNull(repositoryImpl.loadAircraftTypeByCode(null));
+        Assertions.assertEquals(aircraftTypeEntity, repositoryImpl.loadAircraftTypeByCode("IATA_CODE"));
+        Assertions.assertEquals(aircraftTypeEntity, repositoryImpl.loadAircraftTypeByCode("ICAO_CODE"));
+        Assertions.assertNull(repositoryImpl.loadAircraftTypeByCode("INVALID"));
+        Assertions.assertNull(repositoryImpl.loadAircraftTypeByCode(null));
 
     }
 
@@ -33,10 +34,10 @@ public class AircraftTypesRepositoryImplTest {
         repositoryImpl.setAircraftTypeBeansByIataCode(Collections.singletonMap("IATA_CODE", aircraftTypeEntity));
         repositoryImpl.setAircraftTypeBeansByIcaoCode(Collections.singletonMap("ICAO_CODE", aircraftTypeEntity));
 
-        Assert.assertEquals(aircraftTypeEntity, repositoryImpl.loadAircraftTypeByIataCode("IATA_CODE"));
-        Assert.assertNull(repositoryImpl.loadAircraftTypeByIataCode("ICAO_CODE"));
-        Assert.assertNull(repositoryImpl.loadAircraftTypeByIataCode("INVALID"));
-        Assert.assertNull(repositoryImpl.loadAircraftTypeByIataCode(null));
+        Assertions.assertEquals(aircraftTypeEntity, repositoryImpl.loadAircraftTypeByIataCode("IATA_CODE"));
+        Assertions.assertNull(repositoryImpl.loadAircraftTypeByIataCode("ICAO_CODE"));
+        Assertions.assertNull(repositoryImpl.loadAircraftTypeByIataCode("INVALID"));
+        Assertions.assertNull(repositoryImpl.loadAircraftTypeByIataCode(null));
 
     }
 
@@ -48,10 +49,10 @@ public class AircraftTypesRepositoryImplTest {
         repositoryImpl.setAircraftTypeBeansByIataCode(Collections.singletonMap("IATA_CODE", aircraftTypeEntity));
         repositoryImpl.setAircraftTypeBeansByIcaoCode(Collections.singletonMap("ICAO_CODE", aircraftTypeEntity));
 
-        Assert.assertNull(repositoryImpl.loadAircraftTypeByIcaoCode("IATA_CODE"));
-        Assert.assertEquals(aircraftTypeEntity, repositoryImpl.loadAircraftTypeByIcaoCode("ICAO_CODE"));
-        Assert.assertNull(repositoryImpl.loadAircraftTypeByIcaoCode("INVALID"));
-        Assert.assertNull(repositoryImpl.loadAircraftTypeByIcaoCode(null));
+        Assertions.assertNull(repositoryImpl.loadAircraftTypeByIcaoCode("IATA_CODE"));
+        Assertions.assertEquals(aircraftTypeEntity, repositoryImpl.loadAircraftTypeByIcaoCode("ICAO_CODE"));
+        Assertions.assertNull(repositoryImpl.loadAircraftTypeByIcaoCode("INVALID"));
+        Assertions.assertNull(repositoryImpl.loadAircraftTypeByIcaoCode(null));
 
     }
 
@@ -62,9 +63,9 @@ public class AircraftTypesRepositoryImplTest {
         repositoryImpl.setResourceLoader(new DefaultResourceLoader());
         repositoryImpl.initialize();
 
-        Assert.assertThat(repositoryImpl.getAircraftTypeBeansByIataCode().size(), Matchers.greaterThan(0));
-        Assert.assertEquals("Airbus A380-800", repositoryImpl.getAircraftTypeBeansByIataCode().get("388").getTitle());
-        Assert.assertEquals("Airbus A380-800", repositoryImpl.getAircraftTypeBeansByIcaoCode().get("A388").getTitle());
+        MatcherAssert.assertThat(repositoryImpl.getAircraftTypeBeansByIataCode().size(), Matchers.greaterThan(0));
+        Assertions.assertEquals("Airbus A380-800", repositoryImpl.getAircraftTypeBeansByIataCode().get("388").getTitle());
+        Assertions.assertEquals("Airbus A380-800", repositoryImpl.getAircraftTypeBeansByIcaoCode().get("A388").getTitle());
 
     }
 

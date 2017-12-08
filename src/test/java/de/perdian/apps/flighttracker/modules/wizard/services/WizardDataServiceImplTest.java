@@ -3,13 +3,9 @@ package de.perdian.apps.flighttracker.modules.wizard.services;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import de.perdian.apps.flighttracker.modules.wizard.services.WizardData;
-import de.perdian.apps.flighttracker.modules.wizard.services.WizardDataFactory;
-import de.perdian.apps.flighttracker.modules.wizard.services.WizardDataServiceImpl;
 
 public class WizardDataServiceImplTest {
 
@@ -26,7 +22,7 @@ public class WizardDataServiceImplTest {
         serviceImpl.setFactories(Arrays.asList(factory1, factory2, factory3));
 
         WizardData flightDataResolved = serviceImpl.createData("LH", "123", LocalDate.of(2017, 10, 9));
-        Assert.assertEquals(data2, flightDataResolved);
+        Assertions.assertEquals(data2, flightDataResolved);
         Mockito.verify(factory1).createData(Mockito.eq("LH"), Mockito.eq("123"), Mockito.eq(LocalDate.of(2017, 10, 9)));
         Mockito.verify(factory2).createData(Mockito.eq("LH"), Mockito.eq("123"), Mockito.eq(LocalDate.of(2017, 10, 9)));
         Mockito.verifyNoMoreInteractions(factory3);
@@ -42,7 +38,7 @@ public class WizardDataServiceImplTest {
         WizardDataServiceImpl serviceImpl = new WizardDataServiceImpl();
         serviceImpl.setFactories(Arrays.asList(factory1, factory2));
 
-        Assert.assertNull(serviceImpl.createData("LH", "123", LocalDate.of(2017, 10, 9)));
+        Assertions.assertNull(serviceImpl.createData("LH", "123", LocalDate.of(2017, 10, 9)));
         Mockito.verify(factory1).createData(Mockito.eq("LH"), Mockito.eq("123"), Mockito.eq(LocalDate.of(2017, 10, 9)));
         Mockito.verify(factory2).createData(Mockito.eq("LH"), Mockito.eq("123"), Mockito.eq(LocalDate.of(2017, 10, 9)));
 
@@ -58,7 +54,7 @@ public class WizardDataServiceImplTest {
         WizardDataServiceImpl serviceImpl = new WizardDataServiceImpl();
         serviceImpl.setFactories(Arrays.asList(factory1, factory2));
 
-        Assert.assertNull(serviceImpl.createData("LH", "123", LocalDate.of(2017, 10, 9)));
+        Assertions.assertNull(serviceImpl.createData("LH", "123", LocalDate.of(2017, 10, 9)));
         Mockito.verify(factory1).createData(Mockito.eq("LH"), Mockito.eq("123"), Mockito.eq(LocalDate.of(2017, 10, 9)));
         Mockito.verify(factory2).createData(Mockito.eq("LH"), Mockito.eq("123"), Mockito.eq(LocalDate.of(2017, 10, 9)));
 
