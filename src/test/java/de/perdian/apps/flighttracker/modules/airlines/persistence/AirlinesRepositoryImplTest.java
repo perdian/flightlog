@@ -21,6 +21,7 @@ public class AirlinesRepositoryImplTest {
 
         Assert.assertEquals(airlineEntity, repositoryImpl.loadAirlineByIataCode("IATA_CODE"));
         Assert.assertNull(repositoryImpl.loadAirlineByIataCode("INVALID"));
+        Assert.assertNull(repositoryImpl.loadAirlineByIataCode(null));
 
     }
 
@@ -35,6 +36,7 @@ public class AirlinesRepositoryImplTest {
 
         Assert.assertEquals(airlineEntity, repositoryImpl.loadAirlineByName("Colonial Movers"));
         Assert.assertNull(repositoryImpl.loadAirlineByName("INVALID"));
+        Assert.assertNull(repositoryImpl.loadAirlineByName(null));
 
     }
 

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,6 @@ class AirportsRepositoryImpl implements AirportsRepository {
     private static final Logger log = LoggerFactory.getLogger(AirportsRepositoryImpl.class);
 
     private ResourceLoader resourceLoader = null;
-    private List<AirportEntity> airportBeans = null;
     private Map<String, AirportEntity> airportBeansByIataCode = null;
 
     @PostConstruct
@@ -55,7 +53,6 @@ class AirportsRepositoryImpl implements AirportsRepository {
         Resource airportsResource = this.getResourceLoader().getResource("classpath:de/perdian/apps/flighttracker/data/airports-extended.dat");
         log.info("Loading airports from resource: {}", airportsResource);
 
-        List<AirportEntity> airportBeans = new ArrayList<>();
         Map<String, AirportEntity> airportBeansByIataCode = new LinkedHashMap<>();
         try (BufferedReader airportsReader = new BufferedReader(new InputStreamReader(airportsResource.getInputStream(), "UTF-8"))) {
             for (String airportLine = airportsReader.readLine(); airportLine != null; airportLine = airportsReader.readLine()) {
@@ -88,7 +85,6 @@ class AirportsRepositoryImpl implements AirportsRepository {
                     airportBean.setTimezoneId(zoneId);
                     airportBean.setType(lineFields.get(12));
 
-                    airportBeans.add(airportBean);
                     airportBeansByIataCode.put(iataCode, airportBean);
 
                 } catch (Exception e) {
@@ -96,9 +92,9 @@ class AirportsRepositoryImpl implements AirportsRepository {
                 }
             }
         }
-        this.setAirportBeans(airportBeans);
+
         this.setAirportBeansByIataCode(airportBeansByIataCode);
-        log.debug("Loaded {} airports from resource: {}", airportBeans.size(), airportsResource);
+        log.debug("Loaded {} airports from resource: {}", airportBeansByIataCode.size(), airportsResource);
 
     }
 
@@ -113,13 +109,6 @@ class AirportsRepositoryImpl implements AirportsRepository {
     @Autowired
     void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
-    }
-
-    List<AirportEntity> getAirportBeans() {
-        return this.airportBeans;
-    }
-    void setAirportBeans(List<AirportEntity> airportBeans) {
-        this.airportBeans = airportBeans;
     }
 
     Map<String, AirportEntity> getAirportBeansByIataCode() {
