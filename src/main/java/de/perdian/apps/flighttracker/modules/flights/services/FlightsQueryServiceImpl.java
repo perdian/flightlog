@@ -2,6 +2,7 @@ package de.perdian.apps.flighttracker.modules.flights.services;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +54,7 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
 
     @Override
     public FlightBean loadFlightById(Long id) {
-        return this.convertFlightEntitiy(this.getFlightsRepository().findOne(id));
+        return Optional.ofNullable(this.getFlightsRepository().findOne(id)).map(this::convertFlightEntitiy).orElse(null);
     }
 
     private FlightBean convertFlightEntitiy(FlightEntity flightEntitiy) {

@@ -10,6 +10,15 @@ public class AircraftBean implements Serializable {
     private String registration = null;
     private String name = null;
 
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[type=").append(this.getType());
+        result.append(",registration=").append(this.getRegistration());
+        result.append(",name=").append(this.getName());
+        return result.append("]").toString();
+    }
+
     public String getType() {
         return this.type;
     }

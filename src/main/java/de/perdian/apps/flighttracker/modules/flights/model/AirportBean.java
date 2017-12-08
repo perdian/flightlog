@@ -16,6 +16,19 @@ public class AirportBean implements Serializable {
     private ZoneId timezoneId = null;
     private ZoneOffset timezoneOffset = null;
 
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[code=").append(this.getCode());
+        result.append(",countryCode=").append(this.getCountryCode());
+        result.append(",name=").append(this.getName());
+        result.append(",longitude=").append(this.getLatitude());
+        result.append(",latitude=").append(this.getLongitude());
+        result.append(",timezoneId=").append(this.getTimezoneId());
+        result.append(",timezoneOffset=").append(this.getTimezoneOffset());
+        return result.append("]").toString();
+    }
+
     public String getCode() {
         return this.code;
     }

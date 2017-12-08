@@ -1,6 +1,7 @@
 package de.perdian.apps.flighttracker.modules.flights.services;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import de.perdian.apps.flighttracker.support.FlighttrackerHelper;
 @Service
 class FlightsUpdateServiceImpl implements FlightsUpdateService {
 
+    private Supplier<FlightEntity> newFlightEntitySupplier = FlightEntity::new;
     private FlightsRepository flightsRepository = null;
     private FlightsQueryService flightsQueryService = null;
     private AirlinesRepository airlinesRepository = null;
@@ -32,7 +34,8 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
     @Transactional
     public FlightBean saveFlight(FlightBean flightBean) {
 
-        FlightEntity flightEntity = flightBean.getEntityId() == null ? new FlightEntity() : this.getFlightsRepository().findOne(flightBean.getEntityId());
+        FlightEntity existingEntity = flightBean.getEntityId() == null ? null : this.getFlightsRepository().findOne(flightBean.getEntityId());
+        FlightEntity flightEntity = existingEntity == null ? this.getNewFlightEntitySupplier().get() : existingEntity;
 
         AircraftBean aircraftBean = flightBean.getAircraft();
         if (aircraftBean != null) {
@@ -81,6 +84,7 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
         flightEntity.setFlightNumber(flightBean.getFlightNumber());
         flightEntity.setFlightReason(flightBean.getFlightReason());
         flightEntity.setCabinClass(flightBean.getCabinClass());
+        flightEntity.setComment(flightBean.getComment());
         flightEntity.setSeatNumber(flightBean.getSeatNumber());
         flightEntity.setSeatType(flightBean.getSeatType());
         flightEntity.setUser(flightBean.getUser());
@@ -147,6 +151,13 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
     @Autowired
     void setAirportsRepository(AirportsRepository airportsRepository) {
         this.airportsRepository = airportsRepository;
+    }
+
+    Supplier<FlightEntity> getNewFlightEntitySupplier() {
+        return this.newFlightEntitySupplier;
+    }
+    void setNewFlightEntitySupplier(Supplier<FlightEntity> newFlightEntitySupplier) {
+        this.newFlightEntitySupplier = newFlightEntitySupplier;
     }
 
 }
