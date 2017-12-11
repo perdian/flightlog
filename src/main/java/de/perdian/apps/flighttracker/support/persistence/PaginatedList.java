@@ -11,21 +11,26 @@ public class PaginatedList<T> implements Serializable {
     private List<T> items = null;
     private PaginationData pagination = null;
 
+    public PaginatedList(List<T> items, PaginationData pagination) {
+        this.setItems(items);
+        this.setPagination(pagination);
+    }
+
     public Optional<T> getItem(int index) {
-        return this.getItems().size() > index ? Optional.of(this.getItems().get(index)) : Optional.empty();
+        return this.getItems() != null && this.getItems().size() > index ? Optional.of(this.getItems().get(index)) : Optional.empty();
     }
 
     public List<T> getItems() {
         return this.items;
     }
-    public void setItems(List<T> items) {
+    private void setItems(List<T> items) {
         this.items = items;
     }
 
     public PaginationData getPagination() {
         return this.pagination;
     }
-    public void setPagination(PaginationData pagination) {
+    private void setPagination(PaginationData pagination) {
         this.pagination = pagination;
     }
 

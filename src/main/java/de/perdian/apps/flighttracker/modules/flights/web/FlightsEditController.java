@@ -95,7 +95,7 @@ public class FlightsEditController {
     }
 
     @RequestMapping(value = "/flights/delete/{id}", method = RequestMethod.POST)
-    public String doDeletePost(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("id") Long id, @ModelAttribute Messages messages, Locale locale, Model model) {
+    public String doDeletePost(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("id") Long id) {
         FlightsQuery flightsQuery = new FlightsQuery();
         flightsQuery.setRestrictUsers(user == null ? null : user.toUserEntities());
         flightsQuery.setRestrictIdentifiers(Arrays.asList(id));

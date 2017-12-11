@@ -2,6 +2,7 @@ package de.perdian.apps.flighttracker.modules.flights.services;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,10 +46,9 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         Specification<FlightEntity> flightEntitiesSpecification = (root, query, cb) -> flightsQuery.toPredicate(root, query, cb);
         Page<FlightEntity> flightEntities = this.getFlightsRepository().findAll(flightEntitiesSpecification, pageRequest);
 
-        PaginatedList<FlightBean> resultList = new PaginatedList<>();
-        resultList.setPagination(new PaginationData(flightEntities.getNumber(), flightEntities.getTotalPages()));
-        resultList.setItems(flightEntities.getContent().stream().map(this::convertFlightEntitiy).collect(Collectors.toList()));
-        return resultList;
+        PaginationData paginationData = new PaginationData(flightEntities.getNumber(), flightEntities.getTotalPages());
+        List<FlightBean> resultList = flightEntities.getContent().stream().map(this::convertFlightEntitiy).collect(Collectors.toList());
+        return new PaginatedList<>(resultList, paginationData);
 
     }
 
