@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.perdian.apps.flighttracker.modules.flights.FlightsTestHelper;
+import de.perdian.apps.flighttracker.FlighttrackerTestHelper;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
@@ -16,7 +16,7 @@ public class FlightEditorTest {
 
     @Test
     public void constructor() {
-        FlightEditor flightEditor = new FlightEditor(FlightsTestHelper.createDefaultFlightBean());
+        FlightEditor flightEditor = new FlightEditor(FlighttrackerTestHelper.createDefaultFlightBean());
         Assertions.assertEquals(Long.valueOf(42), flightEditor.getEntityId());
         Assertions.assertEquals("Frankfurt am Main", flightEditor.getAircraftName());
         Assertions.assertEquals("D-AIMA", flightEditor.getAircraftRegistration());
@@ -40,7 +40,7 @@ public class FlightEditorTest {
     @Test
     public void copyValuesInto() {
 
-        FlightEditor flightEditor = new FlightEditor(FlightsTestHelper.createDefaultFlightBean());
+        FlightEditor flightEditor = new FlightEditor(FlighttrackerTestHelper.createDefaultFlightBean());
 
         FlightBean newFlightBean = new FlightBean();
         flightEditor.copyValuesInto(newFlightBean);
