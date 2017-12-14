@@ -100,9 +100,27 @@ public class FlighttrackerTestHelper {
         Mockito.when(orlandoEntity.getTimezoneId()).thenReturn(ZoneId.of("America/New_York"));
         Mockito.when(orlandoEntity.getTimezoneOffset()).thenReturn(ZoneOffset.ofHours(-4));
 
+        AirportEntity newYorkEntity = Mockito.mock(AirportEntity.class);
+        Mockito.when(newYorkEntity.getCountryCode()).thenReturn("US");
+        Mockito.when(newYorkEntity.getIataCode()).thenReturn("JFK");
+        Mockito.when(newYorkEntity.getIcaoCode()).thenReturn("KJFK");
+        Mockito.when(newYorkEntity.getName()).thenReturn("New Jork Kennedy");
+        Mockito.when(newYorkEntity.getTimezoneId()).thenReturn(ZoneId.of("America/New_York"));
+        Mockito.when(newYorkEntity.getTimezoneOffset()).thenReturn(ZoneOffset.ofHours(-4));
+
+        AirportEntity dusseldorfEntity = Mockito.mock(AirportEntity.class);
+        Mockito.when(dusseldorfEntity.getCountryCode()).thenReturn("DE");
+        Mockito.when(dusseldorfEntity.getIataCode()).thenReturn("DUS");
+        Mockito.when(dusseldorfEntity.getIcaoCode()).thenReturn("EDDL");
+        Mockito.when(dusseldorfEntity.getName()).thenReturn("Dusseldorf International");
+        Mockito.when(dusseldorfEntity.getTimezoneId()).thenReturn(ZoneId.of("Europe/Berlin"));
+        Mockito.when(dusseldorfEntity.getTimezoneOffset()).thenReturn(ZoneOffset.ofHours(2));
+
         AirportsRepository airportsRepository = Mockito.mock(AirportsRepository.class);
         Mockito.when(airportsRepository.loadAirportByIataCode(Mockito.eq("CGN"))).thenReturn(cologneEntity);
         Mockito.when(airportsRepository.loadAirportByIataCode(Mockito.eq("MCO"))).thenReturn(orlandoEntity);
+        Mockito.when(airportsRepository.loadAirportByIataCode(Mockito.eq("JFK"))).thenReturn(newYorkEntity);
+        Mockito.when(airportsRepository.loadAirportByIataCode(Mockito.eq("DUS"))).thenReturn(dusseldorfEntity);
         return airportsRepository;
 
     }
