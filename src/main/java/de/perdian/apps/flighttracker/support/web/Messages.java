@@ -20,7 +20,11 @@ public class Messages implements Serializable {
     }
 
     public void addMessage(MessageSeverity messageSeverity, Message message) {
-        this.getMessagesBySeverity().compute(messageSeverity, (k, v) -> v == null ? new ArrayList<>() : v).add(message);
+        if (messageSeverity == null) {
+            throw new IllegalArgumentException("Parameter 'messageSeverity' must not be null!");
+        } else {
+            this.getMessagesBySeverity().compute(messageSeverity, (k, v) -> v == null ? new ArrayList<>() : v).add(message);
+        }
     }
 
     public Map<MessageSeverity, List<Message>> getMessagesBySeverity() {
