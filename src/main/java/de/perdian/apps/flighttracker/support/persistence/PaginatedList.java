@@ -20,6 +20,14 @@ public class PaginatedList<T> implements Serializable {
         return this.getItems() != null && this.getItems().size() > index ? Optional.of(this.getItems().get(index)) : Optional.empty();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[items=").append(this.getItems());
+        result.append(",pagination=").append(this.getPagination());
+        return result.append("]").toString();
+    }
+
     public List<T> getItems() {
         return this.items;
     }

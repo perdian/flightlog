@@ -9,6 +9,14 @@ public class PaginationRequest implements Serializable {
     private int offset = 0;
     private int pageSize = 100;
 
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[offset=").append(this.getOffset());
+        result.append(",pageSize=").append(this.getPageSize());
+        return result.append("]").toString();
+    }
+
     public int getOffset() {
         return this.offset;
     }
