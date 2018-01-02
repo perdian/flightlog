@@ -5,7 +5,6 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
@@ -21,7 +20,7 @@ public class OpenflightsAirlinesLookupTest {
         OpenflightsAirlinesLookup repositoryImpl = new OpenflightsAirlinesLookup();
         repositoryImpl.setAirlineBeansByCode(Collections.singletonMap("IATA_CODE", airlineEntity));
 
-        Assertions.assertEquals(airlineEntity, repositoryImpl.loadAirlineByCode("IATA_CODE", Mockito.any()));
+        Assertions.assertEquals(airlineEntity, repositoryImpl.loadAirlineByCode("IATA_CODE", null));
         Assertions.assertNull(repositoryImpl.loadAirlineByCode("INVALID", null));
         Assertions.assertNull(repositoryImpl.loadAirlineByCode(null, null));
 
