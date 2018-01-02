@@ -11,8 +11,6 @@ spring:
     multipart:
       max-file-size: 5MB
   jpa:
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
@@ -29,3 +27,9 @@ server:
     init-parameters:
       development: true
       trimSpaces: true
+
+flyway:
+  encoding: UTF-8
+  locations:
+  - "classpath:de/perdian/apps/flighttracker/flyway/"
+  validate-on-migrate: false

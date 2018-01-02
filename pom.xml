@@ -32,6 +32,7 @@
 
     <properties>
         <commons-lang3.version>3.6</commons-lang3.version>
+        <flyway.version>5.0.3</flyway.version>
         <h2.version>1.4.196</h2.version>
         <hamcrest.version>1.3</hamcrest.version>
         <httpclient.version>4.5.3</httpclient.version>
@@ -136,6 +137,11 @@
             <groupId>us.codecraft</groupId>
             <artifactId>xsoup</artifactId>
             <version>${xsoup.version}</version><!--$NO-MVN-MAN-VER$ -->
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version><!--$NO-MVN-MAN-VER$ -->
         </dependency>
 
         <dependency>
