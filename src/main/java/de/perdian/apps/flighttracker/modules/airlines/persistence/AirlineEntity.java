@@ -5,7 +5,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 
 @Entity
 @Table(name = "airline")
@@ -16,6 +19,7 @@ public class AirlineEntity implements Serializable {
     private String code = null;
     private String name = null;
     private String countryCode = null;
+    private UserEntity user = null;
 
     @Override
     public String toString() {
@@ -23,6 +27,7 @@ public class AirlineEntity implements Serializable {
         result.append("[code=").append(this.getCode());
         result.append(",name=").append(this.getName());
         result.append(",countryCode=").append(this.getCountryCode());
+        result.append(",user=").append(this.getUser());
         return result.append("]").toString();
     }
 
@@ -49,6 +54,14 @@ public class AirlineEntity implements Serializable {
     }
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    @ManyToOne(optional = true)
+    public UserEntity getUser() {
+        return this.user;
+    }
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
 }
