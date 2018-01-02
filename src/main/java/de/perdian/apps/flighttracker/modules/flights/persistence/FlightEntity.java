@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -188,6 +190,7 @@ public class FlightEntity implements Serializable {
         this.flightNumber = flightNumber;
     }
 
+    @Enumerated(EnumType.STRING)
     public FlightReason getFlightReason() {
         return this.flightReason;
     }
@@ -203,6 +206,7 @@ public class FlightEntity implements Serializable {
         this.seatNumber = seatNumber;
     }
 
+    @Enumerated(EnumType.STRING)
     public SeatType getSeatType() {
         return this.seatType;
     }
@@ -210,6 +214,7 @@ public class FlightEntity implements Serializable {
         this.seatType = seatType;
     }
 
+    @Enumerated(EnumType.STRING)
     public CabinClass getCabinClass() {
         return this.cabinClass;
     }

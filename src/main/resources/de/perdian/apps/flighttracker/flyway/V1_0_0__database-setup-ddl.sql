@@ -9,7 +9,7 @@ CREATE TABLE `flight` (
   `arrival_airport_code` CHAR(3),
   `arrival_date_local` DATE,
   `arrival_time_local` TIME,
-  `cabin_class` INTEGER,
+  `cabin_class` VARCHAR(20),
   `comment` LONGTEXT,
   `departure_airport_code` CHAR(3),
   `departure_date_local` DATE,
@@ -17,9 +17,9 @@ CREATE TABLE `flight` (
   `flight_distance` INTEGER,
   `flight_duration` INTEGER,
   `flight_number` VARCHAR(10),
-  `flight_reason` INTEGER,
+  `flight_reason` VARCHAR(20),
   `seat_number` VARCHAR(10),
-  `seat_type` INTEGER,
+  `seat_type` VARCHAR(20),
   `user_user_id` BINARY(16),
   PRIMARY KEY (`id`)
 );
