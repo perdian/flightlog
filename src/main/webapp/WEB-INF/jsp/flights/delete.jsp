@@ -25,8 +25,8 @@
                 <div class="four wide column">
                     <h4><fmt:message key="flightData" /></h4>
                     <div>
-                        <c:if test="${fn:length(flight.airline.code) gt 0}">
-                            <c:out value="${flight.airline.code} " />
+                        <c:if test="${fn:length(flight.airline.iataCode) gt 0}">
+                            <c:out value="${flight.airline.iataCode} " />
                         </c:if>
                         <c:out value="${flight.flightNumber}" />
                         <c:if test="${fn:length(flight.airline.name) gt 0}">

@@ -3,6 +3,7 @@ package de.perdian.apps.flighttracker.modules.flights.model;
 import java.io.Serializable;
 import java.time.Duration;
 
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightReason;

@@ -35,7 +35,7 @@ public class FlightsQueryServiceImplTest {
         Mockito.when(flightsRepository.findOne(Mockito.eq(4711L))).thenReturn(flightEntity);
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
-        serviceImpl.setAirlinesRepository(FlightsTestHelper.createDefaultAirlinesRepository());
+        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(flightsRepository);
 
@@ -80,7 +80,7 @@ public class FlightsQueryServiceImplTest {
     public void loadFlightByIdNotFound() {
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
-        serviceImpl.setAirlinesRepository(FlightsTestHelper.createDefaultAirlinesRepository());
+        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(Mockito.mock(FlightsRepository.class));
 
@@ -97,7 +97,7 @@ public class FlightsQueryServiceImplTest {
         Mockito.when(flightsRepository.findAll(Mockito.any(), Mockito.any(PageRequest.class))).thenReturn(flightEntities);
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
-        serviceImpl.setAirlinesRepository(FlightsTestHelper.createDefaultAirlinesRepository());
+        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(flightsRepository);
 

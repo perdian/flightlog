@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineEntity;
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesRepository;
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportEntity;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportsRepository;
 import de.perdian.apps.flighttracker.modules.importexport.data.DataItem;
@@ -44,7 +44,7 @@ public class ImportController {
     private MessageSource messageSource = null;
     private ImportExportService importExportService = null;
     private AirportsRepository airportsRepository = null;
-    private AirlinesRepository airlinesRepository = null;
+    private AirlinesService airlinesService = null;
 
     @ModelAttribute
     public ImportEditor importEditor() {
@@ -119,9 +119,9 @@ public class ImportController {
 
         for (DataItem dataItem : dataItems) {
 
-            AirlineEntity airlineEntity = StringUtils.isEmpty(dataItem.getAirlineCode()) ? null : this.getAirlinesRepository().loadAirlineByIataCode(dataItem.getAirlineCode());
+            AirlineBean airlineEntity = StringUtils.isEmpty(dataItem.getAirlineCode()) ? null : this.getAirlinesService().loadAirlineByIataCode(dataItem.getAirlineCode());
             if (airlineEntity == null && dataItem.getAirlineName() != null) {
-                airlineEntity = this.getAirlinesRepository().loadAirlineByName(dataItem.getAirlineName());
+                airlineEntity = this.getAirlinesService().loadAirlineByName(dataItem.getAirlineName());
             }
             if (airlineEntity != null) {
                 if (StringUtils.isEmpty(dataItem.getAirlineCode())) {
@@ -207,12 +207,12 @@ public class ImportController {
         this.airportsRepository = airportsRepository;
     }
 
-    AirlinesRepository getAirlinesRepository() {
-        return this.airlinesRepository;
+    AirlinesService getAirlinesService() {
+        return this.airlinesService;
     }
     @Autowired
-    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
-        this.airlinesRepository = airlinesRepository;
+    void setAirlinesService(AirlinesService airlinesService) {
+        this.airlinesService = airlinesService;
     }
 
 }

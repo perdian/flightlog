@@ -86,7 +86,7 @@
                         </td>
                         <td>
                             <c:if test="${fn:length(flight.flightNumber) gt 0}">
-                                <div><strong><c:out value="${flight.airline.code}" />&nbsp;<c:out value="${flight.flightNumber}" /></strong></div>
+                                <div><strong><c:out value="${flight.airline.iataCode}" />&nbsp;<c:out value="${flight.flightNumber}" /></strong></div>
                             </c:if>
                             <c:if test="${fn:length(flight.airline.name) gt 0}">
                                 <div><c:out value="${flight.airline.name}" /></div>

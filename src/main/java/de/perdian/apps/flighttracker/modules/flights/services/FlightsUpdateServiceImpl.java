@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineEntity;
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesRepository;
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportEntity;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportsRepository;
 import de.perdian.apps.flighttracker.modules.flights.model.AircraftBean;
-import de.perdian.apps.flighttracker.modules.flights.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AirportBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AirportContactBean;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
@@ -27,7 +26,7 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
     private Supplier<FlightEntity> newFlightEntitySupplier = FlightEntity::new;
     private FlightsRepository flightsRepository = null;
     private FlightsQueryService flightsQueryService = null;
-    private AirlinesRepository airlinesRepository = null;
+    private AirlinesService airlinesService = null;
     private AirportsRepository airportsRepository = null;
 
     @Override
@@ -44,15 +43,15 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
             flightEntity.setAircraftType(aircraftBean.getType());
         }
 
-        AirlineBean airlineBean = flightBean.getAirline();
-        if (airlineBean != null) {
-            flightEntity.setAirlineCode(airlineBean.getCode());
-            flightEntity.setAirlineName(airlineBean.getName());
+        AirlineBean airlineBeanFromFlight = flightBean.getAirline();
+        if (airlineBeanFromFlight != null) {
+            flightEntity.setAirlineCode(airlineBeanFromFlight.getIataCode());
+            flightEntity.setAirlineName(airlineBeanFromFlight.getName());
         }
-        AirlineEntity airlineEntity = airlineBean == null || StringUtils.isEmpty(airlineBean.getCode()) ? null : this.getAirlinesRepository().loadAirlineByIataCode(airlineBean.getCode());
-        if (airlineEntity != null) {
+        AirlineBean airlineBeanFromService = airlineBeanFromFlight == null || StringUtils.isEmpty(airlineBeanFromFlight.getIataCode()) ? null : this.getAirlinesService().loadAirlineByIataCode(airlineBeanFromFlight.getIataCode());
+        if (airlineBeanFromService != null) {
             if (StringUtils.isEmpty(flightEntity.getAirlineName())) {
-                flightEntity.setAirlineName(airlineEntity.getName());
+                flightEntity.setAirlineName(airlineBeanFromService.getName());
             }
         }
 
@@ -137,12 +136,12 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
         this.flightsQueryService = flightsQueryService;
     }
 
-    AirlinesRepository getAirlinesRepository() {
-        return this.airlinesRepository;
+    AirlinesService getAirlinesService() {
+        return this.airlinesService;
     }
     @Autowired
-    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
-        this.airlinesRepository = airlinesRepository;
+    void setAirlinesService(AirlinesService airlinesService) {
+        this.airlinesService = airlinesService;
     }
 
     AirportsRepository getAirportsRepository() {

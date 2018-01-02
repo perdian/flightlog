@@ -86,8 +86,8 @@ public class OverviewQueryHelperFactory {
        return flights.stream()
             .map(FlightBean::getAirline)
             .filter(Objects::nonNull)
-            .filter(airline -> !StringUtils.isEmpty(airline.getCode()) && !StringUtils.isEmpty(airline.getName()))
-            .map(airline -> new OverviewQueryHelperItem(airline.getName(), airline.getCode()))
+            .filter(airline -> !StringUtils.isEmpty(airline.getIataCode()) && !StringUtils.isEmpty(airline.getName()))
+            .map(airline -> new OverviewQueryHelperItem(airline.getName(), airline.getIataCode()))
             .distinct()
             .sorted()
             .collect(Collectors.toList());

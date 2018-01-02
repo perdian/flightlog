@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineEntity;
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesRepository;
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
 
 /**
  * AJAX target controller to deliver information about airlines during the edit process
@@ -20,17 +20,17 @@ import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesReposi
 @RestController
 public class AirlineController {
 
-    private AirlinesRepository airlinesRepository = null;
+    private AirlinesService airlinesService = null;
 
     @RequestMapping(path = "/airline/{airlineCode}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
     public Airline doAirline(@PathVariable("airlineCode") String airlineCode) {
-        AirlineEntity airlineEntity = this.getAirlinesRepository().loadAirlineByIataCode(airlineCode);
-        if (airlineEntity == null) {
+        AirlineBean airlineBean = this.getAirlinesService().loadAirlineByIataCode(airlineCode);
+        if (airlineBean == null) {
             throw new AirlineNotFoundException();
         } else {
             Airline airline = new Airline();
-            airline.setCode(airlineEntity.getIataCode());
-            airline.setName(airlineEntity.getName());
+            airline.setCode(airlineBean.getIataCode());
+            airline.setName(airlineBean.getName());
             return airline;
         }
     }
@@ -42,12 +42,12 @@ public class AirlineController {
 
     }
 
-    AirlinesRepository getAirlinesRepository() {
-        return this.airlinesRepository;
+    AirlinesService getAirlinesService() {
+        return this.airlinesService;
     }
     @Autowired
-    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
-        this.airlinesRepository = airlinesRepository;
+    void setAirlinesService(AirlinesService airlinesService) {
+        this.airlinesService = airlinesService;
     }
 
 }

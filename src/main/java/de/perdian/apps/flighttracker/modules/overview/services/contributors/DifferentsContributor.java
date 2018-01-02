@@ -25,7 +25,7 @@ class DifferentsContributor implements OverviewContributor {
         overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentAirports"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode(), flight.getDepartureContact().getAirport().getCode())), null, null));
         overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentCountries"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCountryCode(), flight.getDepartureContact().getAirport().getCountryCode())), null, null));
         overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentRoutes"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode() + "-" + flight.getArrivalContact().getAirport().getCode())), null, null));
-        overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentAirlines"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getAirline().getCode())), null, null));
+        overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentAirlines"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getAirline().getIataCode())), null, null));
         overviewBean.setDifferents(overviewItems);
     }
 

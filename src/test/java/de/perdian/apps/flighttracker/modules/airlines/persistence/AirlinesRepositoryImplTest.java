@@ -9,12 +9,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+
 public class AirlinesRepositoryImplTest {
 
     @Test
     public void loadAirlineByIataCode() {
 
-        AirlineEntity airlineEntity = new AirlineEntity();
+        AirlineBean airlineEntity = new AirlineBean();
         airlineEntity.setName("Colonial Movers");
 
         AirlinesRepositoryImpl repositoryImpl = new AirlinesRepositoryImpl();
@@ -29,7 +31,7 @@ public class AirlinesRepositoryImplTest {
     @Test
     public void loadAirlineByName() {
 
-        AirlineEntity airlineEntity = new AirlineEntity();
+        AirlineBean airlineEntity = new AirlineBean();
         airlineEntity.setName("Colonial Movers");
 
         AirlinesRepositoryImpl repositoryImpl = new AirlinesRepositoryImpl();

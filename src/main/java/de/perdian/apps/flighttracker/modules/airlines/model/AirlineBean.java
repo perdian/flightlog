@@ -1,8 +1,8 @@
-package de.perdian.apps.flighttracker.modules.airlines.persistence;
+package de.perdian.apps.flighttracker.modules.airlines.model;
 
 import java.io.Serializable;
 
-public class AirlineEntity implements Serializable {
+public class AirlineBean implements Serializable {
 
     static final long serialVersionUID = 1L;
 
@@ -28,44 +28,43 @@ public class AirlineEntity implements Serializable {
     public String getName() {
         return this.name;
     }
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     public String getAlias() {
         return this.alias;
     }
-    void setAlias(String alias) {
+    public void setAlias(String alias) {
         this.alias = alias;
     }
 
     public String getIataCode() {
         return this.iataCode;
     }
-    void setIataCode(String iataCode) {
+    public void setIataCode(String iataCode) {
         this.iataCode = iataCode;
     }
 
     public String getIcaoCode() {
         return this.icaoCode;
     }
-    void setIcaoCode(String icaoCode) {
+    public void setIcaoCode(String icaoCode) {
         this.icaoCode = icaoCode;
     }
 
     public String getCallsign() {
         return this.callsign;
     }
-    void setCallsign(String callsign) {
+    public void setCallsign(String callsign) {
         this.callsign = callsign;
     }
 
     public String getCountryCode() {
         return this.countryCode;
     }
-    void setCountryCode(String countryCode) {
+    public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
-
 
 }

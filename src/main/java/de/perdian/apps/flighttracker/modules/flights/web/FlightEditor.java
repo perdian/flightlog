@@ -7,8 +7,8 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AircraftBean;
-import de.perdian.apps.flighttracker.modules.flights.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AirportBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AirportContactBean;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
@@ -54,7 +54,7 @@ public class FlightEditor implements Serializable {
         this.setAircraftName(flight.getAircraft() == null ? null : flight.getAircraft().getName());
         this.setAircraftRegistration(flight.getAircraft() == null ? null : flight.getAircraft().getRegistration());
         this.setAircraftType(flight.getAircraft() == null ? null : flight.getAircraft().getType());
-        this.setAirlineCode(flight.getAirline() == null ? null : flight.getAirline().getCode());
+        this.setAirlineCode(flight.getAirline() == null ? null : flight.getAirline().getIataCode());
         this.setAirlineName(flight.getAirline() == null ? null : flight.getAirline().getName());
         this.setArrivalAirportCode(flight.getArrivalContact() == null || flight.getArrivalContact().getAirport() == null ? null : flight.getArrivalContact().getAirport().getCode());
         this.setArrivalAirportCountryCode(flight.getArrivalContact() == null || flight.getArrivalContact().getAirport() == null ? null : flight.getArrivalContact().getAirport().getCountryCode());
@@ -85,7 +85,7 @@ public class FlightEditor implements Serializable {
         flightBean.setAircraft(aircraftBean);
 
         AirlineBean airlineBean = new AirlineBean();
-        airlineBean.setCode(this.getAirlineCode());
+        airlineBean.setIataCode(this.getAirlineCode());
         airlineBean.setName(this.getAirlineName());
         flightBean.setAirline(airlineBean);
 

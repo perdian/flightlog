@@ -18,6 +18,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
 
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
 import de.perdian.apps.flighttracker.modules.importexport.data.impl.OpenflightsHelper;
 
 /**
@@ -26,13 +28,13 @@ import de.perdian.apps.flighttracker.modules.importexport.data.impl.OpenflightsH
  */
 
 @Repository
-class AirlinesRepositoryImpl implements AirlinesRepository {
+class AirlinesRepositoryImpl implements AirlinesService {
 
     private static final Logger log = LoggerFactory.getLogger(AirlinesRepositoryImpl.class);
 
     private ResourceLoader resourceLoader = null;
-    private List<AirlineEntity> airlineBeans = null;
-    private Map<String, AirlineEntity> airlineBeansByIataCode = null;
+    private List<AirlineBean> airlineBeans = null;
+    private Map<String, AirlineBean> airlineBeansByIataCode = null;
 
     @PostConstruct
     void initialize() throws IOException {
@@ -40,8 +42,8 @@ class AirlinesRepositoryImpl implements AirlinesRepository {
         Resource airlinesResource = this.getResourceLoader().getResource("classpath:de/perdian/apps/flighttracker/data/airlines.dat");
         log.info("Loading airlines from resource: {}", airlinesResource);
 
-        List<AirlineEntity> airlineBeans = new ArrayList<>();
-        Map<String, AirlineEntity> airlineBeansByIataCode = new LinkedHashMap<>();
+        List<AirlineBean> airlineBeans = new ArrayList<>();
+        Map<String, AirlineBean> airlineBeansByIataCode = new LinkedHashMap<>();
         try (BufferedReader airlinesReader = new BufferedReader(new InputStreamReader(airlinesResource.getInputStream(), "UTF-8"))) {
             for (String airlineLine = airlinesReader.readLine(); airlineLine != null; airlineLine = airlinesReader.readLine()) {
                 try {
@@ -50,7 +52,7 @@ class AirlinesRepositoryImpl implements AirlinesRepository {
                     String iataCode = lineFields.get(3);
                     String icaoCode = lineFields.get(4);
 
-                    AirlineEntity airlineBean = new AirlineEntity();
+                    AirlineBean airlineBean = new AirlineBean();
                     airlineBean.setName(lineFields.get(1));
                     airlineBean.setAlias(lineFields.get(2));
                     airlineBean.setIataCode(iataCode);
@@ -73,12 +75,12 @@ class AirlinesRepositoryImpl implements AirlinesRepository {
     }
 
     @Override
-    public AirlineEntity loadAirlineByIataCode(String iataAirlineCode) {
+    public AirlineBean loadAirlineByIataCode(String iataAirlineCode) {
         return StringUtils.isEmpty(iataAirlineCode) ? null : this.getAirlineBeansByIataCode().get(iataAirlineCode);
     }
 
     @Override
-    public AirlineEntity loadAirlineByName(String airlineName) {
+    public AirlineBean loadAirlineByName(String airlineName) {
         return this.getAirlineBeans().stream()
             .filter(airline -> airline.getName().equalsIgnoreCase(airlineName))
             .findFirst()
@@ -93,17 +95,17 @@ class AirlinesRepositoryImpl implements AirlinesRepository {
         this.resourceLoader = resourceLoader;
     }
 
-    List<AirlineEntity> getAirlineBeans() {
+    List<AirlineBean> getAirlineBeans() {
         return this.airlineBeans;
     }
-    void setAirlineBeans(List<AirlineEntity> airlineBeans) {
+    void setAirlineBeans(List<AirlineBean> airlineBeans) {
         this.airlineBeans = airlineBeans;
     }
 
-    Map<String, AirlineEntity> getAirlineBeansByIataCode() {
+    Map<String, AirlineBean> getAirlineBeansByIataCode() {
         return this.airlineBeansByIataCode;
     }
-    void setAirlineBeansByIataCode(Map<String, AirlineEntity> airlineBeansByIataCode) {
+    void setAirlineBeansByIataCode(Map<String, AirlineBean> airlineBeansByIataCode) {
         this.airlineBeansByIataCode = airlineBeansByIataCode;
     }
 

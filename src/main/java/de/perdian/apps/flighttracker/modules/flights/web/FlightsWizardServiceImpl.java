@@ -9,8 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineEntity;
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesRepository;
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportEntity;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportsRepository;
 import de.perdian.apps.flighttracker.modules.wizard.services.WizardData;
@@ -22,7 +22,7 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
 
     private WizardDataService wizardDataService = null;
     private AirportsRepository airportsRepository = null;
-    private AirlinesRepository airlinesRepository = null;
+    private AirlinesService airlinesService = null;
 
     @Override
     public void enhanceFlightEditor(FlightEditor editor, FlightsWizardData data) {
@@ -71,7 +71,7 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
                         editor.setFlightDuration(FlighttrackerHelper.formatDuration(Duration.between(departureInstant, arrivalInstant)));
                     }
 
-                    AirlineEntity airlineEntity = this.getAirlinesRepository().loadAirlineByIataCode(data.getWizAirlineCode());
+                    AirlineBean airlineEntity = this.getAirlinesService().loadAirlineByIataCode(data.getWizAirlineCode());
                     if (airlineEntity != null) {
                         editor.setAirlineName(airlineEntity.getName());
                     }
@@ -98,12 +98,12 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
         this.airportsRepository = airportsRepository;
     }
 
-    AirlinesRepository getAirlinesRepository() {
-        return this.airlinesRepository;
+    AirlinesService getAirlinesService() {
+        return this.airlinesService;
     }
     @Autowired
-    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
-        this.airlinesRepository = airlinesRepository;
+    void setAirlinesService(AirlinesService airlinesService) {
+        this.airlinesService = airlinesService;
     }
 
 }

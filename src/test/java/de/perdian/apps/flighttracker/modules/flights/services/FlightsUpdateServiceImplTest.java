@@ -49,7 +49,7 @@ public class FlightsUpdateServiceImplTest {
         flightBean.setEntityId(Long.valueOf(42));
 
         FlightsUpdateServiceImpl serviceImpl = new FlightsUpdateServiceImpl();
-        serviceImpl.setAirlinesRepository(FlightsTestHelper.createDefaultAirlinesRepository());
+        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsQueryService(flightsQueryService);
         serviceImpl.setFlightsRepository(flightsRepository);
@@ -73,7 +73,7 @@ public class FlightsUpdateServiceImplTest {
         FlightBean flightBean = FlightsTestHelper.createDefaultFlightBean();
 
         FlightsUpdateServiceImpl serviceImpl = new FlightsUpdateServiceImpl();
-        serviceImpl.setAirlinesRepository(FlightsTestHelper.createDefaultAirlinesRepository());
+        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsQueryService(flightsQueryService);
         serviceImpl.setFlightsRepository(flightsRepository);

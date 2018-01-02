@@ -8,12 +8,11 @@ import java.time.ZoneOffset;
 
 import org.mockito.Mockito;
 
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineEntity;
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesRepository;
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportEntity;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportsRepository;
 import de.perdian.apps.flighttracker.modules.flights.model.AircraftBean;
-import de.perdian.apps.flighttracker.modules.flights.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AirportBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AirportContactBean;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
@@ -57,7 +56,7 @@ public class FlightsTestHelper {
         aircraftBean.setType("Airbus A380-800");
 
         AirlineBean airlineBean = new AirlineBean();
-        airlineBean.setCode("LH");
+        airlineBean.setIataCode("LH");
         airlineBean.setName("Lufthansa");
 
         AirportBean arrivalAirportBean = new AirportBean();
@@ -91,15 +90,15 @@ public class FlightsTestHelper {
 
     }
 
-    public static AirlinesRepository createDefaultAirlinesRepository() {
+    public static AirlinesService createDefaultAirlinesService() {
 
-        AirlineEntity lufthansaEntity = Mockito.mock(AirlineEntity.class);
+        AirlineBean lufthansaEntity = Mockito.mock(AirlineBean.class);
         Mockito.when(lufthansaEntity.getName()).thenReturn("Lufthansa");
         Mockito.when(lufthansaEntity.getIataCode()).thenReturn("LH");
 
-        AirlinesRepository airlinesRepository = Mockito.mock(AirlinesRepository.class);
-        Mockito.when(airlinesRepository.loadAirlineByIataCode(Mockito.eq("LH"))).thenReturn(lufthansaEntity);
-        return airlinesRepository;
+        AirlinesService airlinesService = Mockito.mock(AirlinesService.class);
+        Mockito.when(airlinesService.loadAirlineByIataCode(Mockito.eq("LH"))).thenReturn(lufthansaEntity);
+        return airlinesService;
 
     }
 

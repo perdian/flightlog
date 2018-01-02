@@ -14,12 +14,11 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineEntity;
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesRepository;
+import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportEntity;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportsRepository;
 import de.perdian.apps.flighttracker.modules.flights.model.AircraftBean;
-import de.perdian.apps.flighttracker.modules.flights.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AirportBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AirportContactBean;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
@@ -34,7 +33,7 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
 
     private FlightsRepository flightsRepository = null;
     private AirportsRepository airportsRepository = null;
-    private AirlinesRepository airlinesRepository = null;
+    private AirlinesService airlinesService = null;
 
     @Override
     public PaginatedList<FlightBean> loadFlights(FlightsQuery flightsQuery) {
@@ -64,12 +63,11 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         aircraftBean.setRegistration(flightEntitiy.getAircraftRegistration());
         aircraftBean.setType(flightEntitiy.getAircraftType());
 
-        AirlineBean airlineBean = new AirlineBean();
-        airlineBean.setCode(flightEntitiy.getAirlineCode());
-        airlineBean.setName(flightEntitiy.getAirlineName());
-        AirlineEntity airlineEntity = StringUtils.isEmpty(flightEntitiy.getAirlineCode()) ? null : this.getAirlinesRepository().loadAirlineByIataCode(flightEntitiy.getAirlineCode());
-        if (airlineEntity != null && StringUtils.isEmpty(airlineBean.getName())) {
-            airlineBean.setName(airlineEntity.getName());
+        AirlineBean airlineBean = StringUtils.isEmpty(flightEntitiy.getAirlineCode()) ? null : this.getAirlinesService().loadAirlineByIataCode(flightEntitiy.getAirlineCode());
+        if (airlineBean == null) {
+            airlineBean = new AirlineBean();
+            airlineBean.setIataCode(flightEntitiy.getAirlineCode());
+            airlineBean.setName(flightEntitiy.getAirlineName());
         }
 
         Instant departureDateTimeUtc = null;
@@ -186,12 +184,12 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         this.airportsRepository = airportsRepository;
     }
 
-    AirlinesRepository getAirlinesRepository() {
-        return this.airlinesRepository;
+    AirlinesService getAirlinesService() {
+        return this.airlinesService;
     }
     @Autowired
-    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
-        this.airlinesRepository = airlinesRepository;
+    void setAirlinesService(AirlinesService airlinesService) {
+        this.airlinesService = airlinesService;
     }
 
 }
