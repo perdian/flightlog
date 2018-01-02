@@ -12,13 +12,14 @@ import de.perdian.apps.flighttracker.modules.overview.model.OverviewBean;
 import de.perdian.apps.flighttracker.modules.overview.model.OverviewItem;
 import de.perdian.apps.flighttracker.modules.overview.model.OverviewItemString;
 import de.perdian.apps.flighttracker.modules.overview.services.OverviewContributor;
+import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.types.FlightDistance;
 
 @Component
 class DistancesContributor implements OverviewContributor {
 
     @Override
-    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights) {
+    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights, UserEntity user) {
 
         Map<FlightDistance, Integer> resultMap = new LinkedHashMap<>();
         for (FlightDistance flightDistance : FlightDistance.values()) {

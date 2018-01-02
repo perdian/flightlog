@@ -24,6 +24,7 @@ import de.perdian.apps.flighttracker.modules.flights.model.AirportContactBean;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
 import de.perdian.apps.flighttracker.modules.flights.persistence.FlightEntity;
 import de.perdian.apps.flighttracker.modules.flights.persistence.FlightsRepository;
+import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.FlighttrackerHelper;
 import de.perdian.apps.flighttracker.support.persistence.PaginatedList;
 import de.perdian.apps.flighttracker.support.persistence.PaginationData;
@@ -46,27 +47,27 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
 
         PaginatedList<FlightBean> resultList = new PaginatedList<>();
         resultList.setPagination(new PaginationData(flightEntities.getNumber(), flightEntities.getTotalPages()));
-        resultList.setItems(flightEntities.getContent().stream().map(this::convertFlightEntitiy).collect(Collectors.toList()));
+        resultList.setItems(flightEntities.getContent().stream().map(flightEntity -> this.convertFlightEntity(flightEntity, flightsQuery.getRestrictUser())).collect(Collectors.toList()));
         return resultList;
 
     }
 
     @Override
-    public FlightBean loadFlightById(Long id) {
-        return Optional.ofNullable(this.getFlightsRepository().findOne(id)).map(this::convertFlightEntitiy).orElse(null);
+    public FlightBean loadFlightById(Long id, UserEntity user) {
+        return Optional.ofNullable(this.getFlightsRepository().findOne(id)).map(flightEntity -> this.convertFlightEntity(flightEntity, user)).orElse(null);
     }
 
-    private FlightBean convertFlightEntitiy(FlightEntity flightEntitiy) {
+    private FlightBean convertFlightEntity(FlightEntity flightEntitiy, UserEntity user) {
 
         AircraftBean aircraftBean = new AircraftBean();
         aircraftBean.setName(flightEntitiy.getAircraftName());
         aircraftBean.setRegistration(flightEntitiy.getAircraftRegistration());
         aircraftBean.setType(flightEntitiy.getAircraftType());
 
-        AirlineBean airlineBean = StringUtils.isEmpty(flightEntitiy.getAirlineCode()) ? null : this.getAirlinesService().loadAirlineByIataCode(flightEntitiy.getAirlineCode());
+        AirlineBean airlineBean = StringUtils.isEmpty(flightEntitiy.getAirlineCode()) ? null : this.getAirlinesService().loadAirlineByCode(flightEntitiy.getAirlineCode(), user);
         if (airlineBean == null) {
             airlineBean = new AirlineBean();
-            airlineBean.setIataCode(flightEntitiy.getAirlineCode());
+            airlineBean.setCode(flightEntitiy.getAirlineCode());
             airlineBean.setName(flightEntitiy.getAirlineName());
         }
 

@@ -34,7 +34,7 @@ public class OverviewQueryHelperFactory {
 
         FlightsQuery flightsQuery = new FlightsQuery();
         flightsQuery.setPageSize(Integer.MAX_VALUE);
-        flightsQuery.setRestrictUsers(authenticationPrincipal == null ? null : authenticationPrincipal.toUserEntities());
+        flightsQuery.setRestrictUser(authenticationPrincipal == null ? null : authenticationPrincipal.getUserEntity());
         List<FlightBean> flights = this.getFlightsQueryService().loadFlights(flightsQuery).getItems();
 
         OverviewQueryHelper queryHelper = new OverviewQueryHelper();
@@ -86,8 +86,8 @@ public class OverviewQueryHelperFactory {
        return flights.stream()
             .map(FlightBean::getAirline)
             .filter(Objects::nonNull)
-            .filter(airline -> !StringUtils.isEmpty(airline.getIataCode()) && !StringUtils.isEmpty(airline.getName()))
-            .map(airline -> new OverviewQueryHelperItem(airline.getName(), airline.getIataCode()))
+            .filter(airline -> !StringUtils.isEmpty(airline.getCode()) && !StringUtils.isEmpty(airline.getName()))
+            .map(airline -> new OverviewQueryHelperItem(airline.getName(), airline.getCode()))
             .distinct()
             .sorted()
             .collect(Collectors.toList());

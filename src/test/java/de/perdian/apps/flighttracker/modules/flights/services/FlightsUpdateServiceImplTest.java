@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.springframework.data.jpa.domain.Specification;
 
 import de.perdian.apps.flighttracker.modules.flights.FlightsTestHelper;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
@@ -40,10 +41,10 @@ public class FlightsUpdateServiceImplTest {
 
         FlightBean returnBean = new FlightBean();
         FlightsQueryService flightsQueryService = Mockito.mock(FlightsQueryService.class);
-        Mockito.when(flightsQueryService.loadFlightById(Mockito.eq(Long.valueOf(42)))).thenReturn(returnBean);
+        Mockito.when(flightsQueryService.loadFlightById(Mockito.eq(Long.valueOf(42)), Mockito.any())).thenReturn(returnBean);
         FlightsRepository flightsRepository = Mockito.mock(FlightsRepository.class);
         FlightEntity flightEntity = FlightsTestHelper.createDefaultFlightEntity();
-        Mockito.when(flightsRepository.findOne(Mockito.eq(Long.valueOf(42L)))).thenReturn(flightEntity);
+        Mockito.when(flightsRepository.findOne(Mockito.any(Specification.class))).thenReturn(flightEntity);
 
         FlightBean flightBean = new FlightBean();
         flightBean.setEntityId(Long.valueOf(42));
@@ -53,12 +54,12 @@ public class FlightsUpdateServiceImplTest {
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsQueryService(flightsQueryService);
         serviceImpl.setFlightsRepository(flightsRepository);
-        Assertions.assertEquals(returnBean, serviceImpl.saveFlight(flightBean));
+        Assertions.assertEquals(returnBean, serviceImpl.saveFlight(flightBean, null));
 
-        Mockito.verify(flightsRepository).findOne(Mockito.eq(Long.valueOf(42)));
+        Mockito.verify(flightsRepository).findOne(Mockito.any(Specification.class));
         Mockito.verify(flightsRepository).save(Mockito.eq(flightEntity));
         Mockito.verifyNoMoreInteractions(flightsRepository);
-        Mockito.verify(flightsQueryService).loadFlightById(Mockito.eq(Long.valueOf(42)));
+        Mockito.verify(flightsQueryService).loadFlightById(Mockito.eq(Long.valueOf(42)), Mockito.any());
 
     }
 
@@ -78,10 +79,10 @@ public class FlightsUpdateServiceImplTest {
         serviceImpl.setFlightsQueryService(flightsQueryService);
         serviceImpl.setFlightsRepository(flightsRepository);
         serviceImpl.setNewFlightEntitySupplier(() -> newFlightEntity);
-        serviceImpl.saveFlight(flightBean);
+        serviceImpl.saveFlight(flightBean, null);
 
         ArgumentCaptor<FlightEntity> entityCaptor = ArgumentCaptor.forClass(FlightEntity.class);
-        Mockito.verify(flightsRepository).findOne(Mockito.eq(Long.valueOf(42)));
+        Mockito.verify(flightsRepository).findOne(Mockito.any(Specification.class));
         Mockito.verify(flightsRepository).save(entityCaptor.capture());
         Mockito.verifyNoMoreInteractions(flightsRepository);
 

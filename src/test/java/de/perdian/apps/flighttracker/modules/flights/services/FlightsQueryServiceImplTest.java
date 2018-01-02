@@ -39,7 +39,7 @@ public class FlightsQueryServiceImplTest {
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(flightsRepository);
 
-        FlightBean flightBean = serviceImpl.loadFlightById(Long.valueOf(4711));
+        FlightBean flightBean = serviceImpl.loadFlightById(Long.valueOf(4711), null);
         Assertions.assertNotNull(flightBean);
         Assertions.assertEquals("Frankfurt am Main", flightBean.getAircraft().getName());
         Assertions.assertEquals("D-AIMA", flightBean.getAircraft().getRegistration());
@@ -84,8 +84,8 @@ public class FlightsQueryServiceImplTest {
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(Mockito.mock(FlightsRepository.class));
 
-        Assertions.assertNull(serviceImpl.loadFlightById(Long.valueOf(42)));
-        Assertions.assertNull(serviceImpl.loadFlightById(null));
+        Assertions.assertNull(serviceImpl.loadFlightById(Long.valueOf(42), Mockito.any()));
+        Assertions.assertNull(serviceImpl.loadFlightById(null, Mockito.any()));
 
     }
 

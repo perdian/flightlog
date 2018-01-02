@@ -42,7 +42,7 @@ public class ExportController {
 
     private void doExport(@AuthenticationPrincipal FlighttrackerUser user, DataWriter<String> dataWriter, String contentType, String fileExtension, HttpServletResponse response) throws Exception {
 
-        List<DataItem> dataItems = this.getImportExportService().exportDataItems(user == null ? null : user.getUserEntitiy());
+        List<DataItem> dataItems = this.getImportExportService().exportDataItems(user == null ? null : user.getUserEntity());
         String dataString = dataWriter.writeDataItems(dataItems);
         byte[] dataBytes = dataString.getBytes("UTF-8");
 

@@ -13,6 +13,7 @@ import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportEntity;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportsRepository;
+import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.modules.wizard.services.WizardData;
 import de.perdian.apps.flighttracker.modules.wizard.services.WizardDataService;
 import de.perdian.apps.flighttracker.support.FlighttrackerHelper;
@@ -25,7 +26,7 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
     private AirlinesService airlinesService = null;
 
     @Override
-    public void enhanceFlightEditor(FlightEditor editor, FlightsWizardData data) {
+    public void enhanceFlightEditor(FlightEditor editor, FlightsWizardData data, UserEntity user) {
 
         editor.setAirlineCode(data.getWizAirlineCode());
         editor.setFlightNumber(data.getWizFlightNumber());
@@ -71,7 +72,7 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
                         editor.setFlightDuration(FlighttrackerHelper.formatDuration(Duration.between(departureInstant, arrivalInstant)));
                     }
 
-                    AirlineBean airlineEntity = this.getAirlinesService().loadAirlineByIataCode(data.getWizAirlineCode());
+                    AirlineBean airlineEntity = this.getAirlinesService().loadAirlineByCode(data.getWizAirlineCode(), user);
                     if (airlineEntity != null) {
                         editor.setAirlineName(airlineEntity.getName());
                     }

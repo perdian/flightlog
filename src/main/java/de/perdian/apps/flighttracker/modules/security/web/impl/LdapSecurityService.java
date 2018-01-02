@@ -55,7 +55,7 @@ class LdapSecurityService extends AuthenticationProviderSkeleton {
 
     private FlighttrackerUser createUser(UserEntity userEntitiy) {
         FlighttrackerUser user = new FlighttrackerUser();
-        user.setUserEntitiy(userEntitiy);
+        user.setUserEntity(userEntitiy);
         return user;
     }
 

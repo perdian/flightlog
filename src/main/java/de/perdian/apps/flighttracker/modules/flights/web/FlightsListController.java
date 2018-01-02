@@ -27,7 +27,7 @@ public class FlightsListController {
     public String doList(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("page") int page, Model model) {
 
         FlightsQuery flightsQuery = new FlightsQuery();
-        flightsQuery.setRestrictUsers(user == null ? null : user.toUserEntities());
+        flightsQuery.setRestrictUser(user == null ? null : user.getUserEntity());
         flightsQuery.setPageSize(Integer.valueOf(100));
         flightsQuery.setPage(page);
 

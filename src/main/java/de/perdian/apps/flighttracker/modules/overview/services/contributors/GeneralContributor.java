@@ -11,12 +11,13 @@ import de.perdian.apps.flighttracker.modules.overview.model.OverviewBean;
 import de.perdian.apps.flighttracker.modules.overview.model.OverviewItem;
 import de.perdian.apps.flighttracker.modules.overview.model.OverviewItemString;
 import de.perdian.apps.flighttracker.modules.overview.services.OverviewContributor;
+import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 
 @Component
 class GeneralContributor implements OverviewContributor {
 
     @Override
-    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights) {
+    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights, UserEntity user) {
 
         int distanceInKilometers = flights.stream()
             .filter(flight -> flight.getFlightDistance() != null)

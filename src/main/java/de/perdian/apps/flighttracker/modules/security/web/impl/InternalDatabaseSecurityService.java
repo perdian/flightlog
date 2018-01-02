@@ -56,7 +56,7 @@ class InternalDatabaseSecurityService extends AuthenticationProviderSkeleton {
                 } else {
                     log.info("Successfully validate internal database user with username '{}' and id '{}'", username, user.getUserId());
                     FlighttrackerUser responseUser = new FlighttrackerUser();
-                    responseUser.setUserEntitiy(user);
+                    responseUser.setUserEntity(user);
                     return responseUser;
                 }
 

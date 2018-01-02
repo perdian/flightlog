@@ -51,7 +51,7 @@ public class OverviewController {
 
     private FlightsQuery createFlightsQuery(FlighttrackerUser authenticationPrincipal, OverviewQuery overviewQuery) {
         FlightsQuery flightsQuery = new FlightsQuery();
-        flightsQuery.setRestrictUsers(authenticationPrincipal == null ? null : authenticationPrincipal.toUserEntities());
+        flightsQuery.setRestrictUser(authenticationPrincipal == null ? null : authenticationPrincipal.getUserEntity());
         flightsQuery.setRestrictAirlineCodes(overviewQuery.getAirlineCode());
         flightsQuery.setRestrictAircraftTypes(overviewQuery.getAircraftType());
         flightsQuery.setRestrictAirportCodes(overviewQuery.getAirportCode());

@@ -1,5 +1,6 @@
 package de.perdian.apps.flighttracker.modules.flights.services;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -18,6 +19,7 @@ import de.perdian.apps.flighttracker.modules.flights.model.AirportContactBean;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
 import de.perdian.apps.flighttracker.modules.flights.persistence.FlightEntity;
 import de.perdian.apps.flighttracker.modules.flights.persistence.FlightsRepository;
+import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.FlighttrackerHelper;
 
 @Service
@@ -31,9 +33,12 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
 
     @Override
     @Transactional
-    public FlightBean saveFlight(FlightBean flightBean) {
+    public FlightBean saveFlight(FlightBean flightBean, UserEntity user) {
 
-        FlightEntity existingEntity = flightBean.getEntityId() == null ? null : this.getFlightsRepository().findOne(flightBean.getEntityId());
+        FlightsQuery flightsQuery = new FlightsQuery();
+        flightsQuery.setRestrictIdentifiers(Collections.singleton(flightBean.getEntityId()));
+        flightsQuery.setRestrictUser(user);
+        FlightEntity existingEntity = flightBean.getEntityId() == null ? null : this.getFlightsRepository().findOne((root, query, cb) -> flightsQuery.toPredicate(root, query, cb));
         FlightEntity flightEntity = existingEntity == null ? this.getNewFlightEntitySupplier().get() : existingEntity;
 
         AircraftBean aircraftBean = flightBean.getAircraft();
@@ -45,10 +50,10 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
 
         AirlineBean airlineBeanFromFlight = flightBean.getAirline();
         if (airlineBeanFromFlight != null) {
-            flightEntity.setAirlineCode(airlineBeanFromFlight.getIataCode());
+            flightEntity.setAirlineCode(airlineBeanFromFlight.getCode());
             flightEntity.setAirlineName(airlineBeanFromFlight.getName());
         }
-        AirlineBean airlineBeanFromService = airlineBeanFromFlight == null || StringUtils.isEmpty(airlineBeanFromFlight.getIataCode()) ? null : this.getAirlinesService().loadAirlineByIataCode(airlineBeanFromFlight.getIataCode());
+        AirlineBean airlineBeanFromService = airlineBeanFromFlight == null || StringUtils.isEmpty(airlineBeanFromFlight.getCode()) ? null : this.getAirlinesService().loadAirlineByCode(airlineBeanFromFlight.getCode(), user);
         if (airlineBeanFromService != null) {
             if (StringUtils.isEmpty(flightEntity.getAirlineName())) {
                 flightEntity.setAirlineName(airlineBeanFromService.getName());
@@ -90,7 +95,7 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
 
         this.getFlightsRepository().save(flightEntity);
 
-        return this.getFlightsQueryService().loadFlightById(flightEntity.getId());
+        return this.getFlightsQueryService().loadFlightById(flightEntity.getId(), user);
 
     }
 

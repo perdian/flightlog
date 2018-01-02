@@ -37,8 +37,8 @@ public class FlightsAddController {
     }
 
     @RequestMapping(value = "/flights/add/wizard", method = RequestMethod.POST)
-    public String doAddGetWizard(@ModelAttribute("flightEditor") FlightEditor flightEditor, FlightsWizardData wizardData) {
-        this.getFlightsWizardService().enhanceFlightEditor(flightEditor, wizardData);
+    public String doAddGetWizard(@AuthenticationPrincipal FlighttrackerUser user, @ModelAttribute("flightEditor") FlightEditor flightEditor, FlightsWizardData wizardData) {
+        this.getFlightsWizardService().enhanceFlightEditor(flightEditor, wizardData, user == null ? null : user.getUserEntity());
         return this.doAddGet();
     }
 
@@ -47,9 +47,9 @@ public class FlightsAddController {
         if (!bindingResult.hasErrors()) {
 
             FlightBean flightBean = new FlightBean();
-            flightBean.setUser(user == null ? null : user.getUserEntitiy());
+            flightBean.setUser(user == null ? null : user.getUserEntity());
             flightEditor.copyValuesInto(flightBean);
-            FlightBean insertedFlightBean = this.getFlightsUpdateService().saveFlight(flightBean);
+            FlightBean insertedFlightBean = this.getFlightsUpdateService().saveFlight(flightBean, user == null ? null : user.getUserEntity());
 
             return "redirect:/flights/edit/" + insertedFlightBean.getEntityId() + "?updated=true";
 

@@ -32,6 +32,7 @@ import de.perdian.apps.flighttracker.modules.importexport.data.impl.Flugstatisti
 import de.perdian.apps.flighttracker.modules.importexport.data.impl.FlugstatistikdeDataLoader;
 import de.perdian.apps.flighttracker.modules.importexport.services.ImportExportService;
 import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerUser;
+import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.FlighttrackerHelper;
 import de.perdian.apps.flighttracker.support.web.MessageSeverity;
 import de.perdian.apps.flighttracker.support.web.Messages;
@@ -58,7 +59,7 @@ public class ImportController {
     }
 
     @RequestMapping(value = "/import/file", method = RequestMethod.POST)
-    public String doImportFilePost(@RequestParam("file") MultipartFile file, @RequestParam("fileType") ImportFileType fileType, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale, Model model) {
+    public String doImportFilePost(@AuthenticationPrincipal FlighttrackerUser user, @RequestParam("file") MultipartFile file, @RequestParam("fileType") ImportFileType fileType, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale, Model model) {
         if (file == null || file.isEmpty()) {
             return this.doImportFileGet(model);
         } else {
@@ -69,7 +70,7 @@ public class ImportController {
                 List<DataItem> dataItems = dataLoader.loadDataItems(new InputStreamReader(file.getInputStream(), "UTF-8"));
 
                 log.info("Loaded {} entries from uploaded file using file type: {}", dataItems.size(), fileType);
-                return this.doVerify(dataItems, importEditor);
+                return this.doVerify(dataItems, importEditor, user == null ? null : user.getUserEntity());
 
             } catch (Exception e) {
 
@@ -87,7 +88,7 @@ public class ImportController {
     }
 
     @RequestMapping(value = "/import/flugstatistikde", method = RequestMethod.POST)
-    public String doImportFlugstatistikdePost(@RequestParam("username") String username, @RequestParam("password") String password, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
+    public String doImportFlugstatistikdePost(@AuthenticationPrincipal FlighttrackerUser user, @RequestParam("username") String username, @RequestParam("password") String password, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
         if (StringUtils.isEmpty(username)) {
             messages.addMessage(MessageSeverity.ERROR, this.getMessageSource().getMessage("usernameMustNotBeEmpty", null, locale), null);
             return this.doImportFlugstatistikdeGet();
@@ -103,7 +104,7 @@ public class ImportController {
                 List<DataItem> flugstatistikDataItems = flugstatistikDataLoder.loadDataItems(flugstatistikcreCredentials);
 
                 log.info("Loaded {} entries from flugstatistik.de", flugstatistikDataItems.size());
-                return this.doVerify(flugstatistikDataItems, importEditor);
+                return this.doVerify(flugstatistikDataItems, importEditor, user == null ? null : user.getUserEntity());
 
             } catch (Exception e) {
 
@@ -115,17 +116,17 @@ public class ImportController {
         }
     }
 
-    private String doVerify(List<DataItem> dataItems, ImportEditor importEditor) throws Exception {
+    private String doVerify(List<DataItem> dataItems, ImportEditor importEditor, UserEntity user) throws Exception {
 
         for (DataItem dataItem : dataItems) {
 
-            AirlineBean airlineEntity = StringUtils.isEmpty(dataItem.getAirlineCode()) ? null : this.getAirlinesService().loadAirlineByIataCode(dataItem.getAirlineCode());
+            AirlineBean airlineEntity = StringUtils.isEmpty(dataItem.getAirlineCode()) ? null : this.getAirlinesService().loadAirlineByCode(dataItem.getAirlineCode(), user);
             if (airlineEntity == null && dataItem.getAirlineName() != null) {
-                airlineEntity = this.getAirlinesService().loadAirlineByName(dataItem.getAirlineName());
+                airlineEntity = this.getAirlinesService().loadAirlineByName(dataItem.getAirlineName(), user);
             }
             if (airlineEntity != null) {
                 if (StringUtils.isEmpty(dataItem.getAirlineCode())) {
-                    dataItem.setAirlineCode(airlineEntity.getIataCode());
+                    dataItem.setAirlineCode(airlineEntity.getCode());
                 }
                 if (StringUtils.isEmpty(dataItem.getAirlineName())) {
                     dataItem.setAirlineName(airlineEntity.getName());
@@ -177,7 +178,7 @@ public class ImportController {
             .collect(Collectors.toList());
 
         log.info("Importing {} flights", activeDataItems.size());
-        this.getImportExportService().importDataItems(activeDataItems, user == null ? null : user.getUserEntitiy());
+        this.getImportExportService().importDataItems(activeDataItems, user == null ? null : user.getUserEntity());
 
         return "/import/executed";
 

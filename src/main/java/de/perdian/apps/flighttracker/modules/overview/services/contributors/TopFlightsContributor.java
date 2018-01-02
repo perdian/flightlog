@@ -26,6 +26,7 @@ import de.perdian.apps.flighttracker.modules.overview.model.OverviewBean;
 import de.perdian.apps.flighttracker.modules.overview.model.OverviewItem;
 import de.perdian.apps.flighttracker.modules.overview.model.OverviewItemString;
 import de.perdian.apps.flighttracker.modules.overview.services.OverviewContributor;
+import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 
 @Component
 class TopFlightsContributor implements OverviewContributor {
@@ -34,10 +35,10 @@ class TopFlightsContributor implements OverviewContributor {
     private AirportsRepository airportsRepository = null;
 
     @Override
-    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights) {
+    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights, UserEntity user) {
         Map<String, List<OverviewItem>> topFlights = new LinkedHashMap<>();
         topFlights.put("topTenAirports", this.computeTopAirports(flights));
-        topFlights.put("topTenAirlines", this.computeTopItems(flights, flight -> Arrays.asList(flight.getAirline().getIataCode()), this::computeAirlineName, 1d));
+        topFlights.put("topTenAirlines", this.computeTopItems(flights, flight -> Arrays.asList(flight.getAirline().getCode()), airlineCode -> this.computeAirlineName(airlineCode, user), 1d));
         topFlights.put("topTenRoutes", this.computeTopItems(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode() + " - " + flight.getArrivalContact().getAirport().getCode()), this::computeAirportName, 1d));
         topFlights.put("topTenAircraftTypes", this.computeTopItems(flights, flight -> Arrays.asList(flight.getAircraft().getType()), null, 1d));
         overviewBean.setTopFlights(topFlights);
@@ -80,8 +81,8 @@ class TopFlightsContributor implements OverviewContributor {
         return topItems;
     }
 
-    private String computeAirlineName(String airlineCode) {
-        return Optional.ofNullable(this.getAirlinesService().loadAirlineByIataCode(airlineCode)).map(AirlineBean::getName).orElse(null);
+    private String computeAirlineName(String airlineCode, UserEntity user) {
+        return Optional.ofNullable(this.getAirlinesService().loadAirlineByCode(airlineCode, user)).map(AirlineBean::getName).orElse(null);
     }
 
     private String computeAirportName(String airportCode) {

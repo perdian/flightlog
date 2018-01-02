@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class FlightsQuery implements Serializable {
     private Collection<String> restrictDepartureAirportCodes = null;
     private Collection<String> restrictArrivalAirportCodes = null;
     private Collection<TimePeriod> restrictTimePeriods = null;
-    private Collection<UserEntity> restrictUsers = null;
+    private UserEntity restrictUser = null;
     private Collection<String> restrictAirportCodes = null;
     private Collection<String> restrictAirlineCodes = null;
     private Collection<String> restrictAircraftTypes = null;
@@ -48,7 +49,7 @@ public class FlightsQuery implements Serializable {
         toStringBuilder.append("restrictDepartureAirportCodes", this.getRestrictDepartureAirportCodes());
         toStringBuilder.append("restrictArrivalAirportCodes", this.getRestrictArrivalAirportCodes());
         toStringBuilder.append("restrictTimePeriods", this.getRestrictTimePeriods());
-        toStringBuilder.append("restrictUsers", this.getRestrictUsers());
+        toStringBuilder.append("restrictUser", this.getRestrictUser());
         toStringBuilder.append("restrictAirportCodes", this.getRestrictAirportCodes());
         toStringBuilder.append("restrictAirlineCodes", this.getRestrictAirlineCodes());
         toStringBuilder.append("restrictCabinClasses", this.getRestrictCabinClasses());
@@ -78,8 +79,8 @@ public class FlightsQuery implements Serializable {
         if (this.getRestrictIdentifiers() != null && !this.getRestrictIdentifiers().isEmpty()) {
             predicateList.add(root.get("id").in(this.getRestrictIdentifiers()));
         }
-        if (this.getRestrictUsers() != null && !this.getRestrictUsers().isEmpty()) {
-            predicateList.add(root.get("user").in(this.getRestrictUsers()));
+        if (this.getRestrictUser() != null) {
+            predicateList.add(root.get("user").in(Collections.singleton(this.getRestrictUser())));
         } else {
             predicateList.add(cb.isNull(root.get("user")));
         }
@@ -228,11 +229,11 @@ public class FlightsQuery implements Serializable {
         this.restrictTimePeriods = restrictTimePeriods;
     }
 
-    public Collection<UserEntity> getRestrictUsers() {
-        return this.restrictUsers;
+    public UserEntity getRestrictUser() {
+        return this.restrictUser;
     }
-    public void setRestrictUsers(Collection<UserEntity> restrictUsers) {
-        this.restrictUsers = restrictUsers;
+    public void setRestrictUser(UserEntity restrictUser) {
+        this.restrictUser = restrictUser;
     }
 
     public Collection<String> getRestrictAirportCodes() {

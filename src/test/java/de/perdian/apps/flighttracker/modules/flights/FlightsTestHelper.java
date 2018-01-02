@@ -56,7 +56,7 @@ public class FlightsTestHelper {
         aircraftBean.setType("Airbus A380-800");
 
         AirlineBean airlineBean = new AirlineBean();
-        airlineBean.setIataCode("LH");
+        airlineBean.setCode("LH");
         airlineBean.setName("Lufthansa");
 
         AirportBean arrivalAirportBean = new AirportBean();
@@ -94,10 +94,10 @@ public class FlightsTestHelper {
 
         AirlineBean lufthansaEntity = Mockito.mock(AirlineBean.class);
         Mockito.when(lufthansaEntity.getName()).thenReturn("Lufthansa");
-        Mockito.when(lufthansaEntity.getIataCode()).thenReturn("LH");
+        Mockito.when(lufthansaEntity.getCode()).thenReturn("LH");
 
         AirlinesService airlinesService = Mockito.mock(AirlinesService.class);
-        Mockito.when(airlinesService.loadAirlineByIataCode(Mockito.eq("LH"))).thenReturn(lufthansaEntity);
+        Mockito.when(airlinesService.loadAirlineByCode(Mockito.eq("LH"), Mockito.any())).thenReturn(lufthansaEntity);
         return airlinesService;
 
     }

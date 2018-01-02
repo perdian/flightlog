@@ -16,6 +16,7 @@ import de.perdian.apps.flighttracker.modules.overview.model.OverviewBean;
 import de.perdian.apps.flighttracker.modules.overview.model.OverviewItem;
 import de.perdian.apps.flighttracker.modules.overview.model.OverviewItemString;
 import de.perdian.apps.flighttracker.modules.overview.services.OverviewContributor;
+import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
 import de.perdian.apps.flighttracker.support.types.SeatType;
@@ -24,7 +25,7 @@ import de.perdian.apps.flighttracker.support.types.SeatType;
 class DistributionsContributor implements OverviewContributor {
 
     @Override
-    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights) {
+    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights, UserEntity user) {
         Map<String, List<OverviewItem>> resultMap = new LinkedHashMap<>();
         resultMap.put("cabinClasses", this.createDistribution(flights, FlightBean::getCabinClass, CabinClass.class, "cabinClass"));
         resultMap.put("flightReasons", this.createDistribution(flights, FlightBean::getFlightReason, FlightReason.class, "flightReason"));
