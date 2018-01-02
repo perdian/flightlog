@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `flight`;
 CREATE TABLE `flight` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `id` BINARY(16) NOT NULL,
   `aircraft_name` VARCHAR(100),
   `aircraft_registration` VARCHAR(10),
   `aircraft_type` VARCHAR(50),
@@ -20,7 +20,7 @@ CREATE TABLE `flight` (
   `flight_reason` INTEGER,
   `seat_number` VARCHAR(10),
   `seat_type` INTEGER,
-  `user_user_id` INTEGER,
+  `user_user_id` BINARY(16),
   PRIMARY KEY (`id`)
 );
 
@@ -29,12 +29,12 @@ CREATE TABLE `airline` (
   `code` CHAR(2) NOT NULL,
   `country_code` CHAR(2),
   `name` VARCHAR(100),
-  `user_user_id` INTEGER,
+  `user_user_id` BINARY(16),
   PRIMARY KEY (`code`)
 );
 
 CREATE TABLE `user` (
-  `user_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `user_id` BINARY(16) NOT NULL,
   `authentication_source` VARCHAR(64),
   `password` VARCHAR(64),
   `username` VARCHAR(64) NOT NULL,

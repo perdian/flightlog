@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.UUID;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsCollectionWithSize;
@@ -15,6 +16,7 @@ import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import de.perdian.apps.flighttracker.modules.flights.FlightsTestHelper;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
@@ -32,14 +34,14 @@ public class FlightsQueryServiceImplTest {
 
         FlightEntity flightEntity = FlightsTestHelper.createDefaultFlightEntity();
         FlightsRepository flightsRepository = Mockito.mock(FlightsRepository.class);
-        Mockito.when(flightsRepository.findOne(Mockito.eq(4711L))).thenReturn(flightEntity);
+        Mockito.when(flightsRepository.findAll(Mockito.any(), Mockito.any(Pageable.class))).thenReturn(new PageImpl<>(Arrays.asList(flightEntity)));
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
         serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(flightsRepository);
 
-        FlightBean flightBean = serviceImpl.loadFlightById(Long.valueOf(4711), null);
+        FlightBean flightBean = serviceImpl.loadFlightById(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"), null);
         Assertions.assertNotNull(flightBean);
         Assertions.assertEquals("Frankfurt am Main", flightBean.getAircraft().getName());
         Assertions.assertEquals("D-AIMA", flightBean.getAircraft().getRegistration());
@@ -65,7 +67,7 @@ public class FlightsQueryServiceImplTest {
         Assertions.assertNull(flightBean.getDepartureContact().getDateOffset());
         Assertions.assertEquals(LocalDate.of(2017, 12, 8).atTime(8, 10).atZone(ZoneId.of("Europe/Berlin")).toInstant(), flightBean.getDepartureContact().getDateTimeUtc());
         Assertions.assertEquals(LocalTime.of(8, 10), flightBean.getDepartureContact().getTimeLocal());
-        Assertions.assertEquals(Long.valueOf(42), flightBean.getEntityId());
+        Assertions.assertEquals(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"), flightBean.getEntityId());
         Assertions.assertEquals(Integer.valueOf(1234), flightBean.getFlightDistance());
         Assertions.assertEquals(Duration.ofHours(7).plusMinutes(30), flightBean.getFlightDuration());
         Assertions.assertEquals("7:30", flightBean.getFlightDurationString());
@@ -84,8 +86,8 @@ public class FlightsQueryServiceImplTest {
         serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(Mockito.mock(FlightsRepository.class));
 
-        Assertions.assertNull(serviceImpl.loadFlightById(Long.valueOf(42), Mockito.any()));
-        Assertions.assertNull(serviceImpl.loadFlightById(null, Mockito.any()));
+        Assertions.assertNull(serviceImpl.loadFlightById(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"), null));
+        Assertions.assertNull(serviceImpl.loadFlightById(null, null));
 
     }
 

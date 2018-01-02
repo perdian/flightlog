@@ -1,13 +1,15 @@
 package de.perdian.apps.flighttracker.modules.users.persistence;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "user")
@@ -15,7 +17,7 @@ public class UserEntity implements Serializable {
 
     static final long serialVersionUID = 1L;
 
-    private Long userId = null;
+    private UUID userId = null;
     private String username = null;
     private String password = null;
     private String authenticationSource = null;
@@ -44,11 +46,12 @@ public class UserEntity implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getUserId() {
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    public UUID getUserId() {
         return this.userId;
     }
-    public void setUserId(Long userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 

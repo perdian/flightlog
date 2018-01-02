@@ -3,17 +3,18 @@ package de.perdian.apps.flighttracker.modules.flights.persistence;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.GenericGenerator;
 
 import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
@@ -26,7 +27,7 @@ public class FlightEntity implements Serializable {
 
     static final long serialVersionUID = 1L;
 
-    private Long id = null;
+    private UUID id = null;
     private UserEntity user = null;
     private String departureAirportCode = null;
     private LocalDate departureDateLocal = null;
@@ -77,11 +78,12 @@ public class FlightEntity implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    public UUID getId() {
         return this.id;
     }
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -89,6 +91,7 @@ public class FlightEntity implements Serializable {
     public UserEntity getUser() {
         return this.user;
     }
+
     public void setUser(UserEntity user) {
         this.user = user;
     }

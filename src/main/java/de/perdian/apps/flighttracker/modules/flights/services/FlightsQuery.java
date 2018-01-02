@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -28,7 +29,7 @@ public class FlightsQuery implements Serializable {
 
     private Integer page = null;
     private Integer pageSize = null;
-    private Collection<Long> restrictIdentifiers = null;
+    private Collection<UUID> restrictIdentifiers = null;
     private Collection<String> restrictFlightNumbers = null;
     private Collection<String> restrictDepartureAirportCodes = null;
     private Collection<String> restrictArrivalAirportCodes = null;
@@ -194,10 +195,10 @@ public class FlightsQuery implements Serializable {
         this.pageSize = pageSize;
     }
 
-    public Collection<Long> getRestrictIdentifiers() {
+    public Collection<UUID> getRestrictIdentifiers() {
         return this.restrictIdentifiers;
     }
-    public void setRestrictIdentifiers(Collection<Long> restrictIdentifiers) {
+    public void setRestrictIdentifiers(Collection<UUID> restrictIdentifiers) {
         this.restrictIdentifiers = restrictIdentifiers;
     }
 

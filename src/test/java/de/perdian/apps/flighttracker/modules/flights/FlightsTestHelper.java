@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 import org.mockito.Mockito;
 
@@ -25,7 +26,7 @@ public class FlightsTestHelper {
 
     public static FlightEntity createDefaultFlightEntity() {
         FlightEntity flightEntity = new FlightEntity();
-        flightEntity.setId(Long.valueOf(42));
+        flightEntity.setId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));
         flightEntity.setAircraftName("Frankfurt am Main");
         flightEntity.setAircraftRegistration("D-AIMA");
         flightEntity.setAircraftType("Airbus A380-800");
@@ -74,7 +75,7 @@ public class FlightsTestHelper {
         departureContactBean.setTimeLocal(LocalTime.of(8, 10));
 
         FlightBean flightBean = new FlightBean();
-        flightBean.setEntityId(Long.valueOf(42));
+        flightBean.setEntityId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));
         flightBean.setAircraft(aircraftBean);
         flightBean.setAirline(airlineBean);
         flightBean.setArrivalContact(arrivalContactBean);

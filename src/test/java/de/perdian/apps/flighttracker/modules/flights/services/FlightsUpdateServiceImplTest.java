@@ -2,6 +2,7 @@ package de.perdian.apps.flighttracker.modules.flights.services;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,13 +26,13 @@ public class FlightsUpdateServiceImplTest {
         FlightsRepository flightsRepository = Mockito.mock(FlightsRepository.class);
 
         FlightBean flightBean = new FlightBean();
-        flightBean.setEntityId(Long.valueOf(42));
+        flightBean.setEntityId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));
 
         FlightsUpdateServiceImpl serviceImpl = new FlightsUpdateServiceImpl();
         serviceImpl.setFlightsRepository(flightsRepository);
         serviceImpl.deleteFlight(flightBean);
 
-        Mockito.verify(flightsRepository).delete(Mockito.eq(Long.valueOf(42)));
+        Mockito.verify(flightsRepository).delete(Mockito.eq(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe")));
         Mockito.verifyNoMoreInteractions(flightsRepository);
 
     }
@@ -41,13 +42,13 @@ public class FlightsUpdateServiceImplTest {
 
         FlightBean returnBean = new FlightBean();
         FlightsQueryService flightsQueryService = Mockito.mock(FlightsQueryService.class);
-        Mockito.when(flightsQueryService.loadFlightById(Mockito.eq(Long.valueOf(42)), Mockito.any())).thenReturn(returnBean);
+        Mockito.when(flightsQueryService.loadFlightById(Mockito.eq(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe")), Mockito.any())).thenReturn(returnBean);
         FlightsRepository flightsRepository = Mockito.mock(FlightsRepository.class);
         FlightEntity flightEntity = FlightsTestHelper.createDefaultFlightEntity();
         Mockito.when(flightsRepository.findOne(Mockito.any(Specification.class))).thenReturn(flightEntity);
 
         FlightBean flightBean = new FlightBean();
-        flightBean.setEntityId(Long.valueOf(42));
+        flightBean.setEntityId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));
 
         FlightsUpdateServiceImpl serviceImpl = new FlightsUpdateServiceImpl();
         serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
@@ -59,7 +60,7 @@ public class FlightsUpdateServiceImplTest {
         Mockito.verify(flightsRepository).findOne(Mockito.any(Specification.class));
         Mockito.verify(flightsRepository).save(Mockito.eq(flightEntity));
         Mockito.verifyNoMoreInteractions(flightsRepository);
-        Mockito.verify(flightsQueryService).loadFlightById(Mockito.eq(Long.valueOf(42)), Mockito.any());
+        Mockito.verify(flightsQueryService).loadFlightById(Mockito.eq(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe")), Mockito.any());
 
     }
 
@@ -70,7 +71,7 @@ public class FlightsUpdateServiceImplTest {
         FlightsRepository flightsRepository = Mockito.mock(FlightsRepository.class);
 
         FlightEntity newFlightEntity = new FlightEntity();
-        newFlightEntity.setId(Long.valueOf(43));
+        newFlightEntity.setId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cff"));
         FlightBean flightBean = FlightsTestHelper.createDefaultFlightBean();
 
         FlightsUpdateServiceImpl serviceImpl = new FlightsUpdateServiceImpl();
@@ -88,7 +89,7 @@ public class FlightsUpdateServiceImplTest {
 
         Assertions.assertEquals(1, entityCaptor.getAllValues().size());
         Assertions.assertNotNull(entityCaptor.getValue());
-        Assertions.assertEquals(Long.valueOf(43), entityCaptor.getValue().getId());
+        Assertions.assertEquals(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cff"), entityCaptor.getValue().getId());
         Assertions.assertEquals("Frankfurt am Main", entityCaptor.getValue().getAircraftName());
         Assertions.assertEquals("D-AIMA", entityCaptor.getValue().getAircraftRegistration());
         Assertions.assertEquals("Airbus A380-800", entityCaptor.getValue().getAircraftType());

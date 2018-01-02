@@ -1,6 +1,7 @@
 package de.perdian.apps.flighttracker.modules.flights.web;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
@@ -21,7 +22,7 @@ public class FlightEditor implements Serializable {
 
     static final long serialVersionUID = 1L;
 
-    private Long entityId = null;
+    private UUID entityId = null;
     private String departureAirportCode = null;
     private String departureAirportCountryCode = null;
     private String departureAirportName = null;
@@ -117,10 +118,10 @@ public class FlightEditor implements Serializable {
 
     }
 
-    public Long getEntityId() {
+    public UUID getEntityId() {
         return this.entityId;
     }
-    private void setEntityId(Long entityId) {
+    private void setEntityId(UUID entityId) {
         this.entityId = entityId;
     }
 

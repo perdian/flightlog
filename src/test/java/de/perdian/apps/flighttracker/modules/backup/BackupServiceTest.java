@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -95,9 +96,9 @@ public class BackupServiceTest {
     public void executeBackup() throws IOException {
 
         UserEntity userA = new UserEntity();
-        userA.setUserId(Long.valueOf("1"));
+        userA.setUserId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));
         UserEntity userB = new UserEntity();
-        userB.setUserId(Long.valueOf("2"));
+        userB.setUserId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cff"));
         UsersQueryService usersQueryService = Mockito.mock(UsersQueryService.class);
         Mockito.when(usersQueryService.loadUsers(Mockito.any())).thenReturn(Arrays.asList(userA, userB));
 
@@ -130,8 +131,8 @@ public class BackupServiceTest {
                 }
                 Assertions.assertEquals(3, zipEntryNames.size());
                 MatcherAssert.assertThat(zipEntryNames, Matchers.hasItem("user-undefined/flights.xml"));
-                MatcherAssert.assertThat(zipEntryNames, Matchers.hasItem("user-2/user.xml"));
-                MatcherAssert.assertThat(zipEntryNames, Matchers.hasItem("user-2/flights.xml"));
+                MatcherAssert.assertThat(zipEntryNames, Matchers.hasItem("user-c2bb2c43-e029-4cc2-a80c-7445cdea0cff/user.xml"));
+                MatcherAssert.assertThat(zipEntryNames, Matchers.hasItem("user-c2bb2c43-e029-4cc2-a80c-7445cdea0cff/flights.xml"));
             }
 
         }

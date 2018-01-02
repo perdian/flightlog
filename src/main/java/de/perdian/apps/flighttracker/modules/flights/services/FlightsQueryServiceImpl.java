@@ -2,7 +2,8 @@ package de.perdian.apps.flighttracker.modules.flights.services;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Optional;
+import java.util.Collections;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -46,15 +47,20 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         Page<FlightEntity> flightEntities = this.getFlightsRepository().findAll(flightEntitiesSpecification, pageRequest);
 
         PaginatedList<FlightBean> resultList = new PaginatedList<>();
-        resultList.setPagination(new PaginationData(flightEntities.getNumber(), flightEntities.getTotalPages()));
-        resultList.setItems(flightEntities.getContent().stream().map(flightEntity -> this.convertFlightEntity(flightEntity, flightsQuery.getRestrictUser())).collect(Collectors.toList()));
+        resultList.setPagination(flightEntities == null ? null : new PaginationData(flightEntities.getNumber(), flightEntities.getTotalPages()));
+        resultList.setItems(flightEntities == null ? Collections.emptyList() : flightEntities.getContent().stream().map(flightEntity -> this.convertFlightEntity(flightEntity, flightsQuery.getRestrictUser())).collect(Collectors.toList()));
         return resultList;
 
     }
 
     @Override
-    public FlightBean loadFlightById(Long id, UserEntity user) {
-        return Optional.ofNullable(this.getFlightsRepository().findOne(id)).map(flightEntity -> this.convertFlightEntity(flightEntity, user)).orElse(null);
+    public FlightBean loadFlightById(UUID id, UserEntity user) {
+        FlightsQuery flightsQuery = new FlightsQuery();
+        flightsQuery.setRestrictIdentifiers(Collections.singleton(id));
+        flightsQuery.setRestrictUser(user);
+        flightsQuery.setPageSize(1);
+        PaginatedList<FlightBean> flightsList = this.loadFlights(flightsQuery);
+        return flightsList.getItem(0).orElse(null);
     }
 
     private FlightBean convertFlightEntity(FlightEntity flightEntitiy, UserEntity user) {

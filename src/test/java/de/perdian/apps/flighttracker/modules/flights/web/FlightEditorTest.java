@@ -2,6 +2,7 @@ package de.perdian.apps.flighttracker.modules.flights.web;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ public class FlightEditorTest {
     @Test
     public void constructor() {
         FlightEditor flightEditor = new FlightEditor(FlightsTestHelper.createDefaultFlightBean());
-        Assertions.assertEquals(Long.valueOf(42), flightEditor.getEntityId());
+        Assertions.assertEquals(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"), flightEditor.getEntityId());
         Assertions.assertEquals("Frankfurt am Main", flightEditor.getAircraftName());
         Assertions.assertEquals("D-AIMA", flightEditor.getAircraftRegistration());
         Assertions.assertEquals("Airbus A380-800", flightEditor.getAircraftType());
