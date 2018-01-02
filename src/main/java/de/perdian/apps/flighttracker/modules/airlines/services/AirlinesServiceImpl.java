@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
-import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineRepository;
+import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 
 @Service
 class AirlinesServiceImpl implements AirlinesService {
 
     private List<AirlinesLookup> airlinesLookups = null;
-    private AirlineRepository airlineRepository = null;
+    private AirlinesRepository airlinesRepository = null;
 
     @Override
     public AirlineBean loadAirlineByCode(String airlineCode, UserEntity user) {
@@ -43,12 +43,12 @@ class AirlinesServiceImpl implements AirlinesService {
         this.airlinesLookups = airlinesLookups;
     }
 
-    AirlineRepository getAirlineRepository() {
-        return this.airlineRepository;
+    AirlinesRepository getAirlinesRepository() {
+        return this.airlinesRepository;
     }
     @Autowired
-    void setAirlineRepository(AirlineRepository airlineRepository) {
-        this.airlineRepository = airlineRepository;
+    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
+        this.airlinesRepository = airlinesRepository;
     }
 
 }
