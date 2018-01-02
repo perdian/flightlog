@@ -39,7 +39,7 @@ class DatabaseAirlinesLookup implements AirlinesLookup {
             return null;
         } else {
             AirlineBean airlineBean = new AirlineBean();
-            airlineBean.setCode(airlineCode);
+            airlineBean.setCode(airlineEntity.getCode());
             airlineBean.setCountryCode(airlineEntity.getCountryCode());
             airlineBean.setName(airlineEntity.getName());
             this.getAirlineBeansByCode().compute(user, (k, v) -> v == null ? new LinkedHashMap<>() : v).put(airlineCode, airlineBean);
@@ -51,7 +51,7 @@ class DatabaseAirlinesLookup implements AirlinesLookup {
     public AirlineBean loadAirlineByName(String airlineName, UserEntity user) {
         Map<String, AirlineBean> airlineBeansForUser = this.getAirlineBeansByCode().get(user);
         if (airlineBeansForUser == null) {
-            return null;
+            return this.loadAirlineByNameFromDatabase(airlineName, user);
         } else {
             return airlineBeansForUser.values().stream()
                 .filter(bean -> airlineName.equalsIgnoreCase(bean.getName()))
@@ -68,7 +68,7 @@ class DatabaseAirlinesLookup implements AirlinesLookup {
             AirlineBean airlineBean = new AirlineBean();
             airlineBean.setCode(airlineEntity.getCode());
             airlineBean.setCountryCode(airlineEntity.getCountryCode());
-            airlineBean.setName(airlineName);
+            airlineBean.setName(airlineEntity.getName());
             this.getAirlineBeansByCode().compute(user, (k, v) -> v == null ? new LinkedHashMap<>() : v).put(airlineEntity.getCode(), airlineBean);
             return airlineBean;
         }
@@ -84,6 +84,9 @@ class DatabaseAirlinesLookup implements AirlinesLookup {
         Map<String, AirlineBean> airlineBeansForUser = this.getAirlineBeansByCode().get(user);
         if (airlineBeansForUser != null) {
             airlineBeansForUser.remove(airlineCode);
+            if (airlineBeansForUser.isEmpty()) {
+                this.getAirlineBeansByCode().remove(user);
+            }
         }
     }
 
