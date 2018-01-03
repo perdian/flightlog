@@ -7,13 +7,21 @@ public class AirlineEditorList implements Serializable {
 
     static final long serialVersionUID = 1L;
 
-    private List<AirlineEditor> airlines = null;
+    private List<AirlineEditor> items = null;
+    private AirlineEditor newItem = null;
 
-    public List<AirlineEditor> getAirlines() {
-        return this.airlines;
+    public List<AirlineEditor> getItems() {
+        return this.items;
     }
-    public void setAirlines(List<AirlineEditor> airlines) {
-        this.airlines = airlines;
+    public void setItems(List<AirlineEditor> items) {
+        this.items = items;
+    }
+
+    public AirlineEditor getNewItem() {
+        return this.newItem;
+    }
+    public void setNewItem(AirlineEditor newItem) {
+        this.newItem = newItem;
     }
 
 }

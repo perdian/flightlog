@@ -35,8 +35,8 @@ public class AirlineEditControllerTest {
 
         Assertions.assertNotNull(model.get("airlines"));
         Assertions.assertTrue(model.get("airlines") instanceof AirlineEditorList);
-        Assertions.assertEquals(airline1, ((AirlineEditorList)model.get("airlines")).getAirlines().get(0).getAirlineBean());
-        Assertions.assertEquals(airline2, ((AirlineEditorList)model.get("airlines")).getAirlines().get(1).getAirlineBean());
+        Assertions.assertEquals(airline1, ((AirlineEditorList)model.get("airlines")).getItems().get(0).getAirlineBean());
+        Assertions.assertEquals(airline2, ((AirlineEditorList)model.get("airlines")).getItems().get(1).getAirlineBean());
 
     }
 
