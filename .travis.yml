@@ -3,4 +3,6 @@ script:
   - mvn clean package -B
 sudo: false
 notifications:
-  email: false
+  email: 
+    on_success: change
+    on_failure: always
