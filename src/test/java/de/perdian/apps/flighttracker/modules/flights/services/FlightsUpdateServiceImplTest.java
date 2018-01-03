@@ -10,7 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.data.jpa.domain.Specification;
 
-import de.perdian.apps.flighttracker.modules.flights.FlightsTestHelper;
+import de.perdian.apps.flighttracker.FlighttrackerTestHelper;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
 import de.perdian.apps.flighttracker.modules.flights.persistence.FlightEntity;
 import de.perdian.apps.flighttracker.modules.flights.persistence.FlightsRepository;
@@ -44,15 +44,15 @@ public class FlightsUpdateServiceImplTest {
         FlightsQueryService flightsQueryService = Mockito.mock(FlightsQueryService.class);
         Mockito.when(flightsQueryService.loadFlightById(Mockito.eq(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe")), Mockito.any())).thenReturn(returnBean);
         FlightsRepository flightsRepository = Mockito.mock(FlightsRepository.class);
-        FlightEntity flightEntity = FlightsTestHelper.createDefaultFlightEntity();
+        FlightEntity flightEntity = FlighttrackerTestHelper.createDefaultFlightEntity();
         Mockito.when(flightsRepository.findOne(Mockito.any(Specification.class))).thenReturn(flightEntity);
 
         FlightBean flightBean = new FlightBean();
         flightBean.setEntityId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));
 
         FlightsUpdateServiceImpl serviceImpl = new FlightsUpdateServiceImpl();
-        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
-        serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
+        serviceImpl.setAirlinesService(FlighttrackerTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirportsRepository(FlighttrackerTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsQueryService(flightsQueryService);
         serviceImpl.setFlightsRepository(flightsRepository);
         Assertions.assertEquals(returnBean, serviceImpl.saveFlight(flightBean, null));
@@ -72,11 +72,11 @@ public class FlightsUpdateServiceImplTest {
 
         FlightEntity newFlightEntity = new FlightEntity();
         newFlightEntity.setId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cff"));
-        FlightBean flightBean = FlightsTestHelper.createDefaultFlightBean();
+        FlightBean flightBean = FlighttrackerTestHelper.createDefaultFlightBean();
 
         FlightsUpdateServiceImpl serviceImpl = new FlightsUpdateServiceImpl();
-        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
-        serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
+        serviceImpl.setAirlinesService(FlighttrackerTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirportsRepository(FlighttrackerTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsQueryService(flightsQueryService);
         serviceImpl.setFlightsRepository(flightsRepository);
         serviceImpl.setNewFlightEntitySupplier(() -> newFlightEntity);

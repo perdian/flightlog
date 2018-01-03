@@ -23,8 +23,8 @@ class DifferentsContributor implements OverviewContributor {
     public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights, UserEntity user) {
         List<OverviewItem> overviewItems = new ArrayList<>();
         overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentAircraftTypes"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getAircraft().getType())), null, null));
-        overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentAirports"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode(), flight.getDepartureContact().getAirport().getCode())), null, null));
-        overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentCountries"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCountryCode(), flight.getDepartureContact().getAirport().getCountryCode())), null, null));
+        overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentAirports"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode(), flight.getArrivalContact().getAirport().getCode())), null, null));
+        overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentCountries"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCountryCode(), flight.getArrivalContact().getAirport().getCountryCode())), null, null));
         overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentRoutes"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode() + "-" + flight.getArrivalContact().getAirport().getCode())), null, null));
         overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentAirlines"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getAirline().getCode())), null, null));
         overviewBean.setDifferents(overviewItems);

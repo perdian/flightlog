@@ -1,4 +1,4 @@
-package de.perdian.apps.flighttracker.modules.flights;
+package de.perdian.apps.flighttracker;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
 import de.perdian.apps.flighttracker.support.types.SeatType;
 
-public class FlightsTestHelper {
+public class FlighttrackerTestHelper {
 
     public static FlightEntity createDefaultFlightEntity() {
         FlightEntity flightEntity = new FlightEntity();
@@ -50,45 +50,20 @@ public class FlightsTestHelper {
     }
 
     public static FlightBean createDefaultFlightBean() {
-
-        AircraftBean aircraftBean = new AircraftBean();
-        aircraftBean.setName("Frankfurt am Main");
-        aircraftBean.setRegistration("D-AIMA");
-        aircraftBean.setType("Airbus A380-800");
-
-        AirlineBean airlineBean = new AirlineBean();
-        airlineBean.setCode("LH");
-        airlineBean.setName("Lufthansa");
-
-        AirportBean arrivalAirportBean = new AirportBean();
-        arrivalAirportBean.setCode("MCO");
-        AirportContactBean arrivalContactBean = new AirportContactBean();
-        arrivalContactBean.setAirport(arrivalAirportBean);
-        arrivalContactBean.setDateLocal(LocalDate.of(2017, 12, 8));
-        arrivalContactBean.setTimeLocal(LocalTime.of(13, 12));
-
-        AirportBean departureAirportBean = new AirportBean();
-        departureAirportBean.setCode("CGN");
-        AirportContactBean departureContactBean = new AirportContactBean();
-        departureContactBean.setAirport(departureAirportBean);
-        departureContactBean.setDateLocal(LocalDate.of(2017, 12, 8));
-        departureContactBean.setTimeLocal(LocalTime.of(8, 10));
-
         FlightBean flightBean = new FlightBean();
         flightBean.setEntityId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));
-        flightBean.setAircraft(aircraftBean);
-        flightBean.setAirline(airlineBean);
-        flightBean.setArrivalContact(arrivalContactBean);
+        flightBean.setAircraft(FlighttrackerTestHelper.createAircraftBean("Airbus A380-800", "D-AIMA", "Frankfurt am Main"));
+        flightBean.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "Lufthansa"));
+        flightBean.setArrivalContact(FlighttrackerTestHelper.createAirportContactBean("MCO", "US", LocalDate.of(2017, 12, 8), LocalTime.of(13, 12)));
         flightBean.setCabinClass(CabinClass.ECONOMY);
         flightBean.setComment("this is a comment");
-        flightBean.setDepartureContact(departureContactBean);
+        flightBean.setDepartureContact(FlighttrackerTestHelper.createAirportContactBean("CGN", "DE", LocalDate.of(2017, 12, 8), LocalTime.of(8, 10)));
         flightBean.setFlightDistance(1234);
         flightBean.setFlightNumber("1234");
         flightBean.setFlightReason(FlightReason.PRIVATE);
         flightBean.setSeatNumber("42F");
         flightBean.setSeatType(SeatType.WINDOW);
         return flightBean;
-
     }
 
     public static AirlinesService createDefaultAirlinesService() {
@@ -125,12 +100,59 @@ public class FlightsTestHelper {
         Mockito.when(orlandoEntity.getTimezoneId()).thenReturn(ZoneId.of("America/New_York"));
         Mockito.when(orlandoEntity.getTimezoneOffset()).thenReturn(ZoneOffset.ofHours(-4));
 
+        AirportEntity newYorkEntity = Mockito.mock(AirportEntity.class);
+        Mockito.when(newYorkEntity.getCountryCode()).thenReturn("US");
+        Mockito.when(newYorkEntity.getIataCode()).thenReturn("JFK");
+        Mockito.when(newYorkEntity.getIcaoCode()).thenReturn("KJFK");
+        Mockito.when(newYorkEntity.getName()).thenReturn("New Jork Kennedy");
+        Mockito.when(newYorkEntity.getTimezoneId()).thenReturn(ZoneId.of("America/New_York"));
+        Mockito.when(newYorkEntity.getTimezoneOffset()).thenReturn(ZoneOffset.ofHours(-4));
+
+        AirportEntity dusseldorfEntity = Mockito.mock(AirportEntity.class);
+        Mockito.when(dusseldorfEntity.getCountryCode()).thenReturn("DE");
+        Mockito.when(dusseldorfEntity.getIataCode()).thenReturn("DUS");
+        Mockito.when(dusseldorfEntity.getIcaoCode()).thenReturn("EDDL");
+        Mockito.when(dusseldorfEntity.getName()).thenReturn("Dusseldorf International");
+        Mockito.when(dusseldorfEntity.getTimezoneId()).thenReturn(ZoneId.of("Europe/Berlin"));
+        Mockito.when(dusseldorfEntity.getTimezoneOffset()).thenReturn(ZoneOffset.ofHours(2));
+
         AirportsRepository airportsRepository = Mockito.mock(AirportsRepository.class);
         Mockito.when(airportsRepository.loadAirportByIataCode(Mockito.eq("CGN"))).thenReturn(cologneEntity);
         Mockito.when(airportsRepository.loadAirportByIataCode(Mockito.eq("MCO"))).thenReturn(orlandoEntity);
+        Mockito.when(airportsRepository.loadAirportByIataCode(Mockito.eq("JFK"))).thenReturn(newYorkEntity);
+        Mockito.when(airportsRepository.loadAirportByIataCode(Mockito.eq("DUS"))).thenReturn(dusseldorfEntity);
         return airportsRepository;
 
     }
 
+    public static AircraftBean createAircraftBean(String type, String registration, String name) {
+        AircraftBean aircraftBean = new AircraftBean();
+        aircraftBean.setType(type);
+        aircraftBean.setRegistration(registration);
+        aircraftBean.setName(name);
+        return aircraftBean;
+    }
+
+    public static AirportContactBean createAirportContactBean(String airportCode, String countryCode, LocalDate date, LocalTime time) {
+        AirportContactBean airportContactBean = new AirportContactBean();
+        airportContactBean.setAirport(FlighttrackerTestHelper.createAirportBean(airportCode, countryCode));
+        airportContactBean.setDateLocal(date);
+        airportContactBean.setTimeLocal(time);
+        return airportContactBean;
+    }
+
+    public static AirportBean createAirportBean(String airportCode, String countryCode) {
+        AirportBean airportBean = new AirportBean();
+        airportBean.setCode(airportCode);
+        airportBean.setCountryCode(countryCode);
+        return airportBean;
+    }
+
+    public static AirlineBean createAirlineBean(String code, String name) {
+        AirlineBean airlineBean = new AirlineBean();
+        airlineBean.setCode(code);
+        airlineBean.setName(name);
+        return airlineBean;
+    }
 
 }

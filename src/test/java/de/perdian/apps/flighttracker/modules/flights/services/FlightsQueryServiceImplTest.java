@@ -18,7 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import de.perdian.apps.flighttracker.modules.flights.FlightsTestHelper;
+import de.perdian.apps.flighttracker.FlighttrackerTestHelper;
 import de.perdian.apps.flighttracker.modules.flights.model.FlightBean;
 import de.perdian.apps.flighttracker.modules.flights.persistence.FlightEntity;
 import de.perdian.apps.flighttracker.modules.flights.persistence.FlightsRepository;
@@ -32,13 +32,13 @@ public class FlightsQueryServiceImplTest {
     @Test
     public void loadFlightById() {
 
-        FlightEntity flightEntity = FlightsTestHelper.createDefaultFlightEntity();
+        FlightEntity flightEntity = FlighttrackerTestHelper.createDefaultFlightEntity();
         FlightsRepository flightsRepository = Mockito.mock(FlightsRepository.class);
         Mockito.when(flightsRepository.findAll(Mockito.any(), Mockito.any(Pageable.class))).thenReturn(new PageImpl<>(Arrays.asList(flightEntity)));
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
-        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
-        serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
+        serviceImpl.setAirlinesService(FlighttrackerTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirportsRepository(FlighttrackerTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(flightsRepository);
 
         FlightBean flightBean = serviceImpl.loadFlightById(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"), null);
@@ -82,8 +82,8 @@ public class FlightsQueryServiceImplTest {
     public void loadFlightByIdNotFound() {
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
-        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
-        serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
+        serviceImpl.setAirlinesService(FlighttrackerTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirportsRepository(FlighttrackerTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(Mockito.mock(FlightsRepository.class));
 
         Assertions.assertNull(serviceImpl.loadFlightById(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"), null));
@@ -94,13 +94,13 @@ public class FlightsQueryServiceImplTest {
     @Test
     public void loadFlights() {
 
-        Page<FlightEntity> flightEntities = new PageImpl<>(Arrays.asList(FlightsTestHelper.createDefaultFlightEntity()));
+        Page<FlightEntity> flightEntities = new PageImpl<>(Arrays.asList(FlighttrackerTestHelper.createDefaultFlightEntity()));
         FlightsRepository flightsRepository = Mockito.mock(FlightsRepository.class);
         Mockito.when(flightsRepository.findAll(Mockito.any(), Mockito.any(PageRequest.class))).thenReturn(flightEntities);
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
-        serviceImpl.setAirlinesService(FlightsTestHelper.createDefaultAirlinesService());
-        serviceImpl.setAirportsRepository(FlightsTestHelper.createDefaultAirportsRepository());
+        serviceImpl.setAirlinesService(FlighttrackerTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirportsRepository(FlighttrackerTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(flightsRepository);
 
         FlightsQuery flightsQuery = new FlightsQuery();

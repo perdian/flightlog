@@ -14,6 +14,11 @@ public class PaginationData implements Serializable {
         this.setTotalPages(totalPages);
     }
 
+    @Override
+    public String toString() {
+        return "[" + this.getPage() + "/" + this.getTotalPages() + "]";
+    }
+
     public int getPage() {
         return this.page;
     }
