@@ -35,7 +35,7 @@ public class AirlineEditController {
     }
 
     @RequestMapping(value = "/airlines/list", method = RequestMethod.POST)
-    public String doListGet(@AuthenticationPrincipal FlighttrackerUser user, AirlineEditorList editorList, @ModelAttribute Messages messages, Locale locale, Model model) {
+    public String doListPost(@AuthenticationPrincipal FlighttrackerUser user, AirlineEditorList editorList, @ModelAttribute Messages messages, Locale locale, Model model) {
         try {
             for (AirlineEditor editor : editorList.getItems()) {
                 if (editor.isDelete()) {
