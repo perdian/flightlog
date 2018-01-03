@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +25,7 @@ import de.perdian.apps.flighttracker.support.web.Messages;
 @Controller
 public class AirlineEditController {
 
+    private static final Logger log = LoggerFactory.getLogger(AirlineEditController.class);
     private AirlinesService airlinesService = null;
     private MessageSource messageSource = null;
 
@@ -37,19 +40,22 @@ public class AirlineEditController {
     @RequestMapping(value = "/airlines/list", method = RequestMethod.POST)
     public String doListPost(@AuthenticationPrincipal FlighttrackerUser user, AirlineEditorList editorList, @ModelAttribute Messages messages, Locale locale, Model model) {
         try {
-            for (AirlineEditor editor : editorList.getItems()) {
-                if (editor.isDelete()) {
-                    this.getAirlinesService().deleteUserSpecificAirline(user == null ? null : user.getUserEntity(), editor.getAirlineBean());
-                } else {
-                    this.getAirlinesService().updateUserSpecificAirline(user == null ? null : user.getUserEntity(), editor.getAirlineBean());
+            if (editorList.getItems() != null) {
+                for (AirlineEditor editor : editorList.getItems()) {
+                    if (editor.isDelete()) {
+                        this.getAirlinesService().deleteUserSpecificAirline(user == null ? null : user.getUserEntity(), editor.getAirlineBean());
+                    } else {
+                        this.getAirlinesService().updateUserSpecificAirline(user == null ? null : user.getUserEntity(), editor.getAirlineBean());
+                    }
                 }
             }
-            if (!StringUtils.isEmpty(editorList.getNewItem().getAirlineBean().getCode())) {
+            if (editorList.getNewItem() != null && !StringUtils.isEmpty(editorList.getNewItem().getAirlineBean().getCode())) {
                 this.getAirlinesService().updateUserSpecificAirline(user == null ? null : user.getUserEntity(), editorList.getNewItem().getAirlineBean());
             }
             messages.addMessage(MessageSeverity.INFO, this.getMessageSource().getMessage("updateSuccessful", null, locale), null);
             return this.doListGet(user, model);
         } catch (Exception e) {
+            log.warn("Cannot update airline", e);
             messages.addMessage(MessageSeverity.ERROR, this.getMessageSource().getMessage("updateError", null, locale), ExceptionUtils.getMessage(e));
             model.addAttribute("airlines", editorList);
             return "/airlines/list";
