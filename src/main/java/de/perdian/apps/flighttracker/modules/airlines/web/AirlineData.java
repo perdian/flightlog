@@ -2,7 +2,7 @@ package de.perdian.apps.flighttracker.modules.airlines.web;
 
 import java.io.Serializable;
 
-public class Airline implements Serializable {
+public class AirlineData implements Serializable {
 
     static final long serialVersionUID = 1L;
 

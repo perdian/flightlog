@@ -5,11 +5,15 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.UUID;
 
 import org.mockito.Mockito;
+import org.springframework.data.jpa.domain.Specification;
 
 import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineEntity;
+import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportEntity;
 import de.perdian.apps.flighttracker.modules.airports.persistence.AirportsRepository;
@@ -53,7 +57,7 @@ public class FlighttrackerTestHelper {
         FlightBean flightBean = new FlightBean();
         flightBean.setEntityId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));
         flightBean.setAircraft(FlighttrackerTestHelper.createAircraftBean("Airbus A380-800", "D-AIMA", "Frankfurt am Main"));
-        flightBean.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "Lufthansa"));
+        flightBean.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "DE", "Lufthansa"));
         flightBean.setArrivalContact(FlighttrackerTestHelper.createAirportContactBean("MCO", "US", LocalDate.of(2017, 12, 8), LocalTime.of(13, 12)));
         flightBean.setCabinClass(CabinClass.ECONOMY);
         flightBean.setComment("this is a comment");
@@ -66,14 +70,34 @@ public class FlighttrackerTestHelper {
         return flightBean;
     }
 
+    public static AirlinesRepository createDefaultAirlinesRepository() {
+
+        AirlineEntity lufthansaEntity = new AirlineEntity();
+        lufthansaEntity.setCode("LH");
+        lufthansaEntity.setCountryCode("DE");
+        lufthansaEntity.setName("Lufthansa");
+
+        AirlineEntity unitedEntity = new AirlineEntity();
+        unitedEntity.setCode("UA");
+        unitedEntity.setCountryCode("US");
+        unitedEntity.setName("United");
+
+        AirlinesRepository airlinesRepository = Mockito.mock(AirlinesRepository.class);
+        Mockito.when(airlinesRepository.findAll()).thenReturn(Arrays.asList(lufthansaEntity, unitedEntity));
+        Mockito.when(airlinesRepository.findAll(Mockito.any(Specification.class))).thenReturn(Arrays.asList(lufthansaEntity, unitedEntity));
+        return airlinesRepository;
+
+    }
+
     public static AirlinesService createDefaultAirlinesService() {
 
-        AirlineBean lufthansaEntity = Mockito.mock(AirlineBean.class);
-        Mockito.when(lufthansaEntity.getName()).thenReturn("Lufthansa");
-        Mockito.when(lufthansaEntity.getCode()).thenReturn("LH");
+        AirlineBean airlineBean = new AirlineBean();
+        airlineBean.setCode("LH");
+        airlineBean.setCountryCode("DE");
+        airlineBean.setName("Lufthansa");
 
         AirlinesService airlinesService = Mockito.mock(AirlinesService.class);
-        Mockito.when(airlinesService.loadAirlineByCode(Mockito.eq("LH"), Mockito.any())).thenReturn(lufthansaEntity);
+        Mockito.when(airlinesService.loadAirlineByCode(Mockito.eq("LH"), Mockito.any())).thenReturn(airlineBean);
         return airlinesService;
 
     }
@@ -148,9 +172,10 @@ public class FlighttrackerTestHelper {
         return airportBean;
     }
 
-    public static AirlineBean createAirlineBean(String code, String name) {
+    public static AirlineBean createAirlineBean(String code, String countryCode, String name) {
         AirlineBean airlineBean = new AirlineBean();
         airlineBean.setCode(code);
+        airlineBean.setCountryCode(countryCode);
         airlineBean.setName(name);
         return airlineBean;
     }

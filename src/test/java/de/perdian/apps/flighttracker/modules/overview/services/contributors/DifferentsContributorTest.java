@@ -19,17 +19,17 @@ public class DifferentsContributorTest {
         flight1.setAircraft(FlighttrackerTestHelper.createAircraftBean("A380", null, null));
         flight1.setDepartureContact(FlighttrackerTestHelper.createAirportContactBean("CGN", "DE", null, null));
         flight1.setArrivalContact(FlighttrackerTestHelper.createAirportContactBean("MCO", "US", null, null));
-        flight1.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "Lufthansa"));
+        flight1.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "DE", "Lufthansa"));
         FlightBean flight2 = new FlightBean();
         flight2.setAircraft(FlighttrackerTestHelper.createAircraftBean("A380", null, null));
         flight2.setDepartureContact(FlighttrackerTestHelper.createAirportContactBean("CGN", "DE", null, null));
         flight2.setArrivalContact(FlighttrackerTestHelper.createAirportContactBean("JFK", "US", null, null));
-        flight2.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "Lufthansa"));
+        flight2.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "DE", "Lufthansa"));
         FlightBean flight3 = new FlightBean();
         flight3.setAircraft(FlighttrackerTestHelper.createAircraftBean("B747", null, null));
         flight3.setDepartureContact(FlighttrackerTestHelper.createAirportContactBean("CGN", "DE", null, null));
         flight3.setArrivalContact(FlighttrackerTestHelper.createAirportContactBean("MCO", "US", null, null));
-        flight3.setAirline(FlighttrackerTestHelper.createAirlineBean("UA", "United"));
+        flight3.setAirline(FlighttrackerTestHelper.createAirlineBean("UA", "US", "United"));
 
         DifferentsContributor contributor = new DifferentsContributor();
         contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3), null);

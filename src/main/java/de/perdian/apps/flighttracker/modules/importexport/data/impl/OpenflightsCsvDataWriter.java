@@ -16,7 +16,7 @@ public class OpenflightsCsvDataWriter implements DataWriter<String> {
 
         StringBuilder out = new StringBuilder();
 
-        out.append("Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note");
+        out.append("Date,From,To,Flight_Number,AirlineData,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note");
         out.append("\r\n");
 
         for (DataItem dataItem : dataItems) {

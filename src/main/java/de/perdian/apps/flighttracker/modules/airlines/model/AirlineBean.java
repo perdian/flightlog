@@ -2,6 +2,9 @@ package de.perdian.apps.flighttracker.modules.airlines.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class AirlineBean implements Serializable {
 
     static final long serialVersionUID = 1L;
@@ -17,6 +20,30 @@ public class AirlineBean implements Serializable {
         result.append(",code=").append(this.getCode());
         result.append(",countryCode=").append(this.getCountryCode());
         return result.append("]").toString();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        } else if (that instanceof AirlineBean) {
+            EqualsBuilder equalsBuilder = new EqualsBuilder();
+            equalsBuilder.append(this.getCode(), ((AirlineBean)that).getCode());
+            equalsBuilder.append(this.getCountryCode(), ((AirlineBean)that).getCountryCode());
+            equalsBuilder.append(this.getName(), ((AirlineBean)that).getName());
+            return equalsBuilder.isEquals();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
+        hashCodeBuilder.append(this.getName());
+        hashCodeBuilder.append(this.getCode());
+        hashCodeBuilder.append(this.getCountryCode());
+        return hashCodeBuilder.toHashCode();
     }
 
     public String getName() {

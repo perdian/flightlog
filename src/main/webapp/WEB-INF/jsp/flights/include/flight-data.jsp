@@ -184,7 +184,7 @@
             $(this).val(airlineCode);
             $("#airlineName").val(null);
             $.ajax({
-                url: "<c:url value="/airline/" />" + airlineCode,
+                url: "<c:url value="/airline/data/" />" + airlineCode,
             }).done(function(data) {
                 $("#airlineName").val(data.name);
             });

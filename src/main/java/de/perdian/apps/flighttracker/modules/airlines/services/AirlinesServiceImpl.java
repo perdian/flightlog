@@ -1,11 +1,15 @@
 package de.perdian.apps.flighttracker.modules.airlines.services;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
+import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlineEntity;
 import de.perdian.apps.flighttracker.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 
@@ -33,7 +37,55 @@ class AirlinesServiceImpl implements AirlinesService {
             .orElse(null);
     }
 
-    // TODO: Add update and delete methods to allow managing user specific values
+    @Override
+    public List<AirlineBean> loadUserSpecificAirlines(UserEntity user) {
+        return this.getAirlinesRepository().findAll((root, query, cb) -> user == null ? cb.isNull(root.get("user")) : cb.equal(root.get("user"), user)).stream()
+            .map(this::createAirlineBean)
+            .sorted(Comparator.comparing(AirlineBean::getCode))
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public AirlineBean updateUserSpecificAirline(UserEntity user, AirlineBean airlineBean) {
+
+        Specification<AirlineEntity> airlineSpecification = this.createAirlineSpecification(user, airlineBean.getCode());
+        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne(airlineSpecification);
+        if (airlineEntity == null) {
+            airlineEntity = new AirlineEntity();
+            airlineEntity.setUser(user);
+        }
+        airlineEntity.setCode(airlineBean.getCode());
+        airlineEntity.setCountryCode(airlineBean.getCountryCode());
+        airlineEntity.setName(airlineBean.getName());
+        this.getAirlinesRepository().save(airlineEntity);
+
+        return airlineBean;
+
+    }
+
+    @Override
+    public void deleteUserSpecificAirline(UserEntity user, AirlineBean airlineBean) {
+        Specification<AirlineEntity> airlineSpecification = this.createAirlineSpecification(user, airlineBean.getCode());
+        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne(airlineSpecification);
+        if (airlineEntity != null) {
+            this.getAirlinesRepository().delete(airlineEntity);
+        }
+    }
+
+    private Specification<AirlineEntity> createAirlineSpecification(UserEntity user, String airlineCode) {
+        return (root, query, cb) -> cb.and(
+            user == null ? cb.isNull(root.get("user")) : cb.equal(root.get("user"), user),
+            cb.equal(root.get("code"), airlineCode)
+        );
+    }
+
+    private AirlineBean createAirlineBean(AirlineEntity airlineEntity) {
+        AirlineBean airlineBean = new AirlineBean();
+        airlineBean.setCode(airlineEntity.getCode());
+        airlineBean.setCountryCode(airlineEntity.getCountryCode());
+        airlineBean.setName(airlineEntity.getName());
+        return airlineBean;
+    }
 
     List<AirlinesLookup> getAirlinesLookups() {
         return this.airlinesLookups;

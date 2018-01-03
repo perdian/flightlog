@@ -20,17 +20,17 @@ import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerUser;
  */
 
 @RestController
-public class AirlineController {
+public class AirlineDataController {
 
     private AirlinesService airlinesService = null;
 
-    @RequestMapping(path = "/airline/{airlineCode}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
-    public Airline doAirline(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("airlineCode") String airlineCode) {
+    @RequestMapping(path = "/airline/data/{airlineCode}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
+    public AirlineData doAirline(@AuthenticationPrincipal FlighttrackerUser user, @PathVariable("airlineCode") String airlineCode) {
         AirlineBean airlineBean = this.getAirlinesService().loadAirlineByCode(airlineCode, user == null ? null : user.getUserEntity());
         if (airlineBean == null) {
             throw new AirlineNotFoundException();
         } else {
-            Airline airline = new Airline();
+            AirlineData airline = new AirlineData();
             airline.setCode(airlineBean.getCode());
             airline.setName(airlineBean.getName());
             return airline;

@@ -15,22 +15,22 @@ public class TopFlightsContributorTest {
     public void contributeTo() {
 
         FlightBean flight1 = new FlightBean();
-        flight1.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "Lufthansa"));
+        flight1.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "DE", "Lufthansa"));
         flight1.setDepartureContact(FlighttrackerTestHelper.createAirportContactBean("DUS", "DE", null, null));
         flight1.setArrivalContact(FlighttrackerTestHelper.createAirportContactBean("MCO", "US", null, null));
         flight1.setAircraft(FlighttrackerTestHelper.createAircraftBean("A380", null, null));
         FlightBean flight2 = new FlightBean();
-        flight2.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "Lufthansa"));
+        flight2.setAirline(FlighttrackerTestHelper.createAirlineBean("LH", "DE", "Lufthansa"));
         flight2.setDepartureContact(FlighttrackerTestHelper.createAirportContactBean("CGN", "DE", null, null));
         flight2.setArrivalContact(FlighttrackerTestHelper.createAirportContactBean("MCO", "US", null, null));
         flight2.setAircraft(FlighttrackerTestHelper.createAircraftBean("A380", null, null));
         FlightBean flight3 = new FlightBean();
-        flight3.setAirline(FlighttrackerTestHelper.createAirlineBean("UA", "United"));
+        flight3.setAirline(FlighttrackerTestHelper.createAirlineBean("UA", "US", "United"));
         flight3.setDepartureContact(FlighttrackerTestHelper.createAirportContactBean("CGN", "DE", null, null));
         flight3.setArrivalContact(FlighttrackerTestHelper.createAirportContactBean("MCO", "US", null, null));
         flight3.setAircraft(FlighttrackerTestHelper.createAircraftBean("A320", null, null));
         FlightBean flight4 = new FlightBean();
-        flight4.setAirline(FlighttrackerTestHelper.createAirlineBean("DL", "Delta"));
+        flight4.setAirline(FlighttrackerTestHelper.createAirlineBean("DL", "US", "Delta"));
         flight4.setDepartureContact(FlighttrackerTestHelper.createAirportContactBean("MCO", "US", null, null));
         flight4.setArrivalContact(FlighttrackerTestHelper.createAirportContactBean("JFK", "US", null, null));
         flight4.setAircraft(FlighttrackerTestHelper.createAircraftBean("B747", null, null));

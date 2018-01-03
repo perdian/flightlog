@@ -6,9 +6,9 @@ import org.mockito.Mockito;
 
 import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.airlines.services.AirlinesService;
-import de.perdian.apps.flighttracker.modules.airlines.web.AirlineController.AirlineNotFoundException;
+import de.perdian.apps.flighttracker.modules.airlines.web.AirlineDataController.AirlineNotFoundException;
 
-public class AirlineControllerTest {
+public class AirlineDataControllerTest {
 
     @Test
     public void doAirline() {
@@ -19,10 +19,10 @@ public class AirlineControllerTest {
         AirlinesService airlinesService = Mockito.mock(AirlinesService.class);
         Mockito.when(airlinesService.loadAirlineByCode(Mockito.eq("LH"), Mockito.any())).thenReturn(airlineEntity);
 
-        AirlineController airlineController = new AirlineController();
+        AirlineDataController airlineController = new AirlineDataController();
         airlineController.setAirlinesService(airlinesService);
 
-        Airline airline = airlineController.doAirline(null, "LH");
+        AirlineData airline = airlineController.doAirline(null, "LH");
         Assertions.assertEquals("LH", airline.getCode());
         Assertions.assertEquals("Lufthansa", airline.getName());
 
@@ -34,7 +34,7 @@ public class AirlineControllerTest {
     @Test
     public void doAirlineNoAirlineFound() {
         Assertions.assertThrows(AirlineNotFoundException.class, () -> {
-            AirlineController airlineController = new AirlineController();
+            AirlineDataController airlineController = new AirlineDataController();
             airlineController.setAirlinesService(Mockito.mock(AirlinesService.class));
             airlineController.doAirline(null, "LH");
         });

@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 import de.perdian.apps.flighttracker.modules.importexport.data.impl.OpenflightsHelper;
 
 /**
- * Airline data is used from
+ * AirlineData data is used from
  * https://openflights.org/data.html#airport
  */
 

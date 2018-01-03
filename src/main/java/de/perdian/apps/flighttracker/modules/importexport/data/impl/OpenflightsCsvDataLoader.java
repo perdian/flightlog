@@ -75,7 +75,7 @@ public class OpenflightsCsvDataLoader implements DataLoader<Reader> {
             flight.setAirlineCode(flightNumberMatcher.group(1));
             flight.setFlightNumber(flightNumberMatcher.group(2));
         }
-        flight.setAirlineName(fieldValues.get("Airline"));
+        flight.setAirlineName(fieldValues.get("AirlineData"));
 
         String flightDistancesMilesValue = fieldValues.get("Distance");
         if (flightDistancesMilesValue != null && !flightDistancesMilesValue.isEmpty()) {
