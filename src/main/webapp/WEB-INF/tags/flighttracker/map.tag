@@ -15,7 +15,7 @@
 			tileLayer
 		],
         view: new ol.View({
-            center: ol.proj.fromLonLat([0, 35]),
+            center: ol.proj.fromLonLat([0, 25]),
             zoom: 1.85
         })
 	});
@@ -33,6 +33,7 @@
             cabinClass: <ft:jsonArray value="${overviewQuery.cabinClass}" />,
             flightReason: <ft:jsonArray value="${overviewQuery.flightReason}" />,
             flightDistance: <ft:jsonArray value="${overviewQuery.flightDistance}" />,
+            flightType: <ft:jsonArray value="${overviewQuery.flightType}" />,
 	        "${_csrf.parameterName}": "${_csrf.token}"
 	    },
 	    success: function(result) {

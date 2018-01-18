@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightDistance;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
+import de.perdian.apps.flighttracker.support.types.FlightType;
 
 public class OverviewQueryHelper implements Serializable {
 
@@ -22,6 +23,7 @@ public class OverviewQueryHelper implements Serializable {
     private List<OverviewQueryHelperItem> availableAircraftTypes = null;
     private List<CabinClass> availableCabinClasses = null;
     private List<FlightReason> availableFlightReasons = null;
+    private List<FlightType> availableFlightTypes = null;
     private List<FlightDistance> availableFlightDistances = null;
 
     @Override
@@ -71,6 +73,13 @@ public class OverviewQueryHelper implements Serializable {
     }
     public void setAvailableFlightReasons(List<FlightReason> availableFlightReasons) {
         this.availableFlightReasons = availableFlightReasons;
+    }
+
+    public List<FlightType> getAvailableFlightTypes() {
+        return this.availableFlightTypes;
+    }
+    public void setAvailableFlightTypes(List<FlightType> availableFlightTypes) {
+        this.availableFlightTypes = availableFlightTypes;
     }
 
     public List<FlightDistance> getAvailableFlightDistances() {

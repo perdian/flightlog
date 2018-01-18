@@ -14,6 +14,7 @@ public class OverviewQuery implements Serializable {
     private List<String> cabinClass = null;
     private List<String> flightReason = null;
     private List<String> flightDistance = null;
+    private List<String> flightType = null;
 
     public boolean isFilterActive() {
         boolean filterActive = false;
@@ -24,6 +25,7 @@ public class OverviewQuery implements Serializable {
         filterActive |= this.getCabinClass() != null && !this.getCabinClass().isEmpty();
         filterActive |= this.getFlightReason() != null && !this.getFlightReason().isEmpty();
         filterActive |= this.getFlightDistance() != null && !this.getFlightDistance().isEmpty();
+        filterActive |= this.getFlightType() != null && !this.getFlightType().isEmpty();
         return filterActive;
     }
 
@@ -74,6 +76,13 @@ public class OverviewQuery implements Serializable {
     }
     public void setFlightDistance(List<String> flightDistance) {
         this.flightDistance = flightDistance;
+    }
+
+    public List<String> getFlightType() {
+        return this.flightType;
+    }
+    public void setFlightType(List<String> flightType) {
+        this.flightType = flightType;
     }
 
 }

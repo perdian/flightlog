@@ -23,6 +23,7 @@ import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerUser;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightDistance;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
+import de.perdian.apps.flighttracker.support.types.FlightType;
 
 @ControllerAdvice(assignableTypes = OverviewController.class)
 public class OverviewQueryHelperFactory {
@@ -43,6 +44,7 @@ public class OverviewQueryHelperFactory {
         queryHelper.setAvailableAirports(this.collectAvailableAirports(flights));
         queryHelper.setAvailableAircraftTypes(this.collectAvailableAircraftTypes(flights));
         queryHelper.setAvailableCabinClasses(Arrays.asList(CabinClass.values()));
+        queryHelper.setAvailableFlightTypes(Arrays.asList(FlightType.values()));
         queryHelper.setAvailableFlightReasons(Arrays.asList(FlightReason.values()));
         queryHelper.setAvailableFlightDistances(Arrays.asList(FlightDistance.values()));
         return queryHelper;

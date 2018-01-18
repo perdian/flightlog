@@ -25,6 +25,7 @@ import de.perdian.apps.flighttracker.modules.security.web.FlighttrackerUser;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightDistance;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
+import de.perdian.apps.flighttracker.support.types.FlightType;
 
 @Controller
 public class OverviewController {
@@ -59,6 +60,7 @@ public class OverviewController {
         flightsQuery.setRestrictCabinClasses(this.computeEnumValues(CabinClass.class, overviewQuery.getCabinClass()));
         flightsQuery.setRestrictFlightReasons(this.computeEnumValues(FlightReason.class, overviewQuery.getFlightReason()));
         flightsQuery.setRestrictFlightDistances(this.computeEnumValues(FlightDistance.class, overviewQuery.getFlightDistance()));
+        flightsQuery.setRestrictFlightTypes(this.computeEnumValues(FlightType.class, overviewQuery.getFlightType()));
         return flightsQuery;
     }
 

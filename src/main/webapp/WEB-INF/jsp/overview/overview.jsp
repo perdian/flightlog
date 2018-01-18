@@ -132,6 +132,15 @@
                             </c:forEach>
                         </spring:select>
                     </div>
+                    <div class="field">
+                        <label><fmt:message key="flightType" /></label>
+                        <spring:select path="flightType" cssClass="ui dropdown" multiple="multiple">
+                            <option value=""><fmt:message key="allFlightTypes" /></option>
+                            <c:forEach items="${overviewQueryHelper.availableFlightTypes}" var="flightType">
+                                <spring:option value="${flightType.name()}"><fmt:message key="flightType.${flightType.name()}" /></spring:option>
+                            </c:forEach>
+                        </spring:select>
+                    </div>
                     <div class="ui tiny buttons">
                         <button type="submit" class="ui tiny primary button">
                             <i class="search icon"></i>

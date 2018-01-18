@@ -8,6 +8,7 @@ import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
+import de.perdian.apps.flighttracker.support.types.FlightType;
 import de.perdian.apps.flighttracker.support.types.SeatType;
 
 public class FlightBean implements Serializable {
@@ -22,6 +23,7 @@ public class FlightBean implements Serializable {
     private AirlineBean airline = null;
     private String flightNumber = null;
     private FlightReason flightReason = null;
+    private FlightType flightType = null;
     private Duration flightDuration = null;
     private String flightDurationString = null;
     private Integer flightDistance = null; // Kilometers
@@ -96,6 +98,13 @@ public class FlightBean implements Serializable {
     }
     public void setFlightReason(FlightReason flightReason) {
         this.flightReason = flightReason;
+    }
+
+    public FlightType getFlightType() {
+        return this.flightType;
+    }
+    public void setFlightType(FlightType flightType) {
+        this.flightType = flightType;
     }
 
     public Duration getFlightDuration() {

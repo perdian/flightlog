@@ -22,6 +22,7 @@ import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.types.CabinClass;
 import de.perdian.apps.flighttracker.support.types.FlightDistance;
 import de.perdian.apps.flighttracker.support.types.FlightReason;
+import de.perdian.apps.flighttracker.support.types.FlightType;
 
 public class FlightsQuery implements Serializable {
 
@@ -41,6 +42,7 @@ public class FlightsQuery implements Serializable {
     private Collection<CabinClass> restrictCabinClasses = null;
     private Collection<FlightReason> restrictFlightReasons = null;
     private Collection<FlightDistance> restrictFlightDistances = null;
+    private Collection<FlightType> restrictFlightTypes = null;
 
     @Override
     public String toString() {
@@ -56,6 +58,7 @@ public class FlightsQuery implements Serializable {
         toStringBuilder.append("restrictCabinClasses", this.getRestrictCabinClasses());
         toStringBuilder.append("restrictFlightReasons", this.getRestrictFlightReasons());
         toStringBuilder.append("restrictFlightDistances", this.getRestrictFlightDistances());
+        toStringBuilder.append("restrictFlightTypes", this.getRestrictFlightTypes());
         return toStringBuilder.toString();
     }
 
@@ -277,6 +280,13 @@ public class FlightsQuery implements Serializable {
     }
     public void setRestrictFlightDistances(Collection<FlightDistance> restrictFlightDistances) {
         this.restrictFlightDistances = restrictFlightDistances;
+    }
+
+    public Collection<FlightType> getRestrictFlightTypes() {
+        return this.restrictFlightTypes;
+    }
+    public void setRestrictFlightTypes(Collection<FlightType> restrictFlightTypes) {
+        this.restrictFlightTypes = restrictFlightTypes;
     }
 
 }

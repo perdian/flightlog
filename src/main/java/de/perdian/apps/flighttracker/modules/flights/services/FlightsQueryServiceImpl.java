@@ -2,8 +2,11 @@ package de.perdian.apps.flighttracker.modules.flights.services;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -30,9 +33,12 @@ import de.perdian.apps.flighttracker.modules.users.persistence.UserEntity;
 import de.perdian.apps.flighttracker.support.FlighttrackerHelper;
 import de.perdian.apps.flighttracker.support.persistence.PaginatedList;
 import de.perdian.apps.flighttracker.support.persistence.PaginationData;
+import de.perdian.apps.flighttracker.support.types.FlightType;
 
 @Service
 class FlightsQueryServiceImpl implements FlightsQueryService {
+
+    private static final List<String> COUNTRY_CODES_EUROPE = Arrays.asList("AD", "AL", "AT", "BA", "BE", "BG", "BY", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GG", "GI", "GR", "HR", "HU", "IE", "IM", "IS", "IT", "JE", "LI", "LT", "LU", "LV", "MC", "MD", "MK", "MT", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SJ", "SK", "SM", "UA", "UK", "VA");
 
     private FlightsRepository flightsRepository = null;
     private AirportsRepository airportsRepository = null;
@@ -48,9 +54,17 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         Page<FlightEntity> flightEntities = this.getFlightsRepository().findAll(flightEntitiesSpecification, pageRequest);
 
         PaginationData paginationData = flightEntities == null ? null : new PaginationData(flightEntities.getNumber(), flightEntities.getTotalPages());
-        List<FlightBean> resultList = flightEntities == null ? null : flightEntities.getContent().stream().map(flightEntity -> this.convertFlightEntity(flightEntity, flightsQuery.getRestrictUser())).collect(Collectors.toList());
+        List<FlightBean> resultList = flightEntities == null ? null : flightEntities.getContent().stream()
+            .map(flightEntity -> this.convertFlightEntity(flightEntity, flightsQuery.getRestrictUser()))
+            .filter(bean -> this.validateListContainsEnumValue(bean.getFlightType(), flightsQuery.getRestrictFlightTypes()))
+            .collect(Collectors.toList());
+
         return new PaginatedList<>(resultList, paginationData);
 
+    }
+
+    private <E extends Enum<E>> boolean validateListContainsEnumValue(E enumValue, Collection<E> enumValues) {
+        return enumValues == null || enumValues.isEmpty() || enumValues.contains(enumValue);
     }
 
     @Override
@@ -147,6 +161,7 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         flightBean.setFlightDurationString(this.formatFlightDuration(flightEntitiy.getFlightDuration()));
         flightBean.setFlightNumber(flightEntitiy.getFlightNumber());
         flightBean.setFlightReason(flightEntitiy.getFlightReason());
+        flightBean.setFlightType(this.computeFlightType(departureAirportBean, arrivalAirportBean));
         flightBean.setSeatNumber(flightEntitiy.getSeatNumber());
         flightBean.setSeatType(flightEntitiy.getSeatType());
         if (flightEntitiy.getFlightDistance() != null && flightEntitiy.getFlightDuration() != null) {
@@ -154,6 +169,20 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         }
         return flightBean;
 
+    }
+
+    private FlightType computeFlightType(AirportBean departureAirportBean, AirportBean arrivalAirportBean) {
+        if (departureAirportBean != null && StringUtils.isNotEmpty(departureAirportBean.getCountryCode()) && arrivalAirportBean != null && StringUtils.isNotEmpty(arrivalAirportBean.getCountryCode())) {
+            if (Objects.equals(departureAirportBean.getCountryCode(), arrivalAirportBean.getCountryCode())) {
+                return FlightType.DOMESTIC;
+            } else if (COUNTRY_CODES_EUROPE.contains(departureAirportBean.getCountryCode()) && COUNTRY_CODES_EUROPE.contains(arrivalAirportBean.getCountryCode())) {
+                return FlightType.EUROPE;
+            } else {
+                return FlightType.INTERNATIONAL;
+            }
+        } else {
+            return null;
+        }
     }
 
     private String formatFlightDuration(Integer flightDuration) {

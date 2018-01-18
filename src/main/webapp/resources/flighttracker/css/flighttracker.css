@@ -2,7 +2,7 @@ body { padding: 6px 6px 6px 6px; }
 main { padding: 10px 10px 10px 10px; }
 td { vertical-align: top; }
 
-.map { border: 1px solid #2980b9; margin: 0px 0px 12px 0px; min-height: 300px; height: 375px; }
+.map { border: 1px solid #2980b9; margin: 0px 0px 12px 0px; min-height: 300px; height: 445px; }
 .map-filter { padding: 0px 12px 0px 12px; }
 
 input[readonly='readonly'] { background-color: #f3f3f3 !important; }
