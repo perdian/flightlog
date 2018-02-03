@@ -3,7 +3,9 @@ package de.perdian.apps.flighttracker.modules.importexport.data;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Comparator;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -55,6 +57,17 @@ public class DataItem implements Serializable {
         toStringBuilder.append("airlineCode", this.getAirlineCode());
         toStringBuilder.append("flightNumber", this.getFlightNumber());
         return toStringBuilder.toString();
+    }
+
+    public static class DepartureTimeComparator implements Comparator<DataItem> {
+
+        @Override
+        public int compare(DataItem o1, DataItem o2) {
+            LocalDateTime date1 = o1.getDepartureDateLocal().atTime(o1.getDepartureTimeLocal());
+            LocalDateTime date2 = o2.getDepartureDateLocal().atTime(o2.getDepartureTimeLocal());
+            return date1.compareTo(date2);
+        }
+
     }
 
     public String getDepartureAirportCode() {

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import javax.persistence.criteria.Predicate;
 
@@ -76,14 +75,15 @@ class ImportExportServiceImpl implements ImportExportService {
     @Override
     public List<DataItem> exportDataItems(UserEntity user) {
 
-        Iterable<FlightEntity> flightEntities = this.getFlightsRepository().findAll((root, query, cb) -> {
+        List<FlightEntity> flightEntities = this.getFlightsRepository().findAll((root, query, cb) -> {
             List<Predicate> predicateList = new ArrayList<>();
             predicateList.add(user == null ? cb.isNull(root.get("user")) : cb.equal(root.get("user"), user));
             return cb.and(predicateList.toArray(new Predicate[0]));
         });
 
-        return StreamSupport.stream(flightEntities.spliterator(), false)
+        return flightEntities.stream()
             .map(entity -> this.copyValues(entity, new DataItem()))
+            .sorted(new DataItem.DepartureTimeComparator())
             .collect(Collectors.toList());
     }
 
