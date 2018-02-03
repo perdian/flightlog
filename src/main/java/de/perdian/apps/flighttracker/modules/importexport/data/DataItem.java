@@ -63,8 +63,8 @@ public class DataItem implements Serializable {
 
         @Override
         public int compare(DataItem o1, DataItem o2) {
-            LocalDateTime date1 = o1.getDepartureDateLocal().atTime(o1.getDepartureTimeLocal());
-            LocalDateTime date2 = o2.getDepartureDateLocal().atTime(o2.getDepartureTimeLocal());
+            LocalDateTime date1 = o1.getDepartureDateLocal().atTime(o1.getDepartureTimeLocal() == null ? LocalTime.of(0, 0) : o1.getDepartureTimeLocal());
+            LocalDateTime date2 = o2.getDepartureDateLocal().atTime(o2.getDepartureTimeLocal() == null ? LocalTime.of(0, 0) : o2.getDepartureTimeLocal());
             return date1.compareTo(date2);
         }
 
