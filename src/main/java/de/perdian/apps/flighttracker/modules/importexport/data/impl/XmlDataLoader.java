@@ -41,8 +41,8 @@ public class XmlDataLoader implements DataLoader<Reader> {
             dataItem.setCabinClass(FlighttrackerHelper.parseEnum(CabinClass.class, flightElement.elementText("cabinClass")));
             dataItem.setComment(flightElement.elementText("comment"));
             dataItem.setDepartureAirportCode(flightElement.elementText("departureAirportCode"));
-            dataItem.setDepartureDateLocal(FlighttrackerHelper.parseLocalDate(flightElement.elementText("arrivalDateLocal")));
-            dataItem.setDepartureTimeLocal(FlighttrackerHelper.parseLocalTime(flightElement.elementText("arrivalTimeLocal")));
+            dataItem.setDepartureDateLocal(FlighttrackerHelper.parseLocalDate(flightElement.elementText("departureDateLocal")));
+            dataItem.setDepartureTimeLocal(FlighttrackerHelper.parseLocalTime(flightElement.elementText("departureTimeLocal")));
             dataItem.setFlightDistance(StringUtils.isEmpty(flightElement.elementText("flightDistance")) ? null : Integer.valueOf(flightElement.elementText("flightDistance")));
             dataItem.setFlightDuration(FlighttrackerHelper.parseDuration(flightElement.elementText("flightDuration")));
             dataItem.setFlightNumber(flightElement.elementText("flightNumber"));
