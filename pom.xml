@@ -208,6 +208,13 @@
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version><!--$NO-MVN-MAN-VER$ -->
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version><!--$NO-MVN-MAN-VER$ -->
                 <configuration>
