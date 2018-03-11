@@ -3,13 +3,16 @@ spring:
     url: jdbc:h2:~/Development/databases/flighttrackerdb
     username: sa
     password:
+  flyway:
+    encoding: UTF-8
+    locations:
+    - "classpath:de/perdian/apps/flighttracker/flyway/"
+    validate-on-migrate: false
   http:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-    multipart:
-      max-file-size: 5MB
   jpa:
     properties:
       hibernate:
@@ -18,18 +21,13 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
-  
-security:
-  enable-csrf: true
+  servlet:
+    multipart:
+      max-file-size: 5MB 
   
 server:
-  jsp-servlet:
-    init-parameters:
-      development: true
-      trimSpaces: true
-
-flyway:
-  encoding: UTF-8
-  locations:
-  - "classpath:de/perdian/apps/flighttracker/flyway/"
-  validate-on-migrate: false
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
+        trimSpaces: true

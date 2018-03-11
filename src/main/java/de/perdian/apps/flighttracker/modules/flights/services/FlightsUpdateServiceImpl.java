@@ -38,7 +38,7 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
         FlightsQuery flightsQuery = new FlightsQuery();
         flightsQuery.setRestrictIdentifiers(Collections.singleton(flightBean.getEntityId()));
         flightsQuery.setRestrictUser(user);
-        FlightEntity existingEntity = flightBean.getEntityId() == null ? null : this.getFlightsRepository().findOne((root, query, cb) -> flightsQuery.toPredicate(root, query, cb));
+        FlightEntity existingEntity = flightBean.getEntityId() == null ? null : this.getFlightsRepository().findOne((root, query, cb) -> flightsQuery.toPredicate(root, query, cb)).orElse(null);
         FlightEntity flightEntity = existingEntity == null ? this.getNewFlightEntitySupplier().get() : existingEntity;
 
         AircraftBean aircraftBean = flightBean.getAircraft();
@@ -122,7 +122,7 @@ class FlightsUpdateServiceImpl implements FlightsUpdateService {
     @Override
     @Transactional
     public void deleteFlight(FlightBean flightBean) {
-        this.getFlightsRepository().delete(flightBean.getEntityId());
+        this.getFlightsRepository().deleteById(flightBean.getEntityId());
     }
 
     FlightsRepository getFlightsRepository() {

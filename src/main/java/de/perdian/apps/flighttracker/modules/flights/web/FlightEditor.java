@@ -3,10 +3,10 @@ package de.perdian.apps.flighttracker.modules.flights.web;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import de.perdian.apps.flighttracker.modules.airlines.model.AirlineBean;
 import de.perdian.apps.flighttracker.modules.flights.model.AircraftBean;

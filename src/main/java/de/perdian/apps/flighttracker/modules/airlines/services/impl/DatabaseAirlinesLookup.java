@@ -34,7 +34,7 @@ class DatabaseAirlinesLookup implements AirlinesLookup {
     }
 
     private AirlineBean loadAirlineByCodeFromDatabase(String airlineCode, UserEntity user) {
-        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne((root, query, cb) -> cb.and(cb.equal(root.get("code"), airlineCode), user == null ? cb.isNull(root.get("user")) : cb.equal(root.get("user"), user)));
+        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne((root, query, cb) -> cb.and(cb.equal(root.get("code"), airlineCode), user == null ? cb.isNull(root.get("user")) : cb.equal(root.get("user"), user))).orElse(null);
         if (airlineEntity == null) {
             return null;
         } else {
@@ -61,7 +61,7 @@ class DatabaseAirlinesLookup implements AirlinesLookup {
     }
 
     private AirlineBean loadAirlineByNameFromDatabase(String airlineName, UserEntity user) {
-        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne((root, query, cb) -> cb.and(cb.equal(root.get("name"), airlineName), user == null ? cb.isNull(root.get("user")) : cb.equal(root.get("user"), user)));
+        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne((root, query, cb) -> cb.and(cb.equal(root.get("name"), airlineName), user == null ? cb.isNull(root.get("user")) : cb.equal(root.get("user"), user))).orElse(null);
         if (airlineEntity == null) {
             return null;
         } else {

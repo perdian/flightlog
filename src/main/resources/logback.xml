@@ -6,6 +6,7 @@
         </encoder>
     </appender>
 
+    <logger name="com.zaxxer.hikari" level="INFO" />
     <logger name="org.apache.http" level="WARN" />
     <logger name="org.flywaydb" level="INFO" />
     <logger name="org.hibernate" level="INFO" />

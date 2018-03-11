@@ -2,6 +2,7 @@ package de.perdian.apps.flighttracker.modules.flights.services;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +33,7 @@ public class FlightsUpdateServiceImplTest {
         serviceImpl.setFlightsRepository(flightsRepository);
         serviceImpl.deleteFlight(flightBean);
 
-        Mockito.verify(flightsRepository).delete(Mockito.eq(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe")));
+        Mockito.verify(flightsRepository).deleteById(Mockito.eq(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe")));
         Mockito.verifyNoMoreInteractions(flightsRepository);
 
     }
@@ -45,7 +46,7 @@ public class FlightsUpdateServiceImplTest {
         Mockito.when(flightsQueryService.loadFlightById(Mockito.eq(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe")), Mockito.any())).thenReturn(returnBean);
         FlightsRepository flightsRepository = Mockito.mock(FlightsRepository.class);
         FlightEntity flightEntity = FlighttrackerTestHelper.createDefaultFlightEntity();
-        Mockito.when(flightsRepository.findOne(Mockito.any(Specification.class))).thenReturn(flightEntity);
+        Mockito.when(flightsRepository.findOne(Mockito.any(Specification.class))).thenReturn(Optional.of(flightEntity));
 
         FlightBean flightBean = new FlightBean();
         flightBean.setEntityId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));

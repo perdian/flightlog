@@ -49,7 +49,7 @@ class AirlinesServiceImpl implements AirlinesService {
     public AirlineBean updateUserSpecificAirline(UserEntity user, AirlineBean airlineBean) {
 
         Specification<AirlineEntity> airlineSpecification = this.createAirlineSpecification(user, airlineBean.getCode());
-        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne(airlineSpecification);
+        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne(airlineSpecification).orElse(null);
         if (airlineEntity == null) {
             airlineEntity = new AirlineEntity();
             airlineEntity.setUser(user);
@@ -66,7 +66,7 @@ class AirlinesServiceImpl implements AirlinesService {
     @Override
     public void deleteUserSpecificAirline(UserEntity user, AirlineBean airlineBean) {
         Specification<AirlineEntity> airlineSpecification = this.createAirlineSpecification(user, airlineBean.getCode());
-        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne(airlineSpecification);
+        AirlineEntity airlineEntity = this.getAirlinesRepository().findOne(airlineSpecification).orElse(null);
         if (airlineEntity != null) {
             this.getAirlinesRepository().delete(airlineEntity);
         }

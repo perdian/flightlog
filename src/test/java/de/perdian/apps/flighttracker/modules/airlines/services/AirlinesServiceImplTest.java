@@ -2,6 +2,7 @@ package de.perdian.apps.flighttracker.modules.airlines.services;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -187,7 +188,7 @@ public class AirlinesServiceImplTest {
         oldAirlineEntity.setName("Lufthansa");
 
         AirlinesRepository airlinesRepository = FlighttrackerTestHelper.createDefaultAirlinesRepository();
-        Mockito.when(airlinesRepository.findOne(Mockito.any(Specification.class))).thenReturn(oldAirlineEntity);
+        Mockito.when(airlinesRepository.findOne(Mockito.any(Specification.class))).thenReturn(Optional.of(oldAirlineEntity));
 
         AirlinesServiceImpl serviceImpl = new AirlinesServiceImpl();
         serviceImpl.setAirlinesRepository(airlinesRepository);
@@ -218,7 +219,7 @@ public class AirlinesServiceImplTest {
         oldAirlineEntity.setName("Lufthansa");
 
         AirlinesRepository airlinesRepository = FlighttrackerTestHelper.createDefaultAirlinesRepository();
-        Mockito.when(airlinesRepository.findOne(Mockito.any(Specification.class))).thenReturn(oldAirlineEntity);
+        Mockito.when(airlinesRepository.findOne(Mockito.any(Specification.class))).thenReturn(Optional.of(oldAirlineEntity));
 
         AirlineBean newAirlineBean = new AirlineBean();
         newAirlineBean.setCode("LH");

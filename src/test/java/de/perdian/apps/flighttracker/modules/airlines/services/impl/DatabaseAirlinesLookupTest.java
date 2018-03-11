@@ -2,6 +2,7 @@ package de.perdian.apps.flighttracker.modules.airlines.services.impl;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ public class DatabaseAirlinesLookupTest {
         airlineEntity.setName("Lufthansa");
 
         AirlinesRepository repository = Mockito.mock(AirlinesRepository.class);
-        Mockito.when(repository.findOne(Mockito.any(Specification.class))).thenReturn(airlineEntity);
+        Mockito.when(repository.findOne(Mockito.any(Specification.class))).thenReturn(Optional.of(airlineEntity));
 
         DatabaseAirlinesLookup lookup = new DatabaseAirlinesLookup();
         lookup.setAirlinesRepository(repository);
@@ -78,7 +79,7 @@ public class DatabaseAirlinesLookupTest {
         airlineEntity.setName("Lufthansa");
 
         AirlinesRepository repository = Mockito.mock(AirlinesRepository.class);
-        Mockito.when(repository.findOne(Mockito.any(Specification.class))).thenReturn(airlineEntity);
+        Mockito.when(repository.findOne(Mockito.any(Specification.class))).thenReturn(Optional.of(airlineEntity));
 
         DatabaseAirlinesLookup lookup = new DatabaseAirlinesLookup();
         lookup.setAirlinesRepository(repository);

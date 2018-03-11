@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -47,8 +46,8 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
     @Override
     public PaginatedList<FlightBean> loadFlights(FlightsQuery flightsQuery) {
 
-        Sort sort = new Sort(new Sort.Order(Direction.DESC, "departureDateLocal"), new Sort.Order(Direction.DESC, "departureTimeLocal"), new Sort.Order(Direction.DESC, "id"));
-        PageRequest pageRequest = new PageRequest(flightsQuery.getPage() == null ? 0 : flightsQuery.getPage(), flightsQuery.getPageSize() == null ? Integer.MAX_VALUE : flightsQuery.getPageSize(), sort);
+        Sort sort = Sort.by(Sort.Order.desc("departureDateLocal"), Sort.Order.desc("departureTimeLocal"), Sort.Order.desc("id"));
+        PageRequest pageRequest = PageRequest.of(flightsQuery.getPage() == null ? 0 : flightsQuery.getPage(), flightsQuery.getPageSize() == null ? Integer.MAX_VALUE : flightsQuery.getPageSize(), sort);
 
         Specification<FlightEntity> flightEntitiesSpecification = (root, query, cb) -> flightsQuery.toPredicate(root, query, cb);
         Page<FlightEntity> flightEntities = this.getFlightsRepository().findAll(flightEntitiesSpecification, pageRequest);
