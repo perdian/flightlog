@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="${contextPath}resources/semantic/semantic.min.css" />
     <link rel="stylesheet" href="${contextPath}resources/flightlog/css/flightlog.css" />
+    <link rel="icon" href="${contextPath}resources/flightlog/icons/plane.png" />
 
     <script src="${contextPath}webjars/jquery/jquery.min.js"></script>
     <script src="${contextPath}resources/semantic/semantic.min.js"></script>
