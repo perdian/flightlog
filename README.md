@@ -9,7 +9,7 @@ From what I have seen there are no real alternatives. Openflights.org is an exce
 
 So, as no appropriate tool was available I simply decided to write one myself. The overall UI somewhat follows a few ideas from flugstatistik.de but (hopefully) is a bit more modern and streamlined.
 
-![Home screen](docs/screenshots/home.jpg)
+![Home screen](docs/screenshots/home.png)
 
 # Build
 
