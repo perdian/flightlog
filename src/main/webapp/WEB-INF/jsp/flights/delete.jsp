@@ -8,13 +8,13 @@
     <fl:head />
     <fl:body>
 
-        <h2 class="ui header">
+        <div class="ui header">
             <i class="remove icon"></i>
             <div class="content">
                 <fmt:message key="deleteFlight" />
                 <div class="sub header"><fmt:message key="verifyDeleteFlight" /></div>
             </div>
-        </h2>
+        </div>
 
         <form method="post" action="<c:url value="/flights/delete/${flight.entityId}" />">
 

@@ -8,13 +8,13 @@
     <fl:head />
     <fl:body>
 
-        <h2 class="ui header">
+        <div class="ui header">
             <i class="user icon"></i>
             <div class="content">
                 <fmt:message key="logout" />
                 <div class="sub header"><fmt:message key="youHaveBeenLoggedOut" /></div>
             </div>
-        </h2>
+        </div>
 
         <div class="ui divider"></div>
 

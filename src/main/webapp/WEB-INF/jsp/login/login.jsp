@@ -8,13 +8,13 @@
     <fl:head />
     <fl:body>
 
-        <h2 class="ui header">
+        <div class="ui header">
             <i class="user icon"></i>
             <div class="content">
                 <fmt:message key="login" />
                 <div class="sub header"><fmt:message key="enterYourCredentials" /></div>
             </div>
-        </h2>
+        </div>
 
         <form action="login" method="post" class="ui form">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

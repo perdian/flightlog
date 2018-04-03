@@ -6,7 +6,7 @@ spring:
   flyway:
     encoding: UTF-8
     locations:
-    - "classpath:de/perdian/apps/flightlog/flyway/"
+    - "classpath:de/perdian/flightlog/flyway/"
     validate-on-migrate: false
   http:
     encoding:

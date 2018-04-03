@@ -7,13 +7,13 @@
     <fl:head />
     <fl:body>
 
-        <h2 class="ui header">
+        <div class="ui header">
             <i class="cube icon"></i>
             <div class="content">
                 <fmt:message key="import" />
                 <div class="sub header"><fmt:message key="importCompleted" /></div>
             </div>
-        </h2>
+        </div>
 
         <div class="ui steps">
             <div class="step">
