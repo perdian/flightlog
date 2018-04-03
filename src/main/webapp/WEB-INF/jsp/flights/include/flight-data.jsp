@@ -2,14 +2,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="ft" tagdir="/WEB-INF/tags/flighttracker" %>
+<%@ taglib prefix="fl" tagdir="/WEB-INF/tags/flightlog" %>
 
 <div class="ui horizontal divider"><fmt:message key="departure" /> / <fmt:message key="arrival" /></div>
 
 <div class="fields">
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureDateLocal" labelKey="departureDate" placeholder="yyyy-MM-dd" />
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureTimeLocal" labelKey="departureTime" placeholder="HH:mm" />
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="departureAirportCode" labelKey="airportCode" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="departureDateLocal" labelKey="departureDate" placeholder="yyyy-MM-dd" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="departureTimeLocal" labelKey="departureTime" placeholder="HH:mm" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="departureAirportCode" labelKey="airportCode" />
     <c:if test="${fn:length(flightEditor.departureAirportCountryCode) gt 0}">
         <c:set var="departureAirportFlagCssClass" value="${fn:toLowerCase(flightEditor.departureAirportCountryCode)} flag" />
     </c:if>
@@ -39,9 +39,9 @@
     </div>
 </div>
 <div class="fields">
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalDateLocal" labelKey="arrivalDate" placeholder="yyyy-MM-dd" />
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalTimeLocal" labelKey="arrivalTime" placeholder="HH:mm" />
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalAirportCode" labelKey="airportCode" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalDateLocal" labelKey="arrivalDate" placeholder="yyyy-MM-dd" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalTimeLocal" labelKey="arrivalTime" placeholder="HH:mm" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalAirportCode" labelKey="airportCode" />
     <c:if test="${fn:length(flightEditor.arrivalAirportCountryCode) gt 0}">
         <c:set var="arrivalAirportFlagCssClass" value="${fn:toLowerCase(flightEditor.arrivalAirportCountryCode)} flag" />
     </c:if>
@@ -171,12 +171,12 @@
 
 <div class="fields">
 
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="airlineCode" labelKey="airlineCode" />
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="flightNumber" labelKey="flightNumber" />
-    <ft:inputfield cssClass="three wide field" bean="flightEditor" path="airlineName" labelKey="airlineName" />
-    <ft:inputfield cssClass="three wide field" bean="flightEditor" path="aircraftType" labelKey="aircraftType" />
-    <ft:inputfield cssClass="three wide field" bean="flightEditor" path="aircraftRegistration" labelKey="aircraftRegistration" />
-    <ft:inputfield cssClass="three wide field" bean="flightEditor" path="aircraftName" labelKey="aircraftName" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="airlineCode" labelKey="airlineCode" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="flightNumber" labelKey="flightNumber" />
+    <fl:inputfield cssClass="three wide field" bean="flightEditor" path="airlineName" labelKey="airlineName" />
+    <fl:inputfield cssClass="three wide field" bean="flightEditor" path="aircraftType" labelKey="aircraftType" />
+    <fl:inputfield cssClass="three wide field" bean="flightEditor" path="aircraftRegistration" labelKey="aircraftRegistration" />
+    <fl:inputfield cssClass="three wide field" bean="flightEditor" path="aircraftName" labelKey="aircraftName" />
 
     <script type="text/javascript">
         $("#airlineCode").change(function() {
@@ -194,24 +194,24 @@
 </div>
 
 <div class="fields">
-    <ft:inputfield cssClass="two wide field" bean="flightEditor" path="seatNumber" labelKey="seat" />
-    <ft:select cssClass="two wide field" bean="flightEditor" path="seatType" labelKey="seatType">
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="seatNumber" labelKey="seat" />
+    <fl:select cssClass="two wide field" bean="flightEditor" path="seatType" labelKey="seatType">
         <option></option>
         <c:forEach items="${flightEditorHelper.seatTypeValues}" var="seatTypeValue">
             <option ${flightEditor.seatType eq seatTypeValue ? 'selected=\"selected\"' : ''} value="${seatTypeValue}"><fmt:message key="seatType.${seatTypeValue}" /></option>
         </c:forEach>
-    </ft:select>
-    <ft:select cssClass="three wide field" bean="flightEditor" path="cabinClass" labelKey="cabinClass">
+    </fl:select>
+    <fl:select cssClass="three wide field" bean="flightEditor" path="cabinClass" labelKey="cabinClass">
         <option></option>
         <c:forEach items="${flightEditorHelper.cabinClassValues}" var="cabinClassValue">
             <option ${flightEditor.cabinClass eq cabinClassValue ? 'selected=\"selected\"' : ''} value="${cabinClassValue}"><fmt:message key="cabinClass.${cabinClassValue}" /></option>
         </c:forEach>
-    </ft:select>
-    <ft:select cssClass="two wide field" bean="flightEditor" path="flightReason" labelKey="flightReason">
+    </fl:select>
+    <fl:select cssClass="two wide field" bean="flightEditor" path="flightReason" labelKey="flightReason">
         <option></option>
         <c:forEach items="${flightEditorHelper.flightReasonValues}" var="flightReasonValue">
             <option ${flightEditor.flightReason eq flightReasonValue ? 'selected=\"selected\"' : ''} value="${flightReasonValue}"><fmt:message key="flightReason.${flightReasonValue}" /></option>
         </c:forEach>
-    </ft:select>
-    <ft:inputfield cssClass="seven wide field" bean="flightEditor" path="comment" labelKey="comment" />
+    </fl:select>
+    <fl:inputfield cssClass="seven wide field" bean="flightEditor" path="comment" labelKey="comment" />
 </div>

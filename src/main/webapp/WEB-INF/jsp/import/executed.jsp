@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="ft" tagdir="/WEB-INF/tags/flighttracker" %>
+<%@ taglib prefix="fl" tagdir="/WEB-INF/tags/flightlog" %>
 
-<ft:html>
-    <ft:head />
-    <ft:body>
+<fl:html>
+    <fl:head />
+    <fl:body>
 
         <h2 class="ui header">
             <i class="cube icon"></i>
@@ -44,7 +44,7 @@
         <div class="ui horizontal divider"><fmt:message key="actions" /></div>
         <a class="ui primary button" href="${contextPath}flights/list"><fmt:message key="listFlights" /></a>
 
-    </ft:body>
-</ft:html>
+    </fl:body>
+</fl:html>
 
 

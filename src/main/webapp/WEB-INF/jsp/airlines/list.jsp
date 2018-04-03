@@ -2,11 +2,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="ft" tagdir="/WEB-INF/tags/flighttracker" %>
+<%@ taglib prefix="fl" tagdir="/WEB-INF/tags/flightlog" %>
 
-<ft:html>
-    <ft:head />
-    <ft:body>
+<fl:html>
+    <fl:head />
+    <fl:body>
 
         <h2 class="ui header">
             <i class="plane icon"></i>
@@ -44,10 +44,10 @@
                                         <spring:hidden path="items[${airlineStatus.index}].airlineBean.code" />
                                     </td>
                                     <td>
-                                        <ft:inputfield cssClass="field" bean="airlines" path="items[${airlineStatus.index}].airlineBean.countryCode" />
+                                        <fl:inputfield cssClass="field" bean="airlines" path="items[${airlineStatus.index}].airlineBean.countryCode" />
                                     </td>
                                     <td>
-                                        <ft:inputfield cssClass="field" bean="airlines" path="items[${airlineStatus.index}].airlineBean.name" />
+                                        <fl:inputfield cssClass="field" bean="airlines" path="items[${airlineStatus.index}].airlineBean.name" />
                                     </td>
                                     <td>
                                         <div class="ui checkbox">
@@ -68,13 +68,13 @@
                 <tbody>
                     <tr>
                         <td width="125">
-                            <ft:inputfield cssClass="field" bean="airlines" path="newItem.airlineBean.code" labelKey="code" />
+                            <fl:inputfield cssClass="field" bean="airlines" path="newItem.airlineBean.code" labelKey="code" />
                         </td>
                         <td width="125">
-                            <ft:inputfield cssClass="field" bean="airlines" path="newItem.airlineBean.countryCode" labelKey="countryCode" />
+                            <fl:inputfield cssClass="field" bean="airlines" path="newItem.airlineBean.countryCode" labelKey="countryCode" />
                         </td>
                         <td>
-                            <ft:inputfield cssClass="field" bean="airlines" path="newItem.airlineBean.name" labelKey="name" />
+                            <fl:inputfield cssClass="field" bean="airlines" path="newItem.airlineBean.name" labelKey="name" />
                         </td>
                     </tr>
                 </tbody>
@@ -90,5 +90,5 @@
 
         </spring:form>
 
-    </ft:body>
-</ft:html>
+    </fl:body>
+</fl:html>

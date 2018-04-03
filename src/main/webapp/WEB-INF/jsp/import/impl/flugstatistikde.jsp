@@ -2,11 +2,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="ft" tagdir="/WEB-INF/tags/flighttracker" %>
+<%@ taglib prefix="fl" tagdir="/WEB-INF/tags/flightlog" %>
 
-<ft:html>
-    <ft:head />
-    <ft:body>
+<fl:html>
+    <fl:head />
+    <fl:body>
 
         <h2 class="ui header">
             <i class="cube icon"></i>
@@ -63,7 +63,7 @@
 
         </spring:form>
 
-    </ft:body>
-</ft:html>
+    </fl:body>
+</fl:html>
 
 

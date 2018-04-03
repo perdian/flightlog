@@ -2,15 +2,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="ft" tagdir="/WEB-INF/tags/flighttracker" %>
+<%@ taglib prefix="fl" tagdir="/WEB-INF/tags/flightlog" %>
 
-<ft:html>
-	<ft:head>
+<fl:html>
+    <fl:head>
         <link rel="stylesheet" href="https://openlayers.org/en/v4.2.0/css/ol.css" type="text/css" />
         <script src="https://openlayers.org/en/v4.2.0/build/ol.js"></script>
         <script src="https://api.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js"></script>
-    </ft:head>
-	<ft:body>
+    </fl:head>
+    <fl:body>
 
         <h2 class="ui header">
             <i class="plane icon"></i>
@@ -27,7 +27,7 @@
                 <div class="ui grid">
                     <div class="three column row">
                         <div class="column">
-                            <ft:overviewTopItemsCard titleKey="flightTotals" items="${overview.general}" />
+                            <fl:overviewTopItemsCard titleKey="flightTotals" items="${overview.general}" />
                         </div>
                         <div class="column">
                             <h3><fmt:message key="flightsByDistance" /></h3>
@@ -35,7 +35,7 @@
                                 <tbody>
                                     <c:forEach items="${overview.distances}" var="distance">
                                         <tr>
-                                            <td><ft:overviewLocalize value="${distance.title}" /></td>
+                                            <td><fl:overviewLocalize value="${distance.title}" /></td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${distance.context.minValue eq null and distance.context.maxValue ne null}">
@@ -58,13 +58,13 @@
                             </table>
                         </div>
                         <div class="column">
-                            <ft:overviewTopItemsCard titleKey="otherStatistics" items="${overview.differents}" />
+                            <fl:overviewTopItemsCard titleKey="otherStatistics" items="${overview.differents}" />
                         </div>
                     </div>
                 </div>
 
                 <br />
-                <ft:map />
+                <fl:map />
 
             </div>
 
@@ -237,7 +237,7 @@
         <div class="ui stackable grid">
             <c:forEach items="${overview.topFlights}" var="topEntry">
                 <div class="eight wide column">
-                    <ft:overviewTopItemsCard titleKey="${topEntry.key}" items="${topEntry.value}" showIndex="true" showPercentages="true" />
+                    <fl:overviewTopItemsCard titleKey="${topEntry.key}" items="${topEntry.value}" showIndex="true" showPercentages="true" />
                 </div>
             </c:forEach>
         </div>
@@ -245,10 +245,10 @@
         <div class="ui stackable grid">
             <c:forEach items="${overview.distributions}" var="distributionEntry">
                 <div class="four wide column">
-                    <ft:overviewTopItemsCard titleKey="${distributionEntry.key}" items="${distributionEntry.value}" showIndex="false" showPercentages="true" />
+                    <fl:overviewTopItemsCard titleKey="${distributionEntry.key}" items="${distributionEntry.value}" showIndex="false" showPercentages="true" />
                 </div>
             </c:forEach>
         </div>
 
-	</ft:body>
-</ft:html>
+    </fl:body>
+</fl:html>

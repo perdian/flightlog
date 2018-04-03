@@ -1,8 +1,8 @@
 # Introduction
 
-[![Travis build status](https://api.travis-ci.org/perdian/flighttracker.svg)](https://travis-ci.org/perdian/flighttracker)
+[![Travis build status](https://api.travis-ci.org/perdian/flightlog.svg)](https://travis-ci.org/perdian/flightlog)
 
-The flighttracker was born out of my nerdy necessity to have a bookkeeping tool of all the flights that I have undertaken so far.
+The flightlog was born out of my nerdy necessity to have a bookkeeping tool of all the flights that I have undertaken so far.
 For years I was quite happy with flugstatistik.de but it hasn't really evolved over the last years leaving a UI that looks quite outdated. In addition there was no way for me to backup the data stored there, which leads to a formidable vendor lock-in. What happens when they decide to stop providing their service or I simply forget my login credentials?
 
 From what I have seen there are no real alternatives. Openflights.org is an excellent idea but the UI is even worse than flugstatistik.de looking like it has been hacked together in an hour or two. Don't get me wront I'm pretty sure a good amount of time has been invested but for me it simply looks awful.
@@ -13,12 +13,12 @@ So, as no appropriate tool was available I simply decided to write one myself. T
 
 # Build
 
-The flighttracker is bundled either as a simple Java web application (a WAR archive) or as a Spring Boot application.
+The flightlog is bundled either as a simple Java web application (a WAR archive) or as a Spring Boot application.
 
 First clone the repository and switch to the created directory:
 
-    $ git clone <https://github.com/perdian/flighttracker.git>
-    $ cd flighttracker
+    $ git clone <https://github.com/perdian/flightlog.git>
+    $ cd flightlog
 
 ## WAR
 
@@ -28,18 +28,18 @@ To create the WAR file simply execute the default Maven build command:
 
 Then copy the WAR file to wherever your servlet container is located:
 
-    $ cp target/flighttracker.war /where/your/container/is/webapps/flighttracker.war
+    $ cp target/flightlog.war /where/your/container/is/webapps/flightlog.war
 
-That's it! Start your servlet container and the flighttracker should be up and running.
+That's it! Start your servlet container and the flightlog should be up and running.
 
-    <http://localhost:8080/flighttracker/>
+    <http://localhost:8080/flightlog/>
 
 ## Spring Boot
 
 You can also launch the application directly from within the WAR file as Spring Boot application:
 
     $ mvn clean package
-    $ java -jar target/flighttracker.war
+    $ java -jar target/flightlog.war
 
 When running this directly the embedded Tomcat will provide the application directly from the root:
 
@@ -47,13 +47,13 @@ When running this directly the embedded Tomcat will provide the application dire
 
 # Database configuration
 
-By default flighttracker uses a hardcoded H2 embedded database which stores its files in the `~/Development/databases/` folder on the machine on which the web application is running.
+By default flightlog uses a hardcoded H2 embedded database which stores its files in the `~/Development/databases/` folder on the machine on which the web application is running.
 
 If you want to change this to the database of your choice you have to provide a separate Spring Boot configuration file using one of the methods document in the Spring Boot documentation: <https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html>.
 
-For example if you would like to define a MySQL database running on the local machine when executing the flighttracker application directly as Spring Boot application the command line should be changed to:
+For example if you would like to define a MySQL database running on the local machine when executing the flightlog application directly as Spring Boot application the command line should be changed to:
 
-    $ java -jar target/flighttracker.war -Dspring.config.location=file:/where/your/config/file/is/located/flighttracker.yml
+    $ java -jar target/flightlog.war -Dspring.config.location=file:/where/your/config/file/is/located/flightlog.yml
 
 The actual configuration file must conform to the Spring Boot JPA definition of a datasource.
 
@@ -72,7 +72,7 @@ An example for creating a configuration file using a MySQL database will look li
           hibernate:
             dialect: org.hibernate.dialect.MySQLDialect
 
-The MySQL JDBC driver is already part of the flighttracker WAR distribution. For any other database you'll need to provide the JDBC drivers yourself and make sure the server has appropriate access to these drivers.
+The MySQL JDBC driver is already part of the flightlog WAR distribution. For any other database you'll need to provide the JDBC drivers yourself and make sure the server has appropriate access to these drivers.
 
 # Authentication
 
@@ -84,7 +84,7 @@ Currently there are two options to configure authentication: Using the internal 
 
 Using the internal database is the easiest option and requires only one additional configuration parameter (see database configuration how to make additional configuration parameters available to the application).
 
-    flighttracker:
+    flightlog:
       authentication:
         type: internaldatabase
 
@@ -96,7 +96,7 @@ For each login the application will look for an entry within the `user` table th
 
 Using a LDAP backend requires some additional options to be set as configuration parameters:
 
-    flighttracker:
+    flightlog:
       authentication:
         type: ldap
         ldap:
@@ -121,7 +121,7 @@ If no special configurations have been made these providers will not be able to 
 
 For accessing Lufthansa you need to configure the following Spring Boot configuration parameters:
 
-    flighttracker:
+    flightlog:
       data:
         lufthansa:
           client_id: CLIENT_ID
@@ -134,14 +134,14 @@ Lufthansa developer portal (https://developer.lufthansa.com/).
 
 The system can automatically create a backup archive of the complete data (users including their stored flights). To enable the backup two properties need to be set in the `application.yml` configuration file:
 
-    flighttracker:
+    flightlog:
       backup:
         cron: 0 0 5 * * 1
-        target: file:/data/flighttracker/backup/
+        target: file:/data/flightlog/backup/
 
 The `cron` value defines the times when the backup operations should run and the `target` values defines the directory where the backup archives are being written into.
 
-The backup archives themselves adhere to the naming convention `flighttracker-backup-<date>.xml` where `<date>` will be replaced with the date on which the backup is being performed.
+The backup archives themselves adhere to the naming convention `flightlog-backup-<date>.xml` where `<date>` will be replaced with the date on which the backup is being performed.
 
 # Credits
 
@@ -159,4 +159,4 @@ A big thank you therefore goes to:
 
 # License
 
-The flighttracker is licensed under the Apache Licence 2.0 (<http://www.apache.org/licenses/>).
+The flightlog is licensed under the Apache Licence 2.0 (<http://www.apache.org/licenses/>).
