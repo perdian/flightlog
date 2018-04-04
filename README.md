@@ -101,11 +101,11 @@ Using a LDAP backend requires some additional options to be set as configuration
         type: ldap
         ldap:
           url: ldap://127.0.0.1
-          baseDn: dc=example,dc=com
-          userDn: ou=users
-          bindDn: cn=x,dc=example,dc=com
-          bindPassword: yourbindpassword
-          usernameField: uid
+          base-dn: dc=example,dc=com
+          user-dn: ou=users
+          bind-dn: cn=x,dc=example,dc=com
+          bind-password: yourbindpassword
+          username-field: uid
 
 The login will be made against the LDAP backend configured. After that a dummy user will be inserted into the local database with the `authentication_source` column set to `ldap` and the `username` column set to the username used during the login. The `password` column will remain `null`.
 
