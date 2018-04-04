@@ -8,13 +8,13 @@
     <fl:head />
     <fl:body>
 
-        <h2 class="ui header">
+        <div class="ui header">
             <i class="add square icon"></i>
             <div class="content">
                 <fmt:message key="addFlight" />
                 <div class="sub header"><fmt:message key="enterDetailsForNewFlight" /></div>
             </div>
-        </h2>
+        </div>
 
         <spring:form modelAttribute="flightEditor" servletRelativeAction="/flights/add" cssClass="ui form">
 
