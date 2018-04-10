@@ -135,7 +135,7 @@ The are two ways to allow an authentication from a new OAuth2 account:
 By setting the configuration parameter `flightlog.registration.restricted` to `false` will bypass the check for existence and will create a new entry in the local database for every new account authenticated via OAuth2:
 
     flightlog:
-      registraction:
+      registration:
         restricted: false
 
 ### Adding the email address to the whitelist
