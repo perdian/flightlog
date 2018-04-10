@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import de.perdian.flightlog.modules.airlines.model.AirlineBean;
 import de.perdian.flightlog.modules.airlines.services.AirlinesService;
-import de.perdian.flightlog.modules.security.web.FlightlogUser;
+import de.perdian.flightlog.modules.authentication.FlightlogUser;
 import de.perdian.flightlog.support.web.MessageSeverity;
 import de.perdian.flightlog.support.web.Messages;
 
@@ -30,7 +29,7 @@ public class AirlineEditController {
     private MessageSource messageSource = null;
 
     @RequestMapping(value = "/airlines/list", method = RequestMethod.GET)
-    public String doListGet(@AuthenticationPrincipal FlightlogUser user, Model model) {
+    public String doListGet(FlightlogUser user, Model model) {
         AirlineEditorList airlineEditorList = new AirlineEditorList();
         airlineEditorList.setItems(this.getAirlinesService().loadUserSpecificAirlines(user == null ? null : user.getUserEntity()).stream().map(this::createAirlineEditor).collect(Collectors.toList()));
         model.addAttribute("airlines", airlineEditorList);
@@ -38,7 +37,7 @@ public class AirlineEditController {
     }
 
     @RequestMapping(value = "/airlines/list", method = RequestMethod.POST)
-    public String doListPost(@AuthenticationPrincipal FlightlogUser user, AirlineEditorList editorList, @ModelAttribute Messages messages, Locale locale, Model model) {
+    public String doListPost(FlightlogUser user, AirlineEditorList editorList, @ModelAttribute Messages messages, Locale locale, Model model) {
         try {
             if (editorList.getItems() != null) {
                 for (AirlineEditor editor : editorList.getItems()) {

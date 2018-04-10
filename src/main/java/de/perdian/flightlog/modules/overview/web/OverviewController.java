@@ -8,20 +8,19 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.perdian.flightlog.modules.authentication.FlightlogUser;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery;
-import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery.TimePeriod;
+import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
 import de.perdian.flightlog.modules.overview.model.MapModel;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
 import de.perdian.flightlog.modules.overview.services.MapService;
 import de.perdian.flightlog.modules.overview.services.OverviewService;
-import de.perdian.flightlog.modules.security.web.FlightlogUser;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightDistance;
 import de.perdian.flightlog.support.types.FlightReason;
@@ -41,18 +40,18 @@ public class OverviewController {
 
     @RequestMapping(value = "/map/data", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public MapModel mapData(@AuthenticationPrincipal FlightlogUser authenticationPrincipal, @ModelAttribute("overviewQuery") OverviewQuery overviewQuery) {
-        return this.getMapService().loadMap(this.createFlightsQuery(authenticationPrincipal, overviewQuery));
+    public MapModel mapData(FlightlogUser user, @ModelAttribute("overviewQuery") OverviewQuery overviewQuery) {
+        return this.getMapService().loadMap(this.createFlightsQuery(user, overviewQuery));
     }
 
     @ModelAttribute(name = "overview")
-    public OverviewBean overview(@AuthenticationPrincipal FlightlogUser authenticationPrincipal, @ModelAttribute("overviewQuery") OverviewQuery overviewQuery) {
-        return this.getOverviewService().loadOverview(this.createFlightsQuery(authenticationPrincipal, overviewQuery));
+    public OverviewBean overview(FlightlogUser user, @ModelAttribute("overviewQuery") OverviewQuery overviewQuery) {
+        return this.getOverviewService().loadOverview(this.createFlightsQuery(user, overviewQuery));
     }
 
-    private FlightsQuery createFlightsQuery(FlightlogUser authenticationPrincipal, OverviewQuery overviewQuery) {
+    private FlightsQuery createFlightsQuery(FlightlogUser user, OverviewQuery overviewQuery) {
         FlightsQuery flightsQuery = new FlightsQuery();
-        flightsQuery.setRestrictUser(authenticationPrincipal == null ? null : authenticationPrincipal.getUserEntity());
+        flightsQuery.setRestrictUser(user == null ? null : user.getUserEntity());
         flightsQuery.setRestrictAirlineCodes(overviewQuery.getAirlineCode());
         flightsQuery.setRestrictAircraftTypes(overviewQuery.getAircraftType());
         flightsQuery.setRestrictAirportCodes(overviewQuery.getAirportCode());

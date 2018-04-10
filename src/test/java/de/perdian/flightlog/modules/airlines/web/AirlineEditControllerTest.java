@@ -12,10 +12,7 @@ import org.springframework.ui.ExtendedModelMap;
 import de.perdian.flightlog.FlightlogTestHelper;
 import de.perdian.flightlog.modules.airlines.model.AirlineBean;
 import de.perdian.flightlog.modules.airlines.services.AirlinesService;
-import de.perdian.flightlog.modules.airlines.web.AirlineEditController;
-import de.perdian.flightlog.modules.airlines.web.AirlineEditor;
-import de.perdian.flightlog.modules.airlines.web.AirlineEditorList;
-import de.perdian.flightlog.modules.security.web.FlightlogUser;
+import de.perdian.flightlog.modules.authentication.FlightlogUser;
 import de.perdian.flightlog.modules.users.persistence.UserEntity;
 import de.perdian.flightlog.support.web.Messages;
 
@@ -25,8 +22,8 @@ public class AirlineEditControllerTest {
     public void doListGet() {
 
         UserEntity userEntity = new UserEntity();
-        FlightlogUser user = new FlightlogUser();
-        user.setUserEntity(userEntity);
+        FlightlogUser user = Mockito.mock(FlightlogUser.class);
+        Mockito.when(user.getUserEntity()).thenReturn(userEntity);
 
         AirlineBean airline1 = FlightlogTestHelper.createAirlineBean("UA", "US", "United");
         AirlineBean airline2 = FlightlogTestHelper.createAirlineBean("LH", "DE", "Lufthansa");
@@ -50,8 +47,8 @@ public class AirlineEditControllerTest {
     public void doListPost() {
 
         UserEntity userEntity = new UserEntity();
-        FlightlogUser user = new FlightlogUser();
-        user.setUserEntity(userEntity);
+        FlightlogUser user = Mockito.mock(FlightlogUser.class);
+        Mockito.when(user.getUserEntity()).thenReturn(userEntity);
 
         AirlineBean airline1 = FlightlogTestHelper.createAirlineBean("UA", "US", "United");
         AirlineBean airline2 = FlightlogTestHelper.createAirlineBean("LH", "DE", "Lufthansa");

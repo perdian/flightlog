@@ -47,6 +47,7 @@
                     <a class="item" href="${contextPath}logout"><fmt:message key="logout" /></a>
                 </div>
             </div>
+            <div class="right aligned item"><c:out value="${currentUser.information}" /></div>
         </sec:authorize>
 
     </nav>

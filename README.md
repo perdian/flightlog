@@ -76,30 +76,37 @@ The MySQL JDBC driver is already part of the flightlog WAR distribution. For any
 
 # Authentication
 
-By default the application doesn't come with any built in application and works in an open single user mode: All flights are implicitely associated to a single user.
+The application ships with a few options of authentication providers available.
 
-Currently there are two options to configure authentication: Using the internal database or using an LDAP backend.
+By default no authentication is activated, which means without any additional configuration the application works in a single user mode: All flights are implicitely associated to a single user.
 
-## Internal database
-
-Using the internal database is the easiest option and requires only one additional configuration parameter (see database configuration how to make additional configuration parameters available to the application).
+If you want to enable authentication for the system you'll have to set the following configuration property:
 
     flightlog:
       authentication:
-        type: internaldatabase
+        required: true
 
-Now the application will authenticate using the entries in the internal database.
+## Local database authentication
 
-For each login the application will look for an entry within the `user` table that has `internaldatabase` as value of the `type`, a `username` column value equal to the value entered in the login form and a `password` column value equal to the SHA-256 hash (hex encoded) of the password entered in the login form.
+Using the internal database is the easiest option and is automatically active if the `flightlog.authentication.required` property has been set to `true`.
 
-# LDAP
+For each login the application will look for an entry within the `user` table that has `internaldatabase` as value of the `authentication_source`, a `username` column value equal to the value entered in the login form and a `password` column value equal to the SHA-256 hash (hex encoded) of the password entered in the login form.
+
+If you want to disable the local authentication (because you want to only use other authentication methods) then you'll need to disable it with the following configuration property:
+
+    flightlog:
+      authentication:
+        local:
+          enabled: false
+
+# LDAP authentication
 
 Using a LDAP backend requires some additional options to be set as configuration parameters:
 
     flightlog:
       authentication:
-        type: ldap
         ldap:
+          enabled: true
           url: ldap://127.0.0.1
           base-dn: dc=example,dc=com
           user-dn: ou=users
@@ -108,6 +115,57 @@ Using a LDAP backend requires some additional options to be set as configuration
           username-field: uid
 
 The login will be made against the LDAP backend configured. After that a dummy user will be inserted into the local database with the `authentication_source` column set to `ldap` and the `username` column set to the username used during the login. The `password` column will remain `null`.
+
+If both the local database authentication and the LDAP authentication have been activated the application will first check if a local user is found, and if that's the case will use the local user. Only if no local user is found will the application look for a user in the specified LDAP system.
+
+## OAuth2 authentication
+
+The application supports OAuth2 authentication via the following providers:
+
+* Google
+
+For each login the application will perform an OAuth2 authentication. After the successful authentication an entry within the `user` table that has `internaldatabase` will be made, populated with the values retrieved from the OAuth2 provider.
+
+Note that in the default setup if the user authenticated via OAuth2 is *not* existing in the local database yet, then the authentication will fail. This is a concious choice to prohibit someone spamming the system and creating entries in the database by simply performing multiple OAuth2 authentications.
+
+The are two ways to allow an authentication from a new OAuth2 account:
+
+### Disabling registration blocker
+
+By setting the configuration parameter `flightlog.registration.restricted` to `false` will bypass the check for existence and will create a new entry in the local database for every new account authenticated via OAuth2:
+
+    flightlog:
+      registraction:
+        restricted: false
+
+### Adding the email address to the whitelist
+
+When a new OAuth2 account is found the system will check the internal *whitelist* whether the email address of the new user is found in the whitelist. If that's the case then the new user will be added into the database and the authentication will succeed.
+
+The whitelist itself is stored in the database table `registrationwhitelist` which simply contains an `email` column for the email to be whitelisted. To add members to the whitelist you can perform the following simple SQL statement against the local database:
+
+    INSERT INTO registrationwhitelist (email) VALUES ('theaddress@example.com');
+
+### Detailed configuration: Google
+
+To activate authentication via Google you'll have to register your Google client id and client secret with Spring security as additional configuration parameters (see database configuration how to make additional configuration parameters available to the application):
+
+    spring
+      security:
+        oauth2:
+          client:
+            registration:
+              google:
+                client-id: 999467837147-evsjg80n3rd4ct12ca3ili3s8q3ofsht.apps.googleusercontent.com
+                client-secret: iaCIE7Kd5uBWrnmxlXLvHOl-
+
+For detailed information of how to create the credentials see https://developers.google.com/identity/protocols/OAuth2.
+
+When clients have been registered they will automatically be made available.
+
+## OAuth2 registration
+
+By default only existing users
 
 # External data providers
 

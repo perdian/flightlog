@@ -10,16 +10,15 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import de.perdian.flightlog.modules.authentication.FlightlogUser;
 import de.perdian.flightlog.modules.flights.model.AirportBean;
 import de.perdian.flightlog.modules.flights.model.AirportContactBean;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery;
 import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
-import de.perdian.flightlog.modules.security.web.FlightlogUser;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightDistance;
 import de.perdian.flightlog.support.types.FlightReason;
@@ -31,11 +30,11 @@ public class OverviewQueryHelperFactory {
     private FlightsQueryService flightsQueryService = null;
 
     @ModelAttribute(name = "overviewQueryHelper")
-    public OverviewQueryHelper overviewQueryHelper(@AuthenticationPrincipal FlightlogUser authenticationPrincipal) {
+    public OverviewQueryHelper overviewQueryHelper(FlightlogUser user) {
 
         FlightsQuery flightsQuery = new FlightsQuery();
         flightsQuery.setPageSize(Integer.MAX_VALUE);
-        flightsQuery.setRestrictUser(authenticationPrincipal == null ? null : authenticationPrincipal.getUserEntity());
+        flightsQuery.setRestrictUser(user == null ? null : user.getUserEntity());
         List<FlightBean> flights = this.getFlightsQueryService().loadFlights(flightsQuery).getItems();
 
         OverviewQueryHelper queryHelper = new OverviewQueryHelper();

@@ -6,16 +6,15 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import de.perdian.flightlog.modules.authentication.FlightlogUser;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsUpdateService;
-import de.perdian.flightlog.modules.security.web.FlightlogUser;
 import de.perdian.flightlog.support.web.MessageSeverity;
 import de.perdian.flightlog.support.web.Messages;
 
@@ -37,13 +36,13 @@ public class FlightsAddController {
     }
 
     @RequestMapping(value = "/flights/add/wizard", method = RequestMethod.POST)
-    public String doAddGetWizard(@AuthenticationPrincipal FlightlogUser user, @ModelAttribute("flightEditor") FlightEditor flightEditor, FlightsWizardData wizardData) {
+    public String doAddGetWizard(FlightlogUser user, @ModelAttribute("flightEditor") FlightEditor flightEditor, FlightsWizardData wizardData) {
         this.getFlightsWizardService().enhanceFlightEditor(flightEditor, wizardData, user == null ? null : user.getUserEntity());
         return this.doAddGet();
     }
 
     @RequestMapping(value = "/flights/add", method = RequestMethod.POST)
-    public String doAddPost(@AuthenticationPrincipal FlightlogUser user, @Valid @ModelAttribute("flightEditor") FlightEditor flightEditor, BindingResult bindingResult, @ModelAttribute Messages messages, Locale locale) {
+    public String doAddPost(FlightlogUser user, @Valid @ModelAttribute("flightEditor") FlightEditor flightEditor, BindingResult bindingResult, @ModelAttribute Messages messages, Locale locale) {
         if (!bindingResult.hasErrors()) {
 
             FlightBean flightBean = new FlightBean();

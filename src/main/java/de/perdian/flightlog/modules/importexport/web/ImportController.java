@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,12 +25,12 @@ import de.perdian.flightlog.modules.airlines.model.AirlineBean;
 import de.perdian.flightlog.modules.airlines.services.AirlinesService;
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
+import de.perdian.flightlog.modules.authentication.FlightlogUser;
 import de.perdian.flightlog.modules.importexport.data.DataItem;
 import de.perdian.flightlog.modules.importexport.data.DataLoader;
 import de.perdian.flightlog.modules.importexport.data.impl.FlugstatistikdeCredentials;
 import de.perdian.flightlog.modules.importexport.data.impl.FlugstatistikdeDataLoader;
 import de.perdian.flightlog.modules.importexport.services.ImportExportService;
-import de.perdian.flightlog.modules.security.web.FlightlogUser;
 import de.perdian.flightlog.modules.users.persistence.UserEntity;
 import de.perdian.flightlog.support.FlightlogHelper;
 import de.perdian.flightlog.support.web.MessageSeverity;
@@ -59,7 +58,7 @@ public class ImportController {
     }
 
     @RequestMapping(value = "/import/file", method = RequestMethod.POST)
-    public String doImportFilePost(@AuthenticationPrincipal FlightlogUser user, @RequestParam("file") MultipartFile file, @RequestParam("fileType") ImportFileType fileType, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale, Model model) {
+    public String doImportFilePost(FlightlogUser user, @RequestParam("file") MultipartFile file, @RequestParam("fileType") ImportFileType fileType, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale, Model model) {
         if (file == null || file.isEmpty()) {
             return this.doImportFileGet(model);
         } else {
@@ -88,7 +87,7 @@ public class ImportController {
     }
 
     @RequestMapping(value = "/import/flugstatistikde", method = RequestMethod.POST)
-    public String doImportFlugstatistikdePost(@AuthenticationPrincipal FlightlogUser user, @RequestParam("username") String username, @RequestParam("password") String password, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
+    public String doImportFlugstatistikdePost(FlightlogUser user, @RequestParam("username") String username, @RequestParam("password") String password, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
         if (StringUtils.isEmpty(username)) {
             messages.addMessage(MessageSeverity.ERROR, this.getMessageSource().getMessage("usernameMustNotBeEmpty", null, locale), null);
             return this.doImportFlugstatistikdeGet();
@@ -170,7 +169,7 @@ public class ImportController {
     }
 
     @RequestMapping(value = "/import/execute", method = RequestMethod.POST)
-    public String doExecute(@AuthenticationPrincipal FlightlogUser user, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
+    public String doExecute(FlightlogUser user, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
 
         List<DataItem> activeDataItems = importEditor.getItems().stream()
             .filter(item -> item.isActive())

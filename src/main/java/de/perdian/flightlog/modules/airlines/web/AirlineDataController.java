@@ -2,7 +2,6 @@ package de.perdian.flightlog.modules.airlines.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.perdian.flightlog.modules.airlines.model.AirlineBean;
 import de.perdian.flightlog.modules.airlines.services.AirlinesService;
-import de.perdian.flightlog.modules.security.web.FlightlogUser;
+import de.perdian.flightlog.modules.authentication.FlightlogUser;
 
 /**
  * AJAX target controller to deliver information about airlines during the edit process
@@ -25,7 +24,7 @@ public class AirlineDataController {
     private AirlinesService airlinesService = null;
 
     @RequestMapping(path = "/airline/data/{airlineCode}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
-    public AirlineData doAirline(@AuthenticationPrincipal FlightlogUser user, @PathVariable("airlineCode") String airlineCode) {
+    public AirlineData doAirline(FlightlogUser user, @PathVariable("airlineCode") String airlineCode) {
         AirlineBean airlineBean = this.getAirlinesService().loadAirlineByCode(airlineCode, user == null ? null : user.getUserEntity());
         if (airlineBean == null) {
             throw new AirlineNotFoundException();

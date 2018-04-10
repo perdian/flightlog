@@ -1,6 +1,7 @@
 spring:
   datasource:
     url: jdbc:h2:~/Development/databases/flightlog
+    driver-class-name: org.h2.Driver
     username: sa
     password:
   flyway:
@@ -24,10 +25,21 @@ spring:
   servlet:
     multipart:
       max-file-size: 5MB 
-  
+
 server:
   servlet:
     jsp:
       init-parameters:
         development: true
         trimSpaces: true
+    session:
+      cookie:
+        name: flightlog-session
+
+flightlog:
+  authentication:
+    required: false
+    local:
+      enabled: true
+  registration:
+    restricted: true

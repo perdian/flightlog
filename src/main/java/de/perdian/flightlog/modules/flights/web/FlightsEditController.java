@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import de.perdian.flightlog.modules.authentication.FlightlogUser;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery;
 import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
 import de.perdian.flightlog.modules.flights.services.FlightsUpdateService;
-import de.perdian.flightlog.modules.security.web.FlightlogUser;
 import de.perdian.flightlog.support.persistence.PaginatedList;
 import de.perdian.flightlog.support.web.MessageSeverity;
 import de.perdian.flightlog.support.web.Messages;
@@ -37,7 +36,7 @@ public class FlightsEditController {
     private FlightsUpdateService flightsUpdateService = null;
 
     @RequestMapping(value = "/flights/edit/{id}", method = RequestMethod.GET)
-    public String doEditGet(@AuthenticationPrincipal FlightlogUser user, @PathVariable("id") UUID id, @RequestParam(name = "updated", required = false) Boolean updated, @ModelAttribute Messages messages, Locale locale, Model model) {
+    public String doEditGet(FlightlogUser user, @PathVariable("id") UUID id, @RequestParam(name = "updated", required = false) Boolean updated, @ModelAttribute Messages messages, Locale locale, Model model) {
 
         FlightsQuery flightsQuery = new FlightsQuery();
         flightsQuery.setRestrictUser(user == null ? null : user.getUserEntity());
@@ -56,7 +55,7 @@ public class FlightsEditController {
     }
 
     @RequestMapping(value = "/flights/edit/{id}", method = RequestMethod.POST)
-    public String doEditPost(@AuthenticationPrincipal FlightlogUser user, @PathVariable("id") UUID id, @Valid @ModelAttribute("flightEditor") FlightEditor flightEditor, BindingResult bindingResult, @ModelAttribute Messages messages, Locale locale, Model model) {
+    public String doEditPost(FlightlogUser user, @PathVariable("id") UUID id, @Valid @ModelAttribute("flightEditor") FlightEditor flightEditor, BindingResult bindingResult, @ModelAttribute Messages messages, Locale locale, Model model) {
         if (!bindingResult.hasErrors()) {
 
             FlightsQuery targetFlightsQuery = new FlightsQuery();
@@ -81,7 +80,7 @@ public class FlightsEditController {
     }
 
     @RequestMapping(value = "/flights/delete/{id}", method = RequestMethod.GET)
-    public String doDeleteGet(@AuthenticationPrincipal FlightlogUser user, @PathVariable("id") UUID id, Model model) {
+    public String doDeleteGet(FlightlogUser user, @PathVariable("id") UUID id, Model model) {
 
         FlightsQuery flightsQuery = new FlightsQuery();
         flightsQuery.setRestrictUser(user == null ? null : user.getUserEntity());
@@ -96,7 +95,7 @@ public class FlightsEditController {
     }
 
     @RequestMapping(value = "/flights/delete/{id}", method = RequestMethod.POST)
-    public String doDeletePost(@AuthenticationPrincipal FlightlogUser user, @PathVariable("id") UUID id, @ModelAttribute Messages messages, Locale locale, Model model) {
+    public String doDeletePost(FlightlogUser user, @PathVariable("id") UUID id, @ModelAttribute Messages messages, Locale locale, Model model) {
         FlightsQuery flightsQuery = new FlightsQuery();
         flightsQuery.setRestrictUser(user == null ? null : user.getUserEntity());
         flightsQuery.setRestrictIdentifiers(Arrays.asList(id));
