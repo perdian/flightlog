@@ -156,8 +156,8 @@ To activate authentication via Google you'll have to register your Google client
           client:
             registration:
               google:
-                client-id: 999467837147-evsjg80n3rd4ct12ca3ili3s8q3ofsht.apps.googleusercontent.com
-                client-secret: iaCIE7Kd5uBWrnmxlXLvHOl-
+                client-id: YOUR_CLIENT_ID
+                client-secret: YOUR_CLIENT_SECRET
 
 For detailed information of how to create the credentials see https://developers.google.com/identity/protocols/OAuth2.
 
