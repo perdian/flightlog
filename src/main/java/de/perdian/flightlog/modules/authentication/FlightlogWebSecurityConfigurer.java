@@ -21,32 +21,30 @@ class FlightlogWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
             if (this.getSettings().getLocal().isEnabled() || this.getSettings().getLdap().isEnabled()) {
                 http.authenticationProvider(this.localAuthenticationProvider());
             }
-            http
-                .authorizeRequests()
-                    .antMatchers("/resources/**").permitAll()
-                    .antMatchers("/webjars/**").permitAll()
-                    .antMatchers("/logoutcomplete").permitAll()
-                    .antMatchers("/login").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                .oauth2Login()
+            if (this.getSettings().getOauth().isEnabled()) {
+                http.oauth2Login()
                     .loginPage("/login")
                     .userInfoEndpoint()
-                        .oidcUserService(this.oauthUserService())
-                        .and()
-                    .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/")
-                    .and()
-                .logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/logoutcomplete")
-;
+                        .oidcUserService(this.oauthUserService());
+            }
+            http.authorizeRequests()
+                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/logoutcomplete").permitAll()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated();
+            http.formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/");
+            http.logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/logoutcomplete");
+
 //                .and().rememberMe()
 //                    .rememberMeCookieName("flightlog-rememberme")
 //                    .alwaysRemember(true)
 //                    .userDetailsService(username -> new User(username, "password", Collections.emptyList()));
+
         } else {
             http.authorizeRequests().anyRequest().permitAll();
         }

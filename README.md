@@ -128,6 +128,11 @@ For each login the application will perform an OAuth2 authentication. After the 
 
 Note that in the default setup if the user authenticated via OAuth2 is *not* existing in the local database yet, then the authentication will fail. This is a concious choice to prohibit someone spamming the system and creating entries in the database by simply performing multiple OAuth2 authentications.
 
+    flightlog:
+      authentication:
+        oauth:
+          enabled: true
+
 The are two ways to allow an authentication from a new OAuth2 account:
 
 ### Disabling registration blocker

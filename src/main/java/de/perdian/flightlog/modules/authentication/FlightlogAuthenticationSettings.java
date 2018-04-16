@@ -10,6 +10,7 @@ public class FlightlogAuthenticationSettings {
     private boolean required = false;
     private FlightlogAuthenticationLocalSettings local = new FlightlogAuthenticationLocalSettings();
     private FlightlogAuthenticationLdapSettings ldap = new FlightlogAuthenticationLdapSettings();
+    private FlightlogAuthenticationOauthSettings oauth = new FlightlogAuthenticationOauthSettings();
 
     @Component
     @ConfigurationProperties(prefix = "flightlog.authentication.local")
@@ -105,6 +106,21 @@ public class FlightlogAuthenticationSettings {
 
     }
 
+    @Component
+    @ConfigurationProperties(prefix = "flightlog.authentication.oauth")
+    public static class FlightlogAuthenticationOauthSettings {
+
+        private boolean enabled = false;
+
+        public boolean isEnabled() {
+            return this.enabled;
+        }
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+    }
+
     public boolean isRequired() {
         return this.required;
     }
@@ -124,6 +140,13 @@ public class FlightlogAuthenticationSettings {
     }
     public void setLdap(FlightlogAuthenticationLdapSettings ldap) {
         this.ldap = ldap;
+    }
+
+    public FlightlogAuthenticationOauthSettings getOauth() {
+        return this.oauth;
+    }
+    public void setOauth(FlightlogAuthenticationOauthSettings oauth) {
+        this.oauth = oauth;
     }
 
 }
