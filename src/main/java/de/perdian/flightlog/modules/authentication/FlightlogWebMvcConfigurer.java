@@ -30,7 +30,7 @@ public class FlightlogWebMvcConfigurer implements WebMvcConfigurer {
         @Override
         public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Object principal = authentication.getPrincipal();
+            Object principal = authentication == null ? null : authentication.getPrincipal();
             if (principal instanceof FlightlogUser) {
                 return FlightlogUser.class.cast(principal);
             } else {
