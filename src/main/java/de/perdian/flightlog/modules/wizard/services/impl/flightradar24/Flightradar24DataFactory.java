@@ -7,6 +7,10 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -43,7 +47,7 @@ public class Flightradar24DataFactory implements WizardDataFactory {
     private Clock clock = Clock.systemUTC();
 
     @Override
-    public WizardData createData(String airlineCode, String flightNumber, LocalDate departureDate) {
+    public List<WizardData> createData(String airlineCode, String flightNumber, LocalDate departureDate, String departureAirportCode) {
         if (this.getConfiguration().isEnabled()) {
             try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
@@ -55,7 +59,7 @@ public class Flightradar24DataFactory implements WizardDataFactory {
                      Document htmlDocument = Jsoup.parse(httpResponseContent);
                      Elements dataTableElements = Xsoup.select(htmlDocument, "//table[@id='tbl-datatable']").getElements();
                      if (dataTableElements.size() > 0) {
-                         return this.createDataFromDataTable(dataTableElements.get(0), airlineCode, flightNumber, departureDate);
+                         return this.createDataFromDataTable(dataTableElements.get(0), airlineCode, flightNumber, departureDate, departureAirportCode);
                      }
                 }
 
@@ -66,16 +70,18 @@ public class Flightradar24DataFactory implements WizardDataFactory {
         return null;
     }
 
-    private WizardData createDataFromDataTable(Element dataTableElement, String airlineCode, String flightNumber, LocalDate departureDate) {
+    private List<WizardData> createDataFromDataTable(Element dataTableElement, String airlineCode, String flightNumber, LocalDate departureDate, String departureAirportCode) {
         LocalDate currentDate = LocalDate.now(this.getClock());
         Elements trElements = dataTableElement.getElementsByTag("tr");
-        Element trElementForSpecificDate = currentDate.isBefore(departureDate) ? null : this.lookupTableRowForDate(trElements, departureDate);
-        if (trElementForSpecificDate != null) {
-            return this.createDataFromTableRow(trElementForSpecificDate, airlineCode, flightNumber, departureDate);
+        List<Element> trElementsForSpecificDate = currentDate.isBefore(departureDate) ? null : this.lookupTableRowsForDate(trElements, departureDate, departureAirportCode);
+        if (trElementsForSpecificDate != null && !trElementsForSpecificDate.isEmpty()) {
+            return trElementsForSpecificDate.stream()
+                .map(tableRow -> this.createDataFromTableRow(tableRow, airlineCode, flightNumber, departureDate))
+                .collect(Collectors.toList());
         } else {
-            Element trElementForCurrentDate = this.lookupTableRowForDate(trElements, LocalDate.now().minusDays(1));
-            if (trElementForCurrentDate != null) {
-                WizardData currentDateFlightData = this.createDataFromTableRow(trElementForCurrentDate, airlineCode, flightNumber, departureDate);
+            List<Element> trElementsForCurrentDate = this.lookupTableRowsForDate(trElements, LocalDate.now().minusDays(1), departureAirportCode);
+            if (trElementsForCurrentDate.size() == 1) {
+                WizardData currentDateFlightData = this.createDataFromTableRow(trElementsForCurrentDate.get(0), airlineCode, flightNumber, departureDate);
                 if (currentDateFlightData != null) {
 
                     // As the departure and arrival times as well as the aircraft registry is not actually the
@@ -86,7 +92,7 @@ public class Flightradar24DataFactory implements WizardDataFactory {
                     resultFlightData.setArrivalAirportCode(currentDateFlightData.getArrivalAirportCode());
                     resultFlightData.setDepartureAirportCode(currentDateFlightData.getDepartureAirportCode());
                     resultFlightData.setDepartureDateLocal(departureDate);
-                    return resultFlightData;
+                    return Collections.singletonList(resultFlightData);
 
                 }
             }
@@ -94,18 +100,29 @@ public class Flightradar24DataFactory implements WizardDataFactory {
         return null;
     }
 
-    private Element lookupTableRowForDate(Elements trElements, LocalDate targetDate) {
+    private List<Element> lookupTableRowsForDate(Elements trElements, LocalDate targetDate, String targetDepartureAirport) {
+        List<Element> tableRowsForDate = new ArrayList<>();
         String targetDateString = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(targetDate);
         for (int i=0; i < trElements.size(); i++) {
+
             Element trElement = trElements.get(i);
             Elements tdElements = trElement.getElementsByTag("td");
+
             Element dateElement = tdElements.size() <= 1 ? null : tdElements.get(1);
             String dateValue = dateElement == null ? null : dateElement.text();
-            if (dateValue != null && dateValue.equalsIgnoreCase(targetDateString)) {
-                return trElement;
+            boolean dateMatches = dateValue != null && dateValue.equalsIgnoreCase(targetDateString);
+
+            Element departureAirportElement = tdElements.size() <= 1 ? null : tdElements.get(2);
+            List<Element> departureAirportCodeElements = departureAirportElement == null ? null : departureAirportElement.getElementsByTag("a");
+            String departureAirportValue = departureAirportCodeElements == null || departureAirportCodeElements.isEmpty() ? null : departureAirportCodeElements.get(0).text();
+            boolean departureAirportMatches = StringUtils.isBlank(targetDepartureAirport) || targetDepartureAirport.equalsIgnoreCase(departureAirportValue);
+
+            if (dateMatches && departureAirportMatches) {
+                tableRowsForDate.add(trElement);
             }
+
         }
-        return null;
+        return tableRowsForDate;
     }
 
     private WizardData createDataFromTableRow(Element trElement, String airlineCode, String flightNumber, LocalDate departureDate) {

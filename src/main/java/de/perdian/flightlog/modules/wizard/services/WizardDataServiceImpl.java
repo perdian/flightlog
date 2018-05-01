@@ -3,7 +3,6 @@ package de.perdian.flightlog.modules.wizard.services;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -19,21 +18,21 @@ class WizardDataServiceImpl implements WizardDataService {
     private List<WizardDataFactory> factories = null;
 
     @Override
-    public WizardData createData(String airlineCode, String flightNumber, LocalDate departureDate) {
+    public List<WizardData> createData(String airlineCode, String flightNumber, LocalDate departureDate, String departureAirportCode) {
 
         // To get a valid WizardData object we simply loop through all the available sources until
         // the first one returns a valid response
         return Optional.ofNullable(this.getFactories()).orElseGet(Collections::emptyList).stream()
-            .map(source -> this.createDataFromFactory(source, airlineCode, flightNumber, departureDate))
-            .filter(Objects::nonNull)
+            .map(source -> this.createDataFromFactory(source, airlineCode, flightNumber, departureDate, departureAirportCode))
+            .filter(list -> list != null && !list.isEmpty())
             .findFirst()
             .orElse(null);
 
     }
 
-    private WizardData createDataFromFactory(WizardDataFactory factory, String airlineCode, String flightNumber, LocalDate departureDate) {
+    private List<WizardData> createDataFromFactory(WizardDataFactory factory, String airlineCode, String flightNumber, LocalDate departureDate, String departureAirportCode) {
         try {
-            return factory.createData(airlineCode, flightNumber, departureDate);
+            return factory.createData(airlineCode, flightNumber, departureDate, departureAirportCode);
         } catch (Exception e) {
             log.warn("Cannot load flight data from factory '{}' [airlineCode={}, flightNumber={}, departureDate={}]", factory, airlineCode, flightNumber, departureDate, e);
             return null;

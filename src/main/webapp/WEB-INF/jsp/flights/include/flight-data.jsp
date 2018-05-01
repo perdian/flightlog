@@ -198,19 +198,19 @@
     <fl:select cssClass="two wide field" bean="flightEditor" path="seatType" labelKey="seatType">
         <option></option>
         <c:forEach items="${flightEditorHelper.seatTypeValues}" var="seatTypeValue">
-            <option ${flightEditor.seatType eq seatTypeValue ? 'selected=\"selected\"' : ''} value="${seatTypeValue}"><fmt:message key="seatType.${seatTypeValue}" /></option>
+            <option ${flightEditor.seatType eq seatTypeValue ? 'selected=\'selected\'' : ''} value="${seatTypeValue}"><fmt:message key="seatType.${seatTypeValue}" /></option>
         </c:forEach>
     </fl:select>
     <fl:select cssClass="three wide field" bean="flightEditor" path="cabinClass" labelKey="cabinClass">
         <option></option>
         <c:forEach items="${flightEditorHelper.cabinClassValues}" var="cabinClassValue">
-            <option ${flightEditor.cabinClass eq cabinClassValue ? 'selected=\"selected\"' : ''} value="${cabinClassValue}"><fmt:message key="cabinClass.${cabinClassValue}" /></option>
+            <option ${flightEditor.cabinClass eq cabinClassValue ? 'selected=\'selected\'' : ''} value="${cabinClassValue}"><fmt:message key="cabinClass.${cabinClassValue}" /></option>
         </c:forEach>
     </fl:select>
     <fl:select cssClass="two wide field" bean="flightEditor" path="flightReason" labelKey="flightReason">
         <option></option>
         <c:forEach items="${flightEditorHelper.flightReasonValues}" var="flightReasonValue">
-            <option ${flightEditor.flightReason eq flightReasonValue ? 'selected=\"selected\"' : ''} value="${flightReasonValue}"><fmt:message key="flightReason.${flightReasonValue}" /></option>
+            <option ${flightEditor.flightReason eq flightReasonValue ? 'selected=\'selected\'' : ''} value="${flightReasonValue}"><fmt:message key="flightReason.${flightReasonValue}" /></option>
         </c:forEach>
     </fl:select>
     <fl:inputfield cssClass="seven wide field" bean="flightEditor" path="comment" labelKey="comment" />

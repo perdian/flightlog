@@ -1,9 +1,10 @@
 package de.perdian.flightlog.modules.flights.web;
 
 import de.perdian.flightlog.modules.users.persistence.UserEntity;
+import de.perdian.flightlog.modules.wizard.services.WizardData;
 
 interface FlightsWizardService {
 
-    void enhanceFlightEditor(FlightEditor editor, FlightsWizardData data, UserEntity user);
+    FlightEditor enhanceFlightEditor(FlightEditor editor, FlightWizardEditor flightWizardEditor, WizardData wizardData, UserEntity user);
 
 }

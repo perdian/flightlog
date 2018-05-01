@@ -1,37 +1,87 @@
 package de.perdian.flightlog.modules.flights.web;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.context.MessageSource;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsUpdateService;
-import de.perdian.flightlog.modules.flights.web.FlightEditor;
-import de.perdian.flightlog.modules.flights.web.FlightsAddController;
-import de.perdian.flightlog.modules.flights.web.FlightsWizardData;
-import de.perdian.flightlog.modules.flights.web.FlightsWizardService;
+import de.perdian.flightlog.modules.wizard.services.WizardData;
+import de.perdian.flightlog.modules.wizard.services.WizardDataService;
 import de.perdian.flightlog.support.web.MessageSeverity;
 import de.perdian.flightlog.support.web.Messages;
 
 public class FlightsAddControllerTest {
 
     @Test
-    public void doAddGetWizard() {
+    public void doAddWizardPostWithOneResult() {
 
         FlightEditor editor = new FlightEditor();
-        FlightsWizardData wizardData = new FlightsWizardData();
+        FlightWizardEditor flightWizardEditor = new FlightWizardEditor();
+        flightWizardEditor.setWizAirlineCode("LH");
+        flightWizardEditor.setWizDepartureAirportCode("CGN");
+        flightWizardEditor.setWizDepartureDateLocal("1969-07-20");
+        flightWizardEditor.setWizFlightNumber("123");
+
+        WizardData wizardData = new WizardData();
+        WizardDataService wizardDataService = Mockito.mock(WizardDataService.class);
+        Mockito.when(wizardDataService.createData(Mockito.eq("LH"), Mockito.eq("123"), Mockito.eq(LocalDate.of(1969, 7, 20)), Mockito.eq("CGN"))).thenReturn(Collections.singletonList(wizardData));
 
         FlightsWizardService wizardService = Mockito.mock(FlightsWizardService.class);
 
-        FlightsAddController controller = new FlightsAddController();
-        controller.setFlightsWizardService(wizardService);
-        Assertions.assertEquals("/flights/add", controller.doAddGetWizard(null, editor, wizardData));
+        Model model = new ExtendedModelMap();
 
-        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.eq(editor), Mockito.eq(wizardData), Mockito.any());
+        FlightsAddController controller = new FlightsAddController();
+        controller.setWizardDataService(wizardDataService);
+        controller.setFlightsWizardService(wizardService);
+
+        Assertions.assertEquals("/flights/add", controller.doAddWizardPost(null, editor, flightWizardEditor, model));
+        Assertions.assertEquals(0, model.asMap().size());
+
+        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.eq(editor), Mockito.eq(flightWizardEditor), Mockito.eq(wizardData), Mockito.any());
+
+    }
+
+    @Test
+    public void doAddWizardPostWithMultipleResult() {
+
+        FlightEditor editor = new FlightEditor();
+        FlightWizardEditor flightWizardEditor = new FlightWizardEditor();
+        flightWizardEditor.setWizAirlineCode("LH");
+        flightWizardEditor.setWizDepartureAirportCode("CGN");
+        flightWizardEditor.setWizDepartureDateLocal("1969-07-20");
+        flightWizardEditor.setWizFlightNumber("123");
+
+        WizardData wizardData1 = new WizardData();
+        WizardData wizardData2 = new WizardData();
+        WizardDataService wizardDataService = Mockito.mock(WizardDataService.class);
+        Mockito.when(wizardDataService.createData(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Arrays.asList(wizardData1, wizardData2));
+
+        FlightsWizardService wizardService = Mockito.mock(FlightsWizardService.class);
+
+        Model model = new ExtendedModelMap();
+
+        FlightsAddController controller = new FlightsAddController();
+        controller.setWizardDataService(wizardDataService);
+        controller.setFlightsWizardService(wizardService);
+
+        Assertions.assertEquals("/flights/add", controller.doAddWizardPost(null, editor, flightWizardEditor, model));
+        Assertions.assertEquals(1, model.asMap().size());
+        Assertions.assertNotNull(model.asMap().get("wizardFlightEditors"));
+        Assertions.assertEquals(2, ((List<?>)model.asMap().get("wizardFlightEditors")).size());
+
+        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.any(), Mockito.eq(flightWizardEditor), Mockito.eq(wizardData1), Mockito.any());
+        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.any(), Mockito.eq(flightWizardEditor), Mockito.eq(wizardData1), Mockito.any());
 
     }
 

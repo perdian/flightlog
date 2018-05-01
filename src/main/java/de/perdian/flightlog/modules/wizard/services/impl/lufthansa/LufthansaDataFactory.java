@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,14 +45,14 @@ public class LufthansaDataFactory implements WizardDataFactory {
     private Clock clock = Clock.systemUTC();
 
     @Override
-    public WizardData createData(String airlineCode, String flightNumber, LocalDate departureDate) {
+    public List<WizardData> createData(String airlineCode, String flightNumber, LocalDate departureDate, String departureAirportCode) {
         if (!StringUtils.isEmpty(airlineCode) && this.getLufthansaAirlineCodes().contains(airlineCode.toUpperCase())) {
 
             // First we try to get the flight status for the specific departure date passed as parameter.
             // If we can't get any information using this we try the same request with the current date.
             WizardData specificData = departureDate == null ? null : this.lookupFlightDataFromLufthansa(airlineCode, flightNumber, departureDate);
             if (specificData != null) {
-                return specificData;
+                return Collections.singletonList(specificData);
             } else {
                 WizardData todaysData = this.lookupFlightDataFromLufthansa(airlineCode, flightNumber, LocalDate.now(this.getClock()));
                 if (todaysData != null) {
@@ -59,7 +60,7 @@ public class LufthansaDataFactory implements WizardDataFactory {
                     responseFlightData.setArrivalAirportCode(todaysData.getArrivalAirportCode());
                     responseFlightData.setDepartureAirportCode(todaysData.getDepartureAirportCode());
                     responseFlightData.setAircraftType(todaysData.getAircraftType());
-                    return responseFlightData;
+                    return Collections.singletonList(responseFlightData);
                 }
             }
 

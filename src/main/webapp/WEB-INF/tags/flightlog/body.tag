@@ -114,6 +114,10 @@
                         <label><fmt:message key="departureDate" /></label>
                         <input name="wizDepartureDateLocal" placeholder="yyyy-MM-dd" />
                     </div>
+                    <div class="three wide field">
+                        <label><fmt:message key="departureAirport" /></label>
+                        <input name="wizDepartureAirportCode" />
+                    </div>
                 </div>
             </div>
         </div>

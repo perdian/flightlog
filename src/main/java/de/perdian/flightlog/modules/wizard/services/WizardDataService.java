@@ -1,6 +1,7 @@
 package de.perdian.flightlog.modules.wizard.services;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface WizardDataService {
 
@@ -15,14 +16,13 @@ public interface WizardDataService {
      * @param departureDate
      *      the departure date (relative to the timezone of the departure
      *      airport) for which the information should be looked up
+     * @param departureAirportCode
+     *      the deparutre airport
      * @return
      *      the flight data that could be computed by this data source.
      *      In cases the flight could not be found, {@code null} is
-     *      returned. Also for cases where no exact match could be found
-     *      (for example because the same flight number was used multiple
-     *      times during a single day by an airline) the result will also
-     *      be {@code null} to avoid any strange behaviour.
+     *      returned.
      */
-    WizardData createData(String airlineCode, String flightNumber, LocalDate departureDate);
+    List<WizardData> createData(String airlineCode, String flightNumber, LocalDate departureDate, String departureAirportCode);
 
 }

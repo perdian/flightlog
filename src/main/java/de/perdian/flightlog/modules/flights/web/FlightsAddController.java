@@ -1,12 +1,18 @@
 package de.perdian.flightlog.modules.flights.web;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import de.perdian.flightlog.modules.authentication.FlightlogUser;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsUpdateService;
+import de.perdian.flightlog.modules.wizard.services.WizardData;
+import de.perdian.flightlog.modules.wizard.services.WizardDataService;
+import de.perdian.flightlog.support.FlightlogHelper;
 import de.perdian.flightlog.support.web.MessageSeverity;
 import de.perdian.flightlog.support.web.Messages;
 
@@ -24,6 +33,7 @@ public class FlightsAddController {
     private MessageSource messageSource = null;
     private FlightsUpdateService flightsUpdateService = null;
     private FlightsWizardService flightsWizardService = null;
+    private WizardDataService wizardDataService = null;
 
     @ModelAttribute
     public FlightEditor flightEditor() {
@@ -35,10 +45,25 @@ public class FlightsAddController {
         return "/flights/add";
     }
 
-    @RequestMapping(value = "/flights/add/wizard", method = RequestMethod.POST)
-    public String doAddGetWizard(FlightlogUser user, @ModelAttribute("flightEditor") FlightEditor flightEditor, FlightsWizardData wizardData) {
-        this.getFlightsWizardService().enhanceFlightEditor(flightEditor, wizardData, user == null ? null : user.getUserEntity());
+    @RequestMapping(value = "/flights/add/wizard", method = RequestMethod.GET)
+    public String doAddWizardGet() {
         return this.doAddGet();
+    }
+
+    @RequestMapping(value = "/flights/add/wizard", method = RequestMethod.POST)
+    public String doAddWizardPost(FlightlogUser user, @ModelAttribute("flightEditor") FlightEditor flightEditor, FlightWizardEditor flightWizardEditor, Model model) {
+        LocalDate wizardDepartureDate = FlightlogHelper.parseLocalDate(flightWizardEditor.getWizDepartureDateLocal());
+        String wizardAirlineCode = Optional.ofNullable(flightWizardEditor.getWizAirlineCode()).map(String::toUpperCase).orElse(null);
+        List<WizardData> wizardDataList = StringUtils.isBlank(wizardAirlineCode) || StringUtils.isBlank(flightWizardEditor.getWizFlightNumber()) ? null : this.getWizardDataService().createData(wizardAirlineCode, flightWizardEditor.getWizFlightNumber(), wizardDepartureDate, flightWizardEditor.getWizDepartureAirportCode());
+        if (wizardDataList != null && wizardDataList.size() == 1) {
+            this.getFlightsWizardService().enhanceFlightEditor(flightEditor, flightWizardEditor, wizardDataList.get(0), user == null ? null : user.getUserEntity());
+        } else if (wizardDataList != null && !wizardDataList.isEmpty()) {
+            model.addAttribute("wizardFlightEditors", wizardDataList.stream()
+                .map(wizardData -> this.getFlightsWizardService().enhanceFlightEditor(new FlightEditor(), flightWizardEditor, wizardData, user == null ? null : user.getUserEntity()))
+                .collect(Collectors.toList())
+            );
+        }
+        return this.doAddWizardGet();
     }
 
     @RequestMapping(value = "/flights/add", method = RequestMethod.POST)
@@ -80,6 +105,14 @@ public class FlightsAddController {
     @Autowired
     void setFlightsWizardService(FlightsWizardService flightsWizardService) {
         this.flightsWizardService = flightsWizardService;
+    }
+
+    WizardDataService getWizardDataService() {
+        return this.wizardDataService;
+    }
+    @Autowired
+    void setWizardDataService(WizardDataService wizardDataService) {
+        this.wizardDataService = wizardDataService;
     }
 
 }
