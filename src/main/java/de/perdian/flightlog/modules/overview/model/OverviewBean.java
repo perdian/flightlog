@@ -10,12 +10,20 @@ public class OverviewBean implements Serializable {
 
     static final long serialVersionUID = 1L;
 
+    private int numberOfFlights = 0;
     private List<OverviewItem> general = null;
     private List<OverviewItem> distances = null;
     private List<OverviewItem> differents = null;
     private Map<String, FlightBean> maxFlights = null;
     private Map<String, List<OverviewItem>> topFlights = null;
     private Map<String, List<OverviewItem>> distributions = null;
+
+    public int getNumberOfFlights() {
+        return this.numberOfFlights;
+    }
+    public void setNumberOfFlights(int numberOfFlights) {
+        this.numberOfFlights = numberOfFlights;
+    }
 
     public List<OverviewItem> getGeneral() {
         return this.general;

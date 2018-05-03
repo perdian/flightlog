@@ -20,7 +20,7 @@
         })
     });
 
-    var dataUrl = "<c:url value='/map/data' />";
+    var dataUrl = "<c:url value='/overview/map' />";
     $.ajax({
         type: "POST",
         traditional: true,

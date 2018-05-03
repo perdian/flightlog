@@ -153,102 +153,153 @@
                             </a>
                         </c:if>
                     </div>
+                    <input type="hidden" id="matchingFlightsLoaded" name="matchingFlightsLoaded" value="false" />
                 </spring:form>
             </div>
         </div>
 
-        <div class="ui divider"></div>
+        <c:if test="${overview.numberOfFlights gt 0}">
 
-        <table class="ui compact table">
-            <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th><fmt:message key="departureAirport" /></th>
-                    <th><fmt:message key="departureDate" /></th>
-                    <th><fmt:message key="arrivalAirport" /></th>
-                    <th><fmt:message key="arrivalDate" /></th>
-                    <th class="right aligned"><fmt:message key="duration" /></th>
-                    <th class="right aligned"><fmt:message key="distance" /></th>
-                    <th class="right aligned"><fmt:message key="averageSpeed" /></th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach items="${overview.maxFlights}" var="maxFlightEntry">
+            <div class="ui divider"></div>
+
+            <h3 class="ui top attached header">
+              <fmt:message key="matchingFlights" />
+            </h3>
+            <div class="ui attached segment" id="matchingFlightsArea">
+                <button class="ui primary button" id="matchingFlightsLoadButton">
+                    <i class="plane icon"></i>
+                    <span id="matchingFlightsLoadButtonTitle"><fmt:message key="loadMatchingFlights" /></span>
+                </button>
+            </div>
+            <script type="text/javascript">
+
+                function loadMatchingFlights() {
+
+                    $("#matchingFlightsLoadButtonTitle").text("<fmt:message key="loadingFlights" />...");
+                    $("#matchingFlightsLoadButton").prop("disabled", true);
+
+                    $.ajax({
+                        type: "POST",
+                        traditional: true,
+                        url: "<c:url value='/overview/flights' />",
+                        data: {
+                            year: <fl:jsonArray value="${overviewQuery.year}" />,
+                            airlineCode: <fl:jsonArray value="${overviewQuery.airlineCode}" />,
+                            airportCode: <fl:jsonArray value="${overviewQuery.airportCode}" />,
+                            aircraftType: <fl:jsonArray value="${overviewQuery.aircraftType}" />,
+                            cabinClass: <fl:jsonArray value="${overviewQuery.cabinClass}" />,
+                            flightReason: <fl:jsonArray value="${overviewQuery.flightReason}" />,
+                            flightDistance: <fl:jsonArray value="${overviewQuery.flightDistance}" />,
+                            flightType: <fl:jsonArray value="${overviewQuery.flightType}" />,
+                            "${_csrf.parameterName}": "${_csrf.token}"
+                        },
+                        success: function(result) {
+                            $("#matchingFlightsArea").html(result);
+                            $("#matchingFlightsLoaded").prop("value", "true");
+                        }
+                    });
+
+                }
+
+                $("#matchingFlightsLoadButton").click(function() { loadMatchingFlights(); });
+                <c:if test="${param.matchingFlightsLoaded}">
+                    $(document).ready(function() { loadMatchingFlights(); });
+                </c:if>
+
+            </script>
+
+            <table class="ui compact table">
+                <thead>
                     <tr>
-                        <td><fmt:message key="${maxFlightEntry.key}" /></td>
-                        <td>
-                            <c:if test="${fn:length(maxFlightEntry.value.departureContact.airport.countryCode) gt 0}">
-                                <i class="${fn:toLowerCase(maxFlightEntry.value.departureContact.airport.countryCode)} flag"></i>
-                            </c:if>
-                            <c:out value="${maxFlightEntry.value.departureContact.airport.code}" />
-                            <c:if test="${maxFlightEntry.value.departureContact.airport.name ne null}">
-                                <br><small><c:out value="${maxFlightEntry.value.departureContact.airport.name}" /></small>
-                            </c:if>
-                        </td>
-                        <td nowrap="nowrap">
-                            <c:out value="${maxFlightEntry.value.departureContact.dateLocal}" />
-                            <c:if test="${maxFlightEntry.value.departureContact.timeLocal ne null}">
-                                <c:out value=" ${maxFlightEntry.value.departureContact.timeLocal}" />
-                            </c:if>
-                            <c:if test="${maxFlightEntry.value.departureContact.airport.timezoneId ne null}">
-                                <br><small><c:out value="${maxFlightEntry.value.departureContact.airport.timezoneId}" /></small>
-                            </c:if>
-                         </td>
-                        <td>
-                            <c:if test="${fn:length(maxFlightEntry.value.arrivalContact.airport.countryCode) gt 0}">
-                                <i class="${fn:toLowerCase(maxFlightEntry.value.arrivalContact.airport.countryCode)} flag"></i>
-                            </c:if>
-                            <c:out value="${maxFlightEntry.value.arrivalContact.airport.code}" />
-                            <c:if test="${maxFlightEntry.value.arrivalContact.airport.name ne null}">
-                                <br><small><c:out value="${maxFlightEntry.value.arrivalContact.airport.name}" /></small>
-                            </c:if>
-                        </td>
-                        <td nowrap="nowrap">
-                            <c:out value="${maxFlightEntry.value.arrivalContact.dateLocal}" />
-                            <c:if test="${maxFlightEntry.value.arrivalContact.timeLocal ne null}">
-                                <c:out value=" ${maxFlightEntry.value.arrivalContact.timeLocal}" />
-                                <c:if test="${maxFlightEntry.value.arrivalContact.airport.timezoneId ne null}">
-                                    <br><small><c:out value="${maxFlightEntry.value.arrivalContact.airport.timezoneId}" /></small>
-                                </c:if>
-                            </c:if>
-                        </td>
-                        <td nowrap="nowrap" class="right aligned">
-                            <c:if test="${fn:length(maxFlightEntry.value.flightDurationString) gt 0}">
-                                <c:out value="${maxFlightEntry.value.flightDurationString}" /><c:out value=" " /><fmt:message key="hoursUnitSign" />
-                            </c:if>
-                        </td>
-                        <td nowrap="nowrap" class="right aligned">
-                            <c:if test="${maxFlightEntry.value.flightDistance ne null}">
-                                <fmt:formatNumber value="${maxFlightEntry.value.flightDistance}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" />
-                            </c:if>
-                        </td>
-                        <td nowrap="nowrap" class="right aligned">
-                            <c:if test="${maxFlightEntry.value.averageSpeed ne null}">
-                                <fmt:formatNumber value="${maxFlightEntry.value.averageSpeed}" pattern="#,##0" /><c:out value=" " /><fmt:message key="kmh" />
-                            </c:if>
-                        </td>
+                        <th>&nbsp;</th>
+                        <th><fmt:message key="departureAirport" /></th>
+                        <th><fmt:message key="departureDate" /></th>
+                        <th><fmt:message key="arrivalAirport" /></th>
+                        <th><fmt:message key="arrivalDate" /></th>
+                        <th class="right aligned"><fmt:message key="duration" /></th>
+                        <th class="right aligned"><fmt:message key="distance" /></th>
+                        <th class="right aligned"><fmt:message key="averageSpeed" /></th>
                     </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${overview.maxFlights}" var="maxFlightEntry">
+                        <tr>
+                            <td><fmt:message key="${maxFlightEntry.key}" /></td>
+                            <td>
+                                <c:if test="${fn:length(maxFlightEntry.value.departureContact.airport.countryCode) gt 0}">
+                                    <i class="${fn:toLowerCase(maxFlightEntry.value.departureContact.airport.countryCode)} flag"></i>
+                                </c:if>
+                                <c:out value="${maxFlightEntry.value.departureContact.airport.code}" />
+                                <c:if test="${maxFlightEntry.value.departureContact.airport.name ne null}">
+                                    <br><small><c:out value="${maxFlightEntry.value.departureContact.airport.name}" /></small>
+                                </c:if>
+                            </td>
+                            <td nowrap="nowrap">
+                                <c:out value="${maxFlightEntry.value.departureContact.dateLocal}" />
+                                <c:if test="${maxFlightEntry.value.departureContact.timeLocal ne null}">
+                                    <c:out value=" ${maxFlightEntry.value.departureContact.timeLocal}" />
+                                </c:if>
+                                <c:if test="${maxFlightEntry.value.departureContact.airport.timezoneId ne null}">
+                                    <br><small><c:out value="${maxFlightEntry.value.departureContact.airport.timezoneId}" /></small>
+                                </c:if>
+                             </td>
+                            <td>
+                                <c:if test="${fn:length(maxFlightEntry.value.arrivalContact.airport.countryCode) gt 0}">
+                                    <i class="${fn:toLowerCase(maxFlightEntry.value.arrivalContact.airport.countryCode)} flag"></i>
+                                </c:if>
+                                <c:out value="${maxFlightEntry.value.arrivalContact.airport.code}" />
+                                <c:if test="${maxFlightEntry.value.arrivalContact.airport.name ne null}">
+                                    <br><small><c:out value="${maxFlightEntry.value.arrivalContact.airport.name}" /></small>
+                                </c:if>
+                            </td>
+                            <td nowrap="nowrap">
+                                <c:out value="${maxFlightEntry.value.arrivalContact.dateLocal}" />
+                                <c:if test="${maxFlightEntry.value.arrivalContact.timeLocal ne null}">
+                                    <c:out value=" ${maxFlightEntry.value.arrivalContact.timeLocal}" />
+                                    <c:if test="${maxFlightEntry.value.arrivalContact.airport.timezoneId ne null}">
+                                        <br><small><c:out value="${maxFlightEntry.value.arrivalContact.airport.timezoneId}" /></small>
+                                    </c:if>
+                                </c:if>
+                            </td>
+                            <td nowrap="nowrap" class="right aligned">
+                                <c:if test="${fn:length(maxFlightEntry.value.flightDurationString) gt 0}">
+                                    <c:out value="${maxFlightEntry.value.flightDurationString}" /><c:out value=" " /><fmt:message key="hoursUnitSign" />
+                                </c:if>
+                            </td>
+                            <td nowrap="nowrap" class="right aligned">
+                                <c:if test="${maxFlightEntry.value.flightDistance ne null}">
+                                    <fmt:formatNumber value="${maxFlightEntry.value.flightDistance}" pattern="#,##0" /><c:out value=" " /><fmt:message key="km" />
+                                </c:if>
+                            </td>
+                            <td nowrap="nowrap" class="right aligned">
+                                <c:if test="${maxFlightEntry.value.averageSpeed ne null}">
+                                    <fmt:formatNumber value="${maxFlightEntry.value.averageSpeed}" pattern="#,##0" /><c:out value=" " /><fmt:message key="kmh" />
+                                </c:if>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+
+            <div class="ui divider"></div>
+
+            <div class="ui stackable grid">
+                <c:forEach items="${overview.topFlights}" var="topEntry">
+                    <div class="eight wide column">
+                        <fl:overviewTopItemsCard titleKey="${topEntry.key}" items="${topEntry.value}" showIndex="true" showPercentages="true" />
+                    </div>
                 </c:forEach>
-            </tbody>
-        </table>
+            </div>
 
-        <div class="ui divider"></div>
+            <div class="ui stackable grid">
+                <c:forEach items="${overview.distributions}" var="distributionEntry">
+                    <div class="four wide column">
+                        <fl:overviewTopItemsCard titleKey="${distributionEntry.key}" items="${distributionEntry.value}" showIndex="false" showPercentages="true" />
+                    </div>
+                </c:forEach>
+            </div>
 
-        <div class="ui stackable grid">
-            <c:forEach items="${overview.topFlights}" var="topEntry">
-                <div class="eight wide column">
-                    <fl:overviewTopItemsCard titleKey="${topEntry.key}" items="${topEntry.value}" showIndex="true" showPercentages="true" />
-                </div>
-            </c:forEach>
-        </div>
-
-        <div class="ui stackable grid">
-            <c:forEach items="${overview.distributions}" var="distributionEntry">
-                <div class="four wide column">
-                    <fl:overviewTopItemsCard titleKey="${distributionEntry.key}" items="${distributionEntry.value}" showIndex="false" showPercentages="true" />
-                </div>
-            </c:forEach>
-        </div>
+        </c:if>
 
     </fl:body>
 </fl:html>

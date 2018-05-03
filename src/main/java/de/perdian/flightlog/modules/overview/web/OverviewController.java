@@ -9,11 +9,13 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.perdian.flightlog.modules.authentication.FlightlogUser;
+import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery.TimePeriod;
 import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
@@ -21,6 +23,7 @@ import de.perdian.flightlog.modules.overview.model.MapModel;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
 import de.perdian.flightlog.modules.overview.services.MapService;
 import de.perdian.flightlog.modules.overview.services.OverviewService;
+import de.perdian.flightlog.support.persistence.PaginatedList;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightDistance;
 import de.perdian.flightlog.support.types.FlightReason;
@@ -38,10 +41,17 @@ public class OverviewController {
         return "/overview/overview";
     }
 
-    @RequestMapping(value = "/map/data", produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/overview/map", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public MapModel mapData(FlightlogUser user, @ModelAttribute("overviewQuery") OverviewQuery overviewQuery) {
         return this.getMapService().loadMap(this.createFlightsQuery(user, overviewQuery));
+    }
+
+    @RequestMapping(value = "/overview/flights")
+    public String flights(FlightlogUser user, OverviewQuery overviewQuery, Model model) {
+        PaginatedList<FlightBean> flights = this.getFlightsQueryService().loadFlights(this.createFlightsQuery(user, overviewQuery));
+        model.addAttribute("flights", flights);
+        return "/overview/flights";
     }
 
     @ModelAttribute(name = "overview")
