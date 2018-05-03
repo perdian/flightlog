@@ -11,8 +11,6 @@ import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery;
 import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
-import de.perdian.flightlog.modules.overview.services.OverviewContributor;
-import de.perdian.flightlog.modules.overview.services.OverviewServiceImpl;
 import de.perdian.flightlog.support.persistence.PaginatedList;
 
 public class OverviewServiceImplTest {
@@ -37,6 +35,7 @@ public class OverviewServiceImplTest {
 
         OverviewBean overviewBean = serviceImpl.loadOverview(flightsQuery);
         Assertions.assertNotNull(overviewBean);
+        Assertions.assertEquals(2, overviewBean.getNumberOfFlights());
 
         Mockito.verify(flightsQueryService).loadFlights(Mockito.eq(flightsQuery));
         Mockito.verify(contributor1).contributeTo(Mockito.any(), Mockito.eq(flights), Mockito.any());
