@@ -2,7 +2,11 @@ package de.perdian.flightlog.modules.wizard.services;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class WizardData implements Serializable {
 
@@ -20,17 +24,19 @@ public class WizardData implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        result.append("[departureAirportCode=").append(this.getDepartureAirportCode());
-        result.append(",departureDateLocal=").append(this.getDepartureDateLocal());
-        result.append(",departureTimeLocal=").append(this.getDepartureTimeLocal());
-        result.append(",arrivalAirportCode=").append(this.getArrivalAirportCode());
-        result.append(",arrivalDateLocal=").append(this.getArrivalDateLocal());
-        result.append(",arrivalTimeLocal=").append(this.getArrivalTimeLocal());
-        result.append(",aircraftType=").append(this.getAircraftType());
-        result.append(",aircraftRegistration=").append(this.getAircraftRegistration());
-        result.append(",aircraftName=").append(this.getAircraftName());
-        return result.append("]").toString();
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.NO_CLASS_NAME_STYLE);
+    }
+
+    public static int sortByDepartureDateAndTime(WizardData wz1, WizardData wz2) {
+        if (wz1.getDepartureDateLocal() == null) {
+            return wz2.getDepartureDateLocal() == null ? 0 : 1;
+        } else if (wz2.getDepartureDateLocal() == null) {
+            return -1;
+        } else {
+            LocalDateTime ldt1 = wz1.getDepartureDateLocal().atTime(wz1.getDepartureTimeLocal() == null ? LocalTime.of(0, 0) : wz1.getDepartureTimeLocal());
+            LocalDateTime ldt2 = wz2.getDepartureDateLocal().atTime(wz2.getDepartureTimeLocal() == null ? LocalTime.of(0, 0) : wz2.getDepartureTimeLocal());
+            return ldt1.compareTo(ldt2);
+        }
     }
 
     public String getDepartureAirportCode() {

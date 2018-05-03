@@ -77,6 +77,7 @@ public class Flightradar24DataFactory implements WizardDataFactory {
         if (trElementsForSpecificDate != null && !trElementsForSpecificDate.isEmpty()) {
             return trElementsForSpecificDate.stream()
                 .map(tableRow -> this.createDataFromTableRow(tableRow, airlineCode, flightNumber, departureDate))
+                .sorted(WizardData::sortByDepartureDateAndTime)
                 .collect(Collectors.toList());
         } else {
             List<Element> trElementsForCurrentDate = this.lookupTableRowsForDate(trElements, LocalDate.now().minusDays(1), departureAirportCode);
