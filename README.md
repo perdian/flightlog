@@ -194,7 +194,7 @@ The system can automatically create a backup archive of the complete data (users
     flightlog:
       backup:
         cron: 0 0 5 * * 1
-        target: file:/data/flightlog/backup/
+        target: file:/var/flightlog/backup/
 
 The `cron` value defines the times when the backup operations should run and the `target` values defines the directory where the backup archives are being written into.
 
