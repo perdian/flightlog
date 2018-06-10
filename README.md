@@ -13,7 +13,7 @@ So, as no appropriate tool was available I simply decided to write one myself. T
 
 # Build
 
-The flightlog is bundled either as a simple Java web application (a WAR archive) or as a Spring Boot application.
+The flightlog is bundled either as a Spring Boot application.
 
 First clone the repository and switch to the created directory:
 
@@ -22,21 +22,7 @@ First clone the repository and switch to the created directory:
 
 ## WAR
 
-To create the WAR file simply execute the default Maven build command:
-
-    $ mvn clean package
-
-Then copy the WAR file to wherever your servlet container is located:
-
-    $ cp target/flightlog.war /where/your/container/is/webapps/flightlog.war
-
-That's it! Start your servlet container and the flightlog should be up and running.
-
-    <http://localhost:8080/flightlog/>
-
-## Spring Boot
-
-You can also launch the application directly from within the WAR file as Spring Boot application:
+To create the JAR file simply execute the default Maven build command:
 
     $ mvn clean package
     $ java -jar target/flightlog.war
@@ -47,7 +33,7 @@ When running this directly the embedded Tomcat will provide the application dire
 
 # Database configuration
 
-By default flightlog uses a hardcoded H2 embedded database which stores its files in the `~/Development/databases/` folder on the machine on which the web application is running.
+By default flightlog uses a hardcoded H2 embedded database which stores its files in the `/var/flightlog/database/` folder on the machine on which the web application is running.
 
 If you want to change this to the database of your choice you have to provide a separate Spring Boot configuration file using one of the methods document in the Spring Boot documentation: <https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html>.
 

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:~/Development/databases/flightlog
+    url: jdbc:h2:/var/flightlog/database/flightlog
     driver-class-name: org.h2.Driver
     username: sa
     password:
