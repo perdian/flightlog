@@ -1,5 +1,7 @@
 package de.perdian.flightlog.modules.registration;
 
+import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -47,13 +49,25 @@ class RegistrationServiceImpl implements RegistrationService {
 
     private boolean checkRegistrationAllowed(RegistrationRequest registrationRequest) {
         if (this.getRegistrationConfiguration().isRestricted()) {
-            long databaseRowCount = this.getRegistrationWhitelistRepository().count((root, query, builder) -> {
-                return builder.equal(root.get("email"), registrationRequest.getEmail());
-            });
-            return databaseRowCount > 0;
+            return this.checkRegistrationAllowedByConfiguration(registrationRequest)
+                || this.checkRegistrationAllowedByDatabase(registrationRequest);
         } else {
             return true;
         }
+    }
+
+    private boolean checkRegistrationAllowedByConfiguration(RegistrationRequest registrationRequest) {
+        return Optional.ofNullable(this.getRegistrationConfiguration().getEmailWhitelist()).orElseGet(Collections::emptyList).stream()
+            .filter(entry -> entry != null && entry.equalsIgnoreCase(registrationRequest.getEmail()))
+            .findAny()
+            .isPresent();
+    }
+
+    private boolean checkRegistrationAllowedByDatabase(RegistrationRequest registrationRequest) {
+        long databaseRowCount = this.getRegistrationWhitelistRepository().count((root, query, builder) -> {
+            return builder.equal(root.get("email"), registrationRequest.getEmail());
+        });
+        return databaseRowCount > 0;
     }
 
     RegistrationConfiguration getRegistrationConfiguration() {

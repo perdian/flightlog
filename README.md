@@ -39,7 +39,7 @@ If you want to change this to the database of your choice you have to provide a 
 
 For example if you would like to define a MySQL database running on the local machine when executing the flightlog application directly as Spring Boot application the command line should be changed to:
 
-    $ java -jar target/flightlog.war -Dspring.config.location=file:/where/your/config/file/is/located/flightlog.yml
+    $ java -Dspring.config.location=file:/where/your/config/file/is/located/flightlog.yml -jar target/flightlog.war
 
 The actual configuration file must conform to the Spring Boot JPA definition of a datasource.
 
@@ -110,14 +110,16 @@ The application supports OAuth2 authentication via the following providers:
 
 * Google
 
-For each login the application will perform an OAuth2 authentication. After the successful authentication an entry within the `user` table that has `internaldatabase` will be made, populated with the values retrieved from the OAuth2 provider.
-
-Note that in the default setup if the user authenticated via OAuth2 is *not* existing in the local database yet, then the authentication will fail. This is a concious choice to prohibit someone spamming the system and creating entries in the database by simply performing multiple OAuth2 authentications.
+To enable the OAuth authentication you have to set the following configuration parameters:
 
     flightlog:
       authentication:
         oauth:
           enabled: true
+
+For each login the application will perform an OAuth2 authentication. After the successful authentication an entry within the `user` table that has `internaldatabase` will be made, populated with the values retrieved from the OAuth2 provider.
+
+Note that in the default setup if the user authenticated via OAuth2 is *not* existing in the local database yet, then the authentication will fail. This is a concious choice to prohibit someone spamming the system and creating entries in the database by simply performing multiple OAuth2 authentications.
 
 The are two ways to allow an authentication from a new OAuth2 account:
 
@@ -133,9 +135,19 @@ By setting the configuration parameter `flightlog.registration.restricted` to `f
 
 When a new OAuth2 account is found the system will check the internal *whitelist* whether the email address of the new user is found in the whitelist. If that's the case then the new user will be added into the database and the authentication will succeed.
 
-The whitelist itself is stored in the database table `registrationwhitelist` which simply contains an `email` column for the email to be whitelisted. To add members to the whitelist you can perform the following simple SQL statement against the local database:
+There are two places where the whitelisted email address are stored:
+
+One option is to use the database table `registrationwhitelist` which simply contains an `email` column for the email to be whitelisted. To add members to the whitelist you can perform the following simple SQL statement against the local database:
 
     INSERT INTO registrationwhitelist (email) VALUES ('theaddress@example.com');
+
+A second option (which is mainly designed for a personal installation without any open registration) is to add the whitelisted email addresses directly into the Spring configuration:
+
+    flightlog:
+      registration:
+        restricted: true
+        email-whitelist:
+          - "example@example.com"
 
 ### Detailed configuration: Google
 
@@ -154,10 +166,6 @@ For detailed information of how to create the credentials see https://developers
 
 When clients have been registered they will automatically be made available.
 
-## OAuth2 registration
-
-By default only existing users
-
 # External data providers
 
 The flight creation wizard allows fetching data from external source (like airlines) to be fetched and included into the generated flight.
@@ -173,10 +181,10 @@ For accessing Lufthansa you need to configure the following Spring Boot configur
     flightlog:
       data:
         lufthansa:
-          client_id: CLIENT_ID
-          client_secret: CLIENT_SECRET
+          client-id: CLIENT_ID
+          client-secret: CLIENT_SECRET
 
-The `client_id` and `client_secret` can be obtained by registering a new application on the
+The `client-id` and `client-secret` can be obtained by registering a new application on the
 Lufthansa developer portal (https://developer.lufthansa.com/).
 
 # Automatic backup
