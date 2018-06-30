@@ -108,7 +108,7 @@ public class ImportController {
             } catch (Exception e) {
 
                 log.debug("Importing entries from flugstatistik.de failed", e);
-                messages.addMessage(MessageSeverity.ERROR, this.getMessageSource().getMessage("dataImportFailed", null, locale), this.getMessageSource().getMessage(e.toString(), null, locale));
+                messages.addMessage(MessageSeverity.ERROR, this.getMessageSource().getMessage("dataImportFailed", null, locale), e.toString());
                 return this.doImportFlugstatistikdeGet();
 
             }
