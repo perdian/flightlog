@@ -39,15 +39,10 @@ class FlightlogWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
             http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/logoutcomplete");
-
-//                .and().rememberMe()
-//                    .rememberMeCookieName("flightlog-rememberme")
-//                    .alwaysRemember(true)
-//                    .userDetailsService(username -> new User(username, "password", Collections.emptyList()));
-
         } else {
             http.authorizeRequests().anyRequest().permitAll();
         }
+        http.csrf().disable();
     }
 
     @Bean
