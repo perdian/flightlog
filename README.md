@@ -31,6 +31,25 @@ When running this directly the embedded Tomcat will provide the application dire
 
     <http://localhost:8080/>
 
+## Docker container
+
+An alternative do running the WAR file directly is to create a Docker container that wraps the complete application:
+
+    $ mvn clean package
+    $ docker build -t perdian/flightlog .
+
+After the container is built you can verify the application by running it:
+
+    $ docker run -p 8080:8080 perdian/flightlog
+
+The application will be available on the machine on which you're executing the container at:
+
+    <http://localhost:8080/>
+
+To persist the database in which the flightlog stores all its information you have to mount the directory `/var/flightlog/database/` from the container to somewhere on your host machine:
+
+    $ docker run -v /path/to/your/host/directory:/var/flightlog/database -p 8080:8080 perdian/flightlog
+
 # Database configuration
 
 By default flightlog uses a hardcoded H2 embedded database which stores its files in the `/var/flightlog/database/` folder on the machine on which the web application is running.
