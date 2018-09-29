@@ -11,6 +11,7 @@
     <link rel="icon" href="${contextPath}resources/flightlog/icons/plane.png" />
 
     <script src="${contextPath}webjars/jquery/jquery.min.js"></script>
+    <script src="${contextPath}webjars/momentjs/min/moment.min.js"></script>
     <script src="${contextPath}resources/semantic/semantic.min.js"></script>
     <script src="${contextPath}resources/semantic/components/popup.min.js"></script>
 

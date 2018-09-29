@@ -99,7 +99,7 @@
                 <div class="fields">
                     <div class="two wide field">
                         <label><fmt:message key="airline" /></label>
-                        <input name="wizAirlineCode" id="wizAirlineCode" />
+                        <input name="wizAirlineCode" id="wizAirlineCode" class="uppercase" />
                         <script type="text/javascript">
                             $("#wizAirlineCode").change(function() {
                                 $(this).val($(this).val().trim().toUpperCase());
@@ -110,9 +110,17 @@
                         <label><fmt:message key="flightNumber" /></label>
                         <input name="wizFlightNumber" />
                     </div>
-                    <div class="three wide field">
+                    <div class="four wide field">
                         <label><fmt:message key="departureDate" /></label>
-                        <input name="wizDepartureDateLocal" placeholder="yyyy-MM-dd" />
+                        <div class="ui action input">
+                          <input id="wizDepartureDateLocal" name="wizDepartureDateLocal" placeholder="yyyy-MM-dd" />
+                          <button type="button" id="wizDepartureDateLocalToday" class="ui button"><fmt:message key="today" /></button>
+                          <script type="text/javascript">
+                              $("#wizDepartureDateLocalToday").click(function() {
+                                  $("#wizDepartureDateLocal").val(moment().format('YYYY-MM-DD'));
+                              });
+                          </script>
+                        </div>
                     </div>
                     <div class="three wide field">
                         <label><fmt:message key="departureAirport" /></label>

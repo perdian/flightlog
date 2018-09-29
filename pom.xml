@@ -46,6 +46,7 @@
         <junit.platform.version>1.1.1</junit.platform.version>
         <logback.version>1.2.3</logback.version>
         <mockito.version>2.18.3</mockito.version>
+        <momentjs.version>2.22.2</momentjs.version>
         <mysql.version>6.0.6</mysql.version>
         <webjars-locator.version>0.34</webjars-locator.version>
         <xsoup.version>0.3.1</xsoup.version>
@@ -136,8 +137,13 @@
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
+            <artifactId>momentjs</artifactId>
+            <version>${momentjs.version}</version><!--$NO-MVN-MAN-VER$ -->
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
             <artifactId>webjars-locator</artifactId>
-            <version>${webjars-locator.version}</version>
+            <version>${webjars-locator.version}</version><!--$NO-MVN-MAN-VER$ -->
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
