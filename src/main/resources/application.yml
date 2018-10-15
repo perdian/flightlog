@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:h2:/var/flightlog/database/flightlog
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: ${FLIGHTLOG_DB_URL:jdbc:h2:/var/flightlog/database/flightlog}
+    driver-class-name: ${FLIGHTLOG_DB_DRIVER_CLASS_NAME:org.h2.Driver}
+    username: ${FLIGHTLOG_DB_USERNAME:sa}
+    password: ${FLIGHTLOG_DB_PASSWORD:}
   flyway:
     encoding: UTF-8
     locations:
@@ -17,17 +17,25 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: ${FLIGHTLOG_DB_HIBERNATE_DIALECT:org.hibernate.dialect.H2Dialect}
   mvc:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${FLIGHTLOG_OAUTH2_GOOGLE_CLIENT_ID:null}
+            client-secret: ${FLIGHTLOG_OAUTH2_GOOGLE_CLIENT_SECRET:null}
   servlet:
     multipart:
-      max-file-size: 5MB 
+      max-file-size: 5MB
 
 server:
   servlet:
+    contextPath: ${FLIGHTLOG_SERVLET_CONTEXT_PATH:/}
     jsp:
       init-parameters:
         development: true
@@ -35,11 +43,23 @@ server:
     session:
       cookie:
         name: flightlog-session
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
 
 flightlog:
   authentication:
-    required: false
+    required: ${FLIGHTLOG_AUTHENTICATION_REQUIRED:false}
+    oauth:
+      enabled: ${FLIGHTLOG_AUTHENTICATION_OAUTH_ENABLED:false}
     local:
-      enabled: true
+      enabled: ${FLIGHTLOG_AUTHENTICATION_LOCAL_ENABLED:false}
   registration:
-    restricted: true
+    restricted: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_RESTRICTED:true}
+    email-whitelist: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_EMAIL_WHITELIST:}
+  data:
+    flightradar24:
+      enabled:  ${FLIGHTLOG_DATA_FLIGHTRADAR24_ENABLED:false}
+  backup:
+    cron: ${FLIGHTLOG_BACKUP_CRON:}
+    target: ${FLIGHTLOG_BACKUP_TARGET:}
