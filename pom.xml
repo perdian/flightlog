@@ -47,6 +47,7 @@
         <mockito.version>2.22.0</mockito.version>
         <momentjs.version>2.22.2</momentjs.version>
         <mysql.version>6.0.6</mysql.version>
+        <openlayers.version>5.2.0</openlayers.version>
         <webjars-locator.version>0.34</webjars-locator.version>
         <xsoup.version>0.3.1</xsoup.version>
     </properties>
@@ -133,6 +134,11 @@
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
             <version>${jquery.version}</version><!--$NO-MVN-MAN-VER$ -->
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>openlayers</artifactId>
+            <version>${openlayers.version}</version><!--$NO-MVN-MAN-VER$ -->
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>

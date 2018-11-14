@@ -6,8 +6,8 @@
 
 <fl:html>
     <fl:head>
-        <link rel="stylesheet" href="https://openlayers.org/en/v4.2.0/css/ol.css" type="text/css" />
-        <script src="https://openlayers.org/en/v4.2.0/build/ol.js"></script>
+        <script src="${contextPath}webjars/openlayers/ol.js"></script>
+        <link rel="stylesheet" href="${contextPath}webjars/openlayers/ol.js">
         <script src="https://api.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js"></script>
     </fl:head>
     <fl:body>
