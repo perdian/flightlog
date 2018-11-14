@@ -2,7 +2,10 @@ language: java
 jdk: oraclejdk10
 script:
   - mvn clean package -B
-sudo: false
+  - docker build -t perdian/flightlog .
+sudo: required
+services:
+  - docker
 notifications:
   email: 
     on_success: change
