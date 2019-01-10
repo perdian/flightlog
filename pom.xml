@@ -31,6 +31,7 @@
     </developers>
 
     <properties>
+        <arcjs.version>0.1.1</arcjs.version>
         <activation.version>1.2.0</activation.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <flyway.version>5.1.4</flyway.version>
@@ -144,6 +145,11 @@
             <groupId>org.webjars</groupId>
             <artifactId>momentjs</artifactId>
             <version>${momentjs.version}</version><!--$NO-MVN-MAN-VER$ -->
+        </dependency>
+        <dependency>
+          <groupId>org.webjars.bowergithub.springmeyer</groupId>
+          <artifactId>arc.js</artifactId>
+          <version>${arcjs.version}</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
