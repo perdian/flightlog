@@ -124,6 +124,8 @@ public class Flightradar24DataFactory implements WizardDataFactory {
                     // from yesterday, we'll only use the values which we assume are the same (which currently
                     // are the airport codes plus the originally queried departure date)
                     WizardData resultFlightData = new WizardData();
+                    resultFlightData.setAirlineCode(currentDateFlightData.getAirlineCode());
+                    resultFlightData.setFlightNumber(currentDateFlightData.getFlightNumber());
                     resultFlightData.setArrivalAirportCode(currentDateFlightData.getArrivalAirportCode());
                     resultFlightData.setDepartureAirportCode(currentDateFlightData.getDepartureAirportCode());
                     resultFlightData.setDepartureDateLocal(departureDate);

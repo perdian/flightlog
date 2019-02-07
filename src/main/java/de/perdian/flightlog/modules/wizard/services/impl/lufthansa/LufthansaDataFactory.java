@@ -57,6 +57,8 @@ public class LufthansaDataFactory implements WizardDataFactory {
                 WizardData todaysData = this.lookupFlightDataFromLufthansa(airlineCode, flightNumber, LocalDate.now(this.getClock()));
                 if (todaysData != null) {
                     WizardData responseFlightData = new WizardData();
+                    responseFlightData.setAirlineCode(todaysData.getAirlineCode());
+                    responseFlightData.setFlightNumber(todaysData.getFlightNumber());
                     responseFlightData.setArrivalAirportCode(todaysData.getArrivalAirportCode());
                     responseFlightData.setDepartureAirportCode(todaysData.getDepartureAirportCode());
                     responseFlightData.setAircraftType(todaysData.getAircraftType());
