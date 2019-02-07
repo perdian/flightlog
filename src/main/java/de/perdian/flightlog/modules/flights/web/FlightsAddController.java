@@ -62,6 +62,11 @@ public class FlightsAddController {
                 .map(wizardData -> this.getFlightsWizardService().enhanceFlightEditor(new FlightEditor(), flightWizardEditor, wizardData, user == null ? null : user.getUserEntity()))
                 .collect(Collectors.toList())
             );
+        } else {
+            flightEditor.setAirlineCode(flightWizardEditor.getWizAirlineCode());
+            flightEditor.setDepartureAirportCode(flightWizardEditor.getWizDepartureAirportCode());
+            flightEditor.setDepartureDateLocal(flightWizardEditor.getWizDepartureDateLocal());
+            flightEditor.setFlightNumber(flightWizardEditor.getWizFlightNumber());
         }
         return this.doAddWizardGet();
     }
