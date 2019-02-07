@@ -26,8 +26,8 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
     @Override
     public FlightEditor enhanceFlightEditor(FlightEditor flightEditor, FlightWizardEditor flightWizardEditor, WizardData wizardData, UserEntity user) {
 
-        flightEditor.setAirlineCode(flightWizardEditor.getWizAirlineCode());
-        flightEditor.setFlightNumber(flightWizardEditor.getWizFlightNumber());
+        flightEditor.setAirlineCode(StringUtils.defaultIfEmpty(wizardData.getAirlineCode(), flightWizardEditor.getWizAirlineCode()));
+        flightEditor.setFlightNumber(StringUtils.defaultIfEmpty(wizardData.getFlightNumber(), flightWizardEditor.getWizFlightNumber()));
         flightEditor.setAircraftType(wizardData.getAircraftType());
         flightEditor.setAircraftRegistration(wizardData.getAircraftRegistration());
         flightEditor.setAircraftName(wizardData.getAircraftName());
@@ -62,7 +62,7 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
                 flightEditor.setFlightDuration(FlightlogHelper.formatDuration(Duration.between(departureInstant, arrivalInstant)));
             }
 
-            AirlineBean airlineEntity = this.getAirlinesService().loadAirlineByCode(flightWizardEditor.getWizAirlineCode(), user);
+            AirlineBean airlineEntity = this.getAirlinesService().loadAirlineByCode(StringUtils.defaultIfEmpty(wizardData.getAirlineCode(), flightWizardEditor.getWizAirlineCode()), user);
             if (airlineEntity != null) {
                 flightEditor.setAirlineName(airlineEntity.getName());
             }

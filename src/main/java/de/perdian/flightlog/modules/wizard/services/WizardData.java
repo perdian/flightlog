@@ -12,6 +12,8 @@ public class WizardData implements Serializable {
 
     static final long serialVersionUID = 1L;
 
+    private String airlineCode = null;
+    private String flightNumber = null;
     private String departureAirportCode = null;
     private LocalDate departureDateLocal = null;
     private LocalTime departureTimeLocal = null;
@@ -37,6 +39,20 @@ public class WizardData implements Serializable {
             LocalDateTime ldt2 = wz2.getDepartureDateLocal().atTime(wz2.getDepartureTimeLocal() == null ? LocalTime.of(0, 0) : wz2.getDepartureTimeLocal());
             return ldt1.compareTo(ldt2);
         }
+    }
+
+    public String getAirlineCode() {
+        return this.airlineCode;
+    }
+    public void setAirlineCode(String airlineCode) {
+        this.airlineCode = airlineCode;
+    }
+
+    public String getFlightNumber() {
+        return this.flightNumber;
+    }
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
     }
 
     public String getDepartureAirportCode() {

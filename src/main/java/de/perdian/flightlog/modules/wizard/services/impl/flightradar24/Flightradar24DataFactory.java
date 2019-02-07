@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +37,9 @@ import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
 import de.perdian.flightlog.modules.wizard.services.WizardData;
 import de.perdian.flightlog.modules.wizard.services.WizardDataFactory;
 import de.perdian.flightlog.support.FlightlogHelper;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 import us.codecraft.xsoup.Xsoup;
 
 @Component
@@ -52,15 +57,20 @@ public class Flightradar24DataFactory implements WizardDataFactory {
         if (this.getConfiguration().isEnabled()) {
             try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-                String httpGetUrl = "https://www.flightradar24.com/data/flights/" + airlineCode + flightNumber;
-                log.debug("Querying flightradar24 for flight {}{} on {} using URL: {}", airlineCode, flightNumber, departureDate, httpGetUrl);
+                String resolvedFlightNumber = this.resolveActualFlightNumber(airlineCode, flightNumber, departureDate, httpClient);
+                Matcher resolvedFlightNumberMatcher = Pattern.compile("([a-zA-Z]+)(\\d+)").matcher(resolvedFlightNumber);
+                String actualAirlineCode = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(1) : airlineCode;
+                String actualFlightNumber = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(2) : flightNumber;
+
+                String httpGetUrl = "https://www.flightradar24.com/data/flights/" + actualAirlineCode + actualFlightNumber;
+                log.debug("Querying flightradar24 for flight {}{} on {} using URL: {}", actualAirlineCode, actualFlightNumber, departureDate, httpGetUrl);
 
                 try (CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(httpGetUrl))) {
                      String httpResponseContent = EntityUtils.toString(httpResponse.getEntity());
                      Document htmlDocument = Jsoup.parse(httpResponseContent);
                      Elements dataTableElements = Xsoup.select(htmlDocument, "//table[@id='tbl-datatable']").getElements();
                      if (dataTableElements.size() > 0) {
-                         return this.createDataFromDataTable(dataTableElements.get(0), airlineCode, flightNumber, departureDate, departureAirportCode);
+                         return this.createDataFromDataTable(dataTableElements.get(0), actualAirlineCode, actualFlightNumber, departureDate, departureAirportCode);
                      }
                 }
 
@@ -69,6 +79,29 @@ public class Flightradar24DataFactory implements WizardDataFactory {
             }
         }
         return null;
+    }
+
+    private String resolveActualFlightNumber(String airlineCode, String flightNumber, LocalDate departureDate, CloseableHttpClient httpClient) {
+        try {
+            String httpUrl = "https://www.flightradar24.com/v1/search/web/find?query=" + airlineCode + flightNumber;
+            log.debug("Querying flightradar24 for potential codeshare information of flight {}{} on {} using URL: {}", airlineCode, flightNumber, departureDate, httpUrl);
+            try (CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(httpUrl))) {
+                String httpResponseContent = EntityUtils.toString(httpResponse.getEntity());
+                JSONObject jsonResponse = (JSONObject)new JSONParser(JSONParser.MODE_PERMISSIVE).parse(httpResponseContent);
+                JSONArray jsonResultsArray = (JSONArray)jsonResponse.get("results");
+                JSONObject jsonResult = (JSONObject)jsonResultsArray.get(0);
+                if ("codeshare".equalsIgnoreCase(jsonResult.getAsString("match"))) {
+                    JSONObject jsonDetailObject = (JSONObject)jsonResult.get("detail");
+                    String actualFlightNumber = jsonDetailObject.getAsString("flight");
+                    if (StringUtils.isNotEmpty(actualFlightNumber)) {
+                        return actualFlightNumber;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Ignore any error here
+        }
+        return airlineCode + flightNumber;
     }
 
     private List<WizardData> createDataFromDataTable(Element dataTableElement, String airlineCode, String flightNumber, LocalDate departureDate, String departureAirportCode) {
@@ -109,17 +142,21 @@ public class Flightradar24DataFactory implements WizardDataFactory {
             Element trElement = trElements.get(i);
             Elements tdElements = trElement.getElementsByTag("td");
 
-            Element dateElement = tdElements.size() <= 1 ? null : tdElements.get(2);
+            Element dateElement = tdElements.size() <= 2 ? null : tdElements.get(2);
             String dateString = dateElement == null ? null : dateElement.text().trim();
             LocalDate date = StringUtils.isEmpty(dateString) ? null : LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(Locale.ENGLISH));
             boolean dateMatches = date != null && date.equals(targetDate);
 
-            Element departureAirportElement = tdElements.size() <= 1 ? null : tdElements.get(2);
+            Element departureAirportElement = tdElements.size() <= 2 ? null : tdElements.get(2);
             List<Element> departureAirportCodeElements = departureAirportElement == null ? null : departureAirportElement.getElementsByTag("a");
             String departureAirportValue = departureAirportCodeElements == null || departureAirportCodeElements.isEmpty() ? null : departureAirportCodeElements.get(0).text();
             boolean departureAirportMatches = StringUtils.isBlank(targetDepartureAirport) || targetDepartureAirport.equalsIgnoreCase(departureAirportValue);
 
-            if (dateMatches && departureAirportMatches) {
+            Element statusElement = tdElements.size() <= 11 ? null : tdElements.get(11);
+            String status = statusElement == null ? null : statusElement.text().trim();
+            boolean statusMatches = !"Scheduled".equalsIgnoreCase(status) && !"Unknown".equalsIgnoreCase(status);
+
+            if (dateMatches && departureAirportMatches && statusMatches) {
                 tableRowsForDate.add(trElement);
             }
 
@@ -131,6 +168,8 @@ public class Flightradar24DataFactory implements WizardDataFactory {
 
         WizardData wizardData = new WizardData();
         wizardData.setDepartureDateLocal(departureDate);
+        wizardData.setAirlineCode(airlineCode);
+        wizardData.setFlightNumber(flightNumber);
 
         Elements tdElements = trElement.getElementsByTag("td");
         Element aircraftElement = tdElements.size() <= 5 ? null : tdElements.get(5);
