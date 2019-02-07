@@ -178,12 +178,13 @@ public class Flightradar24DataFactory implements WizardDataFactory {
                     Element flightDurationElement = tdElements.size() <= 6 ? null : tdElements.get(6);
                     String flightDurationValue = flightDurationElement == null ? null : flightDurationElement.text().trim();
                     Duration flightDuration = FlightlogHelper.parseDuration(flightDurationValue);
-
-                    ZonedDateTime actualDepartureTimeZoned = actualDepartureTimeLocal.atDate(departureDate).atZone(departureAirportEntity.getTimezoneId());
-                    ZonedDateTime actualArrivalTimeZonedAtDeparture = actualDepartureTimeZoned.plus(flightDuration);
-                    ZonedDateTime actualArrivalTimeZonedAtArrival = actualArrivalTimeZonedAtDeparture.withZoneSameInstant(arrivalAirportEntity.getTimezoneId());
-                    wizardData.setArrivalDateLocal(actualArrivalTimeZonedAtArrival.toLocalDate());
-                    wizardData.setArrivalTimeLocal(actualArrivalTimeZonedAtArrival.toLocalTime());
+                    if (flightDuration != null) {
+                        ZonedDateTime actualDepartureTimeZoned = actualDepartureTimeLocal.atDate(departureDate).atZone(departureAirportEntity.getTimezoneId());
+                        ZonedDateTime actualArrivalTimeZonedAtDeparture = actualDepartureTimeZoned.plus(flightDuration);
+                        ZonedDateTime actualArrivalTimeZonedAtArrival = actualArrivalTimeZonedAtDeparture.withZoneSameInstant(arrivalAirportEntity.getTimezoneId());
+                        wizardData.setArrivalDateLocal(actualArrivalTimeZonedAtArrival.toLocalDate());
+                        wizardData.setArrivalTimeLocal(actualArrivalTimeZonedAtArrival.toLocalTime());
+                    }
 
                 }
             }
