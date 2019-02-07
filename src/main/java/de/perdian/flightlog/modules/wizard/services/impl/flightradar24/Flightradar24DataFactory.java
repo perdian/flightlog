@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -103,15 +104,15 @@ public class Flightradar24DataFactory implements WizardDataFactory {
 
     private List<Element> lookupTableRowsForDate(Elements trElements, LocalDate targetDate, String targetDepartureAirport) {
         List<Element> tableRowsForDate = new ArrayList<>();
-        String targetDateString = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(targetDate);
         for (int i=0; i < trElements.size(); i++) {
 
             Element trElement = trElements.get(i);
             Elements tdElements = trElement.getElementsByTag("td");
 
-            Element dateElement = tdElements.size() <= 1 ? null : tdElements.get(1);
-            String dateValue = dateElement == null ? null : dateElement.text();
-            boolean dateMatches = dateValue != null && dateValue.equalsIgnoreCase(targetDateString);
+            Element dateElement = tdElements.size() <= 1 ? null : tdElements.get(2);
+            String dateString = dateElement == null ? null : dateElement.text().trim();
+            LocalDate date = StringUtils.isEmpty(dateString) ? null : LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(Locale.ENGLISH));
+            boolean dateMatches = date != null && date.equals(targetDate);
 
             Element departureAirportElement = tdElements.size() <= 1 ? null : tdElements.get(2);
             List<Element> departureAirportCodeElements = departureAirportElement == null ? null : departureAirportElement.getElementsByTag("a");
@@ -132,38 +133,40 @@ public class Flightradar24DataFactory implements WizardDataFactory {
         wizardData.setDepartureDateLocal(departureDate);
 
         Elements tdElements = trElement.getElementsByTag("td");
-        Element aircraftElement = tdElements.size() <= 4 ? null : tdElements.get(4);
-        Elements aircraftTypeElement = aircraftElement == null ? null : aircraftElement.getElementsByTag("span");
-        if (aircraftTypeElement != null && !aircraftTypeElement.isEmpty()) {
-            AircraftTypeEntity aircraftTypeEntity = this.getAircraftTypesRepository().loadAircraftTypeByCode(aircraftTypeElement.text());
+        Element aircraftElement = tdElements.size() <= 5 ? null : tdElements.get(5);
+        String aircraftType = aircraftElement == null ? null : aircraftElement.text().trim();
+        int aircraftCodeEndIndex = aircraftType == null ? null : aircraftType.indexOf(" ");
+        String aircraftTypeCode = aircraftType == null ? null : (aircraftCodeEndIndex < 0 ? aircraftType : aircraftType.substring(0, aircraftCodeEndIndex));
+        if (StringUtils.isNotEmpty(aircraftTypeCode)) {
+            AircraftTypeEntity aircraftTypeEntity = this.getAircraftTypesRepository().loadAircraftTypeByCode(aircraftTypeCode);
             if (aircraftTypeEntity != null && !StringUtils.isEmpty(aircraftTypeEntity.getTitle())) {
                 wizardData.setAircraftType(aircraftTypeEntity.getTitle());
             } else {
-                wizardData.setAircraftType(aircraftTypeElement.text());
+                wizardData.setAircraftType(aircraftTypeCode);
             }
         }
         Elements aircraftRegistryElement = aircraftElement == null ? null : aircraftElement.getElementsByTag("a");
         if (aircraftRegistryElement != null && !aircraftRegistryElement.isEmpty()) {
-            wizardData.setAircraftRegistration(aircraftRegistryElement.text().trim());
+            wizardData.setAircraftRegistration(extractValue(aircraftRegistryElement.text().trim()));
         }
 
-        Element departureAirportElement = tdElements.size() <= 2 ? null : tdElements.get(2);
+        Element departureAirportElement = tdElements.size() <= 3 ? null : tdElements.get(3);
         Elements departureAirportCodeElements = departureAirportElement == null ? null : departureAirportElement.getElementsByTag("a");
         Element departureAirportCodeElement = departureAirportCodeElements == null || departureAirportCodeElements.isEmpty() ? null : departureAirportCodeElements.get(0);
-        String departureAirportCode = departureAirportCodeElement == null ? null : departureAirportCodeElement.text().trim();
+        String departureAirportCode = departureAirportCodeElement == null ? null : this.extractValue(departureAirportCodeElement.text().trim());
         wizardData.setDepartureAirportCode(departureAirportCode);
 
-        Element arrivalAirportElement = tdElements.size() <= 3 ? null : tdElements.get(3);
+        Element arrivalAirportElement = tdElements.size() <= 4 ? null : tdElements.get(4);
         Elements arrivalAirportCodeElements = arrivalAirportElement == null ? null : arrivalAirportElement.getElementsByTag("a");
         Element arrivalAirportCodeElement = arrivalAirportCodeElements == null || arrivalAirportCodeElements.isEmpty() ? null : arrivalAirportCodeElements.get(0);
-        String arrivalAirportCode = arrivalAirportCodeElement == null ? null : arrivalAirportCodeElement.text().trim();
+        String arrivalAirportCode = arrivalAirportCodeElement == null ? null : this.extractValue(arrivalAirportCodeElement.text().trim());
         wizardData.setArrivalAirportCode(arrivalAirportCode);
 
         AirportEntity departureAirportEntity = this.getAirportsRepository().loadAirportByIataCode(departureAirportCode);
         AirportEntity arrivalAirportEntity = this.getAirportsRepository().loadAirportByIataCode(arrivalAirportCode);
         if (departureAirportEntity != null && arrivalAirportEntity != null) {
 
-            Element actualDepartureTimeElement = tdElements.size() <= 7 ? null : tdElements.get(7);
+            Element actualDepartureTimeElement = tdElements.size() <= 8 ? null : tdElements.get(8);
             String actualDepartureTimeValue = actualDepartureTimeElement == null ? null : actualDepartureTimeElement.text().trim();
             if (!StringUtils.isEmpty(actualDepartureTimeValue) && !"-".equalsIgnoreCase(actualDepartureTimeValue)) {
                 if (departureAirportEntity.getTimezoneId() != null && arrivalAirportEntity.getTimezoneId() != null) {
@@ -172,7 +175,7 @@ public class Flightradar24DataFactory implements WizardDataFactory {
                     LocalTime actualDepartureTimeLocal = actualDeparturetimeUtc.withZoneSameInstant(departureAirportEntity.getTimezoneId()).toLocalTime();
                     wizardData.setDepartureTimeLocal(actualDepartureTimeLocal);
 
-                    Element flightDurationElement = tdElements.size() <= 5 ? null : tdElements.get(5);
+                    Element flightDurationElement = tdElements.size() <= 6 ? null : tdElements.get(6);
                     String flightDurationValue = flightDurationElement == null ? null : flightDurationElement.text().trim();
                     Duration flightDuration = FlightlogHelper.parseDuration(flightDurationValue);
 
@@ -189,6 +192,16 @@ public class Flightradar24DataFactory implements WizardDataFactory {
 
         return wizardData;
 
+    }
+
+    private String extractValue(String input) {
+        if (StringUtils.isEmpty(input)) {
+            return null;
+        } else {
+            int startIndex = input.startsWith("(") ? 1 : 0;
+            int endIndex = input.endsWith(")") ? input.length() - 1 : input.length();
+            return input.substring(startIndex, endIndex);
+        }
     }
 
     AircraftTypesRepository getAircraftTypesRepository() {
