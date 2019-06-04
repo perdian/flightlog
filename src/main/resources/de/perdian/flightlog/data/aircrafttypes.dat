@@ -18,17 +18,17 @@
 31X,A310,Airbus A310
 31Y,A310,Airbus A310
 320,A320,Airbus A320
-,A20N,Airbus A320 neo
+,A20N,Airbus A320neo
 321,A321,Airbus A321
 32A,A320,Airbus A320
 32B,A321,Airbus A321
-,A21N,Airbus A321 neo
+,A21N,Airbus A321neo
 32S,,
 330,A330,Airbus A330
 332,A332,Airbus A330-200
 333,A333,Airbus A330-300
-338,A338,Airbus A330-800 neo
-339,A339,Airbus A330-900 neo
+338,A338,Airbus A330-800neo
+339,A339,Airbus A330-900neo
 340,A340,Airbus A340
 342,A342,Airbus A340-200
 343,A343,Airbus A340-300
@@ -194,7 +194,7 @@ CRJ,,Canadair Regional Jet
 CRV,S210,Aerospatiale (Sud Aviation) Se.210 Caravelle
 CS1,BCS1,Airbus A220-100
 CS2,C212,CASA / IPTN 212 Aviocar
-CS3,BCS3,Airbus A220-300 
+CS3,BCS3,Airbus A220-300
 CS5,CN35,CASA / IPTN CN-235
 CV4,CVLP,Convair CV-440 Metropolitan
 CV5,CVLT,Convair CV-580
