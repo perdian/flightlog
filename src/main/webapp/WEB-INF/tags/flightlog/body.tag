@@ -102,14 +102,18 @@
                         <label><fmt:message key="flightNumber" /></label>
                         <input name="wizFlightNumber" />
                     </div>
-                    <div class="four wide field">
+                    <div class="five wide field">
                         <label><fmt:message key="departureDate" /></label>
                         <div class="ui action input">
                           <input id="wizDepartureDateLocal" name="wizDepartureDateLocal" placeholder="yyyy-MM-dd" />
                           <button type="button" id="wizDepartureDateLocalToday" class="ui button"><fmt:message key="today" /></button>
+                          <button type="button" id="wizDepartureDateLocalYesterday" class="ui button">-1</button>
                           <script type="text/javascript">
                               $("#wizDepartureDateLocalToday").click(function() {
                                   $("#wizDepartureDateLocal").val(moment().format('YYYY-MM-DD'));
+                              });
+                              $("#wizDepartureDateLocalYesterday").click(function() {
+                                  $("#wizDepartureDateLocal").val(moment().subtract(1, "days").format('YYYY-MM-DD'));
                               });
                           </script>
                         </div>
