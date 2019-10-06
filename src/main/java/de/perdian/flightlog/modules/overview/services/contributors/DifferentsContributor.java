@@ -14,13 +14,12 @@ import de.perdian.flightlog.modules.overview.model.OverviewBean;
 import de.perdian.flightlog.modules.overview.model.OverviewItem;
 import de.perdian.flightlog.modules.overview.model.OverviewItemString;
 import de.perdian.flightlog.modules.overview.services.OverviewContributor;
-import de.perdian.flightlog.modules.users.persistence.UserEntity;
 
 @Component
 class DifferentsContributor implements OverviewContributor {
 
     @Override
-    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights, UserEntity user) {
+    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights) {
         List<OverviewItem> overviewItems = new ArrayList<>();
         overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentAircraftTypes"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getAircraft().getType())), null, null));
         overviewItems.add(new OverviewItem(OverviewItemString.forKey("numberOfDifferentAirports"), null, this.countDifferentValues(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode(), flight.getArrivalContact().getAirport().getCode())), null, null));

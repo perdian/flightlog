@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
-import de.perdian.flightlog.modules.overview.services.contributors.MaxFlightsContributor;
 
 public class MaxFlightsContributorTest {
 
@@ -33,7 +32,7 @@ public class MaxFlightsContributorTest {
         OverviewBean overviewBean = new OverviewBean();
 
         MaxFlightsContributor contributor = new MaxFlightsContributor();
-        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3, flight4), null);
+        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3, flight4));
 
         Assertions.assertEquals(6, overviewBean.getMaxFlights().size());
         Assertions.assertEquals(flight1, overviewBean.getMaxFlights().get("longestFlightByDuration"));

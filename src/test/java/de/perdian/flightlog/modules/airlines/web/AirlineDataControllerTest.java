@@ -4,10 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
-import de.perdian.flightlog.modules.airlines.services.AirlinesService;
-import de.perdian.flightlog.modules.airlines.web.AirlineData;
-import de.perdian.flightlog.modules.airlines.web.AirlineDataController;
+import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
+import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.flightlog.modules.airlines.web.AirlineDataController.AirlineNotFoundException;
 
 public class AirlineDataControllerTest {
@@ -15,21 +13,21 @@ public class AirlineDataControllerTest {
     @Test
     public void doAirline() {
 
-        AirlineBean airlineEntity = Mockito.mock(AirlineBean.class);
+        AirlineEntity airlineEntity = Mockito.mock(AirlineEntity.class);
         Mockito.when(airlineEntity.getCode()).thenReturn("LH");
         Mockito.when(airlineEntity.getName()).thenReturn("Lufthansa");
-        AirlinesService airlinesService = Mockito.mock(AirlinesService.class);
-        Mockito.when(airlinesService.loadAirlineByCode(Mockito.eq("LH"), Mockito.any())).thenReturn(airlineEntity);
+        AirlinesRepository airlinesRepository = Mockito.mock(AirlinesRepository.class);
+        Mockito.when(airlinesRepository.loadAirlineByCode(Mockito.eq("LH"))).thenReturn(airlineEntity);
 
         AirlineDataController airlineController = new AirlineDataController();
-        airlineController.setAirlinesService(airlinesService);
+        airlineController.setAirlinesRepository(airlinesRepository);
 
-        AirlineData airline = airlineController.doAirline(null, "LH");
+        AirlineData airline = airlineController.doAirline("LH");
         Assertions.assertEquals("LH", airline.getCode());
         Assertions.assertEquals("Lufthansa", airline.getName());
 
-        Mockito.verify(airlinesService).loadAirlineByCode(Mockito.eq("LH"), Mockito.any());
-        Mockito.verifyNoMoreInteractions(airlinesService);
+        Mockito.verify(airlinesRepository).loadAirlineByCode(Mockito.eq("LH"));
+        Mockito.verifyNoMoreInteractions(airlinesRepository);
 
     }
 
@@ -37,8 +35,8 @@ public class AirlineDataControllerTest {
     public void doAirlineNoAirlineFound() {
         Assertions.assertThrows(AirlineNotFoundException.class, () -> {
             AirlineDataController airlineController = new AirlineDataController();
-            airlineController.setAirlinesService(Mockito.mock(AirlinesService.class));
-            airlineController.doAirline(null, "LH");
+            airlineController.setAirlinesRepository(Mockito.mock(AirlinesRepository.class));
+            airlineController.doAirline("LH");
         });
     }
 

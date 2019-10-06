@@ -15,8 +15,6 @@ import de.perdian.flightlog.FlightlogTestHelper;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.persistence.FlightEntity;
 import de.perdian.flightlog.modules.flights.persistence.FlightsRepository;
-import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
-import de.perdian.flightlog.modules.flights.services.FlightsUpdateServiceImpl;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.SeatType;
@@ -54,7 +52,7 @@ public class FlightsUpdateServiceImplTest {
         flightBean.setEntityId(UUID.fromString("c2bb2c43-e029-4cc2-a80c-7445cdea0cfe"));
 
         FlightsUpdateServiceImpl serviceImpl = new FlightsUpdateServiceImpl();
-        serviceImpl.setAirlinesService(FlightlogTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirlinesRepository(FlightlogTestHelper.createDefaultAirlinesRepository());
         serviceImpl.setAirportsRepository(FlightlogTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsQueryService(flightsQueryService);
         serviceImpl.setFlightsRepository(flightsRepository);
@@ -78,7 +76,7 @@ public class FlightsUpdateServiceImplTest {
         FlightBean flightBean = FlightlogTestHelper.createDefaultFlightBean();
 
         FlightsUpdateServiceImpl serviceImpl = new FlightsUpdateServiceImpl();
-        serviceImpl.setAirlinesService(FlightlogTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirlinesRepository(FlightlogTestHelper.createDefaultAirlinesRepository());
         serviceImpl.setAirportsRepository(FlightlogTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsQueryService(flightsQueryService);
         serviceImpl.setFlightsRepository(flightsRepository);

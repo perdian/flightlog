@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
-import de.perdian.flightlog.modules.airlines.services.AirlinesService;
-import de.perdian.flightlog.modules.authentication.FlightlogUser;
+import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
+import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
 
 /**
  * AJAX target controller to deliver information about airlines during the edit process
@@ -21,17 +20,17 @@ import de.perdian.flightlog.modules.authentication.FlightlogUser;
 @RestController
 public class AirlineDataController {
 
-    private AirlinesService airlinesService = null;
+    private AirlinesRepository airlinesRepository = null;
 
     @RequestMapping(path = "/airline/data/{airlineCode}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
-    public AirlineData doAirline(FlightlogUser user, @PathVariable("airlineCode") String airlineCode) {
-        AirlineBean airlineBean = this.getAirlinesService().loadAirlineByCode(airlineCode, user == null ? null : user.getUserEntity());
-        if (airlineBean == null) {
+    public AirlineData doAirline(@PathVariable("airlineCode") String airlineCode) {
+        AirlineEntity airlineEntity = this.getAirlinesRepository().loadAirlineByCode(airlineCode);
+        if (airlineEntity == null) {
             throw new AirlineNotFoundException();
         } else {
             AirlineData airline = new AirlineData();
-            airline.setCode(airlineBean.getCode());
-            airline.setName(airlineBean.getName());
+            airline.setCode(airlineEntity.getCode());
+            airline.setName(airlineEntity.getName());
             return airline;
         }
     }
@@ -43,12 +42,12 @@ public class AirlineDataController {
 
     }
 
-    AirlinesService getAirlinesService() {
-        return this.airlinesService;
+    AirlinesRepository getAirlinesRepository() {
+        return this.airlinesRepository;
     }
     @Autowired
-    void setAirlinesService(AirlinesService airlinesService) {
-        this.airlinesService = airlinesService;
+    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
+        this.airlinesRepository = airlinesRepository;
     }
 
 }

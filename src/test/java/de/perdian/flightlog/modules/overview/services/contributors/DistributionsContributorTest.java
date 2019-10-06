@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
-import de.perdian.flightlog.modules.overview.services.contributors.DistributionsContributor;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.SeatType;
@@ -38,7 +37,7 @@ public class DistributionsContributorTest {
         OverviewBean overviewBean = new OverviewBean();
 
         DistributionsContributor contributor = new DistributionsContributor();
-        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3, flight4), null);
+        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3, flight4));
 
         MatcherAssert.assertThat(overviewBean.getDistributions().get("cabinClasses"), IsCollectionWithSize.hasSize(CabinClass.values().length));
         Assertions.assertEquals(2, overviewBean.getDistributions().get("cabinClasses").get(0).getValue().intValue()); // ECONOMY

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
-import de.perdian.flightlog.modules.overview.services.contributors.GeneralContributor;
 
 public class GeneralContributorTest {
 
@@ -31,7 +30,7 @@ public class GeneralContributorTest {
         OverviewBean overviewBean = new OverviewBean();
 
         GeneralContributor contributor = new GeneralContributor();
-        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3, flight4), null);
+        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3, flight4));
 
         Assertions.assertEquals(5, overviewBean.getGeneral().size());
         Assertions.assertEquals(4, overviewBean.getGeneral().get(0).getValue()); // totalNumber

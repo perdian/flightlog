@@ -17,8 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
-import de.perdian.flightlog.modules.airlines.services.AirlinesService;
+import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
+import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
@@ -26,19 +26,18 @@ import de.perdian.flightlog.modules.overview.model.OverviewBean;
 import de.perdian.flightlog.modules.overview.model.OverviewItem;
 import de.perdian.flightlog.modules.overview.model.OverviewItemString;
 import de.perdian.flightlog.modules.overview.services.OverviewContributor;
-import de.perdian.flightlog.modules.users.persistence.UserEntity;
 
 @Component
 class TopFlightsContributor implements OverviewContributor {
 
-    private AirlinesService airlinesService = null;
+    private AirlinesRepository airlinesRepository = null;
     private AirportsRepository airportsRepository = null;
 
     @Override
-    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights, UserEntity user) {
+    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights) {
         Map<String, List<OverviewItem>> topFlights = new LinkedHashMap<>();
         topFlights.put("topTenAirports", this.computeTopAirports(flights));
-        topFlights.put("topTenAirlines", this.computeTopItems(flights, flight -> Arrays.asList(flight.getAirline().getCode()), airlineCode -> this.computeAirlineName(airlineCode, user), 1d));
+        topFlights.put("topTenAirlines", this.computeTopItems(flights, flight -> Arrays.asList(flight.getAirline().getCode()), airlineCode -> this.computeAirlineName(airlineCode), 1d));
         topFlights.put("topTenRoutes", this.computeTopItems(flights, flight -> Arrays.asList(flight.getDepartureContact().getAirport().getCode() + " - " + flight.getArrivalContact().getAirport().getCode()), this::computeAirportName, 1d));
         topFlights.put("topTenAircraftTypes", this.computeTopItems(flights, flight -> Arrays.asList(flight.getAircraft().getType()), null, 1d));
         overviewBean.setTopFlights(topFlights);
@@ -81,20 +80,20 @@ class TopFlightsContributor implements OverviewContributor {
         return topItems;
     }
 
-    private String computeAirlineName(String airlineCode, UserEntity user) {
-        return Optional.ofNullable(this.getAirlinesService().loadAirlineByCode(airlineCode, user)).map(AirlineBean::getName).orElse(null);
+    private String computeAirlineName(String airlineCode) {
+        return Optional.ofNullable(this.getAirlinesRepository().loadAirlineByCode(airlineCode)).map(AirlineEntity::getName).orElse(null);
     }
 
     private String computeAirportName(String airportCode) {
         return Optional.ofNullable(this.getAirportsRepository().loadAirportByIataCode(airportCode)).map(AirportEntity::getName).orElse(null);
     }
 
-    AirlinesService getAirlinesService() {
-        return this.airlinesService;
+    AirlinesRepository getAirlinesRepository() {
+        return this.airlinesRepository;
     }
     @Autowired
-    void setAirlinesService(AirlinesService airlinesService) {
-        this.airlinesService = airlinesService;
+    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
+        this.airlinesRepository = airlinesRepository;
     }
 
     AirportsRepository getAirportsRepository() {

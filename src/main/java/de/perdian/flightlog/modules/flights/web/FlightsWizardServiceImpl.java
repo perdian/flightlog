@@ -7,11 +7,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
-import de.perdian.flightlog.modules.airlines.services.AirlinesService;
+import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
+import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
-import de.perdian.flightlog.modules.users.persistence.UserEntity;
 import de.perdian.flightlog.modules.wizard.services.WizardData;
 import de.perdian.flightlog.modules.wizard.services.WizardDataService;
 import de.perdian.flightlog.support.FlightlogHelper;
@@ -21,10 +20,10 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
 
     private WizardDataService wizardDataService = null;
     private AirportsRepository airportsRepository = null;
-    private AirlinesService airlinesService = null;
+    private AirlinesRepository airlinesRepository = null;
 
     @Override
-    public FlightEditor enhanceFlightEditor(FlightEditor flightEditor, FlightWizardEditor flightWizardEditor, WizardData wizardData, UserEntity user) {
+    public FlightEditor enhanceFlightEditor(FlightEditor flightEditor, FlightWizardEditor flightWizardEditor, WizardData wizardData) {
 
         flightEditor.setAirlineCode(StringUtils.defaultIfEmpty(wizardData.getAirlineCode(), flightWizardEditor.getWizAirlineCode()));
         flightEditor.setFlightNumber(StringUtils.defaultIfEmpty(wizardData.getFlightNumber(), flightWizardEditor.getWizFlightNumber()));
@@ -62,7 +61,7 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
                 flightEditor.setFlightDuration(FlightlogHelper.formatDuration(Duration.between(departureInstant, arrivalInstant)));
             }
 
-            AirlineBean airlineEntity = this.getAirlinesService().loadAirlineByCode(StringUtils.defaultIfEmpty(wizardData.getAirlineCode(), flightWizardEditor.getWizAirlineCode()), user);
+            AirlineEntity airlineEntity = this.getAirlinesRepository().loadAirlineByCode(StringUtils.defaultIfEmpty(wizardData.getAirlineCode(), flightWizardEditor.getWizAirlineCode()));
             if (airlineEntity != null) {
                 flightEditor.setAirlineName(airlineEntity.getName());
             }
@@ -88,12 +87,12 @@ class FlightsWizardServiceImpl implements FlightsWizardService {
         this.airportsRepository = airportsRepository;
     }
 
-    AirlinesService getAirlinesService() {
-        return this.airlinesService;
+    AirlinesRepository getAirlinesRepository() {
+        return this.airlinesRepository;
     }
     @Autowired
-    void setAirlinesService(AirlinesService airlinesService) {
-        this.airlinesService = airlinesService;
+    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
+        this.airlinesRepository = airlinesRepository;
     }
 
 }

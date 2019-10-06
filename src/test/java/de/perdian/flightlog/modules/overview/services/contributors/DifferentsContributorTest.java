@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import de.perdian.flightlog.FlightlogTestHelper;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
-import de.perdian.flightlog.modules.overview.services.contributors.DifferentsContributor;
 
 public class DifferentsContributorTest {
 
@@ -33,7 +32,7 @@ public class DifferentsContributorTest {
         flight3.setAirline(FlightlogTestHelper.createAirlineBean("UA", "US", "United"));
 
         DifferentsContributor contributor = new DifferentsContributor();
-        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3), null);
+        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3));
 
         Assertions.assertEquals(Integer.valueOf(2), overviewBean.getDifferents().get(0).getValue()); // numberOfDifferentAircraftTypes
         Assertions.assertEquals(Integer.valueOf(3), overviewBean.getDifferents().get(1).getValue()); // numberOfDifferentAirports

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.util.UUID;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
+import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
 import de.perdian.flightlog.modules.users.persistence.UserEntity;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
@@ -20,7 +20,7 @@ public class FlightBean implements Serializable {
     private AirportContactBean departureContact = null;
     private AirportContactBean arrivalContact = null;
     private AircraftBean aircraft = null;
-    private AirlineBean airline = null;
+    private AirlineEntity airline = null;
     private String flightNumber = null;
     private FlightReason flightReason = null;
     private FlightType flightType = null;
@@ -79,10 +79,10 @@ public class FlightBean implements Serializable {
         this.aircraft = aircraft;
     }
 
-    public AirlineBean getAirline() {
+    public AirlineEntity getAirline() {
         return this.airline;
     }
-    public void setAirline(AirlineBean airline) {
+    public void setAirline(AirlineEntity airline) {
         this.airline = airline;
     }
 

@@ -21,7 +21,7 @@ class OverviewServiceImpl implements OverviewService {
         List<FlightBean> flights = this.getFlightsQueryService().loadFlights(flightsQuery).getItems();
         OverviewBean overview = new OverviewBean();
         overview.setNumberOfFlights(flights.size());
-        this.getContributors().forEach(contributor -> contributor.contributeTo(overview, flights, flightsQuery.getRestrictUser()));
+        this.getContributors().forEach(contributor -> contributor.contributeTo(overview, flights));
         return overview;
     }
 

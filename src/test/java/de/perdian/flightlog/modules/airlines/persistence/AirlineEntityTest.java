@@ -1,16 +1,16 @@
-package de.perdian.flightlog.modules.airlines.model;
+package de.perdian.flightlog.modules.airlines.persistence;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
+import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
 
-public class AirlineBeanTest {
+public class AirlineEntityTest {
 
     @Test
     public void equals() {
 
-        AirlineBean bean1 = this.createAirlineBean("LH", "DE", "Lufthansa");
+        AirlineEntity bean1 = this.createAirlineBean("LH", "DE", "Lufthansa");
         Assertions.assertEquals(bean1, this.createAirlineBean("LH", "DE", "Lufthansa"));
         Assertions.assertNotEquals(bean1, this.createAirlineBean("XX", "DE", "Lufthansa"));
         Assertions.assertNotEquals(bean1, this.createAirlineBean("LH", "XX", "Lufthansa"));
@@ -18,8 +18,8 @@ public class AirlineBeanTest {
 
     }
 
-    private AirlineBean createAirlineBean(String code, String countryCode, String name) {
-        AirlineBean bean = new AirlineBean();
+    private AirlineEntity createAirlineBean(String code, String countryCode, String name) {
+        AirlineEntity bean = new AirlineEntity();
         bean.setCode(code);
         bean.setCountryCode(countryCode);
         bean.setName(name);

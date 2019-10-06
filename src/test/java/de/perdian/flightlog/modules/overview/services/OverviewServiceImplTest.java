@@ -38,8 +38,8 @@ public class OverviewServiceImplTest {
         Assertions.assertEquals(2, overviewBean.getNumberOfFlights());
 
         Mockito.verify(flightsQueryService).loadFlights(Mockito.eq(flightsQuery));
-        Mockito.verify(contributor1).contributeTo(Mockito.any(), Mockito.eq(flights), Mockito.any());
-        Mockito.verify(contributor2).contributeTo(Mockito.any(), Mockito.eq(flights), Mockito.any());
+        Mockito.verify(contributor1).contributeTo(Mockito.any(), Mockito.eq(flights));
+        Mockito.verify(contributor2).contributeTo(Mockito.any(), Mockito.eq(flights));
 
     }
 

@@ -45,10 +45,10 @@ public class FlightsAddControllerTest {
         controller.setWizardDataService(wizardDataService);
         controller.setFlightsWizardService(wizardService);
 
-        Assertions.assertEquals("/flights/add", controller.doAddWizardPost(null, editor, flightWizardEditor, model));
+        Assertions.assertEquals("/flights/add", controller.doAddWizardPost(editor, flightWizardEditor, model));
         Assertions.assertEquals(0, model.asMap().size());
 
-        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.eq(editor), Mockito.eq(flightWizardEditor), Mockito.eq(wizardData), Mockito.any());
+        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.eq(editor), Mockito.eq(flightWizardEditor), Mockito.eq(wizardData));
 
     }
 
@@ -75,13 +75,13 @@ public class FlightsAddControllerTest {
         controller.setWizardDataService(wizardDataService);
         controller.setFlightsWizardService(wizardService);
 
-        Assertions.assertEquals("/flights/add", controller.doAddWizardPost(null, editor, flightWizardEditor, model));
+        Assertions.assertEquals("/flights/add", controller.doAddWizardPost(editor, flightWizardEditor, model));
         Assertions.assertEquals(1, model.asMap().size());
         Assertions.assertNotNull(model.asMap().get("wizardFlightEditors"));
         Assertions.assertEquals(2, ((List<?>)model.asMap().get("wizardFlightEditors")).size());
 
-        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.any(), Mockito.eq(flightWizardEditor), Mockito.eq(wizardData1), Mockito.any());
-        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.any(), Mockito.eq(flightWizardEditor), Mockito.eq(wizardData1), Mockito.any());
+        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.any(), Mockito.eq(flightWizardEditor), Mockito.eq(wizardData1));
+        Mockito.verify(wizardService).enhanceFlightEditor(Mockito.any(), Mockito.eq(flightWizardEditor), Mockito.eq(wizardData1));
 
     }
 

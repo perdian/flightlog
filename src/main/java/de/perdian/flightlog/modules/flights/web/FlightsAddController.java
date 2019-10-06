@@ -51,15 +51,15 @@ public class FlightsAddController {
     }
 
     @RequestMapping(value = "/flights/add/wizard", method = RequestMethod.POST)
-    public String doAddWizardPost(FlightlogUser user, @ModelAttribute("flightEditor") FlightEditor flightEditor, FlightWizardEditor flightWizardEditor, Model model) {
+    public String doAddWizardPost(@ModelAttribute("flightEditor") FlightEditor flightEditor, FlightWizardEditor flightWizardEditor, Model model) {
         LocalDate wizardDepartureDate = FlightlogHelper.parseLocalDate(flightWizardEditor.getWizDepartureDateLocal());
         String wizardAirlineCode = Optional.ofNullable(flightWizardEditor.getWizAirlineCode()).map(String::toUpperCase).orElse(null);
         List<WizardData> wizardDataList = StringUtils.isBlank(wizardAirlineCode) || StringUtils.isBlank(flightWizardEditor.getWizFlightNumber()) ? null : this.getWizardDataService().createData(wizardAirlineCode, flightWizardEditor.getWizFlightNumber(), wizardDepartureDate, flightWizardEditor.getWizDepartureAirportCode());
         if (wizardDataList != null && wizardDataList.size() == 1) {
-            this.getFlightsWizardService().enhanceFlightEditor(flightEditor, flightWizardEditor, wizardDataList.get(0), user == null ? null : user.getUserEntity());
+            this.getFlightsWizardService().enhanceFlightEditor(flightEditor, flightWizardEditor, wizardDataList.get(0));
         } else if (wizardDataList != null && !wizardDataList.isEmpty()) {
             model.addAttribute("wizardFlightEditors", wizardDataList.stream()
-                .map(wizardData -> this.getFlightsWizardService().enhanceFlightEditor(new FlightEditor(), flightWizardEditor, wizardData, user == null ? null : user.getUserEntity()))
+                .map(wizardData -> this.getFlightsWizardService().enhanceFlightEditor(new FlightEditor(), flightWizardEditor, wizardData))
                 .collect(Collectors.toList())
             );
         } else {

@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
-import de.perdian.flightlog.modules.airlines.services.AirlinesService;
+import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
+import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
 import de.perdian.flightlog.modules.authentication.FlightlogUser;
@@ -31,7 +31,6 @@ import de.perdian.flightlog.modules.importexport.data.DataLoader;
 import de.perdian.flightlog.modules.importexport.data.impl.FlugstatistikdeCredentials;
 import de.perdian.flightlog.modules.importexport.data.impl.FlugstatistikdeDataLoader;
 import de.perdian.flightlog.modules.importexport.services.ImportExportService;
-import de.perdian.flightlog.modules.users.persistence.UserEntity;
 import de.perdian.flightlog.support.FlightlogHelper;
 import de.perdian.flightlog.support.web.MessageSeverity;
 import de.perdian.flightlog.support.web.Messages;
@@ -44,7 +43,7 @@ public class ImportController {
     private MessageSource messageSource = null;
     private ImportExportService importExportService = null;
     private AirportsRepository airportsRepository = null;
-    private AirlinesService airlinesService = null;
+    private AirlinesRepository airlinesRepository = null;
 
     @ModelAttribute
     public ImportEditor importEditor() {
@@ -58,7 +57,7 @@ public class ImportController {
     }
 
     @RequestMapping(value = "/import/file", method = RequestMethod.POST)
-    public String doImportFilePost(FlightlogUser user, @RequestParam("file") MultipartFile file, @RequestParam("fileType") ImportFileType fileType, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale, Model model) {
+    public String doImportFilePost(@RequestParam("file") MultipartFile file, @RequestParam("fileType") ImportFileType fileType, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale, Model model) {
         if (file == null || file.isEmpty()) {
             return this.doImportFileGet(model);
         } else {
@@ -69,7 +68,7 @@ public class ImportController {
                 List<DataItem> dataItems = dataLoader.loadDataItems(new InputStreamReader(file.getInputStream(), "UTF-8"));
 
                 log.info("Loaded {} entries from uploaded file using file type: {}", dataItems.size(), fileType);
-                return this.doVerify(dataItems, importEditor, user == null ? null : user.getUserEntity());
+                return this.doVerify(dataItems, importEditor);
 
             } catch (Exception e) {
 
@@ -87,7 +86,7 @@ public class ImportController {
     }
 
     @RequestMapping(value = "/import/flugstatistikde", method = RequestMethod.POST)
-    public String doImportFlugstatistikdePost(FlightlogUser user, @RequestParam("username") String username, @RequestParam("password") String password, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
+    public String doImportFlugstatistikdePost(@RequestParam("username") String username, @RequestParam("password") String password, @ModelAttribute Messages messages, @ModelAttribute ImportEditor importEditor, Locale locale) {
         if (StringUtils.isEmpty(username)) {
             messages.addMessage(MessageSeverity.ERROR, this.getMessageSource().getMessage("usernameMustNotBeEmpty", null, locale), null);
             return this.doImportFlugstatistikdeGet();
@@ -103,7 +102,7 @@ public class ImportController {
                 List<DataItem> flugstatistikDataItems = flugstatistikDataLoder.loadDataItems(flugstatistikcreCredentials);
 
                 log.info("Loaded {} entries from flugstatistik.de", flugstatistikDataItems.size());
-                return this.doVerify(flugstatistikDataItems, importEditor, user == null ? null : user.getUserEntity());
+                return this.doVerify(flugstatistikDataItems, importEditor);
 
             } catch (Exception e) {
 
@@ -115,13 +114,13 @@ public class ImportController {
         }
     }
 
-    private String doVerify(List<DataItem> dataItems, ImportEditor importEditor, UserEntity user) throws Exception {
+    private String doVerify(List<DataItem> dataItems, ImportEditor importEditor) throws Exception {
 
         for (DataItem dataItem : dataItems) {
 
-            AirlineBean airlineEntity = StringUtils.isEmpty(dataItem.getAirlineCode()) ? null : this.getAirlinesService().loadAirlineByCode(dataItem.getAirlineCode(), user);
+            AirlineEntity airlineEntity = StringUtils.isEmpty(dataItem.getAirlineCode()) ? null : this.getAirlinesRepository().loadAirlineByCode(dataItem.getAirlineCode());
             if (airlineEntity == null && dataItem.getAirlineName() != null) {
-                airlineEntity = this.getAirlinesService().loadAirlineByName(dataItem.getAirlineName(), user);
+                airlineEntity = this.getAirlinesRepository().loadAirlineByName(dataItem.getAirlineName());
             }
             if (airlineEntity != null) {
                 if (StringUtils.isEmpty(dataItem.getAirlineCode())) {
@@ -207,12 +206,12 @@ public class ImportController {
         this.airportsRepository = airportsRepository;
     }
 
-    AirlinesService getAirlinesService() {
-        return this.airlinesService;
+    AirlinesRepository getAirlinesRepository() {
+        return this.airlinesRepository;
     }
     @Autowired
-    void setAirlinesService(AirlinesService airlinesService) {
-        this.airlinesService = airlinesService;
+    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
+        this.airlinesRepository = airlinesRepository;
     }
 
 }

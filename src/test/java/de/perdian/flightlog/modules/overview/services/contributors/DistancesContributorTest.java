@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
-import de.perdian.flightlog.modules.overview.services.contributors.DistancesContributor;
 import de.perdian.flightlog.support.types.FlightDistance;
 
 public class DistancesContributorTest {
@@ -29,7 +28,7 @@ public class DistancesContributorTest {
         OverviewBean overviewBean = new OverviewBean();
 
         DistancesContributor contributor = new DistancesContributor();
-        contributor.contributeTo(overviewBean, Arrays.asList(flight1a, flight1b, flight2, flight3, flight4), null);
+        contributor.contributeTo(overviewBean, Arrays.asList(flight1a, flight1b, flight2, flight3, flight4));
 
         Assertions.assertEquals(2, overviewBean.getDistances().get(0).getValue()); // SHORT
         Assertions.assertEquals(40d, overviewBean.getDistances().get(0).getPercentage());

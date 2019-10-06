@@ -22,8 +22,6 @@ import de.perdian.flightlog.FlightlogTestHelper;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.persistence.FlightEntity;
 import de.perdian.flightlog.modules.flights.persistence.FlightsRepository;
-import de.perdian.flightlog.modules.flights.services.FlightsQuery;
-import de.perdian.flightlog.modules.flights.services.FlightsQueryServiceImpl;
 import de.perdian.flightlog.support.persistence.PaginatedList;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
@@ -39,7 +37,7 @@ public class FlightsQueryServiceImplTest {
         Mockito.when(flightsRepository.findAll(Mockito.any(), Mockito.any(Pageable.class))).thenReturn(new PageImpl<>(Arrays.asList(flightEntity)));
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
-        serviceImpl.setAirlinesService(FlightlogTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirlinesRepository(FlightlogTestHelper.createDefaultAirlinesRepository());
         serviceImpl.setAirportsRepository(FlightlogTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(flightsRepository);
 
@@ -84,7 +82,7 @@ public class FlightsQueryServiceImplTest {
     public void loadFlightByIdNotFound() {
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
-        serviceImpl.setAirlinesService(FlightlogTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirlinesRepository(FlightlogTestHelper.createDefaultAirlinesRepository());
         serviceImpl.setAirportsRepository(FlightlogTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(Mockito.mock(FlightsRepository.class));
 
@@ -101,7 +99,7 @@ public class FlightsQueryServiceImplTest {
         Mockito.when(flightsRepository.findAll(Mockito.any(), Mockito.any(PageRequest.class))).thenReturn(flightEntities);
 
         FlightsQueryServiceImpl serviceImpl = new FlightsQueryServiceImpl();
-        serviceImpl.setAirlinesService(FlightlogTestHelper.createDefaultAirlinesService());
+        serviceImpl.setAirlinesRepository(FlightlogTestHelper.createDefaultAirlinesRepository());
         serviceImpl.setAirportsRepository(FlightlogTestHelper.createDefaultAirportsRepository());
         serviceImpl.setFlightsRepository(flightsRepository);
 

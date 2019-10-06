@@ -5,16 +5,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.UUID;
 
 import org.mockito.Mockito;
-import org.springframework.data.jpa.domain.Specification;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
 import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
 import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
-import de.perdian.flightlog.modules.airlines.services.AirlinesService;
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
 import de.perdian.flightlog.modules.flights.model.AircraftBean;
@@ -83,22 +79,9 @@ public class FlightlogTestHelper {
         unitedEntity.setName("United");
 
         AirlinesRepository airlinesRepository = Mockito.mock(AirlinesRepository.class);
-        Mockito.when(airlinesRepository.findAll()).thenReturn(Arrays.asList(lufthansaEntity, unitedEntity));
-        Mockito.when(airlinesRepository.findAll(Mockito.any(Specification.class))).thenReturn(Arrays.asList(lufthansaEntity, unitedEntity));
+        Mockito.when(airlinesRepository.loadAirlineByCode(Mockito.eq("LH"))).thenReturn(lufthansaEntity);
+        Mockito.when(airlinesRepository.loadAirlineByCode(Mockito.eq("UA"))).thenReturn(unitedEntity);
         return airlinesRepository;
-
-    }
-
-    public static AirlinesService createDefaultAirlinesService() {
-
-        AirlineBean airlineBean = new AirlineBean();
-        airlineBean.setCode("LH");
-        airlineBean.setCountryCode("DE");
-        airlineBean.setName("Lufthansa");
-
-        AirlinesService airlinesService = Mockito.mock(AirlinesService.class);
-        Mockito.when(airlinesService.loadAirlineByCode(Mockito.eq("LH"), Mockito.any())).thenReturn(airlineBean);
-        return airlinesService;
 
     }
 
@@ -172,12 +155,12 @@ public class FlightlogTestHelper {
         return airportBean;
     }
 
-    public static AirlineBean createAirlineBean(String code, String countryCode, String name) {
-        AirlineBean airlineBean = new AirlineBean();
-        airlineBean.setCode(code);
-        airlineBean.setCountryCode(countryCode);
-        airlineBean.setName(name);
-        return airlineBean;
+    public static AirlineEntity createAirlineBean(String code, String countryCode, String name) {
+        AirlineEntity airlineEntity = new AirlineEntity();
+        airlineEntity.setCode(code);
+        airlineEntity.setCountryCode(countryCode);
+        airlineEntity.setName(name);
+        return airlineEntity;
     }
 
 }

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import de.perdian.flightlog.FlightlogTestHelper;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
-import de.perdian.flightlog.modules.overview.services.contributors.TopFlightsContributor;
 
 public class TopFlightsContributorTest {
 
@@ -39,9 +38,9 @@ public class TopFlightsContributorTest {
         OverviewBean overviewBean = new OverviewBean();
 
         TopFlightsContributor contributor = new TopFlightsContributor();
-        contributor.setAirlinesService(FlightlogTestHelper.createDefaultAirlinesService());
+        contributor.setAirlinesRepository(FlightlogTestHelper.createDefaultAirlinesRepository());
         contributor.setAirportsRepository(FlightlogTestHelper.createDefaultAirportsRepository());
-        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3, flight4), null);
+        contributor.contributeTo(overviewBean, Arrays.asList(flight1, flight2, flight3, flight4));
 
         Assertions.assertEquals(4, overviewBean.getTopFlights().size());
         Assertions.assertEquals(4, overviewBean.getTopFlights().get("topTenAirports").size());
@@ -61,7 +60,7 @@ public class TopFlightsContributorTest {
         Assertions.assertNull(overviewBean.getTopFlights().get("topTenAirlines").get(1).getDescription().getText());
         Assertions.assertEquals(1, overviewBean.getTopFlights().get("topTenAirlines").get(1).getValue());
         Assertions.assertEquals("UA", overviewBean.getTopFlights().get("topTenAirlines").get(2).getTitle().getText());
-        Assertions.assertNull(overviewBean.getTopFlights().get("topTenAirlines").get(2).getDescription().getText());
+        Assertions.assertEquals("United", overviewBean.getTopFlights().get("topTenAirlines").get(2).getDescription().getText());
         Assertions.assertEquals(1, overviewBean.getTopFlights().get("topTenAirlines").get(2).getValue());
         Assertions.assertEquals(3, overviewBean.getTopFlights().get("topTenRoutes").size());
         Assertions.assertEquals("CGN - MCO", overviewBean.getTopFlights().get("topTenRoutes").get(0).getTitle().getText());

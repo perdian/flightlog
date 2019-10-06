@@ -24,19 +24,17 @@ CREATE TABLE `flight` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE IF EXISTS `airline`;
-CREATE TABLE `airline` (
-  `code` CHAR(2) NOT NULL,
-  `country_code` CHAR(2),
-  `name` VARCHAR(100),
-  `user_user_id` BINARY(16),
-  PRIMARY KEY (`code`)
-);
-
 CREATE TABLE `user` (
   `user_id` BINARY(16) NOT NULL,
   `authentication_source` VARCHAR(64),
   `password` VARCHAR(64),
   `username` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`user_id`)
+);
+
+DROP TABLE IF EXISTS `registrationwhitelist`;
+CREATE TABLE `registrationwhitelist` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(200),
+  PRIMARY KEY (`id`)
 );

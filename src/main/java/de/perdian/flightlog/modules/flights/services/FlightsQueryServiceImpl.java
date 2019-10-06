@@ -18,8 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
-import de.perdian.flightlog.modules.airlines.services.AirlinesService;
+import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
+import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
 import de.perdian.flightlog.modules.flights.model.AircraftBean;
@@ -41,7 +41,7 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
 
     private FlightsRepository flightsRepository = null;
     private AirportsRepository airportsRepository = null;
-    private AirlinesService airlinesService = null;
+    private AirlinesRepository airlinesRepository = null;
 
     @Override
     public PaginatedList<FlightBean> loadFlights(FlightsQuery flightsQuery) {
@@ -54,7 +54,7 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
 
         PaginationData paginationData = flightEntities == null ? null : new PaginationData(flightEntities.getNumber(), flightEntities.getTotalPages());
         List<FlightBean> resultList = flightEntities == null ? null : flightEntities.getContent().stream()
-            .map(flightEntity -> this.convertFlightEntity(flightEntity, flightsQuery.getRestrictUser()))
+            .map(flightEntity -> this.convertFlightEntity(flightEntity))
             .filter(bean -> this.validateListContainsEnumValue(bean.getFlightType(), flightsQuery.getRestrictFlightTypes()))
             .collect(Collectors.toList());
 
@@ -76,18 +76,18 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         return flightsList.getItem(0).orElse(null);
     }
 
-    private FlightBean convertFlightEntity(FlightEntity flightEntitiy, UserEntity user) {
+    private FlightBean convertFlightEntity(FlightEntity flightEntitiy) {
 
         AircraftBean aircraftBean = new AircraftBean();
         aircraftBean.setName(flightEntitiy.getAircraftName());
         aircraftBean.setRegistration(flightEntitiy.getAircraftRegistration());
         aircraftBean.setType(flightEntitiy.getAircraftType());
 
-        AirlineBean airlineBean = StringUtils.isEmpty(flightEntitiy.getAirlineCode()) ? null : this.getAirlinesService().loadAirlineByCode(flightEntitiy.getAirlineCode(), user);
-        if (airlineBean == null) {
-            airlineBean = new AirlineBean();
-            airlineBean.setCode(flightEntitiy.getAirlineCode());
-            airlineBean.setName(flightEntitiy.getAirlineName());
+        AirlineEntity airlineEntity = StringUtils.isEmpty(flightEntitiy.getAirlineCode()) ? null : this.getAirlinesRepository().loadAirlineByCode(flightEntitiy.getAirlineCode());
+        if (airlineEntity == null) {
+            airlineEntity = new AirlineEntity();
+            airlineEntity.setCode(flightEntitiy.getAirlineCode());
+            airlineEntity.setName(flightEntitiy.getAirlineName());
         }
 
         Instant departureDateTimeUtc = null;
@@ -150,7 +150,7 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         FlightBean flightBean = new FlightBean();
         flightBean.setEntityId(flightEntitiy.getId());
         flightBean.setAircraft(aircraftBean);
-        flightBean.setAirline(airlineBean);
+        flightBean.setAirline(airlineEntity);
         flightBean.setArrivalContact(arrivalContactBean);
         flightBean.setCabinClass(flightEntitiy.getCabinClass());
         flightBean.setComment(flightEntitiy.getComment());
@@ -219,12 +219,12 @@ class FlightsQueryServiceImpl implements FlightsQueryService {
         this.airportsRepository = airportsRepository;
     }
 
-    AirlinesService getAirlinesService() {
-        return this.airlinesService;
+    AirlinesRepository getAirlinesRepository() {
+        return this.airlinesRepository;
     }
     @Autowired
-    void setAirlinesService(AirlinesService airlinesService) {
-        this.airlinesService = airlinesService;
+    void setAirlinesRepository(AirlinesRepository airlinesRepository) {
+        this.airlinesRepository = airlinesRepository;
     }
 
 }

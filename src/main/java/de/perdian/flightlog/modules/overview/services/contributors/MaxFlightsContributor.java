@@ -10,13 +10,12 @@ import org.springframework.stereotype.Component;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
 import de.perdian.flightlog.modules.overview.services.OverviewContributor;
-import de.perdian.flightlog.modules.users.persistence.UserEntity;
 
 @Component
 class MaxFlightsContributor implements OverviewContributor {
 
     @Override
-    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights, UserEntity user) {
+    public void contributeTo(OverviewBean overviewBean, List<FlightBean> flights) {
         Map<String, FlightBean> resultMap = new LinkedHashMap<>();
         resultMap.put("longestFlightByDuration", this.computeMaxFlight(flights, 1, FlightBean::getFlightDuration));
         resultMap.put("longestFlightByDistance", this.computeMaxFlight(flights, 1, FlightBean::getFlightDistance));

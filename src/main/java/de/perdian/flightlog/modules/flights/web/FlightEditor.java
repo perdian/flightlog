@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.perdian.flightlog.modules.airlines.model.AirlineBean;
+import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
 import de.perdian.flightlog.modules.flights.model.AircraftBean;
 import de.perdian.flightlog.modules.flights.model.AirportBean;
 import de.perdian.flightlog.modules.flights.model.AirportContactBean;
@@ -85,10 +85,10 @@ public class FlightEditor implements Serializable {
         aircraftBean.setType(this.getAircraftType());
         flightBean.setAircraft(aircraftBean);
 
-        AirlineBean airlineBean = new AirlineBean();
-        airlineBean.setCode(this.getAirlineCode());
-        airlineBean.setName(this.getAirlineName());
-        flightBean.setAirline(airlineBean);
+        AirlineEntity airlineEntity = new AirlineEntity();
+        airlineEntity.setCode(this.getAirlineCode());
+        airlineEntity.setName(this.getAirlineName());
+        flightBean.setAirline(airlineEntity);
 
         AirportBean arrivalAirportBean = new AirportBean();
         arrivalAirportBean.setCode(this.getArrivalAirportCode());

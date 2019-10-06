@@ -13,13 +13,6 @@
         <a class="item" href="${contextPath}flights/add" onclick="JavaScript:$('#add-flight-wizard').modal('show');return false;"><fmt:message key="addFlight" /></a>
 
         <div class="ui simple dropdown item">
-            <fmt:message key="masterData" /><c:out value=" " /><i class="dropdown icon"></i><c:out value=" " />
-            <div class="menu">
-                <a class="item" href="${contextPath}airlines/list"><fmt:message key="editAirlines" /></a>
-            </div>
-        </div>
-
-        <div class="ui simple dropdown item">
             <fmt:message key="tools" /><c:out value=" " /><i class="dropdown icon"></i><c:out value=" " />
             <div class="menu">
                 <div class="ui dropdown item">
