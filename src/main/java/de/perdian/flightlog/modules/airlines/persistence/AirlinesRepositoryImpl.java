@@ -30,11 +30,11 @@ class AirlinesRepositoryImpl implements AirlinesRepository {
     @PostConstruct
     void initialize() throws IOException {
 
-        Resource airlinesResource = this.getResourceLoader().getResource("classpath:de/perdian/flightlog/data/airlines.dat");
-        log.info("Loading airlines from resource: {}", airlinesResource);
-
         Map<String, AirlineEntity> airlineBeansByCode = new LinkedHashMap<>();
-        try (BufferedReader airlinesReader = new BufferedReader(new InputStreamReader(airlinesResource.getInputStream(), "UTF-8"))) {
+
+        Resource openflightsAirlinesResource = this.getResourceLoader().getResource("classpath:de/perdian/flightlog/data/airlines.dat");
+        log.info("Loading airlines from Openflights resource: {}", openflightsAirlinesResource);
+        try (BufferedReader airlinesReader = new BufferedReader(new InputStreamReader(openflightsAirlinesResource.getInputStream(), "UTF-8"))) {
             for (String airlineLine = airlinesReader.readLine(); airlineLine != null; airlineLine = airlinesReader.readLine()) {
                 try {
                     List<String> lineFields = OpenflightsHelper.tokenizeLine(airlineLine);
@@ -51,8 +51,28 @@ class AirlinesRepositoryImpl implements AirlinesRepository {
                 }
             }
         }
+
+        Resource overwriteAirlinesResource = this.getResourceLoader().getResource("classpath:de/perdian/flightlog/data/airlines-overwrite.dat");
+        log.info("Loading airlines from overwrite resource: {}", overwriteAirlinesResource);
+        try (BufferedReader airlinesReader = new BufferedReader(new InputStreamReader(overwriteAirlinesResource.getInputStream(), "UTF-8"))) {
+            for (String airlineLine = airlinesReader.readLine(); airlineLine != null; airlineLine = airlinesReader.readLine()) {
+                if (airlineLine.strip().length() > 0 && !airlineLine.startsWith("#")) {
+                    try {
+                        List<String> lineFields = OpenflightsHelper.tokenizeLine(airlineLine);
+                        AirlineEntity airlineEntity = new AirlineEntity();
+                        airlineEntity.setName(lineFields.get(1));
+                        airlineEntity.setCode(lineFields.get(0));
+                        airlineEntity.setCountryCode(lineFields.get(2));
+                        airlineBeansByCode.put(airlineEntity.getCode(), airlineEntity);
+                    } catch (Exception e) {
+                        log.warn("Invalid overwrite airline line: {}", airlineLine, e);
+                    }
+                }
+            }
+        }
+
         this.setAirlineBeansByCode(airlineBeansByCode);
-        log.debug("Loaded airlines from resource: {}", airlinesResource);
+        log.debug("Loaded {} airlines from resources: {}", airlineBeansByCode.size(), List.of(openflightsAirlinesResource, overwriteAirlinesResource));
 
     }
 
