@@ -6,10 +6,12 @@
         </encoder>
     </appender>
 
-    <logger name="com.zaxxer.hikari" level="INFO" />
+    <logger name="com.zaxxer.hikari" level="WARN" />
     <logger name="org.apache.http" level="WARN" />
+    <logger name="org.apache.tomcat.util.scan.StandardJarScanner" level="ERROR" />
     <logger name="org.flywaydb" level="INFO" />
     <logger name="org.hibernate" level="INFO" />
+    <logger name="org.hibernate.jpa" level="WARN" />
     <logger name="org.springframework" level="INFO" />
     <logger name="org.springframework.boot.context.web.ErrorPageFilter" level="OFF" />
 
