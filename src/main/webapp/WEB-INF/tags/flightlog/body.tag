@@ -10,8 +10,7 @@
 
         <a class="item" href="${contextPath}"><fmt:message key="overview" /></a>
         <a class="item" href="${contextPath}flights/list"><fmt:message key="listFlights" /></a>
-        <a class="item" href="${contextPath}flights/add"><fmt:message key="addFlight" /></a>
-        <a class="item" href="${contextPath}" onclick="JavaScript:$('#add-flight-wizard').modal('show');return false;"><fmt:message key="wizard" /></a>
+        <a class="item" href="${contextPath}flights/add" onclick="JavaScript:$('#add-flight-wizard').modal('show');return false;"><fmt:message key="addFlight" /></a>
 
         <div class="ui simple dropdown item">
             <fmt:message key="masterData" /><c:out value=" " /><i class="dropdown icon"></i><c:out value=" " />
