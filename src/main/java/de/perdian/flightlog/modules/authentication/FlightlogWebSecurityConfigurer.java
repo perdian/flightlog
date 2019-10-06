@@ -22,10 +22,7 @@ class FlightlogWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 http.authenticationProvider(this.localAuthenticationProvider());
             }
             if (this.getSettings().getOauth().isEnabled()) {
-                http.oauth2Login()
-                    .loginPage("/login")
-                    .userInfoEndpoint()
-                        .oidcUserService(this.oauthUserService());
+                http.oauth2Login().loginPage("/login").userInfoEndpoint().oidcUserService(this.oauthUserService());
             }
             http.authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
