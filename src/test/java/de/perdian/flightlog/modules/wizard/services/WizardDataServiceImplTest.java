@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsCollectionWithSize;
-import org.hamcrest.core.IsCollectionContaining;
+import org.hamcrest.core.IsIterableContaining;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -28,7 +28,7 @@ public class WizardDataServiceImplTest {
 
         List<WizardData> flightDataResolved = serviceImpl.createData("LH", "123", LocalDate.of(2017, 10, 9), "CGN");
         MatcherAssert.assertThat(flightDataResolved, IsCollectionWithSize.hasSize(1));
-        MatcherAssert.assertThat(flightDataResolved, IsCollectionContaining.hasItem(data2));
+        MatcherAssert.assertThat(flightDataResolved, IsIterableContaining.hasItem(data2));
         Mockito.verify(factory1).createData(Mockito.eq("LH"), Mockito.eq("123"), Mockito.eq(LocalDate.of(2017, 10, 9)), Mockito.eq("CGN"));
         Mockito.verify(factory2).createData(Mockito.eq("LH"), Mockito.eq("123"), Mockito.eq(LocalDate.of(2017, 10, 9)), Mockito.eq("CGN"));
         Mockito.verifyNoMoreInteractions(factory3);
