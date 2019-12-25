@@ -14,7 +14,7 @@ import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
 /**
  * AJAX target controller to deliver information about airlines during the edit process
  *
- * @author Christian Robert
+ * @author Christian Seifert
  */
 
 @RestController

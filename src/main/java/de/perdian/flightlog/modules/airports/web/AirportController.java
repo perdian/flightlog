@@ -14,7 +14,7 @@ import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
 /**
  * AJAX target controller to deliver information about airports during the edit process
  *
- * @author Christian Robert
+ * @author Christian Seifert
  */
 
 @RestController

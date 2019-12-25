@@ -18,7 +18,7 @@ import de.perdian.flightlog.support.types.SeatType;
  * Intermediate item that contains all information related to a flights
  * that is used during imoprt or export process.
  *
- * @author Christian Robert
+ * @author Christian Seifert
  */
 
 public class DataItem implements Serializable {

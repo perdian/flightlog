@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Some general helper methods that do not fit anywhere else
  *
- * @author Christian Robert
+ * @author Christian Seifert
  */
 
 public class FlightlogHelper {
