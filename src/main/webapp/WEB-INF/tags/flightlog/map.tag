@@ -17,7 +17,8 @@
         view: new ol.View({
             center: ol.proj.fromLonLat([0, 25]),
             zoom: 1.85
-        })
+        }),
+        controls: []
     });
 
     var dataUrl = "<c:url value='/overview/map' />";
