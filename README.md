@@ -1,6 +1,7 @@
 # Introduction
 
-[![Travis build status](https://api.travis-ci.org/perdian/flightlog.svg)](https://travis-ci.org/perdian/flightlog)
+[![License](http://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Build](https://img.shields.io/circleci/build/github/perdian/flightlog/master)](https://circleci.com/gh/perdian/flightlog)
 
 The flightlog was born out of my nerdy necessity to have a bookkeeping tool of all the flights that I have undertaken so far.
 For years I was quite happy with flugstatistik.de but it hasn't really evolved over the last years leaving a UI that looks quite outdated. In addition there was no way for me to backup the data stored there, which leads to a formidable vendor lock-in. What happens when they decide to stop providing their service or I simply forget my login credentials?
