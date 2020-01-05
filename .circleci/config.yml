@@ -1,0 +1,26 @@
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:13-buster
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
+      - run:
+          name: "Build using Maven"
+          command: |
+            mvn -B clean package
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}      
+      - store_test_results:
+          path: target/surefire-reports
+      - setup_remote_docker
+      - run:
+          name: "Build Docker image"
+          command: |
+            docker build -t perdian/flightlog .
