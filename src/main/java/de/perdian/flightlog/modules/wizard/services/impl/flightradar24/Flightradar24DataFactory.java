@@ -209,7 +209,7 @@ public class Flightradar24DataFactory implements WizardDataFactory {
 
             Element actualDepartureTimeElement = tdElements.size() <= 8 ? null : tdElements.get(8);
             String actualDepartureTimeValue = actualDepartureTimeElement == null ? null : actualDepartureTimeElement.text().trim();
-            if (!StringUtils.isEmpty(actualDepartureTimeValue) && !"-".equalsIgnoreCase(actualDepartureTimeValue)) {
+            if (!StringUtils.isEmpty(actualDepartureTimeValue) && !"-".equalsIgnoreCase(actualDepartureTimeValue) && !"—".equalsIgnoreCase(actualDepartureTimeValue)) {
                 if (departureAirportEntity.getTimezoneId() != null && arrivalAirportEntity.getTimezoneId() != null) {
 
                     ZonedDateTime actualDeparturetimeUtc = LocalTime.parse(actualDepartureTimeValue).atDate(departureDate).atZone(ZoneId.of("UTC"));
