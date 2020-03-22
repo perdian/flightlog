@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.2.RELEASE</version>
+        <version>2.2.5.RELEASE</version>
     </parent>
 
     <groupId>de.perdian.flightlog</groupId>
@@ -48,7 +48,7 @@
         <jsoup.version>1.11.3</jsoup.version>
         <momentjs.version>2.24.0</momentjs.version>
         <openlayers.version>6.1.1</openlayers.version>
-        <webjars-locator.version>0.38</webjars-locator.version>
+        <webjars-locator.version>0.39</webjars-locator.version>
         <xsoup.version>0.3.1</xsoup.version>
     </properties>
 
