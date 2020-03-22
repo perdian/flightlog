@@ -74,7 +74,7 @@
             $('select.dropdown').dropdown();
     </script>
 
-    <form id="add-flight-wizard" class="ui mini modal" method="post" action="${contextPath}flights/add/wizard">
+    <form id="add-flight-wizard" class="ui large modal" method="post" action="${contextPath}flights/add/wizard">
         <i class="close icon"></i>
 
         <div class="ui icon header">
