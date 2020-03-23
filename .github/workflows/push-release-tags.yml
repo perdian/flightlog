@@ -18,6 +18,12 @@ jobs:
       - name: Extract release version
         id: extract_release_version
         run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d - -f 2)
+      - name: Create Docker image
+        uses: VaultVulp/gp-docker-action@1.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          image-name: flightlog
+          image-tag: "${{ steps.extract_release_version.outputs.VERSION }}"
       - name: Create GitHub release        
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -25,9 +31,3 @@ jobs:
           automatic_release_tag: "release-${{ steps.extract_release_version.outputs.VERSION }}"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-      - name: Create Docker image
-        uses: VaultVulp/gp-docker-action@1.0.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          image-name: flightlog
-          image-tag: "${{ steps.extract_release_version.outputs.VERSION }}"
