@@ -1,3 +1,4 @@
+name: Release
 on:
   push:
     tags:
@@ -6,7 +7,7 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    name: Build and deploy
+    name: Release
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
