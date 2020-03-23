@@ -5,11 +5,17 @@
 [![License](http://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 The flightlog was born out of my nerdy necessity to have a bookkeeping tool of all the flights that I have undertaken so far.
-For years I was quite happy with flugstatistik.de but it hasn't really evolved over the last years leaving a UI that looks quite outdated. In addition there was no way for me to backup the data stored there, which leads to a formidable vendor lock-in. What happens when they decide to stop providing their service or I simply forget my login credentials?
+For years I was quite happy with flugstatistik.de but it hasn't really evolved over the last years leaving a UI that looks quite outdated and a featureset that is okayish but lacks some of the things I would like to see.
+In addition there was (and still is) no way to backup the data stored there, which leads to a formidable vendor lock-in.
+What happens when they decide to stop providing their service or I simply forget my login credentials?
+Just not good enough.
 
-From what I have seen there are no real alternatives. Openflights.org is an excellent idea but the UI is even worse than flugstatistik.de looking like it has been hacked together in an hour or two. Don't get me wront I'm pretty sure a good amount of time has been invested but for me it simply looks awful.
+From what I saw at the time (and from what I see today) there are no real alternatives.
+Openflights.org is an excellent idea but the UI is even worse than flugstatistik.de, looking like it has been hacked together in an hour or two.
+Don't get me wrong I'm pretty sure a good amount of time has been invested but for me it simply looks awful.
 
-So, as no appropriate tool was available I simply decided to write one myself. The overall UI somewhat follows a few ideas from flugstatistik.de but (hopefully) is a bit more modern and streamlined.
+So, as no appropriate tool was available I simply decided to write one myself.
+The overall UI somewhat follows a few ideas from flugstatistik.de but (hopefully) is a bit more modern and streamlined.
 
 ![Home screen](docs/screenshots/home.png)
 
@@ -24,7 +30,7 @@ First clone the repository and switch to the created directory:
 
 ## WAR
 
-To create the JAR file simply execute the default Maven build command:
+To create the WAR file execute the default Maven `package` command:
 
     $ mvn clean package
     $ java -jar target/flightlog.war
@@ -35,7 +41,24 @@ When running this directly the embedded Tomcat will provide the application dire
 
 ## Docker container
 
-An alternative do running the WAR file directly is to create a Docker container that wraps the complete application:
+### Fetch from GitHub package registry
+
+An alternative do running the WAR file directly is to create a Docker container that wraps the complete application.
+
+Releases are automatically pushed to GitHub packages so all you need to do is to run the Docker image.
+Make sure to [setup Docker for use with GitHub packages](https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages) first.
+
+    $ docker run -p 8080:8080 docker.pkg.github.com/perdian/flightlog/flightlog:1.0.0
+
+Replace the `1.0.0` version with the latest release which can be found at https://github.com/perdian/flightlog/releases.
+
+The application will be available on the machine on which you're executing the container at:
+
+    <http://localhost:8080/>
+
+### Build from sources
+
+If you want to build the Docker image yourself from the flightlog sources it can be done like this:
 
     $ mvn clean package
     $ docker build -t perdian/flightlog .
