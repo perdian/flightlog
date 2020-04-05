@@ -42,10 +42,8 @@ jobs:
       - run:
           name: "Publish README to Docker Hub"
           command: |
-            echo "Using README at: $(realpath $CIRCLE_WORKING_DIRECTORY)/README.md"
-            cat $(realpath $CIRCLE_WORKING_DIRECTORY)/README.md
             docker run --rm \
-              -v $(realpath $CIRCLE_WORKING_DIRECTORY)/README.md:/data/README.md \
+              -v $(realpath README.md):/data/README.md \
               -e DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME \
               -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD \
               -e DOCKERHUB_REPO_NAME=flightlog \
