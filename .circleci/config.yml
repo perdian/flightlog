@@ -64,8 +64,7 @@ jobs:
                 -r ${CIRCLE_PROJECT_REPONAME} \
                 -c ${CIRCLE_SHA1} \
                 -n ${VERSION} \
-                ${VERSION} \
-                target/          
+                release-${VERSION}
 
 workflows:
   version: 2
@@ -75,7 +74,7 @@ workflows:
       - publish_to_docker_hub:
           requires: [ "build" ]
       - release_at_github:
-          requires: [ "publish" ]
+          requires: [ "publish_to_docker_hub" ]
           
 ##      - publish:
 ##          filters:
