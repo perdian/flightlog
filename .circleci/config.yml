@@ -50,7 +50,7 @@ jobs:
               sheogorath/readme-to-dockerhub
   release_at_github:
     docker:
-      - image: cibuilds/github:0.10
+      - image: cibuilds/github:0.13
     steps:
       - checkout
       - attach_workspace:
