@@ -20,9 +20,6 @@ jobs:
       - save_cache:
           paths: ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}      
-      - save_cache:
-          paths: ~/.m2
-          key: v1-build-{{ checksum "pom.xml" }}      
       - store_test_results:
           path: target/surefire-reports
       - persist_to_workspace:
