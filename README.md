@@ -25,7 +25,7 @@ The flightlog is bundled either as a Spring Boot application.
 
 First clone the repository and switch to the created directory:
 
-    $ git clone <https://github.com/perdian/flightlog.git>
+    $ git clone https://github.com/perdian/flightlog.git
     $ cd flightlog
 
 ## WAR
@@ -37,7 +37,7 @@ To create the WAR file execute the default Maven `package` command:
 
 When running this directly the embedded Tomcat will provide the application directly from the root:
 
-    <http://localhost:8080/>
+    http://localhost:8080/
 
 ## Docker container
 
@@ -53,7 +53,7 @@ Replace the `1.0.0` version with the latest release which can be found at https:
 
 The application will be available on the machine on which you're executing the container at:
 
-    <http://localhost:8080/>
+    http://localhost:8080/
 
 ### Build from sources
 
@@ -68,7 +68,7 @@ After the container is built you can verify the application by running it:
 
 The application will be available on the machine on which you're executing the container at:
 
-    <http://localhost:8080/>
+    http://localhost:8080/
 
 To persist the database in which the flightlog stores all its information you have to mount the directory `/var/flightlog/database/` from the container to somewhere on your host machine:
 
