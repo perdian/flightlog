@@ -42,6 +42,7 @@ jobs:
       - run:
           name: "Publish README to Docker Hub"
           command: |
+            echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
             docker create -v /data --name datas alpine:3.4 /bin/true
             docker cp README.md datas:/data
             docker run --rm \
