@@ -1,7 +1,7 @@
 # Introduction
 
 [![Releases](https://img.shields.io/github/v/release/perdian/flightlog)](https://github.com/perdian/flightlog/releases)
-[![Build](https://github.com/perdian/flightlog/workflows/Build/badge.svg)](https://github.com/perdian/flightlog/actions)
+[![Build](https://img.shields.io/circleci/build/github/perdian/flightlog/master)](https://circleci.com/gh/perdian/flightlog)
 [![License](http://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 The flightlog was born out of my nerdy necessity to have a bookkeeping tool of all the flights that I have undertaken so far.
