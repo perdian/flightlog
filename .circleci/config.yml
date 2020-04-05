@@ -48,6 +48,23 @@ jobs:
               -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD \
               -e DOCKERHUB_REPO_NAME=flightlog \
               sheogorath/readme-to-dockerhub
+  release_at_github:
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+      - checkout
+      - attach_workspace:
+          at: target/
+      - run:
+          name: "Create GitHub release"
+          command: |
+            export VERSION=$(git describe --tags --match "release-*" | cut -d '-' -f2-)
+            ghr -t ${GITHUB_TOKEN} \
+                -u ${CIRCLE_PROJECT_USERNAME} \
+                -r ${CIRCLE_PROJECT_REPONAME} \
+                -c ${CIRCLE_SHA1} \
+                -n ${VERSION}
+                target/          
 
 workflows:
   version: 2
@@ -56,6 +73,9 @@ workflows:
       - build
       - publish:
           requires: [ "build" ]
+      - release_at_github:
+          requires: [ "publish" ]
+          
 ##      - publish:
 ##          filters:
 ##            branches:
