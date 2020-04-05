@@ -42,8 +42,10 @@ jobs:
       - run:
           name: "Publish README to Docker Hub"
           command: |
+            echo "Using README at: $(realpath $CIRCLE_WORKING_DIRECTORY)/README.md"
+            cat $(realpath $CIRCLE_WORKING_DIRECTORY)/README.md
             docker run --rm \
-              -v $(pwd)/README.md:/data/README.md \
+              -v $(realpath $CIRCLE_WORKING_DIRECTORY)/README.md:/data/README.md \
               -e DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME \
               -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD \
               -e DOCKERHUB_REPO_NAME=flightlog \
@@ -68,10 +70,20 @@ jobs:
 
 workflows:
   version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: /.*/                
+            tags:
+              ignore: /.*/
   build_and_publish:
     jobs:
       - build:
           filters:
+            branches:
+              ignore: /.*/                
             tags:
               only: /release-.*/                
       - publish_to_docker_hub:
