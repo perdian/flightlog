@@ -71,8 +71,9 @@ workflows:
   build_and_publish:
     jobs:
       - build:
-          tags:
-            only: /release-.*/                
+          filters:
+            tags:
+              only: /release-.*/                
       - publish_to_docker_hub:
           requires: [ "build" ]
           filters:
