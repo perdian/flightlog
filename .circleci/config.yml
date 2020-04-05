@@ -35,8 +35,10 @@ jobs:
       - run:
           name: "Build Docker image"
           command: |
-            docker build -t perdian/flightlog .
+            export VERSION=$(git describe --tags --match "release-*" | cut -d '-' -f2-)
+            docker build -t perdian/flightlog:${VERSION} .
             echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin
+            docker push perdian/flightlog:${VERSION}
 
 workflows:
   version: 2
