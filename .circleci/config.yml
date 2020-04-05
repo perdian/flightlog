@@ -42,8 +42,10 @@ jobs:
       - run:
           name: "Publish README to Docker Hub"
           command: |
+            docker create -v /data --name datas alpine:3.4 /bin/true
+            docker cp README.md datas:/data
             docker run --rm \
-              -v $(realpath README.md):/data/README.md \
+              --volumes-from datas \
               -e DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME \
               -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD \
               -e DOCKERHUB_REPO_NAME=flightlog \
