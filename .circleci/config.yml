@@ -25,7 +25,7 @@ jobs:
       - persist_to_workspace:
           root: target/
           paths: "*.war"
-  publish:
+  publish_to_docker_hub:
     executor: docker
     steps:
       - checkout
@@ -72,7 +72,7 @@ workflows:
   build_and_publish:
     jobs:
       - build
-      - publish:
+      - publish_to_docker_hub:
           requires: [ "build" ]
       - release_at_github:
           requires: [ "publish" ]
