@@ -45,10 +45,9 @@ When running this directly the embedded Tomcat will provide the application dire
 
 An alternative do running the WAR file directly is to create a Docker container that wraps the complete application.
 
-Releases are automatically pushed to GitHub packages so all you need to do is to run the Docker image.
-Make sure to [setup Docker for use with GitHub packages](https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages) first.
+Releases are automatically pushed to DockerHub packages so all you need to do is to run the Docker image.
 
-    $ docker run -p 8080:8080 docker.pkg.github.com/perdian/flightlog/flightlog:1.0.0
+    $ docker run -p 8080:8080 perdian/flightlog:1.0.0
 
 Replace the `1.0.0` version with the latest release which can be found at https://github.com/perdian/flightlog/releases.
 

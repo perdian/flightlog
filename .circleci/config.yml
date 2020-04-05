@@ -37,8 +37,14 @@ jobs:
           command: |
             export VERSION=$(git describe --tags --match "release-*" | cut -d '-' -f2-)
             docker build -t perdian/flightlog:${VERSION} .
-            echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin
+            echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
             docker push perdian/flightlog:${VERSION}
+            docker run --rm \
+              -v README.md:/data/README.md \
+              -e DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME \
+              -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD \
+              -e DOCKERHUB_REPO_NAME=flightlog \
+              sheogorath/readme-to-dockerhub
 
 workflows:
   version: 2
