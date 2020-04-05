@@ -65,22 +65,9 @@ jobs:
                 -c ${CIRCLE_SHA1} \
                 -n ${VERSION} \
                 release-${VERSION}
-  test:
-    executor: docker
-    steps:
-      - run:
-          name: "TEST"
-          command: |
-            echo "TEST"
 
 workflows:
   version: 2
-  foo:
-    jobs:
-      - test:
-          filters:
-            tags:
-              only: /release-.*/                
   build_and_publish:
     jobs:
       - build:
