@@ -3,10 +3,6 @@ package de.perdian.flightlog.support.web;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.perdian.flightlog.support.web.Message;
-import de.perdian.flightlog.support.web.MessageSeverity;
-import de.perdian.flightlog.support.web.Messages;
-
 public class MessagesTest {
 
     @Test

@@ -3,8 +3,6 @@ package de.perdian.flightlog.support.types;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.perdian.flightlog.support.types.FlightDistance;
-
 public class FlightDistanceTest {
 
     @Test

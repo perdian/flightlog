@@ -4,8 +4,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.jupiter.api.Test;
 
-import de.perdian.flightlog.modules.flights.web.FlightEditorHelper;
-import de.perdian.flightlog.modules.flights.web.FlightEditorHelperAdvice;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.SeatType;

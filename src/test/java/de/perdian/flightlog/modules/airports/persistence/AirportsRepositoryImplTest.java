@@ -9,9 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 
-import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
-import de.perdian.flightlog.modules.airports.persistence.AirportsRepositoryImpl;
-
 public class AirportsRepositoryImplTest {
 
     @Test

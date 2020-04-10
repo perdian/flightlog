@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import de.perdian.flightlog.FlightlogTestHelper;
-import de.perdian.flightlog.modules.flights.web.FlightsSupportController;
 
 public class FlightsSupportControllerTest {
 

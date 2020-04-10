@@ -13,8 +13,6 @@ import org.springframework.validation.BindingResult;
 import de.perdian.flightlog.modules.flights.model.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
 import de.perdian.flightlog.modules.flights.services.FlightsUpdateService;
-import de.perdian.flightlog.modules.flights.web.FlightEditor;
-import de.perdian.flightlog.modules.flights.web.FlightsEditController;
 import de.perdian.flightlog.modules.flights.web.FlightsEditController.FlightNotFoundException;
 import de.perdian.flightlog.support.persistence.PaginatedList;
 import de.perdian.flightlog.support.web.MessageSeverity;

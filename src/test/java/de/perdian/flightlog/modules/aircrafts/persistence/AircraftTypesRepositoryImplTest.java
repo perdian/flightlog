@@ -9,9 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 
-import de.perdian.flightlog.modules.aircrafts.persistence.AircraftTypeEntity;
-import de.perdian.flightlog.modules.aircrafts.persistence.AircraftTypesRepositoryImpl;
-
 public class AircraftTypesRepositoryImplTest {
 
     @Test

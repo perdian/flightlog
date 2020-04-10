@@ -6,9 +6,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.perdian.flightlog.support.persistence.PaginatedList;
-import de.perdian.flightlog.support.persistence.PaginationData;
-
 public class PaginatedListTest {
 
     @Test
