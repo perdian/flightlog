@@ -3,7 +3,7 @@ version: 2.1
 executors:
   docker:
     docker:
-      - image: circleci/openjdk:13-buster
+      - image: circleci/openjdk:15-buster
 
 jobs:
   build:
