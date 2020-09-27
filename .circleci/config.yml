@@ -49,7 +49,7 @@ jobs:
               -e DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME \
               -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD \
               -e DOCKERHUB_REPO_NAME=flightlog \
-              readme-to-hub
+              devmtl/readme-to-dockerhub
   release_at_github:
     docker:
       - image: cibuilds/github:0.13
