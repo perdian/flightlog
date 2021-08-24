@@ -45,7 +45,7 @@
         <jaxb.version>2.3.0</jaxb.version>
         <jimfs.version>1.1</jimfs.version>
         <jquery.version>3.5.1</jquery.version>
-        <jsoup.version>1.11.3</jsoup.version>
+        <jsoup.version>1.14.2</jsoup.version>
         <momentjs.version>2.24.0</momentjs.version>
         <openlayers.version>6.4.2</openlayers.version>
         <webjars-locator.version>0.40</webjars-locator.version>
