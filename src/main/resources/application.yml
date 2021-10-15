@@ -7,13 +7,8 @@ spring:
   flyway:
     encoding: UTF-8
     locations:
-    - "classpath:de/perdian/flightlog/flyway/"
+      - "classpath:de/perdian/flightlog/flyway/"
     validate-on-migrate: false
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
   jpa:
     properties:
       hibernate:
@@ -43,9 +38,10 @@ server:
     session:
       cookie:
         name: flightlog-session
-  tomcat:
-    remote-ip-header: x-forwarded-for
-    protocol-header: x-forwarded-proto
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 flightlog:
   authentication:
@@ -57,9 +53,6 @@ flightlog:
   registration:
     restricted: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_RESTRICTED:true}
     email-whitelist: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_EMAIL_WHITELIST:}
-  data:
-    flightradar24:
-      enabled:  ${FLIGHTLOG_DATA_FLIGHTRADAR24_ENABLED:false}
   backup:
     cron: ${FLIGHTLOG_BACKUP_CRON:}
     target: ${FLIGHTLOG_BACKUP_TARGET:}

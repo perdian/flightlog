@@ -40,7 +40,6 @@ import de.perdian.flightlog.support.FlightlogHelper;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
-import us.codecraft.xsoup.Xsoup;
 
 @Component
 public class Flightradar24DataFactory implements WizardDataFactory {
@@ -49,34 +48,33 @@ public class Flightradar24DataFactory implements WizardDataFactory {
 
     private AircraftTypesRepository aircraftTypesRepository = null;
     private AirportsRepository airportsRepository = null;
-    private Flightradar24DataConfiguration configuration = null;
     private Clock clock = Clock.systemUTC();
 
     @Override
     public List<WizardData> createData(String airlineCode, String flightNumber, LocalDate departureDate, String departureAirportCode) {
-        if (this.getConfiguration().isEnabled()) {
-            try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 
-                String resolvedFlightNumber = this.resolveActualFlightNumber(airlineCode, flightNumber, departureDate, httpClient);
-                Matcher resolvedFlightNumberMatcher = Pattern.compile("([a-zA-Z]+)(\\d+)").matcher(resolvedFlightNumber);
-                String actualAirlineCode = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(1) : airlineCode;
-                String actualFlightNumber = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(2) : flightNumber;
+            String resolvedFlightNumber = this.resolveActualFlightNumber(airlineCode, flightNumber, departureDate, httpClient);
+            Matcher resolvedFlightNumberMatcher = Pattern.compile("([a-zA-Z]+)(\\d+)").matcher(resolvedFlightNumber);
+            String actualAirlineCode = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(1) : airlineCode;
+            String actualFlightNumber = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(2) : flightNumber;
 
-                String httpGetUrl = "https://www.flightradar24.com/data/flights/" + actualAirlineCode + actualFlightNumber;
-                log.debug("Querying flightradar24 for flight {}{} on {} using URL: {}", actualAirlineCode, actualFlightNumber, departureDate, httpGetUrl);
+            String httpGetUrl = "https://www.flightradar24.com/data/flights/" + actualAirlineCode + actualFlightNumber;
+            log.debug("Querying flightradar24 for flight {}{} on {} using URL: {}", actualAirlineCode, actualFlightNumber, departureDate, httpGetUrl);
 
-                try (CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(httpGetUrl))) {
-                     String httpResponseContent = EntityUtils.toString(httpResponse.getEntity());
-                     Document htmlDocument = Jsoup.parse(httpResponseContent);
-                     Elements dataTableElements = Xsoup.select(htmlDocument, "//table[@id='tbl-datatable']").getElements();
-                     if (dataTableElements.size() > 0) {
-                         return this.createDataFromDataTable(dataTableElements.get(0), actualAirlineCode, actualFlightNumber, departureDate, departureAirportCode);
-                     }
-                }
-
-            } catch (Exception e) {
-                log.debug("Cannot retreive data from flightradar24 for flight {}{} on {}", airlineCode, flightNumber, departureDate, e);
+            HttpGet httpRequest = new HttpGet(httpGetUrl);
+            httpRequest.addHeader("User-Agent", "curl");
+            try (CloseableHttpResponse httpResponse = httpClient.execute(httpRequest)) {
+                 String httpResponseContent = EntityUtils.toString(httpResponse.getEntity());
+                 Document htmlDocument = Jsoup.parse(httpResponseContent);
+                 Element dataTableElement = htmlDocument.selectFirst("table#tbl-datatable");
+                 if (dataTableElement != null) {
+                     return this.createDataFromDataTable(dataTableElement, actualAirlineCode, actualFlightNumber, departureDate, departureAirportCode);
+                 }
             }
+
+        } catch (Exception e) {
+            log.debug("Cannot retreive data from flightradar24 for flight {}{} on {}", airlineCode, flightNumber, departureDate, e);
         }
         return null;
     }
@@ -260,14 +258,6 @@ public class Flightradar24DataFactory implements WizardDataFactory {
     @Autowired
     void setAirportsRepository(AirportsRepository airportsRepository) {
         this.airportsRepository = airportsRepository;
-    }
-
-    Flightradar24DataConfiguration getConfiguration() {
-        return this.configuration;
-    }
-    @Autowired
-    void setConfiguration(Flightradar24DataConfiguration configuration) {
-        this.configuration = configuration;
     }
 
     Clock getClock() {
