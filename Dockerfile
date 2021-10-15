@@ -1,7 +1,7 @@
-FROM openjdk:15-slim
+FROM openjdk:17-slim
 
 VOLUME /var/flightlog/database/
 
-COPY target/flightlog.war /var/flightlog/flightlog.war
+COPY target/flightlog.jar /var/flightlog/flightlog.jar
 
-CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-XX:+UnlockExperimentalVMOptions", "-jar", "/var/flightlog/flightlog.war"]
+CMD ["java", "-jar", "/var/flightlog/flightlog.jar"]
