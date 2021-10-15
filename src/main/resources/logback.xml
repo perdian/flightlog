@@ -12,8 +12,11 @@
     <logger name="org.flywaydb" level="INFO" />
     <logger name="org.hibernate" level="INFO" />
     <logger name="org.hibernate.jpa" level="WARN" />
+    <logger name="org.hibernate.validator" level="WARN" />
+    <logger name="org.jboss.logging" level="WARN" />
     <logger name="org.springframework" level="INFO" />
     <logger name="org.springframework.boot.context.web.ErrorPageFilter" level="OFF" />
+    <logger name="_org.springframework" level="WARN" />
 
     <root level="debug">
         <appender-ref ref="STDOUT" />
