@@ -4,16 +4,11 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -45,6 +40,8 @@ import net.minidev.json.parser.JSONParser;
 public class Flightradar24DataFactory implements WizardDataFactory {
 
     private static final Logger log = LoggerFactory.getLogger(Flightradar24DataFactory.class);
+    private static final Pattern AIRPORT_CODE_PATTERN = Pattern.compile("\\(([A-Z]+)\\)");
+    private static final Pattern AIRCRAFT_REGISTRATION_PATTERN = Pattern.compile("\\((.+?)\\)");
 
     private AircraftTypesRepository aircraftTypesRepository = null;
     private AirportsRepository airportsRepository = null;
@@ -103,145 +100,68 @@ public class Flightradar24DataFactory implements WizardDataFactory {
     }
 
     private List<WizardData> createDataFromDataTable(Element dataTableElement, String airlineCode, String flightNumber, LocalDate departureDate, String departureAirportCode) {
-        LocalDate currentDate = LocalDate.now(this.getClock());
-        Elements trElements = dataTableElement.getElementsByTag("tr");
-        List<Element> trElementsForSpecificDate = currentDate.isBefore(departureDate) ? null : this.lookupTableRowsForDate(trElements, departureDate, departureAirportCode);
-        if (trElementsForSpecificDate != null && !trElementsForSpecificDate.isEmpty()) {
-            return trElementsForSpecificDate.stream()
-                .map(tableRow -> this.createDataFromTableRow(tableRow, airlineCode, flightNumber, departureDate))
-                .sorted(WizardData::sortByDepartureDateAndTime)
-                .collect(Collectors.toList());
-        } else {
-            List<Element> trElementsForCurrentDate = this.lookupTableRowsForDate(trElements, LocalDate.now().minusDays(1), departureAirportCode);
-            if (trElementsForCurrentDate.size() == 1) {
-                WizardData currentDateFlightData = this.createDataFromTableRow(trElementsForCurrentDate.get(0), airlineCode, flightNumber, departureDate);
-                if (currentDateFlightData != null) {
-
-                    // As the departure and arrival times as well as the aircraft registry is not actually the
-                    // right one for the departure date passed as parameter to the method but instead the values
-                    // from yesterday, we'll only use the values which we assume are the same (which currently
-                    // are the airport codes plus the originally queried departure date)
-                    WizardData resultFlightData = new WizardData();
-                    resultFlightData.setAirlineCode(currentDateFlightData.getAirlineCode());
-                    resultFlightData.setFlightNumber(currentDateFlightData.getFlightNumber());
-                    resultFlightData.setArrivalAirportCode(currentDateFlightData.getArrivalAirportCode());
-                    resultFlightData.setDepartureAirportCode(currentDateFlightData.getDepartureAirportCode());
-                    resultFlightData.setDepartureDateLocal(departureDate);
-                    return Collections.singletonList(resultFlightData);
-
-                }
-            }
-        }
-        return null;
+        return dataTableElement.select("tbody tr").stream()
+            .map(row -> this.createDataRowFromDataTableRow(row))
+            .filter(dataRow -> departureDate != null && dataRow.matchesDepartureLocalDate(departureDate))
+            .filter(dataRow -> StringUtils.isEmpty(departureAirportCode) || dataRow.matchesDepartureAirportCode(departureAirportCode))
+            .map(dataRow -> dataRow.toWizardData(airlineCode, flightNumber))
+            .toList();
     }
 
-    private List<Element> lookupTableRowsForDate(Elements trElements, LocalDate targetDate, String targetDepartureAirport) {
-        List<Element> tableRowsForDate = new ArrayList<>();
-        for (int i=0; i < trElements.size(); i++) {
+    private Flightradar24DataRow createDataRowFromDataTableRow(Element sourceRow) {
 
-            Element trElement = trElements.get(i);
-            Elements tdElements = trElement.getElementsByTag("td");
+        Elements cells = sourceRow.select("td");
+        Element departureCate = cells.get(2);
+        LocalDate departureDateUtc = LocalDate.parse(departureCate.text().strip(), DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(Locale.ENGLISH));
 
-            Element dateElement = tdElements.size() <= 2 ? null : tdElements.get(2);
-            String dateString = dateElement == null ? null : dateElement.text().trim();
-            LocalDate date = StringUtils.isEmpty(dateString) ? null : LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(Locale.ENGLISH));
-            boolean dateMatches = date != null && date.equals(targetDate);
-
-            Element departureAirportElement = tdElements.size() <= 2 ? null : tdElements.get(2);
-            List<Element> departureAirportCodeElements = departureAirportElement == null ? null : departureAirportElement.getElementsByTag("a");
-            String departureAirportValue = departureAirportCodeElements == null || departureAirportCodeElements.isEmpty() ? null : departureAirportCodeElements.get(0).text();
-            boolean departureAirportMatches = StringUtils.isBlank(targetDepartureAirport) || targetDepartureAirport.equalsIgnoreCase(departureAirportValue);
-
-            Element statusElement = tdElements.size() <= 11 ? null : tdElements.get(11);
-            String status = statusElement == null ? null : statusElement.text().trim();
-            boolean statusMatches = !"Scheduled".equalsIgnoreCase(status) && !"Unknown".equalsIgnoreCase(status);
-
-            if (dateMatches && departureAirportMatches && statusMatches) {
-                tableRowsForDate.add(trElement);
-            }
-
-        }
-        return tableRowsForDate;
-    }
-
-    private WizardData createDataFromTableRow(Element trElement, String airlineCode, String flightNumber, LocalDate departureDate) {
-
-        WizardData wizardData = new WizardData();
-        wizardData.setDepartureDateLocal(departureDate);
-        wizardData.setAirlineCode(airlineCode);
-        wizardData.setFlightNumber(flightNumber);
-
-        Elements tdElements = trElement.getElementsByTag("td");
-        Element aircraftElement = tdElements.size() <= 5 ? null : tdElements.get(5);
-        String aircraftType = aircraftElement == null ? null : aircraftElement.text().trim();
-        int aircraftCodeEndIndex = aircraftType == null ? null : aircraftType.indexOf(" ");
-        String aircraftTypeCode = aircraftType == null ? null : (aircraftCodeEndIndex < 0 ? aircraftType : aircraftType.substring(0, aircraftCodeEndIndex));
-        if (StringUtils.isNotEmpty(aircraftTypeCode)) {
-            AircraftTypeEntity aircraftTypeEntity = this.getAircraftTypesRepository().loadAircraftTypeByCode(aircraftTypeCode);
-            if (aircraftTypeEntity != null && !StringUtils.isEmpty(aircraftTypeEntity.getTitle())) {
-                wizardData.setAircraftType(aircraftTypeEntity.getTitle());
-            } else {
-                wizardData.setAircraftType(aircraftTypeCode);
-            }
-        }
-        Elements aircraftRegistryElement = aircraftElement == null ? null : aircraftElement.getElementsByTag("a");
-        if (aircraftRegistryElement != null && !aircraftRegistryElement.isEmpty()) {
-            wizardData.setAircraftRegistration(extractValue(aircraftRegistryElement.text().trim()));
-        }
-
-        Element departureAirportElement = tdElements.size() <= 3 ? null : tdElements.get(3);
-        Elements departureAirportCodeElements = departureAirportElement == null ? null : departureAirportElement.getElementsByTag("a");
-        Element departureAirportCodeElement = departureAirportCodeElements == null || departureAirportCodeElements.isEmpty() ? null : departureAirportCodeElements.get(0);
-        String departureAirportCode = departureAirportCodeElement == null ? null : this.extractValue(departureAirportCodeElement.text().trim());
-        wizardData.setDepartureAirportCode(departureAirportCode);
-
-        Element arrivalAirportElement = tdElements.size() <= 4 ? null : tdElements.get(4);
-        Elements arrivalAirportCodeElements = arrivalAirportElement == null ? null : arrivalAirportElement.getElementsByTag("a");
-        Element arrivalAirportCodeElement = arrivalAirportCodeElements == null || arrivalAirportCodeElements.isEmpty() ? null : arrivalAirportCodeElements.get(0);
-        String arrivalAirportCode = arrivalAirportCodeElement == null ? null : this.extractValue(arrivalAirportCodeElement.text().trim());
-        wizardData.setArrivalAirportCode(arrivalAirportCode);
-
+        Element departureAirportCell = cells.get(3);
+        String departureAirportCodePlusBrackets = departureAirportCell.selectFirst("a").text().strip();
+        Matcher departureAirportMatcher = AIRPORT_CODE_PATTERN.matcher(departureAirportCodePlusBrackets);
+        String departureAirportCode = departureAirportMatcher.matches() ? departureAirportMatcher.group(1) : null;
         AirportEntity departureAirportEntity = this.getAirportsRepository().loadAirportByIataCode(departureAirportCode);
+
+        Element arrivalAirportCell = cells.get(4);
+        String arrivalAirportCodePlusBrackets = arrivalAirportCell.selectFirst("a").text().strip();
+        Matcher arrivalAirportMatcher = AIRPORT_CODE_PATTERN.matcher(arrivalAirportCodePlusBrackets);
+        String arrivalAirportCode = arrivalAirportMatcher.matches() ? arrivalAirportMatcher.group(1) : null;
         AirportEntity arrivalAirportEntity = this.getAirportsRepository().loadAirportByIataCode(arrivalAirportCode);
-        if (departureAirportEntity != null && arrivalAirportEntity != null) {
 
-            Element actualDepartureTimeElement = tdElements.size() <= 8 ? null : tdElements.get(8);
-            String actualDepartureTimeValue = actualDepartureTimeElement == null ? null : actualDepartureTimeElement.text().trim();
-            if (!StringUtils.isEmpty(actualDepartureTimeValue) && !"-".equalsIgnoreCase(actualDepartureTimeValue) && !"—".equalsIgnoreCase(actualDepartureTimeValue)) {
-                if (departureAirportEntity.getTimezoneId() != null && arrivalAirportEntity.getTimezoneId() != null) {
+        Element aircraftCell = cells.get(5);
+        String aircraftTypeValue = aircraftCell.text().strip();
+        int aircraftTypeCodeEndIndex = aircraftTypeValue == null ? null : aircraftTypeValue.indexOf(" ");
+        String aircraftTypeCode = aircraftTypeValue == null ? null : (aircraftTypeCodeEndIndex < 0 ? aircraftTypeValue : aircraftTypeValue.substring(0, aircraftTypeCodeEndIndex));
+        AircraftTypeEntity aircraftTypeEntity = StringUtils.isEmpty(aircraftTypeCode) ? null : this.getAircraftTypesRepository().loadAircraftTypeByCode(aircraftTypeCode);
+        String aircraftType = aircraftTypeEntity == null ? aircraftTypeCode : aircraftTypeEntity.getTitle();
 
-                    ZonedDateTime actualDeparturetimeUtc = LocalTime.parse(actualDepartureTimeValue).atDate(departureDate).atZone(ZoneId.of("UTC"));
-                    LocalTime actualDepartureTimeLocal = actualDeparturetimeUtc.withZoneSameInstant(departureAirportEntity.getTimezoneId()).toLocalTime();
-                    wizardData.setDepartureTimeLocal(actualDepartureTimeLocal);
+        Element aircraftRegistrationElement = aircraftCell.selectFirst("a");
+        String aircaftRegistrationValue = aircraftRegistrationElement == null ? null : aircraftRegistrationElement.text().strip();
+        Matcher aircraftRegistrationMatcher = StringUtils.isEmpty(aircaftRegistrationValue) ? null : AIRCRAFT_REGISTRATION_PATTERN.matcher(aircaftRegistrationValue);
+        String aircraftRegistratopm = aircraftRegistrationMatcher != null && aircraftRegistrationMatcher.matches() ? aircraftRegistrationMatcher.group(1) : null;
 
-                    Element flightDurationElement = tdElements.size() <= 6 ? null : tdElements.get(6);
-                    String flightDurationValue = flightDurationElement == null ? null : flightDurationElement.text().trim();
-                    Duration flightDuration = FlightlogHelper.parseDuration(flightDurationValue);
-                    if (flightDuration != null) {
-                        ZonedDateTime actualDepartureTimeZoned = actualDepartureTimeLocal.atDate(departureDate).atZone(departureAirportEntity.getTimezoneId());
-                        ZonedDateTime actualArrivalTimeZonedAtDeparture = actualDepartureTimeZoned.plus(flightDuration);
-                        ZonedDateTime actualArrivalTimeZonedAtArrival = actualArrivalTimeZonedAtDeparture.withZoneSameInstant(arrivalAirportEntity.getTimezoneId());
-                        wizardData.setArrivalDateLocal(actualArrivalTimeZonedAtArrival.toLocalDate());
-                        wizardData.setArrivalTimeLocal(actualArrivalTimeZonedAtArrival.toLocalTime());
-                    }
+        Element flightTimeElement = cells.get(6);
+        String flightTimeValue = flightTimeElement.text().strip();
+        Duration flightTime = flightTimeValue != null && flightTimeValue.length() > 1 ? FlightlogHelper.parseDuration(flightTimeValue) : null;
 
-                }
-            }
+        Element actualDepartureTimeCell = cells.get(8);
+        String actualDepartureTimeUtcValue = actualDepartureTimeCell.text().strip();
+        LocalTime actualDepartureTimeUtc = actualDepartureTimeUtcValue.length() > 1 ? LocalTime.parse(actualDepartureTimeUtcValue) : null;
 
-        }
+        Element statusCell = cells.get(11);
+        String status = statusCell.text().strip();
 
-        return wizardData;
+        Flightradar24DataRow dataRow = new Flightradar24DataRow();
+        dataRow.setDepartureAirportEntity(departureAirportEntity);
+        dataRow.setDepartureAirportCode(departureAirportEntity == null ? departureAirportCode : departureAirportEntity.getIataCode());
+        dataRow.setDepartureDateUtc(departureDateUtc);
+        dataRow.setDepartureTimeUtc(actualDepartureTimeUtc);
+        dataRow.setArrivalAirportEntity(arrivalAirportEntity);
+        dataRow.setArrivalAirportCode(arrivalAirportEntity == null ? arrivalAirportCode : arrivalAirportEntity.getIataCode());
+        dataRow.setDuration(flightTime);
+        dataRow.setAircraftType(aircraftType);
+        dataRow.setAircraftRegistration(aircraftRegistratopm);
+        dataRow.setStatus(status);
+        return dataRow;
 
-    }
-
-    private String extractValue(String input) {
-        if (StringUtils.isEmpty(input)) {
-            return null;
-        } else {
-            int startIndex = input.startsWith("(") ? 1 : 0;
-            int endIndex = input.endsWith(")") ? input.length() - 1 : input.length();
-            return input.substring(startIndex, endIndex);
-        }
     }
 
     AircraftTypesRepository getAircraftTypesRepository() {
