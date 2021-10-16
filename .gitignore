@@ -1,10 +1,11 @@
 /.classpath
+/.factorypath
+/.idea
 /.project
 /.settings
-/target
-.DS_Store
 /.springBeans
 /*.log
-.*.html
-/.factorypath
+/target
 /src/development
+.DS_Store
+.*.html

@@ -10,6 +10,7 @@ spring:
       - "classpath:de/perdian/flightlog/flyway/"
     validate-on-migrate: false
   jpa:
+    open-in-view: false
     properties:
       hibernate:
         dialect: ${FLIGHTLOG_DB_HIBERNATE_DIALECT:org.hibernate.dialect.H2Dialect}
@@ -22,25 +23,26 @@ spring:
       client:
         registration:
           google:
-            client-id: ${FLIGHTLOG_OAUTH2_GOOGLE_CLIENT_ID:null}
-            client-secret: ${FLIGHTLOG_OAUTH2_GOOGLE_CLIENT_SECRET:null}
+            client-id: ${FLIGHTLOG_AUTHENTICATION_OAUTH2_GOOGLE_CLIENT_ID:null}
+            client-secret: ${FLIGHTLOG_AUTHENTICATION_OAUTH2_GOOGLE_CLIENT_SECRET:null}
   servlet:
     multipart:
-      max-file-size: 5MB
+      max-file-size: 10MB
 
 server:
+  port: ${FLIGHTLOG_SERVER_PORT:8080}
   error:
     whitelabel:
       enabled: false
   servlet:
-    contextPath: ${FLIGHTLOG_SERVLET_CONTEXT_PATH:/flightlog}
+    contextPath: ${FLIGHTLOG_SERVER_CONTEXT_PATH:/flightlog}
     jsp:
       init-parameters:
         development: ${FLIGHTLOG_SERVLET_DEVELOPMENT_MODE:false}
         trimSpaces: true
     session:
       cookie:
-        name: flightlog-session
+        name: ${FLIGHTLOG_SERVER_COOKIE_NAME:flightlog-session}
     encoding:
       charset: UTF-8
       enabled: true
@@ -49,10 +51,18 @@ server:
 flightlog:
   authentication:
     required: ${FLIGHTLOG_AUTHENTICATION_REQUIRED:false}
+    ldap:
+      enabled: ${FLIGHTLOG_AUTHENTICATION_LDAP_ENABLED:false}
+      url: ${FLIGHTLOG_AUTHENTICATION_LDAP_URL}
+      base-dn: ${FLIGHTLOG_AUTHENTICATION_LDAP_BASE_DN}
+      user-dn: ${FLIGHTLOG_AUTHENTICATION_LDAP_USER_DN:ou=users}
+      bind-dn: ${FLIGHTLOG_AUTHENTICATION_LDAP_BIND_DN}
+      bind-password: ${FLIGHTLOG_AUTHENTICATION_LDAP_BIND_PASSWORD}
+      username-field: ${FLIGHTLOG_AUTHENTICATION_LDAP_USERNAME_FIELD:uid}
     oauth:
-      enabled: ${FLIGHTLOG_AUTHENTICATION_OAUTH_ENABLED:false}
+      enabled: ${FLIGHTLOG_AUTHENTICATION_OAUTH2_ENABLED:false}
     local:
-      enabled: ${FLIGHTLOG_AUTHENTICATION_LOCAL_ENABLED:false}
+      enabled: ${FLIGHTLOG_AUTHENTICATION_LOCAL_ENABLED:true}
   registration:
     restricted: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_RESTRICTED:true}
     email-whitelist: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_EMAIL_WHITELIST:}
