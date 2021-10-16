@@ -6,7 +6,7 @@ executors:
       - image: cimg/openjdk:17.0
 
 jobs:
-  build:
+  application_build:
     executor: docker
     steps:
       - checkout
@@ -24,8 +24,8 @@ jobs:
           path: target/surefire-reports
       - persist_to_workspace:
           root: target/
-          paths: "*.jar"
-  publish_to_docker_hub:
+          paths: "*.war"
+  container_build:
     executor: docker
     steps:
       - checkout
@@ -35,45 +35,63 @@ jobs:
       - run:
           name: "Build Docker image"
           command: |
-            export VERSION="test-1"
-#            export VERSION=$(git describe --tags --match "release-*" | cut -d '-' -f2-)
+            export VERSION=$(git describe --tags --match "release-*" | cut -d '-' -f2-)
+            docker build -t perdian/flightlog:${VERSION} .
+  container_build_and_publish:
+    executor: docker
+    steps:
+      - checkout
+      - attach_workspace:
+          at: target/
+      - setup_remote_docker
+      - run:
+          name: "Build Docker image"
+          command: |
+            export VERSION=$(git describe --tags --match "release-*" | cut -d '-' -f2-)
             docker build -t perdian/flightlog:${VERSION} .
             echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
-#            docker push perdian/flightlog:${VERSION}
-#      - run:
-#          name: "Publish README to Docker Hub"
-#          command: |
-#            docker create -v /data --name datas alpine:3.4 /bin/true
-#            docker cp README.md datas:/data
-#            docker run --rm \
-#              --volumes-from datas \
-#              -e DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME \
-#              -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD \
-#              -e DOCKERHUB_REPO_NAME=flightlog \
-#              devmtl/readme-to-dockerhub
-#  release_at_github:
-#    docker:
-#      - image: cibuilds/github:0.13
-#    steps:
-#      - checkout
-#      - attach_workspace:
-#          at: target/
-#      - run:
-#          name: "Create GitHub release"
-#          command: |
-#            export VERSION=$(git describe --tags --match "release-*" | cut -d '-' -f2-)
-#            ghr -t ${GITHUB_TOKEN} \
-#                -u ${CIRCLE_PROJECT_USERNAME} \
-#                -r ${CIRCLE_PROJECT_REPONAME} \
-#                -c ${CIRCLE_SHA1} \
-#                -n ${VERSION} \
-#                release-${VERSION}
+            docker push perdian/flightlog:${VERSION}
+      - run:
+          name: "Publish README to Docker Hub"
+          command: |
+            docker create -v /data --name datas alpine:3.4 /bin/true
+            docker cp README.md datas:/data
+            docker run --rm \
+              --volumes-from datas \
+              -e DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME \
+              -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD \
+              -e DOCKERHUB_REPO_NAME=flightlog \
+              devmtl/readme-to-dockerhub
+  github_release:
+    docker:
+      - image: cibuilds/github:0.13
+    steps:
+      - checkout
+      - attach_workspace:
+          at: target/
+      - run:
+          name: "Create GitHub release"
+          command: |
+            export VERSION=$(git describe --tags --match "release-*" | cut -d '-' -f2-)
+            ghr -t ${GITHUB_TOKEN} \
+                -u ${CIRCLE_PROJECT_USERNAME} \
+                -r ${CIRCLE_PROJECT_REPONAME} \
+                -c ${CIRCLE_SHA1} \
+                -n ${VERSION} \
+                release-${VERSION}
 
 workflows:
   version: 2
   build:
     jobs:
-      - build:
+      - application_build:
+          filters:
+            branches:
+              only: /.*/                
+            tags:
+              ignore: /.*/
+      - container_build:
+          requires: [ "application_build" ]
           filters:
             branches:
               only: /.*/                
@@ -81,22 +99,21 @@ workflows:
               ignore: /.*/
   build_and_publish:
     jobs:
-      - build:
+      - application_build:
           filters:
             branches:
               ignore: /.*/                
             tags:
               only: /release-.*/                
-      - publish_to_docker_hub:
-          requires: [ "build" ]
+      - container_build_and_publish:
+          requires: [ "application_build" ]
           filters:
             branches:
-              only: /modernize/                
               ignore: /.*/
             tags:
               only: /release-.*/                
-      - release_at_github:
-          requires: [ "publish_to_docker_hub" ]
+      - github_release:
+          requires: [ "container_build_and_publish" ]
           filters:
             branches:
               ignore: /.*/
