@@ -29,11 +29,14 @@ spring:
       max-file-size: 5MB
 
 server:
+  error:
+    whitelabel:
+      enabled: false
   servlet:
-    contextPath: ${FLIGHTLOG_SERVLET_CONTEXT_PATH:/}
+    contextPath: ${FLIGHTLOG_SERVLET_CONTEXT_PATH:/flightlog}
     jsp:
       init-parameters:
-        development: true
+        development: ${FLIGHTLOG_SERVLET_DEVELOPMENT_MODE:false}
         trimSpaces: true
     session:
       cookie:
