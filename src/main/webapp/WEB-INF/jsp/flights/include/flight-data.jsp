@@ -7,9 +7,9 @@
 <div class="ui horizontal divider"><fmt:message key="departure" /> / <fmt:message key="arrival" /></div>
 
 <div class="fields">
-    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="departureDateLocal" labelKey="departureDate" placeholder="yyyy-MM-dd" />
-    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="departureTimeLocal" labelKey="departureTime" placeholder="HH:mm" />
-    <fl:inputfield cssClass="two wide field" inputFieldCssClass="uppercase" bean="flightEditor" path="departureAirportCode" labelKey="airportCode" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="departureDateLocal" labelKey="departureDate" placeholder="yyyy-MM-dd" inputFieldType="date" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="departureTimeLocal" labelKey="departureTime" placeholder="HH:mm" inputFieldType="time" />
+    <fl:inputfield cssClass="two wide field" inputFieldCssClass="uppercase" inputFieldAutoCapitalize="true" bean="flightEditor" path="departureAirportCode" labelKey="airportCode" />
     <c:if test="${fn:length(flightEditor.departureAirportCountryCode) gt 0}">
         <c:set var="departureAirportFlagCssClass" value="${fn:toLowerCase(flightEditor.departureAirportCountryCode)} flag" />
     </c:if>
@@ -39,9 +39,9 @@
     </div>
 </div>
 <div class="fields">
-    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalDateLocal" labelKey="arrivalDate" placeholder="yyyy-MM-dd" />
-    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalTimeLocal" labelKey="arrivalTime" placeholder="HH:mm" />
-    <fl:inputfield cssClass="two wide field" inputFieldCssClass="uppercase" bean="flightEditor" path="arrivalAirportCode" labelKey="airportCode" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalDateLocal" labelKey="arrivalDate" placeholder="yyyy-MM-dd" inputFieldType="date" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="arrivalTimeLocal" labelKey="arrivalTime" placeholder="HH:mm" inputFieldType="time" />
+    <fl:inputfield cssClass="two wide field" inputFieldCssClass="uppercase" inputFieldAutoCapitalize="true" bean="flightEditor" path="arrivalAirportCode" labelKey="airportCode" />
     <c:if test="${fn:length(flightEditor.arrivalAirportCountryCode) gt 0}">
         <c:set var="arrivalAirportFlagCssClass" value="${fn:toLowerCase(flightEditor.arrivalAirportCountryCode)} flag" />
     </c:if>
@@ -171,11 +171,11 @@
 
 <div class="fields">
 
-    <fl:inputfield cssClass="two wide field" inputFieldCssClass="uppercase" bean="flightEditor" path="airlineCode" labelKey="airlineCode" />
+    <fl:inputfield cssClass="two wide field" inputFieldCssClass="uppercase" inputFieldAutoCapitalize="true" bean="flightEditor" path="airlineCode" labelKey="airlineCode" />
     <fl:inputfield cssClass="two wide field" bean="flightEditor" path="flightNumber" labelKey="flightNumber" />
     <fl:inputfield cssClass="three wide field" bean="flightEditor" path="airlineName" labelKey="airlineName" />
     <fl:inputfield cssClass="three wide field" bean="flightEditor" path="aircraftType" labelKey="aircraftType" />
-    <fl:inputfield cssClass="three wide field" inputFieldCssClass="uppercase" bean="flightEditor" path="aircraftRegistration" labelKey="aircraftRegistration" />
+    <fl:inputfield cssClass="three wide field" inputFieldCssClass="uppercase" inputFieldAutoCapitalize="true" bean="flightEditor" path="aircraftRegistration" labelKey="aircraftRegistration" />
     <fl:inputfield cssClass="three wide field" bean="flightEditor" path="aircraftName" labelKey="aircraftName" />
 
     <script type="text/javascript">
@@ -194,7 +194,12 @@
 </div>
 
 <div class="fields">
-    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="seatNumber" labelKey="seat" />
+    <fl:inputfield cssClass="two wide field" bean="flightEditor" path="seatNumber" labelKey="seat" inputFieldCssClass="uppercase" inputFieldAutoCapitalize="true" />
+    <script type="text/javascript">
+        $("#seatNumber").change(function() {
+            $(this).val($(this).val().trim().toUpperCase());
+        });
+    </script>
     <fl:select cssClass="two wide field" bean="flightEditor" path="seatType" labelKey="seatType">
         <option></option>
         <c:forEach items="${flightEditorHelper.seatTypeValues}" var="seatTypeValue">
