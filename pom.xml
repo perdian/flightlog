@@ -9,7 +9,7 @@
 
     <groupId>de.perdian.flightlog</groupId>
     <artifactId>flightlog</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <packaging>war</packaging>
 
     <name>Flightlog</name>
@@ -28,7 +28,8 @@
         <url>https://github.com/perdian/flightlog</url>
         <connection>scm:git:https://github.com/perdian/flightlog.git</connection>
         <developerConnection>scm:git:https://github.com/perdian/flightlog.git</developerConnection>
-    </scm>
+      <tag>release-1.1.1</tag>
+  </scm>
 
     <developers>
         <developer>
