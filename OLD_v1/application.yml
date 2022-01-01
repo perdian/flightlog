@@ -14,6 +14,10 @@ spring:
     properties:
       hibernate:
         dialect: ${FLIGHTLOG_DB_HIBERNATE_DIALECT:org.hibernate.dialect.H2Dialect}
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
   security:
     oauth2:
       client:
@@ -32,6 +36,10 @@ server:
       enabled: false
   servlet:
     contextPath: ${FLIGHTLOG_SERVER_CONTEXT_PATH:/flightlog}
+    jsp:
+      init-parameters:
+        development: ${FLIGHTLOG_SERVLET_DEVELOPMENT_MODE:false}
+        trimSpaces: true
     session:
       cookie:
         name: ${FLIGHTLOG_SERVER_COOKIE_NAME:flightlog-session}
@@ -43,6 +51,14 @@ server:
 flightlog:
   authentication:
     required: ${FLIGHTLOG_AUTHENTICATION_REQUIRED:false}
+    ldap:
+      enabled: ${FLIGHTLOG_AUTHENTICATION_LDAP_ENABLED:false}
+      url: ${FLIGHTLOG_AUTHENTICATION_LDAP_URL}
+      base-dn: ${FLIGHTLOG_AUTHENTICATION_LDAP_BASE_DN}
+      user-dn: ${FLIGHTLOG_AUTHENTICATION_LDAP_USER_DN:ou=users}
+      bind-dn: ${FLIGHTLOG_AUTHENTICATION_LDAP_BIND_DN}
+      bind-password: ${FLIGHTLOG_AUTHENTICATION_LDAP_BIND_PASSWORD}
+      username-field: ${FLIGHTLOG_AUTHENTICATION_LDAP_USERNAME_FIELD:uid}
     oauth:
       enabled: ${FLIGHTLOG_AUTHENTICATION_OAUTH2_ENABLED:false}
     local:

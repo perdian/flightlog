@@ -14,19 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.perdian.flightlog;
+package de.perdian.flightlog.modules.overview;
 
-import org.springframework.boot.Banner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@SpringBootApplication
-public class FlightlogApplication {
+@Controller
+public class OverviewController {
 
-    public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(FlightlogApplication.class);
-        springApplication.setBannerMode(Banner.Mode.OFF);
-        springApplication.run(args);
+    @RequestMapping("/")
+    public String doOverview(Model model) {
+        return "overview";
     }
 
 }
