@@ -3,8 +3,6 @@ package de.perdian.flightlog.modules.airlines.persistence;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
-
 public class AirlineEntityTest {
 
     @Test
