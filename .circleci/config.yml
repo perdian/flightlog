@@ -18,13 +18,15 @@ jobs:
           command: |
             mvn -B clean package
       - save_cache:
-          paths: ~/.m2
+          paths: 
+            - "~/.m2"
           key: v1-dependencies-{{ checksum "pom.xml" }}      
       - store_test_results:
           path: target/surefire-reports
       - persist_to_workspace:
           root: target/
-          paths: "*.war"
+          paths: 
+            - "*.war"
   container_build:
     executor: docker
     steps:
