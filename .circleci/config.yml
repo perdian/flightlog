@@ -3,7 +3,7 @@ version: 2.1
 executors:
   docker:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: maven:3-openjdk-18
 
 jobs:
   application_build:
