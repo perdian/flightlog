@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, ~{::head}, ~{::main})}">
+  <body>
+    <th:block th:fragment="head">
+      <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}" />
+    </th:block>
+    <main>
+
+      <div class="ui header">
+        <i class="plane icon"></i>
+        <div class="content">
+          Overview
+          <div class="sub header">Your personal flight statistics</div>
+        </div>
+      </div>
+      <div class="ui divider"></div>
+
+    </main>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+
+    <div th:fragment="navigation-menu-items-desktop" th:remove="tag">
+      <a tabindex="-1" class="mobile hidden item" th:href="@{/overview}">
+        <i class="home icon"></i>
+        <span>Overview</span>
+      </a>
+    </div>
+
+  </body>
+</html>

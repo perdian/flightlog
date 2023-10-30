@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+
+    <div th:fragment="footer" th:remove="tag">
+      <footer class="ui inverted mobile hidden menu">
+        <div class="active item">
+          <i class="plane icon"></i> &nbsp; <strong>Flightlog</strong>
+        </div>
+        <a tabindex="-1" class="right aligned item" th:href="@{https://github.com/perdian/flightlog}" target="_blank">
+          <i class="code icon"></i>
+          https://github.com/perdian/flightlog
+        </a>
+      </footer>
+    </div>
+
+  </body>
+</html>

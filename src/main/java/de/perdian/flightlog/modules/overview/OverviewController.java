@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class OverviewController {
 
-    @RequestMapping("/")
+    @RequestMapping({ "/", "/overview" })
     public String doOverview(Model model) {
         return "overview";
     }

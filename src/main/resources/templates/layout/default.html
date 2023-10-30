@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="html(title, head, content)" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <title>Flightlog[[ ${#strings.length(title) > 1 ? (' // ' + title) : ''} ]]</title>
+
+    <link rel="icon" th:href="@{/assets/flightlog/icons/plane.png}" />
+    <link rel="shortcut icon" th:href="@{/assets/flightlog/icons/plane.png}" />
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/fomantic-ui/dist/semantic.min.css}" />
+    <script th:src="@{/webjars/fomantic-ui/dist/semantic.min.js}"></script>
+
+    <script th:src="@{/webjars/openlayers/ol.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/openlayers/ol.css}" />
+
+    <script th:src="@{/webjars/momentjs/min/moment.min.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/assets/flightlog/css/flightlog.css}" />
+
+    <div th:if="${#strings.length(head) > 1}" th:replace="${head}">Additional header content</div>
+  </head>
+  <body th:class="${#strings.isEmpty(bodyClass) ? 'default' : bodyClass}">
+
+    <header class="ui inverted menu">
+      <div class="active item">
+        <i class="plane icon"></i> &nbsp; <strong>Flightlog</strong>
+      </div>
+      <div th:replace="~{layout/default/navigation :: navigation-menu-items-desktop}">Navigation items</div>
+    </header>
+
+    <div class="main">
+      <div th:replace="${content}">Template content</div>
+      <footer th:replace="~{layout/default/footer :: footer}">Footer</div>
+    </div>
+
+    <script type="text/javascript">
+      $('.ui.dropdown').dropdown();
+      $('.ui.checkbox').checkbox();
+    </script>
+
+  </body>
+</html>

@@ -16,14 +16,12 @@
  */
 package de.perdian.flightlog.configuration.authentication;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-class FlightlogWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
+class FlightlogWebSecurityConfigurer {
+/*
+    extends WebSecurityConfigurerAdapter {
 
     private FlightlogAuthenticationSettings settings = null;
 
@@ -70,5 +68,5 @@ class FlightlogWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     void setSettings(FlightlogAuthenticationSettings settings) {
         this.settings = settings;
     }
-
+*/
 }
