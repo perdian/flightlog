@@ -3,7 +3,7 @@ version: 2.1
 executors:
   docker:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:21.0
 
 jobs:
   application_build:
@@ -19,7 +19,7 @@ jobs:
             mvn -B clean package
       - save_cache:
           paths: ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}      
+          key: v1-dependencies-{{ checksum "pom.xml" }}
       - store_test_results:
           path: target/surefire-reports
       - persist_to_workspace:
@@ -87,14 +87,14 @@ workflows:
       - application_build:
           filters:
             branches:
-              only: /.*/                
+              only: /.*/
             tags:
               ignore: /.*/
       - container_build:
           requires: [ "application_build" ]
           filters:
             branches:
-              only: /.*/                
+              only: /.*/
             tags:
               ignore: /.*/
   build_and_publish:
@@ -102,20 +102,20 @@ workflows:
       - application_build:
           filters:
             branches:
-              ignore: /.*/                
+              ignore: /.*/
             tags:
-              only: /release-.*/                
+              only: /release-.*/
       - container_build_and_publish:
           requires: [ "application_build" ]
           filters:
             branches:
               ignore: /.*/
             tags:
-              only: /release-.*/                
+              only: /release-.*/
       - github_release:
           requires: [ "container_build_and_publish" ]
           filters:
             branches:
               ignore: /.*/
             tags:
-              only: /release-.*/                
+              only: /release-.*/
