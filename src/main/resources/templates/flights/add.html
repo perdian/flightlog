@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="add square icon"></i>
+        <div class="content">
+          Add flight
+          <div class="sub header">Add details for new flight</div>
+        </div>
+      </h3>
+      <div class="ui divider"></div>
+
+      <form class="ui form" method="post" th:action="@{/flights/add/wizard}">
+        <div class="ui secondary segment">
+          <h4 class="ui header">Auto populate from flight data</h4>
+
+          <div class="ui dense grid">
+            <div class="four wide mobile three wide tablet two wide computer column">
+              <div class="field">
+                <label>Airline</label>
+                <input type="text" name="airlineCode" />
+              </div>
+            </div>
+            <div class="four wide mobile three wide tablet two wide computer column">
+              <div class="field">
+                <label>Flight no.</label>
+                <input type="text" name="flightNumber" />
+              </div>
+            </div>
+            <div class="eight wide mobile four wide tablet three wide computer column">
+              <div class="field">
+                <label>Departure date</label>
+                <input type="date" name="departureDate" placeholder="yyyy-MM-dd" value="2023-10-31" />
+              </div>
+            </div>
+            <div class="six wide tablet only nine wide computer only column">
+              <div class="field">
+                <label>&nbsp;</label>
+                <button type="submit" class="ui primary button">Proceed</button>
+              </div>
+            </div>
+            <div class="sixteen wide mobile only right aligned column">
+              <button type="submit" class="ui primary button">Proceed</button>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <form class="ui form" method="post" th:action="@{/flights/add}">
+
+        <div class="ui horizontal divider">Departure / Arrival</div>
+
+        <div class="ui horizontal divider">Other data</div>
+
+        <div class="ui horizontal divider">Actions</div>
+
+      </form>
+
+    </main>
+  </body>
+</html>

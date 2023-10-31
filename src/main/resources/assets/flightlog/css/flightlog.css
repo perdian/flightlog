@@ -1,2 +1,5 @@
 body { padding: 0.25rem; }
 main { padding: 0.5rem; }
+
+.dense.grid { padding: 0.5rem 0.75rem 0.5rem 0.75rem !important; }
+.dense.grid .column { padding: 0.5rem 0.25rem 0.5rem 0.25rem !important; }

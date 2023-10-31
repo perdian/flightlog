@@ -13,7 +13,7 @@ spring:
     open-in-view: false
     properties:
       hibernate:
-        dialect: ${FLIGHTLOG_DB_HIBERNATE_DIALECT:org.hibernate.dialect.H2Dialect}
+        dialect: ${FLIGHTLOG_DB_HIBERNATE_DIALECT}
   security:
     oauth2:
       client:
