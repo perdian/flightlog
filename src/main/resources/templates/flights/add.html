@@ -12,7 +12,7 @@
       </h3>
       <div class="ui divider"></div>
 
-      <form class="ui form" method="post" th:action="@{/flights/add/wizard}">
+      <form class="ui form" method="post" th:action="@{/flights/add/wizard}" th:object="${wizardData}">
         <div class="ui secondary segment">
           <h4 class="ui header">Auto populate from flight data</h4>
 
@@ -20,19 +20,19 @@
             <div class="four wide mobile three wide tablet two wide computer column">
               <div class="field">
                 <label>Airline</label>
-                <input type="text" name="airlineCode" />
+                <input type="text" th:field="*{airlineCode}" />
               </div>
             </div>
             <div class="four wide mobile three wide tablet two wide computer column">
               <div class="field">
                 <label>Flight no.</label>
-                <input type="text" name="flightNumber" />
+                <input type="text" th:field="*{flightNumber}" />
               </div>
             </div>
             <div class="eight wide mobile four wide tablet three wide computer column">
               <div class="field">
                 <label>Departure date</label>
-                <input type="date" name="departureDate" placeholder="yyyy-MM-dd" value="2023-10-31" />
+                <input type="date" th:field="*{departureDate}" placeholder="yyyy-MM-dd" />
               </div>
             </div>
             <div class="six wide tablet only nine wide computer only column">
@@ -49,7 +49,7 @@
         </div>
       </form>
 
-      <form class="ui form" method="post" th:action="@{/flights/add}">
+      <form class="ui form" method="post" th:action="@{/flights/add}" th:object="${flightData}">
 
         <div class="ui horizontal divider">Departure / Arrival</div>
 
