@@ -113,7 +113,7 @@
 
         </c:if>
 
-        <spring:form modelAttribute="flightEditor" servletRelativeAction="/flights/add" cssClass="ui form">
+        <spring:form modelAttribute="flightDataEditor" servletRelativeAction="/flights/add" cssClass="ui form">
 
             <jsp:include page="include/flight-data.jsp" />
 

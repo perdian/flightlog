@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 import org.springframework.data.jpa.domain.Specification;
 
 import de.perdian.flightlog.FlightlogTestHelper;
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.flights.persistence.FlightEntity;
 import de.perdian.flightlog.modules.flights.persistence.FlightsRepository;
 import de.perdian.flightlog.support.types.CabinClass;

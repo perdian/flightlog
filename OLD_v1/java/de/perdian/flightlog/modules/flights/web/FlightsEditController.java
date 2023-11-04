@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import de.perdian.flightlog.modules.authentication.FlightlogUser;
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery;
 import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
 import de.perdian.flightlog.modules.flights.services.FlightsUpdateService;

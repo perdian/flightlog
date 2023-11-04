@@ -20,10 +20,10 @@
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-            <div class="ui horizontal divider"><fmt:message key="flightData" /></div>
+            <div class="ui horizontal divider"><fmt:message key="flightDataEditor" /></div>
             <div class="ui grid">
                 <div class="four wide column">
-                    <h4><fmt:message key="flightData" /></h4>
+                    <h4><fmt:message key="flightDataEditor" /></h4>
                     <div>
                         <c:if test="${fn:length(flight.airline.code) gt 0}">
                             <c:out value="${flight.airline.code} " />

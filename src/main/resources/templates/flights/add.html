@@ -12,9 +12,24 @@
       </h3>
       <div class="ui divider"></div>
 
-      <form class="ui form" method="post" th:action="@{/flights/add/wizard}" th:object="${wizardData}">
+      <div class="ui yellow segment" th:if="${flightLookupResults != null && #lists.size(flightLookupResults) > 1}">
+        <h4 class="ui header">Multiple results found, please select a flight</h4>
+        <div class="ui cards">
+          <form class="ui card" th:each="flightLookupResult : ${flightLookupResults}" th:object="${flightLookupResult}" method="post" th:action="@{/flights/add}">
+            <div class="content">
+              <div class="header">HEADER</div>
+            </div>
+            <button class="ui bottom attached button">
+              <i class="check circle icon"></i>
+              Select this flight
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <form class="ui form" method="post" th:action="@{/flights/add/lookup}" th:object="${flightLookupRequest}" th:if="${flightLookupResults == null}">
         <div class="ui secondary segment">
-          <h4 class="ui header">Auto populate from flight data</h4>
+          <h4 class="ui header">Lookup flight data</h4>
 
           <div class="ui dense grid">
             <div class="four wide mobile three wide tablet two wide computer column">
@@ -49,7 +64,7 @@
         </div>
       </form>
 
-      <form class="ui form" method="post" th:action="@{/flights/add}" th:object="${flightData}">
+      <form class="ui form" method="post" th:action="@{/flights/add/submit}" th:object="${flightEditor}">
 
         <div class="ui horizontal divider">Departure / Arrival</div>
 

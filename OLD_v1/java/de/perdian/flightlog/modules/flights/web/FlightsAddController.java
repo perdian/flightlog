@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import de.perdian.flightlog.modules.authentication.FlightlogUser;
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsUpdateService;
 import de.perdian.flightlog.modules.wizard.services.WizardData;
 import de.perdian.flightlog.modules.wizard.services.WizardDataService;

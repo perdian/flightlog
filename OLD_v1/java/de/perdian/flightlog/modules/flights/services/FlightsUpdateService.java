@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.services;
 
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.users.persistence.UserEntity;
 
 public interface FlightsUpdateService {

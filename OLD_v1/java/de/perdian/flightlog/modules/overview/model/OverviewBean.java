@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 
 public class OverviewBean implements Serializable {
 

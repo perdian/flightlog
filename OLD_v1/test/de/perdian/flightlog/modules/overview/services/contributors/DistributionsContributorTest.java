@@ -7,7 +7,7 @@ import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;

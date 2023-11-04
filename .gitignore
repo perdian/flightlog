@@ -4,9 +4,9 @@
 /.project
 /.settings
 /.springBeans
+/*.iml
 /*.log
 /target
-/src/development
 /pom.xml.versionsBackup
 .DS_Store
 .*.html

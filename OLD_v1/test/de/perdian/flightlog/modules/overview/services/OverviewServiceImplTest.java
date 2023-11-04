@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery;
 import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;

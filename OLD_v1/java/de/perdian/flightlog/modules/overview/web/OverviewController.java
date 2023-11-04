@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.perdian.flightlog.modules.authentication.FlightlogUser;
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery;
 import de.perdian.flightlog.modules.flights.services.FlightsQuery.TimePeriod;
 import de.perdian.flightlog.modules.flights.services.FlightsQueryService;

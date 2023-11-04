@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
 import de.perdian.flightlog.modules.overview.model.OverviewItem;
 import de.perdian.flightlog.modules.overview.model.OverviewItemString;

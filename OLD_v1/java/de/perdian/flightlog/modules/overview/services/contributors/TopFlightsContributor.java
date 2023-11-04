@@ -21,7 +21,7 @@ import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
 import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
 import de.perdian.flightlog.modules.overview.model.OverviewItem;
 import de.perdian.flightlog.modules.overview.model.OverviewItemString;

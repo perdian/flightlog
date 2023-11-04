@@ -19,7 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import de.perdian.flightlog.FlightlogTestHelper;
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.flights.persistence.FlightEntity;
 import de.perdian.flightlog.modules.flights.persistence.FlightsRepository;
 import de.perdian.flightlog.support.persistence.PaginatedList;

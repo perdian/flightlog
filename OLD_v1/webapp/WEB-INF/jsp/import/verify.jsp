@@ -91,13 +91,13 @@
                                             <option ${item.flight.seatType eq seatTypeValue ? 'selected="selected"' : ''} value="${seatTypeValue}"><fmt:message key="seatType.${seatTypeValue}" /></option>
                                         </c:forEach>
                                     </fl:select>
-                                    <fl:select cssClass="two wide field" bean="flightEditor" path="items[${itemStatus.index}].flight.cabinClass" labelKey="cabinClass">
+                                    <fl:select cssClass="two wide field" bean="flightDataEditor" path="items[${itemStatus.index}].flight.cabinClass" labelKey="cabinClass">
                                         <option></option>
                                         <c:forEach items="${flightEditorHelper.cabinClassValues}" var="cabinClassValue">
                                             <option ${item.flight.cabinClass eq cabinClassValue ? 'selected="selected"' : ''} value="${cabinClassValue}"><fmt:message key="cabinClass.${cabinClassValue}" /></option>
                                         </c:forEach>
                                     </fl:select>
-                                    <fl:select cssClass="two wide field" bean="flightEditor" path="items[${itemStatus.index}].flight.flightReason" labelKey="flightReason">
+                                    <fl:select cssClass="two wide field" bean="flightDataEditor" path="items[${itemStatus.index}].flight.flightReason" labelKey="flightReason">
                                         <option></option>
                                         <c:forEach items="${flightEditorHelper.flightReasonValues}" var="flightReasonValue">
                                             <option ${item.flight.flightReason eq flightReasonValue ? 'selected="selected"' : ''} value="${flightReasonValue}"><fmt:message key="flightReason.${flightReasonValue}" /></option>

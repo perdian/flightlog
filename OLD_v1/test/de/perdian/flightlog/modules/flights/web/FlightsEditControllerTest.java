@@ -10,7 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.flights.services.FlightsQueryService;
 import de.perdian.flightlog.modules.flights.services.FlightsUpdateService;
 import de.perdian.flightlog.modules.flights.web.FlightsEditController.FlightNotFoundException;

@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <spring:form modelAttribute="flightEditor" servletRelativeAction="/flights/edit/${flightEditor.entityId}" cssClass="ui form">
+        <spring:form modelAttribute="flightDataEditor" servletRelativeAction="/flights/edit/${flightDataEditor.entityId}" cssClass="ui form">
 
             <jsp:include page="include/flight-data.jsp" />
 

@@ -2,7 +2,7 @@ package de.perdian.flightlog.modules.overview.services;
 
 import java.util.List;
 
-import de.perdian.flightlog.modules.flights.model.FlightBean;
+import de.perdian.flightlog.modules.flights.editor.FlightBean;
 import de.perdian.flightlog.modules.overview.model.OverviewBean;
 
 public interface OverviewContributor {
