@@ -5,13 +5,18 @@ import de.perdian.flightlog.modules.flights.service.model.Aircraft;
 import de.perdian.flightlog.modules.flights.service.model.Airport;
 import de.perdian.flightlog.modules.flights.service.model.AirportContact;
 import de.perdian.flightlog.modules.flights.service.model.Flight;
-import de.perdian.flightlog.support.FlightlogHelper;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.SeatType;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -34,8 +39,8 @@ public class FlightEditor implements Serializable {
     private String airlineCode = null;
     private String airlineName = null;
     private String flightNumber = null;
-    private String flightDuration = null;
-    private String flightDistance = null;
+    private Duration flightDuration = null;
+    private Integer flightDistance = null;
     private String aircraftType = null;
     private String aircraftRegistration = null;
     private String aircraftName = null;
@@ -49,6 +54,10 @@ public class FlightEditor implements Serializable {
     }
 
     public FlightEditor(Flight flight) {
+        this.applyValuesFrom(flight);
+    }
+
+    public void applyValuesFrom(Flight flight) {
         this.setEntityId(flight.getEntityId());
         this.setAircraftName(flight.getAircraft() == null ? null : flight.getAircraft().getName());
         this.setAircraftRegistration(flight.getAircraft() == null ? null : flight.getAircraft().getRegistration());
@@ -67,26 +76,26 @@ public class FlightEditor implements Serializable {
         this.setDepartureAirportName(flight.getDepartureContact() == null || flight.getDepartureContact().getAirport() == null ? null : flight.getDepartureContact().getAirport().getName());
         this.setDepartureDateLocal(flight.getDepartureContact() == null ? null : flight.getDepartureContact().getDateLocal());
         this.setDepartureTimeLocal(flight.getDepartureContact() == null ? null : flight.getDepartureContact().getTimeLocal());
-        this.setFlightDistance(flight.getFlightDistance() == null ? null : flight.getFlightDistance().toString());
-        this.setFlightDuration(FlightlogHelper.formatDuration(flight.getFlightDuration()));
+        this.setFlightDistance(flight.getFlightDistance());
+        this.setFlightDuration(flight.getFlightDuration());
         this.setFlightNumber(flight.getFlightNumber());
         this.setFlightReason(flight.getFlightReason() == null ? null : flight.getFlightReason().name());
         this.setSeatNumber(flight.getSeatNumber());
         this.setSeatType(flight.getSeatType() == null ? null : flight.getSeatType().name());
     }
 
-    public void copyValuesInto(Flight flightBean) {
+    public void copyValuesInto(Flight flight) {
 
         Aircraft aircraftBean = new Aircraft();
         aircraftBean.setName(this.getAircraftName());
         aircraftBean.setRegistration(this.getAircraftRegistration());
         aircraftBean.setType(this.getAircraftType());
-        flightBean.setAircraft(aircraftBean);
+        flight.setAircraft(aircraftBean);
 
         AirlineEntity airlineEntity = new AirlineEntity();
         airlineEntity.setCode(this.getAirlineCode());
         airlineEntity.setName(this.getAirlineName());
-        flightBean.setAirline(airlineEntity);
+        flight.setAirline(airlineEntity);
 
         Airport arrivalAirportBean = new Airport();
         arrivalAirportBean.setCode(this.getArrivalAirportCode());
@@ -94,10 +103,10 @@ public class FlightEditor implements Serializable {
         arrivalAirportContactBean.setAirport(arrivalAirportBean);
         arrivalAirportContactBean.setDateLocal(this.getArrivalDateLocal());
         arrivalAirportContactBean.setTimeLocal(this.getArrivalTimeLocal());
-        flightBean.setArrivalContact(arrivalAirportContactBean);
+        flight.setArrivalContact(arrivalAirportContactBean);
 
-        flightBean.setCabinClass(StringUtils.isEmpty(this.getCabinClass()) ? null : CabinClass.valueOf(this.getCabinClass()));
-        flightBean.setComment(this.getComment());
+        flight.setCabinClass(StringUtils.isEmpty(this.getCabinClass()) ? null : CabinClass.valueOf(this.getCabinClass()));
+        flight.setComment(this.getComment());
 
         Airport departureAirportBean = new Airport();
         departureAirportBean.setCode(this.getDepartureAirportCode());
@@ -105,14 +114,14 @@ public class FlightEditor implements Serializable {
         departureAirportContactBean.setAirport(departureAirportBean);
         departureAirportContactBean.setDateLocal(this.getDepartureDateLocal());
         departureAirportContactBean.setTimeLocal(this.getDepartureTimeLocal());
-        flightBean.setDepartureContact(departureAirportContactBean);
+        flight.setDepartureContact(departureAirportContactBean);
 
-        flightBean.setFlightDistance(StringUtils.isEmpty(this.getFlightDistance()) ? null : Integer.parseInt(this.getFlightDistance()));
-        flightBean.setFlightDuration(FlightlogHelper.parseDuration(this.getFlightDuration()));
-        flightBean.setFlightNumber(this.getFlightNumber());
-        flightBean.setFlightReason(StringUtils.isEmpty(this.getFlightReason()) ? null : FlightReason.valueOf(this.getFlightReason()));
-        flightBean.setSeatNumber(this.getSeatNumber());
-        flightBean.setSeatType(StringUtils.isEmpty(this.getSeatType()) ? null : SeatType.valueOf(this.getSeatType()));
+        flight.setFlightDistance(this.getFlightDistance());
+        flight.setFlightDuration(this.getFlightDuration());
+        flight.setFlightNumber(this.getFlightNumber());
+        flight.setFlightReason(StringUtils.isEmpty(this.getFlightReason()) ? null : FlightReason.valueOf(this.getFlightReason()));
+        flight.setSeatNumber(this.getSeatNumber());
+        flight.setSeatType(StringUtils.isEmpty(this.getSeatType()) ? null : SeatType.valueOf(this.getSeatType()));
 
     }
 
@@ -123,6 +132,8 @@ public class FlightEditor implements Serializable {
         this.entityId = entityId;
     }
 
+    @NotNull
+    @Length(min = 3, max = 3)
     public String getDepartureAirportCode() {
         return this.departureAirportCode;
     }
@@ -140,10 +151,12 @@ public class FlightEditor implements Serializable {
     public String getDepartureAirportName() {
         return this.departureAirportName;
     }
-    void setDepartureAirportName(String departureAirportName) {
+    public void setDepartureAirportName(String departureAirportName) {
         this.departureAirportName = departureAirportName;
     }
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     public LocalDate getDepartureDateLocal() {
         return this.departureDateLocal;
     }
@@ -151,6 +164,7 @@ public class FlightEditor implements Serializable {
         this.departureDateLocal = departureDateLocal;
     }
 
+    @DateTimeFormat(pattern = "HH:mm")
     public LocalTime getDepartureTimeLocal() {
         return this.departureTimeLocal;
     }
@@ -158,6 +172,8 @@ public class FlightEditor implements Serializable {
         this.departureTimeLocal = departureTimeLocal;
     }
 
+    @NotNull
+    @Length(min = 3, max = 3)
     public String getArrivalAirportCode() {
         return this.arrivalAirportCode;
     }
@@ -175,10 +191,12 @@ public class FlightEditor implements Serializable {
     public String getArrivalAirportName() {
         return this.arrivalAirportName;
     }
-    void setArrivalAirportName(String arrivalAirportName) {
+    public void setArrivalAirportName(String arrivalAirportName) {
         this.arrivalAirportName = arrivalAirportName;
     }
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     public LocalDate getArrivalDateLocal() {
         return this.arrivalDateLocal;
     }
@@ -186,6 +204,7 @@ public class FlightEditor implements Serializable {
         this.arrivalDateLocal = arrivalDateLocal;
     }
 
+    @DateTimeFormat(pattern = "HH:mm")
     public LocalTime getArrivalTimeLocal() {
         return this.arrivalTimeLocal;
     }
@@ -200,6 +219,8 @@ public class FlightEditor implements Serializable {
         this.flightNumber = flightNumber;
     }
 
+    @NotNull
+    @NotEmpty
     public String getAirlineCode() {
         return this.airlineCode;
     }
@@ -214,17 +235,18 @@ public class FlightEditor implements Serializable {
         this.airlineName = airlineName;
     }
 
-    public String getFlightDuration() {
+    public Duration getFlightDuration() {
         return this.flightDuration;
     }
-    public void setFlightDuration(String flightDuration) {
+    public void setFlightDuration(Duration flightDuration) {
         this.flightDuration = flightDuration;
     }
 
-    public String getFlightDistance() {
+    @Positive
+    public Integer getFlightDistance() {
         return this.flightDistance;
     }
-    public void setFlightDistance(String flightDistance) {
+    public void setFlightDistance(Integer flightDistance) {
         this.flightDistance = flightDistance;
     }
 
@@ -263,6 +285,7 @@ public class FlightEditor implements Serializable {
         this.seatType = seatType;
     }
 
+    @NotNull
     public String getCabinClass() {
         return this.cabinClass;
     }
@@ -270,6 +293,7 @@ public class FlightEditor implements Serializable {
         this.cabinClass = cabinClass;
     }
 
+    @NotNull
     public String getFlightReason() {
         return this.flightReason;
     }

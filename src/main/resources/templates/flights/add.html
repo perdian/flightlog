@@ -10,68 +10,12 @@
           <div class="sub header">Add details for new flight</div>
         </div>
       </h3>
-      <div class="ui divider"></div>
 
-      <div class="ui yellow segment" th:if="${flightLookupResults != null && #lists.size(flightLookupResults) > 1}">
-        <h4 class="ui header">Multiple results found, please select a flight</h4>
-        <div class="ui cards">
-          <form class="ui card" th:each="flightLookupResult : ${flightLookupResults}" th:object="${flightLookupResult}" method="post" th:action="@{/flights/add}">
-            <div class="content">
-              <div class="header">HEADER</div>
-            </div>
-            <button class="ui bottom attached button">
-              <i class="check circle icon"></i>
-              Select this flight
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <form class="ui form" method="post" th:action="@{/flights/add/lookup}" th:object="${flightLookupRequest}" th:if="${flightLookupResults == null}">
-        <div class="ui secondary segment">
-          <h4 class="ui header">Lookup flight data</h4>
-
-          <div class="ui dense grid">
-            <div class="four wide mobile three wide tablet two wide computer column">
-              <div class="field">
-                <label>Airline</label>
-                <input type="text" th:field="*{airlineCode}" />
-              </div>
-            </div>
-            <div class="four wide mobile three wide tablet two wide computer column">
-              <div class="field">
-                <label>Flight no.</label>
-                <input type="text" th:field="*{flightNumber}" />
-              </div>
-            </div>
-            <div class="eight wide mobile four wide tablet three wide computer column">
-              <div class="field">
-                <label>Departure date</label>
-                <input type="date" th:field="*{departureDate}" placeholder="yyyy-MM-dd" />
-              </div>
-            </div>
-            <div class="six wide tablet only nine wide computer only column">
-              <div class="field">
-                <label>&nbsp;</label>
-                <button type="submit" class="ui primary button">Proceed</button>
-              </div>
-            </div>
-            <div class="sixteen wide mobile only right aligned column">
-              <button type="submit" class="ui primary button">Proceed</button>
-            </div>
-          </div>
-
-        </div>
-      </form>
+      <div th:replace="~{flights/include/flight-lookup :: selection-list}">Flight selection</div>
+      <div th:replace="~{flights/include/flight-lookup :: selection-form}">Flight lookup</div>
 
       <form class="ui form" method="post" th:action="@{/flights/add/submit}" th:object="${flightEditor}">
-
-        <div class="ui horizontal divider">Departure / Arrival</div>
-
-        <div class="ui horizontal divider">Other data</div>
-
-        <div class="ui horizontal divider">Actions</div>
-
+        <div th:replace="~{flights/include/flight-details :: form-body}">Form Body</div>
       </form>
 
     </main>

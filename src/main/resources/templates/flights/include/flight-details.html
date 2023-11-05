@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+
+    <div th:fragment="form-body" th:remove="tag">
+
+      <div class="ui horizontal divider">Departure / Arrival</div>
+
+      <div class="ui dense grid">
+
+        <div class="six wide mobile four wide tablet two wide computer column">
+          <div class="field" th:classappend="${#fields.hasErrors('departureDateLocal') ? 'error' : ''}">
+            <label>Departure date</label>
+            <input type="date" th:field="*{departureDateLocal}" />
+          </div>
+        </div>
+        <div class="six wide mobile four wide tablet two wide computer column">
+          <div class="field" th:classappend="${#fields.hasErrors('departureTimeLocal') ? 'error' : ''}">
+            <label>Departure time</label>
+            <input type="time" th:field="*{departureTimeLocal}" />
+          </div>
+        </div>
+        <div class="four wide mobile three wide tablet two wide computer column">
+          <div class="field" th:classappend="${#fields.hasErrors('departureAirportCode') ? 'error' : ''}">
+            <label>Airport code</label>
+            <input type="text" class="uppercase" th:field="*{departureAirportCode}" maxlength="3" />
+          </div>
+        </div>
+        <div class="sixteen wide mobile five wide tablet ten wide computer column">
+          <div class="field">
+            <label>Departure airport <i id="departureAirportCountryCode" th:class="${#strings.isEmpty(flightEditor.departureAirportCountryCode) ? '' : ('flag ' + #strings.toLowerCase(flightEditor.departureAirportCountryCode))}"></i></label>
+            <input type="text" readonly th:field="*{departureAirportName}" placeholder="Airport name will be computed automatically" />
+          </div>
+        </div>
+
+        <div class="six wide mobile four wide tablet two wide computer column">
+          <div class="field" th:classappend="${#fields.hasErrors('arrivalDateLocal') ? 'error' : ''}">
+            <label>Arrival date</label>
+            <input type="date" th:field="*{arrivalDateLocal}" />
+          </div>
+        </div>
+        <div class="six wide mobile four wide tablet two wide computer column">
+          <div class="field" th:classappend="${#fields.hasErrors('arrivalTimeLocal') ? 'error' : ''}">
+            <label>Arrival time</label>
+            <input type="time" th:field="*{arrivalTimeLocal}" />
+          </div>
+        </div>
+        <div class="four wide mobile three wide tablet two wide computer column">
+          <div class="field" th:classappend="${#fields.hasErrors('arrivalAirportCode') ? 'error' : ''}">
+            <label>Airport code</label>
+            <input type="text" class="uppercase" th:field="*{arrivalAirportCode}" maxlength="3" />
+          </div>
+        </div>
+        <div class="sixteen wide mobile five wide tablet ten wide computer column">
+          <div class="field" th:classappend="${#fields.hasErrors('arrivalAirportCountryCode') ? 'error' : ''}">
+            <label>Arrival airport <i id="arrivalAirportCountryCode" th:class="${#strings.isEmpty(flightEditor.arrivalAirportCountryCode) ? '' : ('flag ' + #strings.toLowerCase(flightEditor.arrivalAirportCountryCode))}"></i></label>
+            <input type="text" readonly th:field="*{arrivalAirportName}" placeholder="Airport name will be computed automatically" />
+          </div>
+        </div>
+
+        <div class="six wide mobile four wide tablet two wide computer column">&nbsp;</div>
+        <div class="six wide mobile four wide tablet two wide computer column">
+          <div class="field" th:classappend="${#fields.hasErrors('flightDuration') ? 'error' : ''}">
+            <label>Duration (hours)</label>
+            <input type="text" th:field="*{flightDuration}" placeholder="HH:mm" />
+          </div>
+        </div>
+        <div class="four wide mobile three wide tablet two wide computer column">
+          <div class="field" th:classappend="${#fields.hasErrors('flightDistance') ? 'error' : ''}">
+            <label>Distance (km)</label>
+            <input type="number" th:field="*{flightDistance}" placeholder="..." />
+          </div>
+        </div>
+        <div class="five wide tablet only ten wide computer only column">&nbsp;</div>
+
+      </div>
+
+      <div class="ui horizontal divider">Other data</div>
+
+      <div class="ui horizontal divider">Actions</div>
+      <div class="ui dense grid">
+        <div class="sixteen wide right aligned column">
+          <button type="submit" class="ui primary button">
+            <i class="save icon"></i>
+            Save
+          </button>
+        </div>
+      </div>
+
+
+    </div>
+
+  </body>
+</html>

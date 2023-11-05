@@ -1,7 +1,7 @@
 package de.perdian.flightlog.modules.flights.service;
 
 import de.perdian.flightlog.FlightlogApplication;
-import de.perdian.flightlog.modules.flights.service.model.FlightLookup;
+import de.perdian.flightlog.modules.flights.service.model.Flight;
 import de.perdian.flightlog.modules.flights.service.model.FlightLookupRequest;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -29,7 +29,7 @@ public class FlightLookupServiceExample {
             flightLookupRequest.setDepartureDate(LocalDate.of(2023, 11, 03));
 
             FlightLookupService flightLookupService = applicationContext.getBean(FlightLookupService.class);
-            List<FlightLookup> flights = flightLookupService.lookupFlights(flightLookupRequest);
+            List<Flight> flights = flightLookupService.lookupFlights(flightLookupRequest);
 
             log.info("Found {} flights", flights.size());
             for (int i=0; i < flights.size(); i++) {

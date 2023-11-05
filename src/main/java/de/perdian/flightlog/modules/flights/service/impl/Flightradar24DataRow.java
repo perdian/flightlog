@@ -1,7 +1,6 @@
 package de.perdian.flightlog.modules.flights.service.impl;
 
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
-import de.perdian.flightlog.modules.flights.service.model.FlightLookup;
 
 import java.time.*;
 import java.util.Objects;
@@ -59,30 +58,6 @@ class Flightradar24DataRow {
 
     boolean matchesDepartureAirportCode(String requestedDepartureAirportCode) {
         return Objects.equals(this.getDepartureAirportCode(), requestedDepartureAirportCode);
-    }
-
-    FlightLookup toFlightData(String airlineCode, String flightNumber) {
-
-        ZoneId departureZoneId = this.getDepartureAirportEntity() == null ? null : this.getDepartureAirportEntity().getTimezoneId();
-        ZonedDateTime actualDepartureDateTimeUtc = this.getDepartureDateUtc() == null  || this.getDepartureTimeUtc() == null ? null : this.getDepartureTimeUtc().atDate(this.getDepartureDateUtc()).atZone(ZoneId.of("UTC"));
-        ZonedDateTime actualDepartureDateTimeLocal = actualDepartureDateTimeUtc == null || departureZoneId == null ? null : actualDepartureDateTimeUtc.withZoneSameInstant(departureZoneId);
-        ZonedDateTime arrivalTimeUtc = this.getDuration() == null || actualDepartureDateTimeUtc == null ? null : actualDepartureDateTimeUtc.plus(this.getDuration());
-        ZoneId arrivalZoneId = this.getArrivalAirportEntity() == null ? null : this.getArrivalAirportEntity().getTimezoneId();
-        ZonedDateTime arrivalTimeLocal = arrivalTimeUtc == null || arrivalZoneId == null ? null : arrivalTimeUtc.withZoneSameInstant(arrivalZoneId);
-
-        FlightLookup flightLookupData = new FlightLookup();
-        flightLookupData.setDepartureAirportCode(this.getDepartureAirportCode());
-        flightLookupData.setDepartureDateLocal(actualDepartureDateTimeLocal == null ? this.getDepartureDateUtc() : actualDepartureDateTimeLocal.toLocalDate());
-        flightLookupData.setDepartureTimeLocal(actualDepartureDateTimeLocal == null ? null : actualDepartureDateTimeLocal.toLocalTime());
-        flightLookupData.setArrivalAirportCode(this.getArrivalAirportCode());
-        flightLookupData.setArrivalDateLocal(arrivalTimeLocal == null ? null : arrivalTimeLocal.toLocalDate());
-        flightLookupData.setArrivalTimeLocal(arrivalTimeLocal == null ? null : arrivalTimeLocal.toLocalTime());
-        flightLookupData.setAircraftRegistration(this.getAircraftRegistration());
-        flightLookupData.setAircraftType(this.getAircraftType());
-        flightLookupData.setAirlineCode(airlineCode);
-        flightLookupData.setFlightNumber(flightNumber);
-        return flightLookupData;
-
     }
 
     LocalDate getDepartureDateUtc() {

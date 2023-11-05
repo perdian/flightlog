@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.service;
 
-import de.perdian.flightlog.modules.flights.service.model.FlightLookup;
+import de.perdian.flightlog.modules.flights.service.model.Flight;
 import de.perdian.flightlog.modules.flights.service.model.FlightLookupRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,16 +19,16 @@ class FlightLookupServiceImpl implements FlightLookupService {
 
     private List<FlightLookupSource> sources = null;
 
-    public List<FlightLookup> lookupFlights(FlightLookupRequest flightLookupRequest) {
+    public List<Flight> lookupFlights(FlightLookupRequest flightLookupRequest) {
         return Optional.ofNullable(this.getSources()).orElseGet(Collections::emptyList).stream()
             .map(source -> this.lookupFlightsFromSource(source, flightLookupRequest))
             .filter(list -> list != null && !list.isEmpty())
             .flatMap(list -> list.stream())
-            .sorted(FlightLookup::sortByDepartureDateAndTime)
+            .sorted(Flight::sortByDepartureDateAndTime)
             .collect(Collectors.toList());
     }
 
-    private List<FlightLookup> lookupFlightsFromSource(FlightLookupSource source, FlightLookupRequest flightLookupRequest) {
+    private List<Flight> lookupFlightsFromSource(FlightLookupSource source, FlightLookupRequest flightLookupRequest) {
         try {
             return source.lookupFlights(flightLookupRequest);
         } catch (Exception e) {

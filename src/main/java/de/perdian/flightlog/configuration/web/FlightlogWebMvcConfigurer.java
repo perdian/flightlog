@@ -16,12 +16,22 @@
  */
 package de.perdian.flightlog.configuration.web;
 
+import de.perdian.flightlog.support.FlightlogHelper;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.time.Duration;
+
 @Configuration
 class FlightlogWebMvcConfigurer implements WebMvcConfigurer {
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(String.class, Duration.class, FlightlogHelper::parseDuration);
+        registry.addConverter(Duration.class, String.class, FlightlogHelper::formatDuration);
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

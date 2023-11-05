@@ -2,6 +2,7 @@ package de.perdian.flightlog.modules.flights.service.model;
 
 import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
 import de.perdian.flightlog.modules.users.persistence.UserEntity;
+import de.perdian.flightlog.support.FlightlogHelper;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.FlightType;
@@ -9,6 +10,8 @@ import de.perdian.flightlog.support.types.SeatType;
 
 import java.io.Serializable;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 public class Flight implements Serializable {
@@ -25,7 +28,6 @@ public class Flight implements Serializable {
     private FlightReason flightReason = null;
     private FlightType flightType = null;
     private Duration flightDuration = null;
-    private String flightDurationString = null;
     private Integer flightDistance = null; // Kilometers
     private String seatNumber = null;
     private SeatType seatType = null;
@@ -42,6 +44,18 @@ public class Flight implements Serializable {
         result.append(",departureContact=").append(this.getDepartureContact());
         result.append(",arrivalContact=").append(this.getArrivalContact());
         return result.append("]").toString();
+    }
+
+    public static int sortByDepartureDateAndTime(Flight flight1, Flight flight2) {
+        if (flight1.getDepartureContact() == null || flight1.getDepartureContact().getDateLocal() == null) {
+            return flight2.getDepartureContact() == null || flight2.getDepartureContact().getDateLocal() == null ? 0 : 1;
+        } else if (flight2.getDepartureContact() == null || flight2.getDepartureContact().getDateLocal() == null) {
+            return -1;
+        } else {
+            LocalDateTime ldt1 = flight1.getDepartureContact().getDateLocal().atTime(flight1.getDepartureContact().getTimeLocal() == null ? LocalTime.of(0, 0) : flight1.getDepartureContact().getTimeLocal());
+            LocalDateTime ldt2 = flight2.getDepartureContact().getDateLocal().atTime(flight2.getDepartureContact().getTimeLocal() == null ? LocalTime.of(0, 0) : flight2.getDepartureContact().getTimeLocal());
+            return ldt1.compareTo(ldt2);
+        }
     }
 
     public UUID getEntityId() {
@@ -115,10 +129,10 @@ public class Flight implements Serializable {
     }
 
     public String getFlightDurationString() {
-        return this.flightDurationString;
+        return FlightlogHelper.formatDuration(this.getFlightDuration());
     }
     public void setFlightDurationString(String flightDurationString) {
-        this.flightDurationString = flightDurationString;
+        this.setFlightDuration(FlightlogHelper.parseDuration(flightDurationString));
     }
 
     public Integer getFlightDistance() {

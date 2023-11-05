@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+
+    <div th:fragment="selection-form" th:remove="tag" th:if="${showLookupForm != false}">
+      <form class="ui form" method="post" th:action="@{/flights/add/lookup}" th:object="${flightLookupRequest}">
+        <div class="ui divider"></div>
+        <div class="ui secondary segment">
+          <h4 class="ui header">Lookup flight data</h4>
+
+          <div class="ui dense grid">
+            <div class="four wide mobile three wide tablet two wide computer column">
+              <div class="field">
+                <label>Airline</label>
+                <input type="text" class="uppercase" th:field="*{airlineCode}" />
+              </div>
+            </div>
+            <div class="four wide mobile three wide tablet two wide computer column">
+              <div class="field">
+                <label>Flight no.</label>
+                <input type="text" th:field="*{flightNumber}" />
+              </div>
+            </div>
+            <div class="eight wide mobile four wide tablet three wide computer column">
+              <div class="field">
+                <label>Departure date</label>
+                <input type="date" th:field="*{departureDate}" placeholder="yyyy-MM-dd" />
+              </div>
+            </div>
+            <div class="six wide tablet only nine wide computer only column">
+              <div class="field">
+                <label>&nbsp;</label>
+                <button type="submit" class="ui primary button">
+                  <i class="search icon"></i>
+                  Proceed
+                </button>
+              </div>
+            </div>
+            <div class="sixteen wide mobile only right aligned column">
+              <button type="submit" class="ui primary button">
+                <i class="search icon"></i>
+                Proceed
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <div th:fragment="selection-list" th:remove="tag" th:if="${showLookupResults == true}">
+      <div class="ui divider"></div>
+      <div class="ui yellow segment">
+        <h4 class="ui header">Multiple results found, please select a flight</h4>
+        <div class="ui grid">
+          <div class="sixteen wide mobile five wide tablet four wide computer column" th:each="flightLookupResult : ${flightLookupResults}">
+            <form class="ui fluid card" method="post" th:action="@{/flights/add}">
+              <input type="hidden" name="departureDateLocal" th:value="${flightLookupResult.departureContact?.dateLocal}" />
+              <input type="hidden" name="departureTimeLocal" th:value="${flightLookupResult.departureContact?.timeLocal}" />
+              <input type="hidden" name="departureAirportCode" th:value="${flightLookupResult.departureContact?.airport?.code}" />
+              <input type="hidden" name="arrivalDateLocal" th:value="${flightLookupResult.arrivalContact?.dateLocal}" />
+              <input type="hidden" name="arrivalTimeLocal" th:value="${flightLookupResult.arrivalContact?.timeLocal}" />
+              <input type="hidden" name="arrivalAirportCode" th:value="${flightLookupResult.arrivalContact?.airport?.code}" />
+              <input type="hidden" name="flightDuration" th:value="${flightLookupResult.flightDurationString}" />
+              <input type="hidden" name="flightDistance" th:value="${flightLookupResult.flightDistance}" />
+              <input type="hidden" name="aircraftType" th:value="${flightLookupResult.aircraft?.type}" />
+              <input type="hidden" name="aircraftRegistration" th:value="${flightLookupResult.aircraft?.registration}" />
+              <input type="hidden" name="aircraftName" th:value="${flightLookupResult.aircraft?.name}" />
+              <input type="hidden" name="showLookupForm" value="false" />
+              <div class="content">
+                <div class="header">HEADER</div>
+              </div>
+              <button class="ui bottom attached button">
+                <i class="check circle icon"></i>
+                Select this flight
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

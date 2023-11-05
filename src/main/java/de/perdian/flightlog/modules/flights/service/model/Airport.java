@@ -1,5 +1,7 @@
 package de.perdian.flightlog.modules.flights.service.model;
 
+import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
+
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -15,6 +17,19 @@ public class Airport implements Serializable {
     private Float latitude = null;
     private ZoneId timezoneId = null;
     private ZoneOffset timezoneOffset = null;
+
+    public Airport() {
+    }
+
+    public Airport(AirportEntity airportEntity) {
+        this.setCode(airportEntity.getIataCode());
+        this.setCountryCode(airportEntity.getCountryCode());
+        this.setName(airportEntity.getName());
+        this.setLongitude(airportEntity.getLongitude());
+        this.setLatitude(airportEntity.getLatitude());
+        this.setTimezoneId(airportEntity.getTimezoneId());
+        this.setTimezoneOffset(airportEntity.getTimezoneOffset());
+    }
 
     @Override
     public String toString() {

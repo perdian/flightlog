@@ -1,5 +1,7 @@
 body { padding: 0.25rem; }
 main { padding: 0.5rem; }
+input[readonly] { background-color: #f3f3f3 !important; }
+input.uppercase { text-transform: uppercase; }
 
 .dense.grid { padding: 0.5rem 0.75rem 0.5rem 0.75rem !important; }
 .dense.grid .column { padding: 0.5rem 0.25rem 0.5rem 0.25rem !important; }
