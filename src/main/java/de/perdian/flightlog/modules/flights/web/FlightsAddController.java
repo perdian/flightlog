@@ -1,11 +1,14 @@
 package de.perdian.flightlog.modules.flights.web;
 
-import de.perdian.flightlog.modules.flights.persistence.FlightEntity;
+import de.perdian.flightlog.modules.authentication.UserHolder;
 import de.perdian.flightlog.modules.flights.service.FlightLookupService;
+import de.perdian.flightlog.modules.flights.service.FlightUpdateService;
 import de.perdian.flightlog.modules.flights.service.model.Flight;
 import de.perdian.flightlog.modules.flights.service.model.FlightLookupRequest;
 import de.perdian.flightlog.modules.flights.web.editor.FlightEditor;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +24,15 @@ import java.util.List;
 @RequestMapping(path = "/flights")
 class FlightsAddController {
 
+    private static final Logger log = LoggerFactory.getLogger(FlightsAddController.class);
     private FlightLookupService flightLookupService = null;
+    private FlightUpdateService flightUpdateService = null;
+    private UserHolder userHolder = null;
 
     @RequestMapping(path = "/add")
     String doAdd(
         @ModelAttribute(name = "flightLookupRequest") FlightLookupRequest flightLookupRequest,
-        @ModelAttribute(name = "flightEditor") FlightEditor flightData,
+        @ModelAttribute(name = "flightEditor") FlightEditor flightEditor,
         @RequestParam(name = "showLookupForm", required = false) Boolean showLookupForm,
         Model model
     ) {
@@ -58,20 +64,23 @@ class FlightsAddController {
     @RequestMapping(path = "/add/submit")
     String doAddSubmit(
         @ModelAttribute(name = "flightLookupRequest") FlightLookupRequest flightLookupRequest,
-        @ModelAttribute(name = "flightEditor") @Valid FlightEditor flightEditor, BindingResult flightDataBindingResult,
+        @ModelAttribute(name = "flightEditor") @Valid FlightEditor flightEditor, BindingResult flightEditorBindingResult,
         RedirectAttributes redirectAttributes,
         Model model
     ) {
-        if (flightDataBindingResult.hasErrors()) {
+        if (flightEditorBindingResult.hasErrors()) {
             return this.doAdd(flightLookupRequest, flightEditor, false, model);
         } else {
 
-            FlightEntity flightEntity = new FlightEntity();
+            Flight newFlight = new Flight();
+            flightEditor.copyValuesInto(newFlight);
+            log.debug("Adding new flight: {}", newFlight);
+            Flight storedFlight = this.getFlightUpdateService().saveFlight(newFlight, this.getUserHolder().getCurrentUser());
 
             redirectAttributes.addFlashAttribute("flightAdded", "true");
-            redirectAttributes.addFlashAttribute("flightEntityId", flightEntity.getId());
+            redirectAttributes.addFlashAttribute("flightEntityId", storedFlight.getEntityId());
 
-            return "redirect:/flights/edit/" + flightEntity.getId();
+            return "redirect:/flights/edit/" + storedFlight.getEntityId();
 
         }
     }
@@ -82,6 +91,22 @@ class FlightsAddController {
     @Autowired
     void setFlightLookupService(FlightLookupService flightLookupService) {
         this.flightLookupService = flightLookupService;
+    }
+
+    FlightUpdateService getFlightUpdateService() {
+        return this.flightUpdateService;
+    }
+    @Autowired
+    void setFlightUpdateService(FlightUpdateService flightUpdateService) {
+        this.flightUpdateService = flightUpdateService;
+    }
+
+    UserHolder getUserHolder() {
+        return this.userHolder;
+    }
+    @Autowired
+    void setUserHolder(UserHolder userHolder) {
+        this.userHolder = userHolder;
     }
 
 }

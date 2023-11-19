@@ -76,7 +76,8 @@ public class Flightradar24LookupSource implements FlightLookupSource {
     private String resolveActualFlightNumber(FlightLookupRequest flightLookupRequest) {
         try {
 
-            String httpUrl = "https://www.flightradar24.com/v1/search/web/find?query=" + flightLookupRequest.getAirlineCode() + flightLookupRequest.getFlightNumber();
+            String completeFlightNumber = flightLookupRequest.getAirlineCode() + flightLookupRequest.getFlightNumber();
+            String httpUrl = "https://www.flightradar24.com/v1/search/web/find?query=" + completeFlightNumber;
             log.debug("Querying flightradar24 for potential codeshare information of flight on {} using URL: {}", flightLookupRequest, httpUrl);
             Request httpRequest = new Request.Builder().get().url(httpUrl).addHeader("User-Agent", "curl").build();
 
@@ -86,7 +87,9 @@ public class Flightradar24LookupSource implements FlightLookupSource {
                 JsonNode resultsArray = jsonResponse.get("results");
                 for (int i=0; i < resultsArray.size(); i++) {
                     JsonNode result = resultsArray.get(i);
-                    if ("codeshare".equalsIgnoreCase(result.get("match").asText())) {
+                    String labelvalue = result.get("label").asText();
+                    String matchValue = result.get("match").asText();
+                    if (labelvalue.startsWith(completeFlightNumber + " ") && "codeshare".equalsIgnoreCase(matchValue)) {
                         JsonNode resultDetail = result.get("detail");
                         String actualFlightNumber = resultDetail.get("flight").asText();
                         if (StringUtils.isNotEmpty(actualFlightNumber)) {

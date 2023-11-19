@@ -138,14 +138,14 @@ public class FlightEditor implements Serializable {
         return this.departureAirportCode;
     }
     public void setDepartureAirportCode(String departureAirportCode) {
-        this.departureAirportCode = departureAirportCode;
+        this.departureAirportCode = departureAirportCode == null ? null : departureAirportCode.toUpperCase();
     }
 
     public String getDepartureAirportCountryCode() {
         return this.departureAirportCountryCode;
     }
     public void setDepartureAirportCountryCode(String departureAirportCountryCode) {
-        this.departureAirportCountryCode = departureAirportCountryCode;
+        this.departureAirportCountryCode = departureAirportCountryCode == null ? null : departureAirportCountryCode.toUpperCase();
     }
 
     public String getDepartureAirportName() {
@@ -178,14 +178,14 @@ public class FlightEditor implements Serializable {
         return this.arrivalAirportCode;
     }
     public void setArrivalAirportCode(String arrivalAirportCode) {
-        this.arrivalAirportCode = arrivalAirportCode;
+        this.arrivalAirportCode = arrivalAirportCode == null ? null : arrivalAirportCode.toUpperCase();
     }
 
     public String getArrivalAirportCountryCode() {
         return this.arrivalAirportCountryCode;
     }
     public void setArrivalAirportCountryCode(String arrivalAirportCountryCode) {
-        this.arrivalAirportCountryCode = arrivalAirportCountryCode;
+        this.arrivalAirportCountryCode = arrivalAirportCountryCode == null ? null : arrivalAirportCountryCode.toUpperCase();
     }
 
     public String getArrivalAirportName() {
@@ -216,7 +216,7 @@ public class FlightEditor implements Serializable {
         return this.flightNumber;
     }
     public void setFlightNumber(String flightNumber) {
-        this.flightNumber = flightNumber;
+        this.flightNumber = flightNumber == null ? null : flightNumber.toUpperCase();
     }
 
     @NotNull
@@ -225,7 +225,7 @@ public class FlightEditor implements Serializable {
         return this.airlineCode;
     }
     public void setAirlineCode(String airlineCode) {
-        this.airlineCode = airlineCode;
+        this.airlineCode = airlineCode == null ? null : airlineCode.toUpperCase();
     }
 
     public String getAirlineName() {
@@ -282,7 +282,7 @@ public class FlightEditor implements Serializable {
         return this.seatType;
     }
     public void setSeatType(String seatType) {
-        this.seatType = seatType;
+        this.seatType = seatType == null ? null : seatType.toUpperCase();
     }
 
     @NotNull
@@ -290,7 +290,7 @@ public class FlightEditor implements Serializable {
         return this.cabinClass;
     }
     public void setCabinClass(String cabinClass) {
-        this.cabinClass = cabinClass;
+        this.cabinClass = cabinClass == null ? null : cabinClass.toUpperCase();
     }
 
     @NotNull
@@ -298,7 +298,7 @@ public class FlightEditor implements Serializable {
         return this.flightReason;
     }
     public void setFlightReason(String flightReason) {
-        this.flightReason = flightReason;
+        this.flightReason = flightReason == null ? null : flightReason.toUpperCase();
     }
 
     public String getComment() {

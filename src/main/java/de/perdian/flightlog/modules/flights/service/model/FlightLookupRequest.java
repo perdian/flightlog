@@ -26,10 +26,10 @@ public class FlightLookupRequest implements Serializable {
     }
 
     public String getAirlineCode() {
-        return this.airlineCode == null ? null : this.airlineCode.toUpperCase();
+        return this.airlineCode;
     }
     public void setAirlineCode(String airlineCode) {
-        this.airlineCode = airlineCode;
+        this.airlineCode = airlineCode == null ? null : airlineCode.toUpperCase();
     }
 
     public String getFlightNumber() {
@@ -48,10 +48,10 @@ public class FlightLookupRequest implements Serializable {
     }
 
     public String getDepartureAirportCode() {
-        return this.departureAirportCode == null ? null : this.departureAirportCode.toUpperCase();
+        return this.departureAirportCode;
     }
     public void setDepartureAirportCode(String departureAirportCode) {
-        this.departureAirportCode = departureAirportCode;
+        this.departureAirportCode = departureAirportCode == null ? null : departureAirportCode.toUpperCase();
     }
 
 }
