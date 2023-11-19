@@ -5,11 +5,11 @@
     <div th:fragment="navigation-menu-items-desktop" th:remove="tag">
       <a tabindex="-1" class="mobile hidden item" th:href="@{/overview}">
         <i class="home icon"></i>
-        <span>Overview</span>
+        <span th:text="#{overview}">Overview</span>
       </a>
       <a tabindex="-1" class="mobile hidden item" th:href="@{/flights/add}">
         <i class="plus icon"></i>
-        <span>Add flight</span>
+        <span th:text="#{addFlight}">Add flight</span>
       </a>
     </div>
 

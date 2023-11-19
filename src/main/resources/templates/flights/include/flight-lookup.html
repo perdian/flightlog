@@ -6,24 +6,24 @@
       <form class="ui form" method="post" th:action="@{/flights/add/lookup}" th:object="${flightLookupRequest}">
         <div class="ui divider"></div>
         <div class="ui secondary segment">
-          <h4 class="ui header">Lookup flight data</h4>
+          <h4 class="ui header" th:text="#{lookupFlightData}"></h4>
 
           <div class="ui dense grid">
             <div class="four wide mobile three wide tablet two wide computer column">
               <div class="field">
-                <label>Airline</label>
+                <label th:text="#{airline}"></label>
                 <input type="text" class="uppercase" th:field="*{airlineCode}" />
               </div>
             </div>
             <div class="four wide mobile three wide tablet two wide computer column">
               <div class="field">
-                <label>Flight no.</label>
+                <label th:text="#{flightNo}"></label>
                 <input type="text" th:field="*{flightNumber}" />
               </div>
             </div>
             <div class="eight wide mobile four wide tablet three wide computer column">
               <div class="field">
-                <label>Departure date</label>
+                <label th:text="#{departureDate}"></label>
                 <input type="date" th:field="*{departureDate}" placeholder="yyyy-MM-dd" />
               </div>
             </div>
@@ -32,14 +32,14 @@
                 <label>&nbsp;</label>
                 <button type="submit" class="ui primary button">
                   <i class="search icon"></i>
-                  Proceed
+                  <span th:text="#{proceed}"></span>
                 </button>
               </div>
             </div>
             <div class="sixteen wide mobile only right aligned column">
               <button type="submit" class="ui primary button">
                 <i class="search icon"></i>
-                Proceed
+                <span th:text="#{proceed}"></span>
               </button>
             </div>
           </div>
@@ -51,7 +51,7 @@
     <div th:fragment="selection-list" th:remove="tag" th:if="${showLookupResults == true}">
       <div class="ui divider"></div>
       <div class="ui yellow segment">
-        <h4 class="ui header">Multiple results found, please select a flight</h4>
+        <h4 class="ui header" th:text="#{multipleResultsFoundPleaseSelectAFlight}"></h4>
         <div class="ui grid">
           <div class="sixteen wide mobile five wide tablet four wide computer column" th:each="flightLookupResult : ${flightLookupResults}">
             <form class="ui fluid card" method="post" th:action="@{/flights/add}">
@@ -72,7 +72,7 @@
               </div>
               <button class="ui bottom attached button">
                 <i class="check circle icon"></i>
-                Select this flight
+                <span th:text="#{selectThisFlight}"></span>
               </button>
             </form>
           </div>
