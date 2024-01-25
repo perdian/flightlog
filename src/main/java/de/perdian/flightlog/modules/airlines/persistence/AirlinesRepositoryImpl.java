@@ -76,7 +76,7 @@ class AirlinesRepositoryImpl implements AirlinesRepository {
 
     @Override
     public AirlineEntity loadAirlineByCode(String airlineCode) {
-        return StringUtils.isEmpty(airlineCode) ? null : this.getAirlineBeansByCode().get(airlineCode);
+        return StringUtils.isEmpty(airlineCode) ? null : this.getAirlineBeansByCode().get(airlineCode.toUpperCase());
     }
 
     @Override

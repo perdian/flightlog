@@ -9,19 +9,20 @@
     <link rel="shortcut icon" th:href="@{/assets/flightlog/icons/plane.png}" />
 
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <link rel="stylesheet" th:href="@{/webjars/fomantic-ui/dist/semantic.min.css}" />
     <script th:src="@{/webjars/fomantic-ui/dist/semantic.min.js}"></script>
-
     <script th:src="@{/webjars/openlayers/ol.js}"></script>
-    <link rel="stylesheet" th:href="@{/webjars/openlayers/ol.css}" />
-
     <script th:src="@{/webjars/momentjs/min/moment.min.js}"></script>
+    <script th:src="@{/assets/flightlog/js/flight-details.js}"></script>
 
+    <link rel="stylesheet" th:href="@{/webjars/fomantic-ui/dist/semantic.min.css}" />
+    <link rel="stylesheet" th:href="@{/webjars/openlayers/ol.css}" />
     <link rel="stylesheet" th:href="@{/assets/flightlog/css/flightlog.css}" />
 
     <div th:if="${#strings.length(head) > 1}" th:replace="${head}">Additional header content</div>
   </head>
   <body th:class="${#strings.isEmpty(bodyClass) ? 'default' : bodyClass}">
+
+    <input type="hidden" id="flightlogRootUrl" th:value="@{/}" />
 
     <header class="ui inverted menu">
       <div class="active item">

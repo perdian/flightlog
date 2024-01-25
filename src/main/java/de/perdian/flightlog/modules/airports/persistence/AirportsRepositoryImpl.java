@@ -98,7 +98,7 @@ class AirportsRepositoryImpl implements AirportsRepository {
 
     @Override
     public AirportEntity loadAirportByIataCode(String iataAirportCode) {
-        return StringUtils.isEmpty(iataAirportCode) ? null : this.getAirportBeansByIataCode().get(iataAirportCode);
+        return StringUtils.isEmpty(iataAirportCode) ? null : this.getAirportBeansByIataCode().get(iataAirportCode.toUpperCase());
     }
 
     ResourceLoader getResourceLoader() {

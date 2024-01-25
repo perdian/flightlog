@@ -12,19 +12,19 @@
             <div class="four wide mobile three wide tablet two wide computer column">
               <div class="field">
                 <label th:text="#{airline}"></label>
-                <input type="text" class="uppercase" th:field="*{airlineCode}" />
+                <input id="lookupAirlineCode" type="text" class="uppercase" th:field="*{airlineCode}" />
               </div>
             </div>
             <div class="four wide mobile three wide tablet two wide computer column">
               <div class="field">
                 <label th:text="#{flightNo}"></label>
-                <input type="text" th:field="*{flightNumber}" />
+                <input id="lookupFlightNumber" type="text" th:field="*{flightNumber}" inputmode="decimal" />
               </div>
             </div>
             <div class="eight wide mobile four wide tablet three wide computer column">
               <div class="field">
                 <label th:text="#{departureDate}"></label>
-                <input type="date" th:field="*{departureDate}" placeholder="yyyy-MM-dd" />
+                <input id="lookupDepartureDate" type="date" th:field="*{departureDate}" placeholder="yyyy-MM-dd" />
               </div>
             </div>
             <div class="six wide tablet only nine wide computer only column">

@@ -4,16 +4,8 @@ spring:
     driver-class-name: ${FLIGHTLOG_DB_DRIVER_CLASS_NAME:org.h2.Driver}
     username: ${FLIGHTLOG_DB_USERNAME:sa}
     password: ${FLIGHTLOG_DB_PASSWORD:}
-  flyway:
-    encoding: UTF-8
-    locations:
-      - "classpath:de/perdian/flightlog/flyway/"
-    validate-on-migrate: false
   jpa:
     open-in-view: false
-    properties:
-      hibernate:
-        dialect: ${FLIGHTLOG_DB_HIBERNATE_DIALECT}
   security:
     oauth2:
       client:

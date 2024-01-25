@@ -11,63 +11,63 @@
         <div class="six wide mobile four wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('departureDateLocal') ? 'error' : ''}">
             <label th:text="#{departureDate}"></label>
-            <input type="date" th:field="*{departureDateLocal}" />
+            <input id="departureDateLocal" type="date" th:field="*{departureDateLocal}" />
           </div>
         </div>
         <div class="six wide mobile four wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('departureTimeLocal') ? 'error' : ''}">
             <label th:text="#{departureTime}"></label>
-            <input type="time" th:field="*{departureTimeLocal}" />
+            <input id="departureTimeLocal" type="time" th:field="*{departureTimeLocal}" />
           </div>
         </div>
         <div class="four wide mobile three wide tablet two wide computer column">
-          <div class="field" th:classappend="${#fields.hasErrors('departureAirportCode') ? 'error' : ''}">
+          <div class="field" th:classappend="${#fields.hasErrors('departureAirportCode') || (not #strings.isEmpty(flightEditor.departureAirportCode) && (not flightEditor.departureAirportKnown)) ? 'error' : ''}">
             <label th:text="#{airportCode}"></label>
-            <input type="text" class="uppercase" th:field="*{departureAirportCode}" maxlength="3" />
+            <input id="departureAirportCode" type="text" class="uppercase" th:field="*{departureAirportCode}" maxlength="3" autocomplete="off" />
           </div>
         </div>
         <div class="sixteen wide mobile five wide tablet ten wide computer column">
           <div class="field">
             <label><span th:text="#{departureAirport}"></span> <i id="departureAirportCountryCode" th:class="${#strings.isEmpty(flightEditor.departureAirportCountryCode) ? '' : ('flag ' + #strings.toLowerCase(flightEditor.departureAirportCountryCode))}"></i></label>
-            <input type="text" readonly th:value="*{departureAirportName}" th:placeholder="#{airportNameWillBeComputedAutomatically}" />
+            <input id="departureAirportName" type="text" readonly tabindex="-1" th:value="*{departureAirportName}" th:placeholder="#{airportNameWillBeComputedAutomatically}" />
           </div>
         </div>
 
         <div class="six wide mobile four wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('arrivalDateLocal') ? 'error' : ''}">
             <label th:text="#{arrivalDate}"></label>
-            <input type="date" th:field="*{arrivalDateLocal}" />
+            <input id="arrivalDateLocal" type="date" th:field="*{arrivalDateLocal}" />
           </div>
         </div>
         <div class="six wide mobile four wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('arrivalTimeLocal') ? 'error' : ''}">
             <label th:text="#{arrivalTime}"></label>
-            <input type="time" th:field="*{arrivalTimeLocal}" />
+            <input id="arrivalTimeLocal" type="time" th:field="*{arrivalTimeLocal}" />
           </div>
         </div>
         <div class="four wide mobile three wide tablet two wide computer column">
-          <div class="field" th:classappend="${#fields.hasErrors('arrivalAirportCode') ? 'error' : ''}">
+          <div class="field" th:classappend="${#fields.hasErrors('arrivalAirportCode') || (not #strings.isEmpty(flightEditor.arrivalAirportCode) && (not flightEditor.arrivalAirportKnown)) ? 'error' : ''}">
             <label th:text="#{airportCode}"></label>
-            <input type="text" class="uppercase" th:field="*{arrivalAirportCode}" maxlength="3" />
+            <input id="arrivalAirportCode" type="text" class="uppercase" th:field="*{arrivalAirportCode}" maxlength="3" autocomplete="off" />
           </div>
         </div>
         <div class="sixteen wide mobile five wide tablet ten wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('arrivalAirportCountryCode') ? 'error' : ''}">
             <label><span th:text="#{arrivalAirport}"></span> <i id="arrivalAirportCountryCode" th:class="${#strings.isEmpty(flightEditor.arrivalAirportCountryCode) ? '' : ('flag ' + #strings.toLowerCase(flightEditor.arrivalAirportCountryCode))}"></i></label>
-            <input type="text" readonly th:value="*{arrivalAirportName}" th:placeholder="#{airportNameWillBeComputedAutomatically}" />
+            <input id="arrivalAirportName" type="text" readonly tabindex="-1" th:value="*{arrivalAirportName}" th:placeholder="#{airportNameWillBeComputedAutomatically}" />
           </div>
         </div>
 
         <div class="eight wide mobile four wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('flightDuration') ? 'error' : ''}">
             <label th:text="#{durationInHours}"></label>
-            <input type="text" th:field="*{flightDuration}" placeholder="HH:mm" />
+            <input id="flightDuration" type="text" th:field="*{flightDuration}" placeholder="HH:mm" />
           </div>
         </div>
         <div class="eight wide mobile four wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('flightDistance') ? 'error' : ''}">
             <label th:text="#{distanceInKm}"></label>
-            <input type="number" th:field="*{flightDistance}" placeholder="..." />
+            <input id="flightDistance" type="number" th:field="*{flightDistance}" placeholder="..." />
           </div>
         </div>
 
@@ -80,19 +80,19 @@
         <div class="eight wide mobile two wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('airlineCode') ? 'error' : ''}">
             <label th:text="#{airlineCode}"></label>
-            <input type="text" class="uppercase" th:field="*{airlineCode}" minlength="2" maxlength="2" />
+            <input id="airlineCode" type="text" class="uppercase" th:field="*{airlineCode}" minlength="2" maxlength="2" />
           </div>
         </div>
         <div class="eight wide mobile two wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('flightNumber') ? 'error' : ''}">
             <label th:text="#{flightNumber}"></label>
-            <input type="text" class="uppercase" th:field="*{flightNumber}" maxlength="5" />
+            <input type="text" class="uppercase" th:field="*{flightNumber}" maxlength="5" inputmode="decimal" />
           </div>
         </div>
         <div class="sixteen wide mobile four wide tablet three wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('airlineName') ? 'error' : ''}">
             <label th:text="#{airlineName}"></label>
-            <input type="text" th:field="*{airlineName}" />
+            <input id="airlineName" type="text" th:field="*{airlineName}" />
           </div>
         </div>
         <div class="eight wide mobile three wide tablet three wide computer column">
@@ -113,6 +113,13 @@
             <input type="text" th:field="*{aircraftName}" />
           </div>
         </div>
+
+        <script>
+          registerAirportCodeChangeListener($("input#departureAirportCode"), $("input#departureAirportName"), $("#departureAirportCountryCode"));
+          registerAirportCodeChangeListener($("input#arrivalAirportCode"), $("input#arrivalAirportName"), $("#arrivalAirportCountryCode"));
+          registerAirlineCodeChangeListener($("input#airlineCode"), $("input#airlineName"));
+          registerRouteChangeListener($("input#departureAirportCode"), $("input#departureDateLocal"), $("input#departureTimeLocal"), $("input#arrivalAirportCode"), $("input#arrivalDateLocal"), $("input#arrivalTimeLocal"), $("input#flightDuration"), $("input#flightDistance"));
+        </script>
 
         <div class="eight wide mobile two wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('seatNumber') ? 'error' : ''}">

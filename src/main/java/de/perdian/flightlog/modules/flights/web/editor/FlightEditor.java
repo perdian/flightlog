@@ -29,11 +29,13 @@ public class FlightEditor implements Serializable {
     private String departureAirportCode = null;
     private String departureAirportCountryCode = null;
     private String departureAirportName = null;
+    private boolean departureAirportKnown = false;
     private LocalDate departureDateLocal = null;
     private LocalTime departureTimeLocal = null;
     private String arrivalAirportCode = null;
     private String arrivalAirportCountryCode = null;
     private String arrivalAirportName = null;
+    private boolean arrivalAirportKnown = false;
     private LocalDate arrivalDateLocal = null;
     private LocalTime arrivalTimeLocal = null;
     private String airlineCode = null;
@@ -155,6 +157,10 @@ public class FlightEditor implements Serializable {
         this.departureAirportName = departureAirportName;
     }
 
+    public boolean isDepartureAirportKnown() {
+        return StringUtils.isNotEmpty(this.departureAirportName);
+    }
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
     public LocalDate getDepartureDateLocal() {
@@ -193,6 +199,10 @@ public class FlightEditor implements Serializable {
     }
     public void setArrivalAirportName(String arrivalAirportName) {
         this.arrivalAirportName = arrivalAirportName;
+    }
+
+    public boolean isArrivalAirportKnown() {
+        return StringUtils.isNotEmpty(this.getArrivalAirportName());
     }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -21,10 +21,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class OverviewController {
+class OverviewController {
 
     @RequestMapping({ "/", "/overview" })
-    public String doOverview(Model model) {
+    String doOverview(Model model) {
         return "overview";
     }
 
