@@ -2,11 +2,10 @@ package de.perdian.flightlog.modules.flights.service.model;
 
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
 
-import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-public class Airport implements Serializable {
+public class Airport {
 
     static final long serialVersionUID = 1L;
 

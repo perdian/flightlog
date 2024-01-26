@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="paper plane icon"></i>
+        <div class="content">
+          <span th:text="#{listFlights}"></span>
+          <div class="sub header" th:text="#{allLoggedFlights}"></div>
+        </div>
+      </h3>
+      <div class="ui divider"></div>
+
+    </main>
+  </body>
+</html>

@@ -1,10 +1,6 @@
 package de.perdian.flightlog.modules.flights.service.model;
 
-import java.io.Serializable;
-
-public class Aircraft implements Serializable {
-
-    static final long serialVersionUID = 1L;
+public class Aircraft {
 
     private String type = null;
     private String registration = null;

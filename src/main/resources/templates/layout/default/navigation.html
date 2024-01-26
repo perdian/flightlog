@@ -2,15 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <body>
 
-    <div th:fragment="navigation-menu-items-desktop" th:remove="tag">
+    <div th:fragment="navigation-menu-items" th:remove="tag">
+
       <a tabindex="-1" class="mobile hidden item" th:href="@{/overview}">
         <i class="home icon"></i>
         <span th:text="#{overview}">Overview</span>
+      </a>
+      <a tabindex="-1" class="mobile hidden item" th:href="@{/flights/list}">
+        <i class="paper plane icon"></i>
+        <span th:text="#{listFlights}">List flights</span>
       </a>
       <a tabindex="-1" class="mobile hidden item" th:href="@{/flights/add}">
         <i class="plus icon"></i>
         <span th:text="#{addFlight}">Add flight</span>
       </a>
+
+      <div class="mobile only right menu">
+        <div class="ui dropdown item">
+          Actions <i class="dropdown icon"></i>
+          <div class="menu">
+            <a tabindex="-1" class="item" th:href="@{/overview}">
+              <i class="home icon"></i>
+              <span th:text="#{overview}">Overview</span>
+            </a>
+            <a tabindex="-1" class="item" th:href="@{/flights/list}">
+              <i class="paper plane icon"></i>
+              <span th:text="#{listFlights}">List flights</span>
+            </a>
+            <div class="ui divider"></div>
+            <a tabindex="-1" class="item" th:href="@{/flights/add}">
+              <i class="plus icon"></i>
+              <span th:text="#{addFlight}">Add flight</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </body>

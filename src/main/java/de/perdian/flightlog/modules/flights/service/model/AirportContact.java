@@ -1,13 +1,10 @@
 package de.perdian.flightlog.modules.flights.service.model;
 
-import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class AirportContact implements Serializable {
-
-    static final long serialVersionUID = 1L;
+public class AirportContact {
 
     private Airport airport = null;
     private LocalDate dateLocal = null;

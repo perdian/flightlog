@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import java.util.List;
 
 @ControllerAdvice(assignableTypes = {
-    FlightsAddController.class,
     FlightsEditController.class
 })
-public class FlightsAdvice {
+class FlightsEditAdvice {
 
     private AirportsRepository airportsRepository = null;
     private AirlinesRepository airlinesRepository = null;

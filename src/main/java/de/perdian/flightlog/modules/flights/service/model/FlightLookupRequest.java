@@ -5,12 +5,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
-public class FlightLookupRequest implements Serializable {
-
-    static final long serialVersionUID = 1L;
+public class FlightLookupRequest {
 
     private String airlineCode = null;
     private String flightNumber = null;

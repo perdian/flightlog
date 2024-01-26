@@ -8,15 +8,12 @@ import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.FlightType;
 import de.perdian.flightlog.support.types.SeatType;
 
-import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public class Flight implements Serializable {
-
-    static final long serialVersionUID = 1L;
+public class Flight {
 
     private UUID entityId = null;
     private UserEntity user = null;

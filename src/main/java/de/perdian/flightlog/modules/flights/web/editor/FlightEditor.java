@@ -15,15 +15,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public class FlightEditor implements Serializable {
-
-    static final long serialVersionUID = 1L;
+public class FlightEditor {
 
     private UUID entityId = null;
     private String departureAirportCode = null;
