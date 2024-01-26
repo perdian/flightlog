@@ -1,7 +1,7 @@
 package de.perdian.flightlog.modules.flights.service.model;
 
 import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
-import de.perdian.flightlog.modules.users.persistence.UserEntity;
+import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 import de.perdian.flightlog.support.FlightlogHelper;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;

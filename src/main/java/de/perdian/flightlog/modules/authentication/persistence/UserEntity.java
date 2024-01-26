@@ -1,4 +1,4 @@
-package de.perdian.flightlog.modules.users.persistence;
+package de.perdian.flightlog.modules.authentication.persistence;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user")
+@Table(name = "flightlog_user")
 public class UserEntity implements Serializable {
 
     static final long serialVersionUID = 1L;

@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.persistence;
 
-import de.perdian.flightlog.modules.users.persistence.UserEntity;
+import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.SeatType;

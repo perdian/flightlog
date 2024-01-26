@@ -6,6 +6,8 @@ spring:
     password: ${FLIGHTLOG_DB_PASSWORD:}
   jpa:
     open-in-view: false
+    hibernate:
+      ddl-auto: update
   security:
     oauth2:
       client:
@@ -36,11 +38,7 @@ server:
 
 flightlog:
   authentication:
-    required: ${FLIGHTLOG_AUTHENTICATION_REQUIRED:false}
-    oauth:
-      enabled: ${FLIGHTLOG_AUTHENTICATION_OAUTH2_ENABLED:false}
-    local:
-      enabled: ${FLIGHTLOG_AUTHENTICATION_LOCAL_ENABLED:true}
+    type: ${FLIGHTLOG_AUTHENTICATION_TYPE:none}
   registration:
     restricted: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_RESTRICTED:true}
     email-whitelist: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_EMAIL_WHITELIST:}

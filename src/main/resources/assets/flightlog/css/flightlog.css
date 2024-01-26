@@ -1,4 +1,5 @@
 body { padding: 0.25rem; }
+header.menu { margin: 0 0 0.5rem 0 !important; }
 main { padding: 0.5rem; }
 input[readonly] { background-color: #f3f3f3 !important; }
 input.uppercase { text-transform: uppercase; }
