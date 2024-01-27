@@ -4,6 +4,8 @@ import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 
 public interface User {
 
+    String getUsername();
+
     UserEntity getEntity();
 
 }

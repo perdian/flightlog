@@ -1,4 +1,4 @@
-package de.perdian.flightlog.modules.authentication.configuration.oauth;
+package de.perdian.flightlog.modules.authentication.configuration.oauth2;
 
 import de.perdian.flightlog.modules.authentication.exceptions.RegistrationRestrictedException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,10 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@ConditionalOnBean(OauthAuthenticationConfiguration.class)
-class OauthAuthenticationLoginController {
+@ConditionalOnBean(Oauth2AuthenticationConfiguration.class)
+class Oauth2AuthenticationLoginController {
 
-    private static final Logger log = LoggerFactory.getLogger(OauthAuthenticationLoginController.class);
+    private static final Logger log = LoggerFactory.getLogger(Oauth2AuthenticationLoginController.class);
 
     @RequestMapping("/authentication/login/oauth2")
     String doLogin(Model model, HttpServletRequest servletRequest) {

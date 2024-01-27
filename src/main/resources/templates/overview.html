@@ -14,9 +14,7 @@
 
       <p style="border: 5px solid red;">
         Authenticated username:
-        <div sec:authentication="name"></div>
-        Authenticated user roles:
-        <div sec:authentication="principal.authorities"></div>
+        <div sec:authentication="principal.username"></div>
       </p>
 
       <div sec:authorize="isAuthenticated()">

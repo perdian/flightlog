@@ -1,8 +1,9 @@
-package de.perdian.flightlog.modules.authentication.configuration.oauth;
+package de.perdian.flightlog.modules.authentication.configuration.oauth2;
 
 import de.perdian.flightlog.modules.authentication.exceptions.RegistrationRestrictedException;
 import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 import de.perdian.flightlog.modules.authentication.persistence.UserRepository;
+import de.perdian.flightlog.modules.authentication.service.RegistrationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +13,19 @@ import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-class OauthAuthenticationUserService extends OidcUserService {
+class Oauth2AuthenticationUserService extends OidcUserService {
 
-    private static final Logger log = LoggerFactory.getLogger(OauthAuthenticationUserService.class);
+    private static final Logger log = LoggerFactory.getLogger(Oauth2AuthenticationUserService.class);
 
     private UserRepository userRepository = null;
+    private RegistrationService registrationService = null;
 
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
 
         OidcUser delegateUser = super.loadUser(userRequest);
 
-        OauthAuthenticationUser resultUser = new OauthAuthenticationUser(delegateUser.getAuthorities(), delegateUser.getIdToken(), delegateUser.getUserInfo());
+        Oauth2AuthenticationUser resultUser = new Oauth2AuthenticationUser(delegateUser.getAuthorities(), delegateUser.getIdToken(), delegateUser.getUserInfo());
         resultUser.setEntity(this.ensureUserEntity(delegateUser));
         return resultUser;
 
@@ -38,7 +40,7 @@ class OauthAuthenticationUserService extends OidcUserService {
 
         UserEntity entity = this.getUserRepository().findOne(entitySpecification).orElse(null);
         if (entity == null) {
-            if (this.checkUserAllowedToRegister(oidcUser)) {
+            if (this.getRegistrationService().checkEmailAddressRegistrationAllowed(oidcUser.getEmail())) {
                 entity = new UserEntity();
                 entity.setUsername(oidcUser.getEmail());
                 entity.setAuthenticationSource(oidcUser.getIssuer().toString());
@@ -56,7 +58,7 @@ class OauthAuthenticationUserService extends OidcUserService {
     }
 
     private boolean checkUserAllowedToRegister(OidcUser oidcUser) {
-        return true;
+        return false;
     }
 
     UserRepository getUserRepository() {
@@ -65,6 +67,14 @@ class OauthAuthenticationUserService extends OidcUserService {
     @Autowired
     void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    RegistrationService getRegistrationService() {
+        return this.registrationService;
+    }
+    @Autowired
+    void setRegistrationService(RegistrationService registrationService) {
+        this.registrationService = registrationService;
     }
 
 }

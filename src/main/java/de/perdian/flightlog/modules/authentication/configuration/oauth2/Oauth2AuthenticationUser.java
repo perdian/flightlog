@@ -1,4 +1,4 @@
-package de.perdian.flightlog.modules.authentication.configuration.oauth;
+package de.perdian.flightlog.modules.authentication.configuration.oauth2;
 
 import de.perdian.flightlog.modules.authentication.User;
 import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
@@ -9,14 +9,19 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
 import java.util.Collection;
 
-class OauthAuthenticationUser extends DefaultOidcUser implements User {
+class Oauth2AuthenticationUser extends DefaultOidcUser implements User {
 
     static final long serialVersionUID = 1L;
 
     private UserEntity entity = null;
 
-    OauthAuthenticationUser(Collection<? extends GrantedAuthority> mappedAuthorities, OidcIdToken idToken, OidcUserInfo userInfo) {
+    Oauth2AuthenticationUser(Collection<? extends GrantedAuthority> mappedAuthorities, OidcIdToken idToken, OidcUserInfo userInfo) {
         super(mappedAuthorities, idToken, userInfo);
+    }
+
+    @Override
+    public String getUsername() {
+        return this.getEmail();
     }
 
     @Override

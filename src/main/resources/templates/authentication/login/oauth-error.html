@@ -11,6 +11,23 @@
         </div>
       </h3>
 
+      <div class="ui negative message" th:if="${registrationRestrictedException != null}">
+        <i class="close icon"></i>
+        <div class="header" th:text="#{registrationNotAllowed}"></div>
+        <p th:text="#{theRegistrationIsNotAllowedForYourEmailAddress}"></p>
+        <p>
+          <a class="ui primary button" th:href="@{/}" th:text="#{tryAgainWithDifferentAccount}"></a>
+        </p>
+      </div>
+      <div class="ui negative message" th:if="${authenticationException != null}">
+        <i class="close icon"></i>
+        <div class="header" th:text="#{loginFailed}"></div>
+        <p th:text="#{loginFailed}"></p>
+        <p>
+          <a class="ui primary button" th:href="@{/}" th:text="#{loginFailed}"></a>
+        </p>
+      </div>
+
     </main>
   </body>
 </html>

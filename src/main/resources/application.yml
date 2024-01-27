@@ -38,10 +38,10 @@ server:
 
 flightlog:
   authentication:
-    type: ${FLIGHTLOG_AUTHENTICATION_TYPE:none}
+    type: ${FLIGHTLOG_AUTHENTICATION_TYPE:oauth2}
   registration:
-    restricted: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_RESTRICTED:true}
-    email-whitelist: ${FLIGHTLOG_AUTHENTICATION_REGISTRATION_EMAIL_WHITELIST:}
+    emailAddressesAllowlist: ${FLIGHTLOG_REGISTRATION_EMAIL_ADDRESSES_ALLOWLIST:}
+    allowByDefault: false
   backup:
     cron: ${FLIGHTLOG_BACKUP_CRON:}
     target: ${FLIGHTLOG_BACKUP_TARGET:}

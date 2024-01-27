@@ -17,10 +17,29 @@
         <span th:text="#{addFlight}">Add flight</span>
       </a>
 
+      <div sec:authorize="isAuthenticated()" class="mobile hidden right menu">
+        <div class="item" sec:authentication="principal.username">USERNAME</div>
+        <a tabindex="-1" class="item" th:href="@{/authentication/logout}">
+          <i class="sign out alternate icon"></i>
+          <span th:text="#{logout}">Logout</span>
+        </a>
+      </div>
+
       <div class="mobile only right menu">
         <div class="ui dropdown item">
           Actions <i class="dropdown icon"></i>
           <div class="menu">
+            <div sec:authorize="isAuthenticated()" th:remove="tag">
+              <div class="item">
+                <i class="user icon"></i>
+                <strong><span sec:authentication="principal.username">USERNAME</span></strong>
+              </div>
+              <a tabindex="-1" class="item" th:href="@{/authentication/logout}">
+                <i class="sign out alternate icon"></i>
+                <span th:text="#{logout}">Logout</span>
+              </a>
+              <div class="ui divider"></div>
+            </div>
             <a tabindex="-1" class="item" th:href="@{/overview}">
               <i class="home icon"></i>
               <span th:text="#{overview}">Overview</span>

@@ -11,6 +11,7 @@ public abstract class AbstractAuthenticationConfiguration {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeHttpRequests(auth -> {
+            auth.requestMatchers("/error/**").permitAll();
             auth.requestMatchers("/assets/**").permitAll();
             auth.requestMatchers("/webjars/**").permitAll();
             auth.requestMatchers("/authentication/login/**").permitAll();
@@ -23,6 +24,8 @@ public abstract class AbstractAuthenticationConfiguration {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/authentication/logout"))
                 .logoutSuccessUrl("/authentication/logout/completed");
         });
+
+        httpSecurity.csrf(csrfCustomizer -> csrfCustomizer.disable());
 
         this.configureSecurityFilterChainHttpSecurity(httpSecurity);
         return httpSecurity.build();
