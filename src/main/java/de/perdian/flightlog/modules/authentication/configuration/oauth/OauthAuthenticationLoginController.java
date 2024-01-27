@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @ConditionalOnBean(OauthAuthenticationConfiguration.class)
-public class OauthAuthenticationLoginController {
+class OauthAuthenticationLoginController {
 
     private static final Logger log = LoggerFactory.getLogger(OauthAuthenticationLoginController.class);
 
@@ -30,7 +30,7 @@ public class OauthAuthenticationLoginController {
             } else {
                 servletRequest.setAttribute("authenticationException", authenticationException);
             }
-            log.debug("Exception occured during login", authenticationException);
+            log.debug("Exception occurred during login", authenticationException);
             httpSession.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
             return "/authentication/login/oauth-error";
         } else {

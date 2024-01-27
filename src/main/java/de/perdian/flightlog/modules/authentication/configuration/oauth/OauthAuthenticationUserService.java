@@ -9,59 +9,54 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-class OauthAuthenticationUserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
+class OauthAuthenticationUserService extends OidcUserService {
 
     private static final Logger log = LoggerFactory.getLogger(OauthAuthenticationUserService.class);
 
-    private OidcUserService delegateUserService = new OidcUserService();
     private UserRepository userRepository = null;
 
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
 
-        OidcUser delegateUser = this.getDelegateUserService().loadUser(userRequest);
-        String delegateAuthenticationSource = delegateUser.getIssuer().toString();
-
-        Specification<UserEntity> entitySpecification = (root, query, criteriaBuilder) -> criteriaBuilder.and(
-            criteriaBuilder.equal(root.get("authenticationSource"), delegateAuthenticationSource),
-            criteriaBuilder.equal(root.get("username"), delegateUser.getEmail())
-        );
-        UserEntity entity = this.getUserRepository().findOne(entitySpecification).orElse(null);
-        if (entity == null) {
-            if (this.checkUserAllowedToRegister(delegateUser)) {
-                entity = new UserEntity();
-                entity.setUsername(delegateUser.getEmail());
-                entity.setAuthenticationSource(delegateAuthenticationSource);
-                entity = this.getUserRepository().save(entity);
-                log.debug("Created user '{}' in database (ID: {})", delegateUser.getEmail(), entity.getUserId());
-            } else {
-                log.debug("Bocked user '{}' from database creation", delegateUser.getEmail());
-                throw new RegistrationRestrictedException("Registration restricted");
-            }
-        } else {
-            log.debug("Found user '{}' in database (ID: {})", delegateUser.getEmail(), entity.getUserId());
-        }
+        OidcUser delegateUser = super.loadUser(userRequest);
 
         OauthAuthenticationUser resultUser = new OauthAuthenticationUser(delegateUser.getAuthorities(), delegateUser.getIdToken(), delegateUser.getUserInfo());
-        resultUser.setEntity(entity);
-        resultUser.setInformation(delegateUser.getEmail());
+        resultUser.setEntity(this.ensureUserEntity(delegateUser));
         return resultUser;
 
     }
 
-    private boolean checkUserAllowedToRegister(OidcUser delegateUser) {
-        return true;
+    private UserEntity ensureUserEntity(OidcUser oidcUser) {
+
+        Specification<UserEntity> entitySpecification = (root, query, criteriaBuilder) -> criteriaBuilder.and(
+            criteriaBuilder.equal(root.get("authenticationSource"), oidcUser.getIssuer().toString()),
+            criteriaBuilder.equal(root.get("username"), oidcUser.getEmail())
+        );
+
+        UserEntity entity = this.getUserRepository().findOne(entitySpecification).orElse(null);
+        if (entity == null) {
+            if (this.checkUserAllowedToRegister(oidcUser)) {
+                entity = new UserEntity();
+                entity.setUsername(oidcUser.getEmail());
+                entity.setAuthenticationSource(oidcUser.getIssuer().toString());
+                entity = this.getUserRepository().save(entity);
+                log.debug("Created user '{}' in database (ID: {})", oidcUser.getEmail(), entity.getUserId());
+            } else {
+                log.debug("Bocked user '{}' from database creation", oidcUser.getEmail());
+                throw new RegistrationRestrictedException("Registration restricted");
+            }
+        } else {
+            log.debug("Found user '{}' in database (ID: {})", oidcUser.getEmail(), entity.getUserId());
+        }
+        return entity;
+
     }
 
-    OidcUserService getDelegateUserService() {
-        return this.delegateUserService;
-    }
-    void setDelegateUserService(OidcUserService delegateUserService) {
-        this.delegateUserService = delegateUserService;
+    private boolean checkUserAllowedToRegister(OidcUser oidcUser) {
+        return true;
     }
 
     UserRepository getUserRepository() {

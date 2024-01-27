@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 @Configuration
 @ConditionalOnProperty(name = "flightlog.authentication.type", havingValue = "oauth")
-public class OauthAuthenticationConfiguration extends AbstractAuthenticationConfiguration {
+class OauthAuthenticationConfiguration extends AbstractAuthenticationConfiguration {
 
     @Override
     protected void configureSecurityFilterChainHttpSecurity(HttpSecurity httpSecurity) throws Exception {

@@ -6,6 +6,4 @@ public interface User {
 
     UserEntity getEntity();
 
-    String getInformation();
-
 }
