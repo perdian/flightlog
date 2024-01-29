@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="download icon"></i>
+        <div class="content">
+          <span th:text="#{importFlights}"></span>
+          <div class="sub header" th:text="#{importFlightsFromFile}"></div>
+        </div>
+      </h3>
+
+      <form class="ui form" method="post" th:action="@{/flights/import/verify}" th:object="${importEditor}" enctype="multipart/form-data">
+
+        <div class="ui steps">
+          <div class="disabled step">
+            <i class="file outline icon"></i>
+            <div class="content">
+              <div class="title" th:text="#{select}">Select</div>
+              <div class="description" th:text="#{selectSourceFile}">Select source file</div>
+            </div>
+          </div>
+          <div class="active step">
+            <i class="search icon"></i>
+            <div class="content">
+              <div class="title" th:text="#{verify}">Verify</div>
+              <div class="description" th:text="#{verifyImportedFlights}">Verify imported flights</div>
+            </div>
+          </div>
+          <div class="disabled step">
+            <i class="checkmark icon"></i>
+            <div class="content">
+              <div class="title" th:text="#{completed}">Completed</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui horizontal divider" th:text="#{importedFlights}">Imported flights</div>
+
+
+        <div class="ui horizontal divider" th:text="#{actions}">Actions</div>
+        <div class="ui dense grid">
+          <div class="eight wide left aligned column">
+            <a th:href="@{/flights/import/file}" class="ui negative button">
+              <i class="backward icon"></i>
+              <span th:text="#{selectNewFile}"></span>
+            </a>
+          </div>
+          <div class="eight wide right aligned column">
+            <button type="submit" class="ui primary button">
+              <i class="save icon"></i>
+              <span th:text="#{importSelectedFlights}"></span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+    </main>
+  </body>
+</html>

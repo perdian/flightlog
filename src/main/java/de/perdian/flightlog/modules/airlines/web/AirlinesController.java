@@ -2,7 +2,7 @@ package de.perdian.flightlog.modules.airlines.web;
 
 import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
 import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
-import de.perdian.flightlog.modules.flights.service.model.Airline;
+import de.perdian.flightlog.modules.flights.shared.model.Airline;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

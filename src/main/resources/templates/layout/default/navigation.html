@@ -16,6 +16,26 @@
         <i class="plus icon"></i>
         <span th:text="#{addFlight}">Add flight</span>
       </a>
+      <div class="mobile hidden ui dropdown item">
+        <span th:text="#{tools}">Tools</span> <i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="header" th:text="#{exportFlights}">Export flights</div>
+          <a tabindex="-1" class="dropdown item" th:href="@{/flights/export/xml}">
+            <i class="download icon"></i>
+            <span th:text="#{asXML}">as XML</span>
+          </a>
+          <a tabindex="-1" class="dropdown item" th:href="@{/flights/export/json}">
+            <i class="download icon"></i>
+            <span th:text="#{asJSON}">as JSON</span>
+          </a>
+          <div class="ui divider"></div>
+          <div class="header" th:text="#{importFlights}">Import flights</div>
+          <a tabindex="-1" class="dropdown item" th:href="@{/flights/import/file}">
+            <i class="upload icon"></i>
+            <span th:text="#{fromUploadedFile}">from uploaded file</span>
+          </a>
+        </div>
+      </div>
 
       <div sec:authorize="isAuthenticated()" class="mobile hidden right menu">
         <div class="item" sec:authentication="principal.username">USERNAME</div>
@@ -44,11 +64,11 @@
               <i class="home icon"></i>
               <span th:text="#{overview}">Overview</span>
             </a>
+            <div class="ui divider"></div>
             <a tabindex="-1" class="item" th:href="@{/flights/list}">
               <i class="paper plane icon"></i>
               <span th:text="#{listFlights}">List flights</span>
             </a>
-            <div class="ui divider"></div>
             <a tabindex="-1" class="item" th:href="@{/flights/add}">
               <i class="plus icon"></i>
               <span th:text="#{addFlight}">Add flight</span>

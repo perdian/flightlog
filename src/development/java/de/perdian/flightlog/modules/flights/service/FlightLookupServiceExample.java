@@ -1,8 +1,9 @@
 package de.perdian.flightlog.modules.flights.service;
 
 import de.perdian.flightlog.FlightlogApplication;
-import de.perdian.flightlog.modules.flights.service.model.Flight;
-import de.perdian.flightlog.modules.flights.service.model.FlightLookupRequest;
+import de.perdian.flightlog.modules.flights.lookup.FlightLookupService;
+import de.perdian.flightlog.modules.flights.shared.model.Flight;
+import de.perdian.flightlog.modules.flights.shared.model.FlightLookupRequest;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;

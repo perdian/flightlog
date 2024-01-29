@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="upload icon"></i>
+        <div class="content">
+          <span th:text="#{exportFlights}"></span>
+          <div class="sub header" th:text="#{exportFlightsToFile}"></div>
+        </div>
+      </h3>
+
+    </main>
+  </body>
+</html>

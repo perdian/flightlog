@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="download icon"></i>
+        <div class="content">
+          <span th:text="#{importFlights}"></span>
+          <div class="sub header" th:text="#{importFlightsFromFile}"></div>
+        </div>
+      </h3>
+
+      <form class="ui form" method="post" th:action="@{/flights/import/file}" th:object="${exchangeEditor}" enctype="multipart/form-data">
+
+        <div class="ui steps">
+          <div class="active step">
+            <i class="file outline icon"></i>
+            <div class="content">
+              <div class="title" th:text="#{select}">Select</div>
+              <div class="description" th:text="#{selectSourceFile}">Select source file</div>
+            </div>
+          </div>
+          <div class="disabled step">
+            <i class="search icon"></i>
+            <div class="content">
+              <div class="title" th:text="#{verify}">Verify</div>
+              <div class="description" th:text="#{verifyImportedFlights}">Verify imported flights</div>
+            </div>
+          </div>
+          <div class="disabled step">
+            <i class="checkmark icon"></i>
+            <div class="content">
+              <div class="title" th:text="#{completed}">Completed</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui negative message" th:if="${importException != null}">
+          <div class="header" th:text="#{importFailed}"></div>
+          <p th:text="#{importFailedForUploadedFile}"></p>
+          <pre th:text="${importException}">
+          </pre>
+        </div>
+
+        <div class="ui horizontal divider" th:text="#{source}">Source</div>
+
+        <div class="fields">
+          <div class="twelve wide field">
+            <label th:text="#{sourceFile}">Source file</label>
+            <input type="file" th:field="*{file}">
+          </div>
+          <div class="four wide field">
+            <label th:text="#{fileFormat}">File format</label>
+            <select th:field="*{fileFormat}">
+              <option value="XML">XML</option>
+              <option value="JSON">JSON</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ui horizontal divider" th:text="#{actions}">Actions</div>
+        <div class="ui dense grid">
+          <div class="sixteen wide right aligned column">
+            <button type="submit" class="ui primary button">
+              <i class="forward icon"></i>
+              <span th:text="#{importFile}"></span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+    </main>
+  </body>
+</html>
