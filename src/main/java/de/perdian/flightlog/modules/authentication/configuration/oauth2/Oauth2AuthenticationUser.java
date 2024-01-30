@@ -20,6 +20,11 @@ class Oauth2AuthenticationUser extends DefaultOidcUser implements User {
     }
 
     @Override
+    public String toString() {
+        return "Oauth2AuthenticationUser[" + this.getEntity() + "]";
+    }
+
+    @Override
     public String getUsername() {
         return this.getEmail();
     }

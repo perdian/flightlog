@@ -46,16 +46,9 @@
         <div class="ui horizontal divider" th:text="#{source}">Source</div>
 
         <div class="fields">
-          <div class="twelve wide field">
+          <div class="sixteen wide field">
             <label th:text="#{sourceFile}">Source file</label>
             <input type="file" th:field="*{file}">
-          </div>
-          <div class="four wide field">
-            <label th:text="#{fileFormat}">File format</label>
-            <select th:field="*{exchangeFormat}">
-              <option value="XML">XML</option>
-              <option value="JSON">JSON</option>
-            </select>
           </div>
         </div>
 

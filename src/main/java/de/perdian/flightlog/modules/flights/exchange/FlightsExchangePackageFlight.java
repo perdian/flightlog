@@ -3,6 +3,7 @@ package de.perdian.flightlog.modules.flights.exchange;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.SeatType;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -33,6 +34,29 @@ public class FlightsExchangePackageFlight implements Serializable {
     private String seatNumber = null;
     private SeatType seatType = null;
     private Boolean include = Boolean.TRUE;
+
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("[");
+        result.append(this.getDepartureAirportCode()).append("@").append(this.getDepartureDateLocal());
+        if (this.getDepartureTimeLocal() != null) {
+            result.append("_").append(this.getDepartureTimeLocal());
+        }
+        result.append(" » ");
+        result.append(this.getArrivalAirportCode()).append("@").append(this.getArrivalDateLocal());
+        if (this.getArrivalTimeLocal() != null) {
+            result.append("_").append(this.getArrivalTimeLocal());
+        }
+        if (StringUtils.isNotEmpty(this.getAirlineCode())) {
+            result.append(" (").append(this.getAirlineCode());
+            if (StringUtils.isNotEmpty(this.getFlightNumber())) {
+                result.append(" ").append(this.getFlightNumber());
+            }
+            result.append(")");
+        }
+        result.append("]");
+        return result.toString();
+    }
 
     public String getAircraftName() {
         return this.aircraftName;

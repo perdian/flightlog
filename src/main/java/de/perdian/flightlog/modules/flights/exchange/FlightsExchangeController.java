@@ -1,7 +1,9 @@
 package de.perdian.flightlog.modules.flights.exchange;
 
+import de.perdian.flightlog.modules.authentication.UserHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,9 @@ class FlightsExchangeController {
 
     private static final Logger log = LoggerFactory.getLogger(FlightsExchangeController.class);
 
+    private FlightsExchangeService exchangeService = null;
+    private UserHolder userHolder = null;
+
     @RequestMapping("/import/file")
     String doImportFileGet() {
         return "/flights/import";
@@ -29,7 +34,11 @@ class FlightsExchangeController {
                 throw new FileNotFoundException("No uploaded file found");
             } else {
                 try (InputStream exchangePackageStream = exchangeEditor.getFile().getInputStream()) {
-                    FlightsExchangeHandler exchangeHandler = exchangeEditor.getExchangeFormat().getHandler();
+                    String exchangeFileName = exchangeEditor.getFile().getOriginalFilename();
+                    int exchangeFileTypeSeparatorIndex = exchangeFileName.lastIndexOf(".");
+                    String exchangeFileExtension = exchangeFileTypeSeparatorIndex <= 0 ? "XML" : exchangeFileName.substring(exchangeFileTypeSeparatorIndex + 1);
+                    FlightsExchangeFormat exchangeFormat = FlightsExchangeFormat.valueOf(exchangeFileExtension.toUpperCase());
+                    FlightsExchangeHandler exchangeHandler = exchangeFormat.getHandler();
                     FlightsExchangePackage exchangePackage = exchangeHandler.importPackage(exchangePackageStream);
                     exchangeEditor.setExchangePackage(exchangePackage);
                     return "/flights/import/verify";
@@ -43,6 +52,7 @@ class FlightsExchangeController {
 
     @PostMapping("/import/verify")
     String doImportVerifyPost(@ModelAttribute("exchangeEditor") FlightsExchangeEditor exchangeEditor) {
+        this.getExchangeService().importPackage(exchangeEditor.getExchangePackage(), this.getUserHolder().getCurrentUser());
         log.error("IMPLEMENT DATABASE IMPORT!");
         return "/flights/import/done";
     }
@@ -60,6 +70,22 @@ class FlightsExchangeController {
     @ModelAttribute("exchangeEditor")
     FlightsExchangeEditor exchangeEditor() {
         return new FlightsExchangeEditor();
+    }
+
+    FlightsExchangeService getExchangeService() {
+        return this.exchangeService;
+    }
+    @Autowired
+    void setExchangeService(FlightsExchangeService exchangeService) {
+        this.exchangeService = exchangeService;
+    }
+
+    UserHolder getUserHolder() {
+        return this.userHolder;
+    }
+    @Autowired
+    void setUserHolder(UserHolder userHolder) {
+        this.userHolder = userHolder;
     }
 
 }

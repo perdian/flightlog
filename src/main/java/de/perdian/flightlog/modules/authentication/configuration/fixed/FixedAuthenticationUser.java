@@ -12,6 +12,11 @@ class FixedAuthenticationUser implements User {
     }
 
     @Override
+    public String toString() {
+        return "FixedAuthenticationUser[" + this.getEntity() + "]";
+    }
+
+    @Override
     public String getUsername() {
         return this.getEntity().getUsername();
     }

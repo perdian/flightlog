@@ -5,7 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class FlightsExchangeEditor {
 
     private MultipartFile file = null;
-    private FlightsExchangeFormat exchangeFormat = null;
     private FlightsExchangePackage exchangePackage = null;
 
     public MultipartFile getFile() {
@@ -13,13 +12,6 @@ public class FlightsExchangeEditor {
     }
     public void setFile(MultipartFile file) {
         this.file = file;
-    }
-
-    public FlightsExchangeFormat getExchangeFormat() {
-        return this.exchangeFormat;
-    }
-    public void setExchangeFormat(FlightsExchangeFormat exchangeFormat) {
-        this.exchangeFormat = exchangeFormat;
     }
 
     public FlightsExchangePackage getExchangePackage() {
