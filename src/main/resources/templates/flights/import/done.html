@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <head>
+  </head>
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="download icon"></i>
+        <div class="content">
+          <span th:text="#{importFlights}"></span>
+          <div class="sub header" th:text="#{importFlightsFromFile}"></div>
+        </div>
+      </h3>
+
+      <div class="ui steps">
+        <div class="disabled step">
+          <i class="file outline icon"></i>
+          <div class="content">
+            <div class="title" th:text="#{select}">Select</div>
+            <div class="description" th:text="#{selectSourceFile}">Select source file</div>
+          </div>
+        </div>
+        <div class="disabled step">
+          <i class="search icon"></i>
+          <div class="content">
+            <div class="title" th:text="#{verify}">Verify</div>
+            <div class="description" th:text="#{verifyLoadedFlights}">Verify loaded flights</div>
+          </div>
+        </div>
+        <div class="active step">
+          <i class="checkmark icon"></i>
+          <div class="content">
+            <div class="title" th:text="#{completed}">Completed</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </body>
+</html>

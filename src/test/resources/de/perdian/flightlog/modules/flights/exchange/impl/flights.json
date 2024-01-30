@@ -1,0 +1,35 @@
+{
+  "flights" : [ {
+    "aircraftName" : "Johannesburg",
+    "aircraftRegistration" : "D-AIME",
+    "aircraftType" : "Airbus A380-800",
+    "airlineCode" : "LH",
+    "airlineName" : "Lufthansa",
+    "arrivalAirportCode" : "FRA",
+    "arrivalDateLocal" : "2015-05-08",
+    "arrivalTimeLocal" : "07:15:00",
+    "cabinClass" : "PREMIUM_ECONOMY",
+    "comment" : "Comment X",
+    "departureAirportCode" : "DEL",
+    "departureDateLocal" : "2015-05-08",
+    "departureTimeLocal" : "03:00:00",
+    "flightDistance" : 6120,
+    "flightDuration" : "07:45",
+    "flightNumber" : "761",
+    "flightReason" : "BUSINESS",
+    "seatNumber" : "54A",
+    "seatType" : "WINDOW"
+  }, {
+    "aircraftType" : "Boeing 737-700",
+    "airlineCode" : "AB",
+    "airlineName" : "Air Berlin",
+    "arrivalAirportCode" : "TXL",
+    "arrivalDateLocal" : "2015-05-14",
+    "cabinClass" : "ECONOMY",
+    "departureAirportCode" : "CGN",
+    "departureDateLocal" : "2015-05-14",
+    "flightNumber" : "6508",
+    "flightReason" : "PRIVATE"
+  } ],
+  "creationTime" : "2024-01-30T09:44:19.713011Z"
+}

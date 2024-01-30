@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, ~{::head}, ~{::main})}">
+  <head>
+    <style>
+        .imported-flight:has(input.imported-flight-include:not(:checked)) { opacity: 0.4; }
+    </style>
+  </head>
   <body>
     <main>
 
@@ -11,7 +16,7 @@
         </div>
       </h3>
 
-      <form class="ui form" method="post" th:action="@{/flights/import/verify}" th:object="${importEditor}" enctype="multipart/form-data">
+      <form class="ui form" method="post" th:action="@{/flights/import/verify}" th:object="${exchangeEditor}" enctype="multipart/form-data">
 
         <div class="ui steps">
           <div class="disabled step">
@@ -25,7 +30,7 @@
             <i class="search icon"></i>
             <div class="content">
               <div class="title" th:text="#{verify}">Verify</div>
-              <div class="description" th:text="#{verifyImportedFlights}">Verify imported flights</div>
+              <div class="description" th:text="#{verifyLoadedFlights}">Verify loaded flights</div>
             </div>
           </div>
           <div class="disabled step">
@@ -36,8 +41,131 @@
           </div>
         </div>
 
-        <div class="ui horizontal divider" th:text="#{importedFlights}">Imported flights</div>
+        <div class="ui horizontal divider" th:text="#{actions}">Actions</div>
+        <div class="ui dense grid">
+          <div class="eight wide left aligned column">
+            <a th:href="@{/flights/import/file}" class="ui negative button">
+              <i class="backward icon"></i>
+              <span th:text="#{selectNewFile}"></span>
+            </a>
+          </div>
+          <div class="eight wide right aligned column">
+            <button type="submit" class="ui primary button">
+              <i class="save icon"></i>
+              <span th:text="#{importSelectedFlights}"></span>
+            </button>
+          </div>
+        </div>
 
+        <div class="ui horizontal divider">
+          <span th:text="#{loadedFlights}">Loaded flights</span> (<span th:text="${#lists.size(exchangeEditor.exchangePackage.flights)}">123</span> total)
+        </div>
+
+        <div class="imported-flight" th:each="flight, flightStatus : *{exchangePackage.flights}">
+          <div class="ui divider" th:if="${flightStatus.index > 0}"></div>
+          <div class="fields">
+            <div class="one wide field">
+              <label></label>
+              <div class="ui toggle checkbox">
+                <input type="checkbox" tabindex="0" class="hidden imported-flight-include" th:field="*{exchangePackage.flights[__${flightStatus.index}__].include}">
+              </div>
+            </div>
+            <div class="one wide field">
+              <label th:text="#{flight}"></label>
+              <input type="text" class="uppercase" th:field="*{exchangePackage.flights[__${flightStatus.index}__].airlineCode}" minlength="2" maxlength="2" />
+            </div>
+            <div class="one wide field">
+              <label>&nbsp;</label>
+              <input type="text" class="uppercase" th:field="*{exchangePackage.flights[__${flightStatus.index}__].flightNumber}" maxlength="5" inputmode="decimal" />
+            </div>
+            <div class="two wide field">
+              <label th:text="#{airlineName}"></label>
+              <input type="text" th:field="*{exchangePackage.flights[__${flightStatus.index}__].airlineName}" />
+            </div>
+            <div class="one wide field">
+              <label th:text="#{departure}"></label>
+              <input type="text" class="uppercase" th:field="*{exchangePackage.flights[__${flightStatus.index}__].departureAirportCode}" minlength="3" maxlength="3" />
+            </div>
+            <div class="two wide field">
+              <label></label>
+              <input type="date" th:field="*{exchangePackage.flights[__${flightStatus.index}__].departureDateLocal}" />
+            </div>
+            <div class="two wide field">
+              <label></label>
+              <input type="time" th:field="*{exchangePackage.flights[__${flightStatus.index}__].departureTimeLocal}" />
+            </div>
+            <div class="one wide field">
+              <label th:text="#{arrival}"></label>
+              <input type="text" class="uppercase" th:field="*{exchangePackage.flights[__${flightStatus.index}__].arrivalAirportCode}" minlength="3" maxlength="3" />
+            </div>
+            <div class="two wide field">
+              <label></label>
+              <input type="date" th:field="*{exchangePackage.flights[__${flightStatus.index}__].arrivalDateLocal}" />
+            </div>
+            <div class="two wide field">
+              <label></label>
+              <input type="time" th:field="*{exchangePackage.flights[__${flightStatus.index}__].arrivalTimeLocal}" />
+            </div>
+          </div>
+
+          <div class="fields">
+            <div class="one wide field">&nbsp;</div>
+            <div class="two wide field">
+              <label th:text="#{cabinClass}"></label>
+              <select class="ui dropdown" th:field="*{exchangePackage.flights[__${flightStatus.index}__].cabinClass}">
+                <option value=""></option>
+                <option th:each="cabinClassValue : ${cabinClassValues}" th:value="${cabinClassValue.name()}" th:text="${#messages.msg('cabinClass.' + cabinClassValue.name())}"></option>
+              </select>
+            </div>
+            <div class="two wide field">
+              <label th:text="#{flightReason}"></label>
+              <select class="ui dropdown" th:field="*{exchangePackage.flights[__${flightStatus.index}__].flightReason}">
+                <option value=""></option>
+                <option th:each="flightReasonValue : ${flightReasonValues}" th:value="${flightReasonValue.name()}" th:text="${#messages.msg('flightReason.' + flightReasonValue.name())}"></option>
+              </select>
+            </div>
+            <div class="one wide field">
+              <label th:text="#{duration}"></label>
+              <input type="text" th:field="*{exchangePackage.flights[__${flightStatus.index}__].flightDuration}" placeholder="HH:mm" />
+            </div>
+            <div class="one wide field">
+              <label th:text="#{distance}"></label>
+              <input type="number" th:field="*{exchangePackage.flights[__${flightStatus.index}__].flightDistance}" placeholder="..." />
+            </div>
+            <div class="one wide field">
+              <label th:text="#{seat}"></label>
+              <input type="text" class="uppercase" th:field="*{exchangePackage.flights[__${flightStatus.index}__].seatNumber}" maxlength="4" />
+            </div>
+            <div class="two wide field">
+              <label th:text="#{seatType}"></label>
+              <select class="ui dropdown" th:field="*{exchangePackage.flights[__${flightStatus.index}__].seatType}">
+                <option value=""></option>
+                <option th:each="seatTypeValue : ${seatTypeValues}" th:value="${seatTypeValue.name()}" th:text="${#messages.msg('seatType.' + seatTypeValue.name())}"></option>
+              </select>
+            </div>
+            <div class="two wide field">
+              <label th:text="#{aircraft}"></label>
+              <input type="text" th:field="*{exchangePackage.flights[__${flightStatus.index}__].aircraftType}" />
+            </div>
+            <div class="one wide field">
+              <label></label>
+              <input type="text" th:field="*{exchangePackage.flights[__${flightStatus.index}__].aircraftRegistration}" />
+            </div>
+            <div class="two wide field">
+              <label></label>
+              <input type="text" th:field="*{exchangePackage.flights[__${flightStatus.index}__].aircraftName}" />
+            </div>
+          </div>
+
+          <div class="fields">
+            <div class="one wide field">&nbsp;</div>
+            <div class="fourteen wide field">
+              <label th:text="#{comment}"></label>
+              <input type="text" th:field="*{exchangePackage.flights[__${flightStatus.index}__].comment}" />
+            </div>
+          </div>
+
+        </div>
 
         <div class="ui horizontal divider" th:text="#{actions}">Actions</div>
         <div class="ui dense grid">

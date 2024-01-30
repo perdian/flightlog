@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<flights-exchange-package>
+    <flights>
+        <flight>
+            <aircraftName>Johannesburg</aircraftName>
+            <aircraftRegistration>D-AIME</aircraftRegistration>
+            <aircraftType>Airbus A380-800</aircraftType>
+            <airlineCode>LH</airlineCode>
+            <airlineName>Lufthansa</airlineName>
+            <arrivalAirportCode>FRA</arrivalAirportCode>
+            <arrivalDateLocal>2015-05-08</arrivalDateLocal>
+            <arrivalTimeLocal>07:15</arrivalTimeLocal>
+            <cabinClass>PREMIUM_ECONOMY</cabinClass>
+            <comment>Comment X</comment>
+            <departureAirportCode>DEL</departureAirportCode>
+            <departureDateLocal>2015-05-08</departureDateLocal>
+            <departureTimeLocal>03:00</departureTimeLocal>
+            <flightDistance>6120</flightDistance>
+            <flightDuration>07:45</flightDuration>
+            <flightNumber>761</flightNumber>
+            <flightReason>BUSINESS</flightReason>
+            <seatNumber>54A</seatNumber>
+            <seatType>WINDOW</seatType>
+        </flight>
+        <flight>
+            <aircraftName></aircraftName>
+            <aircraftRegistration></aircraftRegistration>
+            <aircraftType>Boeing 737-700</aircraftType>
+            <airlineCode>AB</airlineCode>
+            <airlineName>Air Berlin</airlineName>
+            <arrivalAirportCode>TXL</arrivalAirportCode>
+            <arrivalDateLocal>2015-05-14</arrivalDateLocal>
+            <cabinClass>ECONOMY</cabinClass>
+            <comment></comment>
+            <departureAirportCode>CGN</departureAirportCode>
+            <departureDateLocal>2015-05-14</departureDateLocal>
+            <flightNumber>6508</flightNumber>
+            <flightReason>PRIVATE</flightReason>
+        </flight>
+    </flights>
+</flights-exchange-package>

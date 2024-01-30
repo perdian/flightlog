@@ -25,7 +25,7 @@
             <i class="search icon"></i>
             <div class="content">
               <div class="title" th:text="#{verify}">Verify</div>
-              <div class="description" th:text="#{verifyImportedFlights}">Verify imported flights</div>
+              <div class="description" th:text="#{verifyLoadedFlights}">Verify loaded flights</div>
             </div>
           </div>
           <div class="disabled step">
@@ -52,7 +52,7 @@
           </div>
           <div class="four wide field">
             <label th:text="#{fileFormat}">File format</label>
-            <select th:field="*{fileFormat}">
+            <select th:field="*{exchangeFormat}">
               <option value="XML">XML</option>
               <option value="JSON">JSON</option>
             </select>

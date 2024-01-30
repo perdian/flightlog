@@ -2,13 +2,11 @@ package de.perdian.flightlog.modules.flights.exchange;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 public class FlightsExchangeEditor {
 
     private MultipartFile file = null;
-    private FlightsExchangeFormat fileFormat = null;
-    private List<FlightsExchangeEditorItem> items = null;
+    private FlightsExchangeFormat exchangeFormat = null;
+    private FlightsExchangePackage exchangePackage = null;
 
     public MultipartFile getFile() {
         return this.file;
@@ -17,18 +15,18 @@ public class FlightsExchangeEditor {
         this.file = file;
     }
 
-    public FlightsExchangeFormat getFileFormat() {
-        return this.fileFormat;
+    public FlightsExchangeFormat getExchangeFormat() {
+        return this.exchangeFormat;
     }
-    public void setFileFormat(FlightsExchangeFormat fileFormat) {
-        this.fileFormat = fileFormat;
+    public void setExchangeFormat(FlightsExchangeFormat exchangeFormat) {
+        this.exchangeFormat = exchangeFormat;
     }
 
-    public List<FlightsExchangeEditorItem> getItems() {
-        return this.items;
+    public FlightsExchangePackage getExchangePackage() {
+        return this.exchangePackage;
     }
-    public void setItems(List<FlightsExchangeEditorItem> items) {
-        this.items = items;
+    public void setExchangePackage(FlightsExchangePackage exchangePackage) {
+        this.exchangePackage = exchangePackage;
     }
 
 }

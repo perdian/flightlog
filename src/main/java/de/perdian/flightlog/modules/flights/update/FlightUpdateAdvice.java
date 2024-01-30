@@ -4,15 +4,10 @@ import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
 import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
 import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
-import de.perdian.flightlog.support.types.CabinClass;
-import de.perdian.flightlog.support.types.FlightReason;
-import de.perdian.flightlog.support.types.SeatType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.util.List;
 
 @ControllerAdvice(assignableTypes = {
     FlightUpdateController.class
@@ -45,21 +40,6 @@ class FlightUpdateAdvice {
             }
         }
         return flightEditor;
-    }
-
-    @ModelAttribute("seatTypeValues")
-    List<SeatType> seatTypeValues() {
-        return List.of(SeatType.values());
-    }
-
-    @ModelAttribute("cabinClassValues")
-    List<CabinClass> cabinClassValues() {
-        return List.of(CabinClass.values());
-    }
-
-    @ModelAttribute("flightReasonValues")
-    List<FlightReason> flightReasonValues() {
-        return List.of(FlightReason.values());
     }
 
     AirportsRepository getAirportsRepository() {
