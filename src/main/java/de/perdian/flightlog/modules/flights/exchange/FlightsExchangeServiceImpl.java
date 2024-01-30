@@ -8,10 +8,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,8 +36,7 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
             .toList();
 
         log.debug("Loading all currently available flights for user: {}", targetUser);
-        Specification<FlightEntity> allFlightEntitiesSpecification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), targetUser.getEntity());
-        List<FlightEntity> allFlightEntities = this.getFlightRepository().findAll(allFlightEntitiesSpecification);
+        List<FlightEntity> allFlightEntities = this.loadAllFlightEntities(targetUser);
         log.debug("Synchronizing {} imported flights with {} currently available flights for user: {}", importedFlights.size(), allFlightEntities.size(), targetUser);
 
         for (FlightsExchangePackageFlight importedFlight : importedFlights) {
@@ -93,6 +96,59 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
         flightEntity.setFlightReason(packageFlight.getFlightReason());
         flightEntity.setSeatNumber(packageFlight.getSeatNumber());
         flightEntity.setSeatType(packageFlight.getSeatType());
+    }
+
+    @Override
+    public FlightsExchangePackage createPackage(User sourceUser) {
+
+        List<FlightEntity> flightEntities = this.loadAllFlightEntities(sourceUser);
+
+        List<FlightsExchangePackageFlight> exchangePackageFlights = flightEntities.stream()
+            .map(flightEntity -> this.createPackageFlight(flightEntity))
+            .toList();
+
+        Instant latestUpdateTime = flightEntities.stream()
+            .map(flightEntity -> flightEntity.getLastUpdatedAt())
+            .filter(updatedAt -> updatedAt != null)
+            .max(Comparator.naturalOrder())
+            .orElseGet(() -> Instant.now());
+
+        log.debug("Exporting {} flights for user: {}", flightEntities.size(), sourceUser);
+        FlightsExchangePackage exchangePackage = new FlightsExchangePackage();
+        exchangePackage.setFlights(exchangePackageFlights);
+        exchangePackage.setCreationTime(latestUpdateTime);
+        return exchangePackage;
+
+    }
+
+    private FlightsExchangePackageFlight createPackageFlight(FlightEntity flightEntity) {
+        FlightsExchangePackageFlight flight = new FlightsExchangePackageFlight();
+        flight.setAircraftName(flightEntity.getAircraftName());
+        flight.setAircraftRegistration(flightEntity.getAircraftRegistration());
+        flight.setAircraftType(flightEntity.getAircraftType());
+        flight.setAirlineCode(flightEntity.getAirlineCode());
+        flight.setAirlineName(flightEntity.getAirlineName());
+        flight.setArrivalAirportCode(flightEntity.getArrivalAirportCode());
+        flight.setArrivalDateLocal(flightEntity.getArrivalDateLocal());
+        flight.setArrivalTimeLocal(flightEntity.getArrivalTimeLocal());
+        flight.setCabinClass(flightEntity.getCabinClass());
+        flight.setComment(flightEntity.getComment());
+        flight.setDepartureAirportCode(flightEntity.getDepartureAirportCode());
+        flight.setDepartureDateLocal(flightEntity.getDepartureDateLocal());
+        flight.setDepartureTimeLocal(flightEntity.getDepartureTimeLocal());
+        flight.setFlightDistance(flightEntity.getFlightDistance());
+        flight.setFlightDuration(flightEntity.getFlightDuration() == null ? null : FlightlogHelper.formatDuration(Duration.ofMinutes(flightEntity.getFlightDuration())));
+        flight.setFlightNumber(flightEntity.getFlightNumber());
+        flight.setFlightReason(flightEntity.getFlightReason());
+        flight.setSeatNumber(flightEntity.getSeatNumber());
+        flight.setSeatType(flightEntity.getSeatType());
+        return flight;
+    }
+
+    private List<FlightEntity> loadAllFlightEntities(User user) {
+        Specification<FlightEntity> allFlightEntitiesSpecification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), user.getEntity());
+        Sort allFlightEntitiesSort = Sort.by(Sort.Order.asc("departureDateLocal"), Sort.Order.asc("departureTimeLocal"));
+        return this.getFlightRepository().findAll(allFlightEntitiesSpecification);
     }
 
     FlightRepository getFlightRepository() {

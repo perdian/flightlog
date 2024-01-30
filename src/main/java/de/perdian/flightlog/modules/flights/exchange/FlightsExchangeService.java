@@ -8,4 +8,6 @@ public interface FlightsExchangeService {
 
     List<FlightsExchangePackageFlight> importPackage(FlightsExchangePackage exchangePackage, User targetUser);
 
+    FlightsExchangePackage createPackage(User sourceUser);
+
 }

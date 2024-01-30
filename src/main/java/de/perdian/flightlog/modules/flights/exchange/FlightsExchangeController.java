@@ -5,13 +5,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/flights/")
@@ -58,8 +63,26 @@ class FlightsExchangeController {
     }
 
     @RequestMapping("/export/{format}")
-    String doExport(@PathVariable("format") FlightsExchangeFormat format) {
-        throw new UnsupportedOperationException();
+    ResponseEntity<?> doExport(@PathVariable("format") String formatValue) throws IOException  {
+        FlightsExchangeFormat exchangeFormat = FlightsExchangeFormat.valueOf(formatValue.toUpperCase());
+        FlightsExchangePackage exchangePackage = this.getExchangeService().createPackage(this.getUserHolder().getCurrentUser());
+        try (ByteArrayOutputStream exchangeStream = new ByteArrayOutputStream()) {
+
+            exchangeFormat.getHandler().exportPackage(exchangePackage, exchangeStream);
+
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmssX");
+            String dateTime = dateTimeFormatter.format(exchangePackage.getCreationTime().atZone(ZoneId.of("UTC")));
+            StringBuilder exchangeFilename = new StringBuilder();
+            exchangeFilename.append("flightlog-").append(dateTime);
+            exchangeFilename.append(".").append(exchangeFormat.name().toLowerCase());
+
+            return ResponseEntity
+                .ok()
+                .header("Content-Disposition", "attachment; filename=" + exchangeFilename.toString())
+                .contentType(exchangeFormat.getMimeType())
+                .body(exchangeStream.toByteArray());
+
+        }
     }
 
     @InitBinder

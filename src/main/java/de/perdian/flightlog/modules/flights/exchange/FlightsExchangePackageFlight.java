@@ -1,5 +1,6 @@
 package de.perdian.flightlog.modules.flights.exchange;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.SeatType;
@@ -195,6 +196,7 @@ public class FlightsExchangePackageFlight implements Serializable {
         this.seatType = seatType;
     }
 
+    @JsonIgnore
     public Boolean getInclude() {
         return this.include;
     }

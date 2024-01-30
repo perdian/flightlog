@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -41,6 +42,8 @@ public class FlightEntity implements Serializable {
     private SeatType seatType = null;
     private CabinClass cabinClass = null;
     private String comment = null;
+    private Instant createdAt = null;
+    private Instant lastUpdatedAt = null;
 
     @Override
     public int hashCode() {
@@ -68,6 +71,16 @@ public class FlightEntity implements Serializable {
         toStringBuilder.append("airlineCode", this.getAirlineCode());
         toStringBuilder.append("flightNumber", this.getFlightNumber());
         return toStringBuilder.toString();
+    }
+
+    @PrePersist
+    @PreUpdate
+    void prePersistOrUpdate() {
+        Instant now = Instant.now();
+        if (this.getCreatedAt() == null) {
+            this.setCreatedAt(now);
+        }
+        this.setLastUpdatedAt(now);
     }
 
     @Id
@@ -233,6 +246,20 @@ public class FlightEntity implements Serializable {
     }
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Instant getCreatedAt() {
+        return this.createdAt;
+    }
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getLastUpdatedAt() {
+        return this.lastUpdatedAt;
+    }
+    public void setLastUpdatedAt(Instant lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
     }
 
 }
