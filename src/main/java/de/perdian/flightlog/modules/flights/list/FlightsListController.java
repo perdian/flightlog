@@ -17,6 +17,11 @@ public class FlightsListController {
     private FlightQueryService queryService = null;
     private UserHolder userHolder = null;
 
+    @RequestMapping(path = "/")
+    String doIndex(Model model) {
+        return "redirect:/flights/list";
+    }
+
     @RequestMapping(path = "/list")
     String doList(Model model) {
         return this.doList(0, model);

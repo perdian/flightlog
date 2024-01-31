@@ -3,6 +3,7 @@ package de.perdian.flightlog.modules.flights.shared.service;
 import de.perdian.flightlog.modules.authentication.User;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.UUID;
@@ -12,6 +13,8 @@ public class FlightQuery implements Predicate<Flight> {
 
     private User user = null;
     private Comparator<Flight> comparator = (f1, f2) -> -1 * Flight.compareByDepartureDateAndTime(f1, f2);
+    private Collection<UUID> restrictEntityIdentifiers = null;
+    private Collection<UUID> excludeEntityIdentifiers = null;
 
     public FlightQuery(User user) {
         this.setUser(user);
@@ -44,6 +47,20 @@ public class FlightQuery implements Predicate<Flight> {
     }
     public void setComparator(Comparator<Flight> comparator) {
         this.comparator = comparator;
+    }
+
+    public Collection<UUID> getRestrictEntityIdentifiers() {
+        return this.restrictEntityIdentifiers;
+    }
+    public void setRestrictEntityIdentifiers(Collection<UUID> restrictEntityIdentifiers) {
+        this.restrictEntityIdentifiers = restrictEntityIdentifiers;
+    }
+
+    public Collection<UUID> getExcludeEntityIdentifiers() {
+        return this.excludeEntityIdentifiers;
+    }
+    public void setExcludeEntityIdentifiers(Collection<UUID> excludeEntityIdentifiers) {
+        this.excludeEntityIdentifiers = excludeEntityIdentifiers;
     }
 
 }

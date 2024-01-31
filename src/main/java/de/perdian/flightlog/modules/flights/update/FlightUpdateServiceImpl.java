@@ -11,13 +11,14 @@ class FlightUpdateServiceImpl implements FlightUpdateService {
     @Override
     @Transactional
     public Flight saveFlight(Flight flight, User user) {
-        throw new UnsupportedOperationException();
+        System.err.println("TODO: IMPLEMENT!");
+        return flight;
     }
 
     @Override
     @Transactional
     public void deleteFlight(Flight flight, User user) {
-        throw new UnsupportedOperationException();
+        System.err.println("TODO: IMPLEMENT!");
     }
 
 }

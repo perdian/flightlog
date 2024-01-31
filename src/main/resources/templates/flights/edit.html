@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="edit icon"></i>
+        <div class="content">
+          <span th:text="#{editFlight}"></span>
+          <div class="sub header" th:text="#{editDetailsForFlight}"></div>
+        </div>
+      </h3>
+
+      <div class="ui positive message" th:if="${flightAdded == 'true'}">
+        <div class="header" th:text="#{flightAdded}"></div>
+        <p th:text="#{flightHasBeenSuccessfullyAdded}"></p>
+      </div>
+      <div class="ui positive message" th:if="${flightUpdated == 'true'}">
+        <div class="header" th:text="#{flightUpdated}"></div>
+        <p th:text="#{flightHasBeenSuccessfullyUpdated}"></p>
+      </div>
+
+      <form class="ui form" method="post" th:action="@{/flights/edit/{flightEntityId}(flightEntityId=${flightUpdateEditor.entityId})}" th:object="${flightUpdateEditor}">
+        <input type="hidden" th:field="*{entityId}" />
+        <div th:replace="~{flights/include/flight-details :: form-body}">Form Body</div>
+      </form>
+
+    </main>
+  </body>
+</html>

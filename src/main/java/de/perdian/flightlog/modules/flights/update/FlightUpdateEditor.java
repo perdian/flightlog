@@ -127,7 +127,7 @@ public class FlightUpdateEditor {
     public UUID getEntityId() {
         return this.entityId;
     }
-    private void setEntityId(UUID entityId) {
+    public void setEntityId(UUID entityId) {
         this.entityId = entityId;
     }
 

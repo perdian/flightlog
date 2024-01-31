@@ -18,7 +18,7 @@ public class PaginationData implements Serializable {
     }
 
     public PaginationData(Page<?> page) {
-        this.setPageNumber(page.getPageable().getPageNumber());
+        this.setPageNumber(page.getPageable().isPaged() ? page.getPageable().getPageNumber() : 0);
         this.setTotalPages(page.getTotalPages());
         this.setTotalElements(page.getTotalElements());
     }
