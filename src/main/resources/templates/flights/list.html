@@ -60,11 +60,13 @@
             </div>
             <div class="eight wide mobile two wide tablet one wide computer column">
               <div class="mobile only">
-                <span th:text="#{duration}"></span>: <span th:text="${flight.flightDurationString}"></span> h
+                <span style="display: inline-block; min-width: 60px;"><span th:text="#{duration}"></span>:</span>
+                <span style="display: inline-block; min-width: 50px; text-align: right;" th:text="${flight.flightDurationString}"></span> h
                 <br />
-                <span th:text="#{distance}"></span>: <span th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
+                <span style="display: inline-block; min-width: 60px;"><span th:text="#{distance}"></span>:</span>
+                <span style="display: inline-block; min-width: 50px; text-align: right;" th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
               </div>
-              <span class="mobile hidden" style="float: right;">
+              <span class="mobile hidden" style="float: right; text-align: right;">
                 <span th:text="${flight.flightDurationString}"></span> h
                 <br />
                 <span th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
