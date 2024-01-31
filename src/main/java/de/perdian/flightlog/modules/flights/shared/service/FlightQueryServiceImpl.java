@@ -10,9 +10,15 @@ import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.modules.flights.shared.persistence.FlightEntity;
 import de.perdian.flightlog.modules.flights.shared.persistence.FlightRepository;
 import de.perdian.flightlog.support.FlightlogHelper;
+import de.perdian.flightlog.support.pagination.PaginatedList;
+import de.perdian.flightlog.support.pagination.PaginationData;
+import de.perdian.flightlog.support.pagination.PaginationRequest;
 import de.perdian.flightlog.support.types.FlightType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +37,21 @@ class FlightQueryServiceImpl implements FlightQueryService {
     private AirportsRepository airportsRepository = null;
 
     @Override
-    public List<Flight> loadFlights(FlightQuery flightQuery) {
-        return this.getFlightRepository().findAll(this.createFlightsSpecification(flightQuery)).stream()
+    public PaginatedList<Flight> loadFlights(FlightQuery flightQuery, PaginationRequest paginationRequest) {
+
+        Sort flightEntitiesSort = Sort.by(Sort.Order.desc("departureDateLocal"), Sort.Order.desc("departureTimeLocal"));
+        Pageable pageable = paginationRequest == null ? Pageable.unpaged() : paginationRequest.toPageable(flightEntitiesSort);
+        Specification<FlightEntity> flightEntitiesSpecification = this.createFlightsSpecification(flightQuery);
+        Page<FlightEntity> flightEntitiesPage = this.getFlightRepository().findAll(flightEntitiesSpecification, pageable);
+
+        List<Flight> flights = flightEntitiesPage.stream()
             .map(this::createFlight)
             .filter(flightQuery)
             .sorted(flightQuery.getComparator())
             .toList();
+
+        return new PaginatedList<>(flights, new PaginationData(flightEntitiesPage));
+
     }
 
     private Specification<FlightEntity> createFlightsSpecification(FlightQuery flightQuery) {

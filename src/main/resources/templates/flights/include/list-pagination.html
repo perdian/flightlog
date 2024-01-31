@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div th:remove="tag" th:fragment="pagination">
+
+      <div class="ui center aligned pagination menu">
+        <div class="disabled item" th:text="#{page}">Page</div>
+        <div th:remove="tag" th:each="paginationLink: ${flights.pagination.toLinks(2)}">
+          <div class="active item" th:if="${flights.pagination.pageNumber == paginationLink.pageNumber}">
+            <span th:text="${paginationLink.pageNumber + 1}"></span>
+          </div>
+          <div class="disabled item" th:if="${paginationLink.spacer}" th:text="...">...</div>
+          <a class="item" th:if="${flights.pagination.pageNumber != paginationLink.pageNumber && !paginationLink.spacer}" th:href="@{/flights/list/{pageNumber}(pageNumber=${paginationLink.pageNumber})}">
+            <span th:text="${paginationLink.pageNumber + 1}"></span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

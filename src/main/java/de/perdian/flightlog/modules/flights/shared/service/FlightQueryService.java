@@ -1,11 +1,11 @@
 package de.perdian.flightlog.modules.flights.shared.service;
 
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
-
-import java.util.List;
+import de.perdian.flightlog.support.pagination.PaginatedList;
+import de.perdian.flightlog.support.pagination.PaginationRequest;
 
 public interface FlightQueryService {
 
-    List<Flight> loadFlights(FlightQuery query);
+    PaginatedList<Flight> loadFlights(FlightQuery query, PaginationRequest paginationRequest);
 
 }
