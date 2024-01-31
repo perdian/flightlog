@@ -1,9 +1,6 @@
-package de.perdian.flightlog.modules.flights.shared.model;
+package de.perdian.flightlog.modules.airports.model;
 
-import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
-
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 
 public class Airport {
 
@@ -12,22 +9,24 @@ public class Airport {
     private String code = null;
     private String countryCode = null;
     private String name = null;
+    private String city = null;
     private Float longitude = null;
     private Float latitude = null;
     private ZoneId timezoneId = null;
     private ZoneOffset timezoneOffset = null;
+    private String type = null;
 
-    public Airport() {
+    public Instant computeInstant(LocalDate localDate, LocalTime localTime) {
+        ZonedDateTime zonedDateTime = this.computeZonedDateTime(localDate, localTime);
+        return zonedDateTime == null ? null : zonedDateTime.toInstant();
     }
 
-    public Airport(AirportEntity airportEntity) {
-        this.setCode(airportEntity.getIataCode());
-        this.setCountryCode(airportEntity.getCountryCode());
-        this.setName(airportEntity.getName());
-        this.setLongitude(airportEntity.getLongitude());
-        this.setLatitude(airportEntity.getLatitude());
-        this.setTimezoneId(airportEntity.getTimezoneId());
-        this.setTimezoneOffset(airportEntity.getTimezoneOffset());
+    public ZonedDateTime computeZonedDateTime(LocalDate localDate, LocalTime localTime) {
+        if (localDate == null || localTime == null || this.getTimezoneId() == null) {
+            return null;
+        } else {
+            return localTime.atDate(localDate).atZone(this.getTimezoneId());
+        }
     }
 
     @Override
@@ -64,6 +63,12 @@ public class Airport {
         this.name = name;
     }
 
+    public String getCity() {
+        return this.city;
+    }
+    public void setCity(String city) {
+        this.city = city;
+    }
     public Float getLongitude() {
         return this.longitude;
     }
@@ -90,6 +95,13 @@ public class Airport {
     }
     public void setTimezoneOffset(ZoneOffset timezoneOffset) {
         this.timezoneOffset = timezoneOffset;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

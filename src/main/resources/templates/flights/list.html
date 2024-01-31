@@ -12,6 +12,11 @@
       </h3>
       <div class="ui divider"></div>
 
+      <div class="ui segments">
+      <div th:each="flight, flightStatus : *{flights}" class="ui segment">
+        <span th:text="${flight}"></span>
+      </div>
+
     </main>
   </body>
 </html>

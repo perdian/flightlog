@@ -2,14 +2,17 @@ package de.perdian.flightlog.modules.flights.lookup.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.perdian.flightlog.modules.aircrafts.persistence.AircraftTypeEntity;
+import de.perdian.flightlog.modules.aircrafts.model.Aircraft;
+import de.perdian.flightlog.modules.aircrafts.model.AircraftType;
 import de.perdian.flightlog.modules.aircrafts.persistence.AircraftTypesRepository;
-import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
+import de.perdian.flightlog.modules.airlines.model.Airline;
 import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
-import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
+import de.perdian.flightlog.modules.airports.model.Airport;
+import de.perdian.flightlog.modules.airports.model.AirportContact;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
+import de.perdian.flightlog.modules.flights.lookup.FlightLookupRequest;
 import de.perdian.flightlog.modules.flights.lookup.FlightLookupSource;
-import de.perdian.flightlog.modules.flights.shared.model.*;
+import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.support.FlightlogHelper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -62,8 +65,7 @@ public class Flightradar24LookupSource implements FlightLookupSource {
             Document htmlDocument = Jsoup.parse(httpResponseBody);
             Element dataTableElement = htmlDocument.selectFirst("table#tbl-datatable");
             if (dataTableElement != null) {
-                AirlineEntity airlineEntity = this.getAirlinesRepository().loadAirlineByCode(actualAirlineCode);
-                return this.createFlightFromDataTable(dataTableElement, airlineEntity, actualFlightNumber, flightLookupRequest);
+                return this.createFlightFromDataTable(dataTableElement, actualAirlineCode, actualFlightNumber, flightLookupRequest);
             }
         } catch (Exception e) {
             log.debug("Cannot retreive data from flightradar24 for: {}", flightLookupRequest, e);
@@ -105,12 +107,12 @@ public class Flightradar24LookupSource implements FlightLookupSource {
         return flightLookupRequest.getAirlineCode() + flightLookupRequest.getFlightNumber();
     }
 
-    private List<Flight> createFlightFromDataTable(Element dataTableElement, AirlineEntity airlineEntity, String flightNumber, FlightLookupRequest flightLookupRequest) {
+    private List<Flight> createFlightFromDataTable(Element dataTableElement, String airlineCode, String flightNumber, FlightLookupRequest flightLookupRequest) {
         return dataTableElement.select("tbody tr").stream()
             .map(row -> this.createDataRowFromDataTableRow(row))
             .filter(dataRow -> flightLookupRequest.getDepartureDate() != null && dataRow.matchesDepartureLocalDate(flightLookupRequest.getDepartureDate()))
             .filter(dataRow -> StringUtils.isEmpty(flightLookupRequest.getDepartureAirportCode()) || dataRow.matchesDepartureAirportCode(flightLookupRequest.getDepartureAirportCode()))
-            .map(dataRow -> this.createFlightFromDataRow(dataRow, airlineEntity, flightNumber))
+            .map(dataRow -> this.createFlightFromDataRow(dataRow, airlineCode, flightNumber))
             .toList();
     }
 
@@ -124,20 +126,19 @@ public class Flightradar24LookupSource implements FlightLookupSource {
         String departureAirportCodePlusBrackets = departureAirportCell.selectFirst("a").text().strip();
         Matcher departureAirportMatcher = AIRPORT_CODE_PATTERN.matcher(departureAirportCodePlusBrackets);
         String departureAirportCode = departureAirportMatcher.matches() ? departureAirportMatcher.group(1) : null;
-        AirportEntity departureAirportEntity = this.getAirportsRepository().loadAirportByIataCode(departureAirportCode);
+        Airport departureAirport = this.getAirportsRepository().loadAirportByIataCode(departureAirportCode);
 
         Element arrivalAirportCell = cells.get(4);
         String arrivalAirportCodePlusBrackets = arrivalAirportCell.selectFirst("a").text().strip();
         Matcher arrivalAirportMatcher = AIRPORT_CODE_PATTERN.matcher(arrivalAirportCodePlusBrackets);
         String arrivalAirportCode = arrivalAirportMatcher.matches() ? arrivalAirportMatcher.group(1) : null;
-        AirportEntity arrivalAirportEntity = this.getAirportsRepository().loadAirportByIataCode(arrivalAirportCode);
+        Airport arrivalAirport = this.getAirportsRepository().loadAirportByIataCode(arrivalAirportCode);
 
         Element aircraftCell = cells.get(5);
         String aircraftTypeValue = aircraftCell.text().strip();
         int aircraftTypeCodeEndIndex = aircraftTypeValue == null ? null : aircraftTypeValue.indexOf(" ");
         String aircraftTypeCode = aircraftTypeValue == null ? null : (aircraftTypeCodeEndIndex < 0 ? aircraftTypeValue : aircraftTypeValue.substring(0, aircraftTypeCodeEndIndex));
-        AircraftTypeEntity aircraftTypeEntity = StringUtils.isEmpty(aircraftTypeCode) ? null : this.getAircraftTypesRepository().loadAircraftTypeByCode(aircraftTypeCode);
-        String aircraftType = aircraftTypeEntity == null ? aircraftTypeCode : aircraftTypeEntity.getTitle();
+        AircraftType aircraftType = StringUtils.isEmpty(aircraftTypeCode) ? null : this.getAircraftTypesRepository().loadAircraftTypeByCode(aircraftTypeCode);
 
         Element aircraftRegistrationElement = aircraftCell.selectFirst("a");
         String aircaftRegistrationValue = aircraftRegistrationElement == null ? null : aircraftRegistrationElement.text().strip();
@@ -156,52 +157,58 @@ public class Flightradar24LookupSource implements FlightLookupSource {
         String status = statusCell.text().strip();
 
         Flightradar24DataRow dataRow = new Flightradar24DataRow();
-        dataRow.setDepartureAirportEntity(departureAirportEntity);
-        dataRow.setDepartureAirportCode(departureAirportEntity == null ? departureAirportCode : departureAirportEntity.getIataCode());
+        dataRow.setDepartureAirport(departureAirport);
+        dataRow.setDepartureAirportCode(departureAirport == null ? departureAirportCode : departureAirport.getCode());
         dataRow.setDepartureDateUtc(departureDateUtc);
         dataRow.setDepartureTimeUtc(actualDepartureTimeUtc);
-        dataRow.setArrivalAirportEntity(arrivalAirportEntity);
-        dataRow.setArrivalAirportCode(arrivalAirportEntity == null ? arrivalAirportCode : arrivalAirportEntity.getIataCode());
+        dataRow.setArrivalAirport(arrivalAirport);
+        dataRow.setArrivalAirportCode(arrivalAirport == null ? arrivalAirportCode : arrivalAirport.getCode());
         dataRow.setDuration(flightTime);
-        dataRow.setAircraftType(aircraftType);
+        dataRow.setAircraftType(aircraftType == null ? aircraftTypeCode : aircraftType.getTitle());
         dataRow.setAircraftRegistration(aircraftRegistratopm);
         dataRow.setStatus(status);
         return dataRow;
 
     }
 
-    private Flight createFlightFromDataRow(Flightradar24DataRow dataRow, AirlineEntity airlineEntity, String flightNumber) {
+    private Flight createFlightFromDataRow(Flightradar24DataRow dataRow, String airlineCode, String flightNumber) {
 
-        ZoneId departureZoneId = dataRow.getDepartureAirportEntity() == null ? null : dataRow.getDepartureAirportEntity().getTimezoneId();
+        ZoneId departureZoneId = dataRow.getDepartureAirport() == null ? null : dataRow.getDepartureAirport().getTimezoneId();
         ZonedDateTime departureDateTimeUtc = dataRow.getDepartureDateUtc() == null  || dataRow.getDepartureTimeUtc() == null ? null : dataRow.getDepartureTimeUtc().atDate(dataRow.getDepartureDateUtc()).atZone(ZoneId.of("UTC"));
         ZonedDateTime departureDateTimeLocal = departureDateTimeUtc == null || departureZoneId == null ? null : departureDateTimeUtc.withZoneSameInstant(departureZoneId);
-        AirportEntity departureAirportEntity = dataRow.getDepartureAirportEntity();
+        Airport departureAirport = dataRow.getDepartureAirport();
         AirportContact departureContact = new AirportContact();
-        departureContact.setAirport(departureAirportEntity == null ? null : new Airport(departureAirportEntity));
+        departureContact.setAirport(departureAirport);
         departureContact.setDateLocal(departureDateTimeLocal == null ? null : departureDateTimeLocal.toLocalDate());
         departureContact.setTimeLocal(departureDateTimeLocal == null ? null : departureDateTimeLocal.toLocalTime());
 
-        ZoneId arrivalZoneId = dataRow.getArrivalAirportEntity() == null ? null : dataRow.getArrivalAirportEntity().getTimezoneId();
+        ZoneId arrivalZoneId = dataRow.getArrivalAirport() == null ? null : dataRow.getArrivalAirport().getTimezoneId();
         ZonedDateTime arrivalDateTimeUtc = dataRow.getDuration() == null || departureDateTimeUtc == null ? null : departureDateTimeUtc.plus(dataRow.getDuration());
         ZonedDateTime arrivalDateTimeLocal = arrivalDateTimeUtc == null || arrivalZoneId == null ? null : arrivalDateTimeUtc.withZoneSameInstant(arrivalZoneId);
-        AirportEntity arrivalAirportEntity = dataRow.getArrivalAirportEntity();
+        Airport arrivalAirport = dataRow.getArrivalAirport();
         AirportContact arrivalContact = new AirportContact();
-        arrivalContact.setAirport(arrivalAirportEntity == null ? null : new Airport(arrivalAirportEntity));
+        arrivalContact.setAirport(arrivalAirport);
         arrivalContact.setDateLocal(arrivalDateTimeLocal == null ? null : arrivalDateTimeLocal.toLocalDate());
         arrivalContact.setTimeLocal(arrivalDateTimeLocal == null ? null : arrivalDateTimeLocal.toLocalTime());
 
         Duration flightDuration = departureDateTimeUtc == null || arrivalDateTimeUtc == null ? null : Duration.between(departureDateTimeUtc, arrivalDateTimeUtc);
-        Integer flightDistance = departureAirportEntity == null || arrivalAirportEntity == null ? null : FlightlogHelper.computeDistanceInKilometers(departureAirportEntity.getLongitude(), departureAirportEntity.getLatitude(), arrivalAirportEntity.getLongitude(), arrivalAirportEntity.getLatitude());
+        Integer flightDistance = departureAirport == null || arrivalAirport == null ? null : FlightlogHelper.computeDistanceInKilometers(departureAirport.getLongitude(), departureAirport.getLatitude(), arrivalAirport.getLongitude(), arrivalAirport.getLatitude());
 
         Aircraft aircraft = new Aircraft();
         aircraft.setType(dataRow.getAircraftType());
         aircraft.setRegistration(dataRow.getAircraftRegistration());
 
+        Airline airline = this.getAirlinesRepository().loadAirlineByCode(airlineCode);
+        if (airline == null) {
+            airline = new Airline();
+            airline.setCode(airlineCode);
+        }
+
         Flight flight = new Flight();
         flight.setDepartureContact(departureContact);
         flight.setArrivalContact(arrivalContact);
         flight.setAircraft(aircraft);
-        flight.setAirline(airlineEntity);
+        flight.setAirline(airline);
         flight.setFlightNumber(flightNumber);
         flight.setFlightDuration(flightDuration);
         flight.setFlightDistance(flightDistance);

@@ -1,6 +1,6 @@
-package de.perdian.flightlog.modules.flights.support;
+package de.perdian.flightlog.modules.flights.route;
 
-import de.perdian.flightlog.modules.flights.shared.model.Airport;
+import de.perdian.flightlog.modules.airports.model.Airport;
 import de.perdian.flightlog.support.FlightlogHelper;
 
 import java.time.Duration;

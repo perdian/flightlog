@@ -1,5 +1,6 @@
 package de.perdian.flightlog.modules.aircrafts.persistence;
 
+import de.perdian.flightlog.modules.aircrafts.model.AircraftType;
 import de.perdian.flightlog.support.openflights.OpenflightsHelper;
 import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
@@ -23,8 +24,8 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
     private static final Logger log = LoggerFactory.getLogger(AircraftTypesRepositoryImpl.class);
 
     private ResourceLoader resourceLoader = null;
-    private Map<String, AircraftTypeEntity> aircraftTypeBeansByIataCode = null;
-    private Map<String, AircraftTypeEntity> aircraftTypeBeansByIcaoCode = null;
+    private Map<String, AircraftType> aircraftTypeBeansByIataCode = null;
+    private Map<String, AircraftType> aircraftTypeBeansByIcaoCode = null;
 
     @PostConstruct
     void initialize() throws IOException {
@@ -33,8 +34,8 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
         log.info("Loading aircraftTypes from resource: {}", aircraftTypesResource);
 
         int totalAircraftTypesLoaded = 0;
-        Map<String, AircraftTypeEntity> aircraftTypeBeansByIataCode = new LinkedHashMap<>();
-        Map<String, AircraftTypeEntity> aircraftTypeBeansByIcaoCode = new LinkedHashMap<>();
+        Map<String, AircraftType> aircraftTypeBeansByIataCode = new LinkedHashMap<>();
+        Map<String, AircraftType> aircraftTypeBeansByIcaoCode = new LinkedHashMap<>();
         try (BufferedReader aircraftTypesReader = new BufferedReader(new InputStreamReader(aircraftTypesResource.getInputStream(), "UTF-8"))) {
             for (String aircraftTypeLine = aircraftTypesReader.readLine(); aircraftTypeLine != null; aircraftTypeLine = aircraftTypesReader.readLine()) {
                 try {
@@ -45,17 +46,17 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
                         String icaoCode = lineFields.get(1);
                         String title = lineFields.get(2);
 
-                        if (!StringUtils.isEmpty(title)) {
+                        if (StringUtils.isNotEmpty(title)) {
 
-                            AircraftTypeEntity aircraftTypeBean = new AircraftTypeEntity();
+                            AircraftType aircraftTypeBean = new AircraftType();
                             aircraftTypeBean.setIataCode(iataCode);
                             aircraftTypeBean.setIcaoCode(icaoCode);
                             aircraftTypeBean.setTitle(title);
 
-                            if (!StringUtils.isEmpty(iataCode)) {
+                            if (StringUtils.isNotEmpty(iataCode)) {
                                 aircraftTypeBeansByIataCode.putIfAbsent(iataCode, aircraftTypeBean);
                             }
-                            if (!StringUtils.isEmpty(icaoCode)) {
+                            if (StringUtils.isNotEmpty(icaoCode)) {
                                 aircraftTypeBeansByIcaoCode.putIfAbsent(icaoCode, aircraftTypeBean);
                             }
                             totalAircraftTypesLoaded++;
@@ -74,18 +75,18 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
     }
 
     @Override
-    public AircraftTypeEntity loadAircraftTypeByIataCode(String code) {
+    public AircraftType loadAircraftTypeByIataCode(String code) {
         return StringUtils.isEmpty(code) ? null : this.getAircraftTypeBeansByIataCode().get(code);
     }
 
     @Override
-    public AircraftTypeEntity loadAircraftTypeByIcaoCode(String code) {
+    public AircraftType loadAircraftTypeByIcaoCode(String code) {
         return StringUtils.isEmpty(code) ? null : this.getAircraftTypeBeansByIcaoCode().get(code);
     }
 
     @Override
-    public AircraftTypeEntity loadAircraftTypeByCode(String code) {
-        AircraftTypeEntity iataAircraftType = this.getAircraftTypeBeansByIataCode().get(code);
+    public AircraftType loadAircraftTypeByCode(String code) {
+        AircraftType iataAircraftType = this.getAircraftTypeBeansByIataCode().get(code);
         return iataAircraftType == null ? this.getAircraftTypeBeansByIcaoCode().get(code) : iataAircraftType;
     }
 
@@ -97,17 +98,17 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
         this.resourceLoader = resourceLoader;
     }
 
-    Map<String, AircraftTypeEntity> getAircraftTypeBeansByIataCode() {
+    Map<String, AircraftType> getAircraftTypeBeansByIataCode() {
         return this.aircraftTypeBeansByIataCode;
     }
-    void setAircraftTypeBeansByIataCode(Map<String, AircraftTypeEntity> aircraftTypeBeansByIataCode) {
+    void setAircraftTypeBeansByIataCode(Map<String, AircraftType> aircraftTypeBeansByIataCode) {
         this.aircraftTypeBeansByIataCode = aircraftTypeBeansByIataCode;
     }
 
-    Map<String, AircraftTypeEntity> getAircraftTypeBeansByIcaoCode() {
+    Map<String, AircraftType> getAircraftTypeBeansByIcaoCode() {
         return this.aircraftTypeBeansByIcaoCode;
     }
-    void setAircraftTypeBeansByIcaoCode(Map<String, AircraftTypeEntity> aircraftTypeBeansByIcaoCode) {
+    void setAircraftTypeBeansByIcaoCode(Map<String, AircraftType> aircraftTypeBeansByIcaoCode) {
         this.aircraftTypeBeansByIcaoCode = aircraftTypeBeansByIcaoCode;
     }
 

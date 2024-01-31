@@ -1,8 +1,7 @@
 package de.perdian.flightlog.modules.airlines.web;
 
-import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
+import de.perdian.flightlog.modules.airlines.model.Airline;
 import de.perdian.flightlog.modules.airlines.persistence.AirlinesRepository;
-import de.perdian.flightlog.modules.flights.shared.model.Airline;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,8 @@ public class AirlinesController {
 
     @GetMapping(path = "/airline/{airlineCode}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Airline> doAirline(@PathVariable String airlineCode) {
-        AirlineEntity airlineEntity = this.getAirlinesRepository().loadAirlineByCode(airlineCode);
-        return airlineEntity == null ? ResponseEntity.noContent().build() : ResponseEntity.ofNullable(new Airline(airlineEntity));
+        Airline airline = this.getAirlinesRepository().loadAirlineByCode(airlineCode);
+        return airline == null ? ResponseEntity.noContent().build() : ResponseEntity.ofNullable(airline);
     }
 
     AirlinesRepository getAirlinesRepository() {

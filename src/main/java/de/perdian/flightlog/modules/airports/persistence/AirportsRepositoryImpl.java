@@ -1,5 +1,6 @@
 package de.perdian.flightlog.modules.airports.persistence;
 
+import de.perdian.flightlog.modules.airports.model.Airport;
 import de.perdian.flightlog.support.openflights.OpenflightsHelper;
 import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +31,7 @@ class AirportsRepositoryImpl implements AirportsRepository {
     private static final Logger log = LoggerFactory.getLogger(AirportsRepositoryImpl.class);
 
     private ResourceLoader resourceLoader = null;
-    private Map<String, AirportEntity> airportBeansByIataCode = null;
+    private Map<String, Airport> airportBeansByIataCode = null;
 
     @PostConstruct
     void initialize() throws IOException {
@@ -51,7 +52,7 @@ class AirportsRepositoryImpl implements AirportsRepository {
         Resource airportsResource = this.getResourceLoader().getResource("classpath:data/airports-extended.dat");
         log.info("Loading airports from resource: {}", airportsResource);
 
-        Map<String, AirportEntity> airportBeansByIataCode = new LinkedHashMap<>();
+        Map<String, Airport> airportBeansByIataCode = new LinkedHashMap<>();
         try (BufferedReader airportsReader = new BufferedReader(new InputStreamReader(airportsResource.getInputStream(), "UTF-8"))) {
             for (String airportLine = airportsReader.readLine(); airportLine != null; airportLine = airportsReader.readLine()) {
                 try {
@@ -71,19 +72,18 @@ class AirportsRepositoryImpl implements AirportsRepository {
                     String zoneIdValue = lineFields.get(11);
                     ZoneId zoneId = zoneIdValue == null || zoneIdValue.equalsIgnoreCase("\\N") ? null : ZoneId.of(zoneIdValue);
 
-                    AirportEntity airportBean = new AirportEntity();
-                    airportBean.setName(lineFields.get(1));
-                    airportBean.setCity(lineFields.get(2));
-                    airportBean.setCountryCode(countryCodesByTitle.get(lineFields.get(3)));
-                    airportBean.setIataCode(iataCode);
-                    airportBean.setIcaoCode(icaoCode);
-                    airportBean.setLatitude(Float.parseFloat(lineFields.get(6)));
-                    airportBean.setLongitude(Float.parseFloat(lineFields.get(7)));
-                    airportBean.setTimezoneOffset(zoneOffset);
-                    airportBean.setTimezoneId(zoneId);
-                    airportBean.setType(lineFields.get(12));
+                    Airport airport = new Airport();
+                    airport.setName(lineFields.get(1));
+                    airport.setCity(lineFields.get(2));
+                    airport.setCountryCode(countryCodesByTitle.get(lineFields.get(3)));
+                    airport.setCode(iataCode);
+                    airport.setLatitude(Float.parseFloat(lineFields.get(6)));
+                    airport.setLongitude(Float.parseFloat(lineFields.get(7)));
+                    airport.setTimezoneOffset(zoneOffset);
+                    airport.setTimezoneId(zoneId);
+                    airport.setType(lineFields.get(12));
 
-                    airportBeansByIataCode.put(iataCode, airportBean);
+                    airportBeansByIataCode.put(iataCode, airport);
 
                 } catch (Exception e) {
                     log.warn("Invalid airport line: {}", airportLine, e);
@@ -97,7 +97,7 @@ class AirportsRepositoryImpl implements AirportsRepository {
     }
 
     @Override
-    public AirportEntity loadAirportByIataCode(String iataAirportCode) {
+    public Airport loadAirportByIataCode(String iataAirportCode) {
         return StringUtils.isEmpty(iataAirportCode) ? null : this.getAirportBeansByIataCode().get(iataAirportCode.toUpperCase());
     }
 
@@ -109,10 +109,10 @@ class AirportsRepositoryImpl implements AirportsRepository {
         this.resourceLoader = resourceLoader;
     }
 
-    Map<String, AirportEntity> getAirportBeansByIataCode() {
+    Map<String, Airport> getAirportBeansByIataCode() {
         return this.airportBeansByIataCode;
     }
-    void setAirportBeansByIataCode(Map<String, AirportEntity> airportBeansByIataCode) {
+    void setAirportBeansByIataCode(Map<String, Airport> airportBeansByIataCode) {
         this.airportBeansByIataCode = airportBeansByIataCode;
     }
 

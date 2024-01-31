@@ -1,8 +1,6 @@
-package de.perdian.flightlog.modules.aircrafts.persistence;
+package de.perdian.flightlog.modules.aircrafts.model;
 
-import java.io.Serializable;
-
-public class AircraftTypeEntity implements Serializable {
+public class AircraftType {
 
     static final long serialVersionUID = 1L;
 
@@ -22,21 +20,21 @@ public class AircraftTypeEntity implements Serializable {
     public String getIataCode() {
         return this.iataCode;
     }
-    void setIataCode(String iataCode) {
+    public void setIataCode(String iataCode) {
         this.iataCode = iataCode;
     }
 
     public String getIcaoCode() {
         return this.icaoCode;
     }
-    void setIcaoCode(String icaoCode) {
+    public void setIcaoCode(String icaoCode) {
         this.icaoCode = icaoCode;
     }
 
     public String getTitle() {
         return this.title;
     }
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 

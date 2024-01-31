@@ -1,9 +1,9 @@
 package de.perdian.flightlog.modules.flights.update;
 
 import de.perdian.flightlog.modules.authentication.UserHolder;
+import de.perdian.flightlog.modules.flights.lookup.FlightLookupRequest;
 import de.perdian.flightlog.modules.flights.lookup.FlightLookupService;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
-import de.perdian.flightlog.modules.flights.shared.model.FlightLookupRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ class FlightUpdateController {
     @RequestMapping(path = "/add")
     String doAdd(
         @ModelAttribute(name = "flightLookupRequest") FlightLookupRequest flightLookupRequest,
-        @ModelAttribute(name = "flightEditor") FlightEditor flightEditor,
+        @ModelAttribute(name = "flightUpdateEditor") FlightUpdateEditor flightUpdateEditor,
         @RequestParam(name = "showLookupForm", required = false) Boolean showLookupForm,
         Model model
     ) {
@@ -44,35 +44,35 @@ class FlightUpdateController {
     @RequestMapping(path = "/add/lookup")
     String doAddLookup(
         @ModelAttribute(name = "flightLookupRequest") FlightLookupRequest flightLookupRequest,
-        @ModelAttribute(name = "flightEditor") FlightEditor flightEditor,
+        @ModelAttribute(name = "flightUpdateEditor") FlightUpdateEditor flightUpdateEditor,
         Model model
     ) {
         if (flightLookupRequest.isPopulated()) {
             List<Flight> flightLookupResults = this.getFlightLookupService().lookupFlights(flightLookupRequest);
             model.addAttribute("flightLookupResults", flightLookupResults);
             if (flightLookupResults != null && flightLookupResults.size() == 1) {
-                flightEditor.applyValuesFrom(flightLookupResults.get(0));
+                flightUpdateEditor.applyValuesFrom(flightLookupResults.get(0));
             } else if (flightLookupResults != null && flightLookupResults.size() > 1) {
                 model.addAttribute("showLookupResults", true);
             }
             model.addAttribute("showLookupForm", false);
         }
-        return this.doAdd(flightLookupRequest, flightEditor, null, model);
+        return this.doAdd(flightLookupRequest, flightUpdateEditor, null, model);
     }
 
     @RequestMapping(path = "/add/submit")
     String doAddSubmit(
         @ModelAttribute(name = "flightLookupRequest") FlightLookupRequest flightLookupRequest,
-        @ModelAttribute(name = "flightEditor") @Valid FlightEditor flightEditor, BindingResult flightEditorBindingResult,
+        @ModelAttribute(name = "flightUpdateEditor") @Valid FlightUpdateEditor flightUpdateEditor, BindingResult flightUpdateEditorBindingResult,
         RedirectAttributes redirectAttributes,
         Model model
     ) {
-        if (flightEditorBindingResult.hasErrors()) {
-            return this.doAdd(flightLookupRequest, flightEditor, false, model);
+        if (flightUpdateEditorBindingResult.hasErrors()) {
+            return this.doAdd(flightLookupRequest, flightUpdateEditor, false, model);
         } else {
 
             Flight newFlight = new Flight();
-            flightEditor.copyValuesInto(newFlight);
+            flightUpdateEditor.copyValuesInto(newFlight);
             log.debug("Adding new flight: {}", newFlight);
             Flight storedFlight = this.getFlightUpdateService().saveFlight(newFlight, this.getUserHolder().getCurrentUser());
 

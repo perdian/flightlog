@@ -1,9 +1,11 @@
 package de.perdian.flightlog.modules.aircrafts.persistence;
 
+import de.perdian.flightlog.modules.aircrafts.model.AircraftType;
+
 public interface AircraftTypesRepository {
 
-    AircraftTypeEntity loadAircraftTypeByCode(String code);
-    AircraftTypeEntity loadAircraftTypeByIataCode(String code);
-    AircraftTypeEntity loadAircraftTypeByIcaoCode(String code);
+    AircraftType loadAircraftTypeByCode(String code);
+    AircraftType loadAircraftTypeByIataCode(String code);
+    AircraftType loadAircraftTypeByIcaoCode(String code);
 
 }

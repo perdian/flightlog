@@ -1,4 +1,4 @@
-package de.perdian.flightlog.modules.flights.shared.model;
+package de.perdian.flightlog.modules.flights.lookup;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;

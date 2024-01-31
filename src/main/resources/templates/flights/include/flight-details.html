@@ -21,14 +21,14 @@
           </div>
         </div>
         <div class="four wide mobile three wide tablet two wide computer column">
-          <div class="field" th:classappend="${#fields.hasErrors('departureAirportCode') || (not #strings.isEmpty(flightEditor.departureAirportCode) && (not flightEditor.departureAirportKnown)) ? 'error' : ''}">
+          <div class="field" th:classappend="${#fields.hasErrors('departureAirportCode') || (not #strings.isEmpty(flightUpdateEditor.departureAirportCode) && (not flightUpdateEditor.departureAirportKnown)) ? 'error' : ''}">
             <label th:text="#{airportCode}"></label>
             <input id="departureAirportCode" type="text" class="uppercase" th:field="*{departureAirportCode}" maxlength="3" autocomplete="off" />
           </div>
         </div>
         <div class="sixteen wide mobile five wide tablet ten wide computer column">
           <div class="field">
-            <label><span th:text="#{departureAirport}"></span> <i id="departureAirportCountryCode" th:class="${#strings.isEmpty(flightEditor.departureAirportCountryCode) ? '' : ('flag ' + #strings.toLowerCase(flightEditor.departureAirportCountryCode))}"></i></label>
+            <label><span th:text="#{departureAirport}"></span> <i id="departureAirportCountryCode" th:class="${#strings.isEmpty(flightUpdateEditor.departureAirportCountryCode) ? '' : ('flag ' + #strings.toLowerCase(flightUpdateEditor.departureAirportCountryCode))}"></i></label>
             <input id="departureAirportName" type="text" readonly tabindex="-1" th:value="*{departureAirportName}" th:placeholder="#{airportNameWillBeComputedAutomatically}" />
           </div>
         </div>
@@ -46,14 +46,14 @@
           </div>
         </div>
         <div class="four wide mobile three wide tablet two wide computer column">
-          <div class="field" th:classappend="${#fields.hasErrors('arrivalAirportCode') || (not #strings.isEmpty(flightEditor.arrivalAirportCode) && (not flightEditor.arrivalAirportKnown)) ? 'error' : ''}">
+          <div class="field" th:classappend="${#fields.hasErrors('arrivalAirportCode') || (not #strings.isEmpty(flightUpdateEditor.arrivalAirportCode) && (not flightUpdateEditor.arrivalAirportKnown)) ? 'error' : ''}">
             <label th:text="#{airportCode}"></label>
             <input id="arrivalAirportCode" type="text" class="uppercase" th:field="*{arrivalAirportCode}" maxlength="3" autocomplete="off" />
           </div>
         </div>
         <div class="sixteen wide mobile five wide tablet ten wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('arrivalAirportCountryCode') ? 'error' : ''}">
-            <label><span th:text="#{arrivalAirport}"></span> <i id="arrivalAirportCountryCode" th:class="${#strings.isEmpty(flightEditor.arrivalAirportCountryCode) ? '' : ('flag ' + #strings.toLowerCase(flightEditor.arrivalAirportCountryCode))}"></i></label>
+            <label><span th:text="#{arrivalAirport}"></span> <i id="arrivalAirportCountryCode" th:class="${#strings.isEmpty(flightUpdateEditor.arrivalAirportCountryCode) ? '' : ('flag ' + #strings.toLowerCase(flightUpdateEditor.arrivalAirportCountryCode))}"></i></label>
             <input id="arrivalAirportName" type="text" readonly tabindex="-1" th:value="*{arrivalAirportName}" th:placeholder="#{airportNameWillBeComputedAutomatically}" />
           </div>
         </div>

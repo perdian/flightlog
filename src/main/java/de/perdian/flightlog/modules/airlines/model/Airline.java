@@ -1,21 +1,10 @@
-package de.perdian.flightlog.modules.flights.shared.model;
+package de.perdian.flightlog.modules.airlines.model;
 
-import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
-
-public class Airline {
+public class Airline implements Cloneable {
 
     private String name = null;
     private String code = null;
     private String countryCode = null;
-
-    public Airline() {
-    }
-
-    public Airline(AirlineEntity airlineEntity) {
-        this.setCode(airlineEntity.getCode());
-        this.setCountryCode(airlineEntity.getCountryCode());
-        this.setName(airlineEntity.getName());
-    }
 
     @Override
     public String toString() {
@@ -24,6 +13,14 @@ public class Airline {
         result.append(",countryCode=").append(this.getCountryCode());
         result.append(",name=").append(this.getName());
         return result.append("]").toString();
+    }
+
+    public Airline clone() {
+        try {
+            return (Airline)super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Cannot clone class: " + this.getClass().getName(), e);
+        }
     }
 
     public String getName() {

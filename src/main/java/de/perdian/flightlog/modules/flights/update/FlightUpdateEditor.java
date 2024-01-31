@@ -1,9 +1,9 @@
 package de.perdian.flightlog.modules.flights.update;
 
-import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
-import de.perdian.flightlog.modules.flights.shared.model.Aircraft;
-import de.perdian.flightlog.modules.flights.shared.model.Airport;
-import de.perdian.flightlog.modules.flights.shared.model.AirportContact;
+import de.perdian.flightlog.modules.aircrafts.model.Aircraft;
+import de.perdian.flightlog.modules.airlines.model.Airline;
+import de.perdian.flightlog.modules.airports.model.Airport;
+import de.perdian.flightlog.modules.airports.model.AirportContact;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightReason;
@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public class FlightEditor {
+public class FlightUpdateEditor {
 
     private UUID entityId = null;
     private String departureAirportCode = null;
@@ -49,10 +49,10 @@ public class FlightEditor {
     private String flightReason = null;
     private String comment = null;
 
-    public FlightEditor() {
+    public FlightUpdateEditor() {
     }
 
-    public FlightEditor(Flight flight) {
+    public FlightUpdateEditor(Flight flight) {
         this.applyValuesFrom(flight);
     }
 
@@ -85,21 +85,21 @@ public class FlightEditor {
 
     public void copyValuesInto(Flight flight) {
 
-        Aircraft aircraftBean = new Aircraft();
-        aircraftBean.setName(this.getAircraftName());
-        aircraftBean.setRegistration(this.getAircraftRegistration());
-        aircraftBean.setType(this.getAircraftType());
-        flight.setAircraft(aircraftBean);
+        Aircraft aircraft = new Aircraft();
+        aircraft.setName(this.getAircraftName());
+        aircraft.setRegistration(this.getAircraftRegistration());
+        aircraft.setType(this.getAircraftType());
+        flight.setAircraft(aircraft);
 
-        AirlineEntity airlineEntity = new AirlineEntity();
-        airlineEntity.setCode(this.getAirlineCode());
-        airlineEntity.setName(this.getAirlineName());
-        flight.setAirline(airlineEntity);
+        Airline airline = new Airline();
+        airline.setCode(this.getAirlineCode());
+        airline.setName(this.getAirlineName());
+        flight.setAirline(airline);
 
-        Airport arrivalAirportBean = new Airport();
-        arrivalAirportBean.setCode(this.getArrivalAirportCode());
+        Airport arrivalAirport = new Airport();
+        arrivalAirport.setCode(this.getArrivalAirportCode());
         AirportContact arrivalAirportContactBean = new AirportContact();
-        arrivalAirportContactBean.setAirport(arrivalAirportBean);
+        arrivalAirportContactBean.setAirport(arrivalAirport);
         arrivalAirportContactBean.setDateLocal(this.getArrivalDateLocal());
         arrivalAirportContactBean.setTimeLocal(this.getArrivalTimeLocal());
         flight.setArrivalContact(arrivalAirportContactBean);
@@ -107,10 +107,10 @@ public class FlightEditor {
         flight.setCabinClass(StringUtils.isEmpty(this.getCabinClass()) ? null : CabinClass.valueOf(this.getCabinClass()));
         flight.setComment(this.getComment());
 
-        Airport departureAirportBean = new Airport();
-        departureAirportBean.setCode(this.getDepartureAirportCode());
+        Airport departureAirport = new Airport();
+        departureAirport.setCode(this.getDepartureAirportCode());
         AirportContact departureAirportContactBean = new AirportContact();
-        departureAirportContactBean.setAirport(departureAirportBean);
+        departureAirportContactBean.setAirport(departureAirport);
         departureAirportContactBean.setDateLocal(this.getDepartureDateLocal());
         departureAirportContactBean.setTimeLocal(this.getDepartureTimeLocal());
         flight.setDepartureContact(departureAirportContactBean);

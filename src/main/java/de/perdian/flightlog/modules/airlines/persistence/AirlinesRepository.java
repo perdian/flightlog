@@ -1,8 +1,10 @@
 package de.perdian.flightlog.modules.airlines.persistence;
 
+import de.perdian.flightlog.modules.airlines.model.Airline;
+
 public interface AirlinesRepository {
 
-    AirlineEntity loadAirlineByCode(String airlineCode);
-    AirlineEntity loadAirlineByName(String airlineName);
+    Airline loadAirlineByCode(String airlineCode);
+    Airline loadAirlineByName(String airlineName);
 
 }

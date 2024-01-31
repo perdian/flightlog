@@ -16,7 +16,7 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "flight")
+@Table(name = "flightlog_flight")
 public class FlightEntity implements Serializable {
 
     static final long serialVersionUID = 1L;

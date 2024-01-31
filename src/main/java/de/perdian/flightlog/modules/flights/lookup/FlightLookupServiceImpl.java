@@ -1,7 +1,6 @@
 package de.perdian.flightlog.modules.flights.lookup;
 
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
-import de.perdian.flightlog.modules.flights.shared.model.FlightLookupRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ class FlightLookupServiceImpl implements FlightLookupService {
             .map(source -> this.lookupFlightsFromSource(source, flightLookupRequest))
             .filter(list -> list != null && !list.isEmpty())
             .flatMap(list -> list.stream())
-            .sorted(Flight::sortByDepartureDateAndTime)
+            .sorted(Flight::compareByDepartureDateAndTime)
             .collect(Collectors.toList());
     }
 

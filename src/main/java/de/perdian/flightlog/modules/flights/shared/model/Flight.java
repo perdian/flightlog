@@ -1,6 +1,8 @@
 package de.perdian.flightlog.modules.flights.shared.model;
 
-import de.perdian.flightlog.modules.airlines.persistence.AirlineEntity;
+import de.perdian.flightlog.modules.aircrafts.model.Aircraft;
+import de.perdian.flightlog.modules.airlines.model.Airline;
+import de.perdian.flightlog.modules.airports.model.AirportContact;
 import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 import de.perdian.flightlog.support.FlightlogHelper;
 import de.perdian.flightlog.support.types.CabinClass;
@@ -20,7 +22,7 @@ public class Flight {
     private AirportContact departureContact = null;
     private AirportContact arrivalContact = null;
     private Aircraft aircraft = null;
-    private AirlineEntity airline = null;
+    private Airline airline = null;
     private String flightNumber = null;
     private FlightReason flightReason = null;
     private FlightType flightType = null;
@@ -30,7 +32,7 @@ public class Flight {
     private SeatType seatType = null;
     private CabinClass cabinClass = null;
     private String comment = null;
-    private Double averageSpeed = null;
+    private Double averageSpeed = null; // Kilometers per hour
 
     @Override
     public String toString() {
@@ -43,7 +45,7 @@ public class Flight {
         return result.append("]").toString();
     }
 
-    public static int sortByDepartureDateAndTime(Flight flight1, Flight flight2) {
+    public static int compareByDepartureDateAndTime(Flight flight1, Flight flight2) {
         if (flight1.getDepartureContact() == null || flight1.getDepartureContact().getDateLocal() == null) {
             return flight2.getDepartureContact() == null || flight2.getDepartureContact().getDateLocal() == null ? 0 : 1;
         } else if (flight2.getDepartureContact() == null || flight2.getDepartureContact().getDateLocal() == null) {
@@ -90,10 +92,10 @@ public class Flight {
         this.aircraft = aircraft;
     }
 
-    public AirlineEntity getAirline() {
+    public Airline getAirline() {
         return this.airline;
     }
-    public void setAirline(AirlineEntity airline) {
+    public void setAirline(Airline airline) {
         this.airline = airline;
     }
 

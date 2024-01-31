@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.lookup.impl;
 
-import de.perdian.flightlog.modules.airports.persistence.AirportEntity;
+import de.perdian.flightlog.modules.airports.model.Airport;
 
 import java.time.*;
 import java.util.Objects;
@@ -9,9 +9,9 @@ class Flightradar24DataRow {
 
     private LocalDate departureDateUtc = null;
     private LocalTime departureTimeUtc = null;
-    private AirportEntity departureAirportEntity = null;
+    private Airport departureAirport = null;
     private String departureAirportCode = null;
-    private AirportEntity arrivalAirportEntity = null;
+    private Airport arrivalAirport = null;
     private String arrivalAirportCode = null;
     private String aircraftType = null;
     private String aircraftRegistration = null;
@@ -49,7 +49,7 @@ class Flightradar24DataRow {
 
 
     boolean matchesDepartureLocalDate(LocalDate requestedDepartureDateLocal) {
-        ZoneId departureZoneId = this.getDepartureAirportEntity() == null ? null : this.getDepartureAirportEntity().getTimezoneId();
+        ZoneId departureZoneId = this.getDepartureAirport() == null ? null : this.getDepartureAirport().getTimezoneId();
         ZonedDateTime actualDepartureDateTimeUtc = this.getDepartureDateUtc() == null  || this.getDepartureTimeUtc() == null ? null : this.getDepartureTimeUtc().atDate(this.getDepartureDateUtc()).atZone(ZoneId.of("UTC"));
         ZonedDateTime actualDepartureDateTimeLocal = actualDepartureDateTimeUtc == null || departureZoneId == null ? null : actualDepartureDateTimeUtc.withZoneSameInstant(departureZoneId);
         LocalDate actualDepartureDate = actualDepartureDateTimeLocal == null ? null : actualDepartureDateTimeLocal.toLocalDate();
@@ -74,11 +74,11 @@ class Flightradar24DataRow {
         this.departureTimeUtc = departureTimeUtc;
     }
 
-    AirportEntity getDepartureAirportEntity() {
-        return this.departureAirportEntity;
+    Airport getDepartureAirport() {
+        return this.departureAirport;
     }
-    void setDepartureAirportEntity(AirportEntity departureAirportEntity) {
-        this.departureAirportEntity = departureAirportEntity;
+    void setDepartureAirport(Airport departureAirport) {
+        this.departureAirport = departureAirport;
     }
 
     String getDepartureAirportCode() {
@@ -88,11 +88,11 @@ class Flightradar24DataRow {
         this.departureAirportCode = departureAirportCode;
     }
 
-    AirportEntity getArrivalAirportEntity() {
-        return this.arrivalAirportEntity;
+    Airport getArrivalAirport() {
+        return this.arrivalAirport;
     }
-    void setArrivalAirportEntity(AirportEntity arrivalAirportEntity) {
-        this.arrivalAirportEntity = arrivalAirportEntity;
+    void setArrivalAirport(Airport arrivalAirport) {
+        this.arrivalAirport = arrivalAirport;
     }
 
     String getArrivalAirportCode() {

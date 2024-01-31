@@ -1,4 +1,4 @@
-package de.perdian.flightlog.modules.flights.shared.model;
+package de.perdian.flightlog.modules.aircrafts.model;
 
 public class Aircraft {
 

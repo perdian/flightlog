@@ -14,7 +14,7 @@
       <div th:replace="~{flights/include/flight-lookup :: selection-list}">Flight selection</div>
       <div th:replace="~{flights/include/flight-lookup :: selection-form}">Flight lookup</div>
 
-      <form class="ui form" method="post" th:action="@{/flights/add/submit}" th:object="${flightEditor}">
+      <form class="ui form" method="post" th:action="@{/flights/add/submit}" th:object="${flightUpdateEditor}">
         <div th:replace="~{flights/include/flight-details :: form-body}">Form Body</div>
       </form>
 
