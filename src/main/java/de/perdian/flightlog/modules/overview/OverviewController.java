@@ -52,10 +52,10 @@ class OverviewController {
         queryValues.setAirlines(this.createQueryValuesItemsForAirlines(allFlights));
         queryValues.setAirports(this.createQueryValuesItemsForAirports(allFlights));
         queryValues.setAircraftTypes(this.createQueryValuesItemsForAircraftTypes(allFlights));
-        queryValues.setCabinClasses(this.createQueryValuesItemsForEnum(CabinClass.class));
-        queryValues.setFlightReasons(this.createQueryValuesItemsForEnum(FlightReason.class));
-        queryValues.setFlightDistances(this.createQueryValuesItemsForEnum(FlightDistance.class));
-        queryValues.setFlightTypes(this.createQueryValuesItemsForEnum(FlightType.class));
+        queryValues.setCabinClasses(this.createQueryValuesItemsForEnum(CabinClass.class, "cabinClass"));
+        queryValues.setFlightReasons(this.createQueryValuesItemsForEnum(FlightReason.class, "flightReason"));
+        queryValues.setFlightDistances(this.createQueryValuesItemsForEnum(FlightDistance.class, "flightDistance"));
+        queryValues.setFlightTypes(this.createQueryValuesItemsForEnum(FlightType.class, "flightType"));
         return queryValues;
     }
 
@@ -95,9 +95,9 @@ class OverviewController {
             .toList();
     }
 
-    private <E extends Enum<E>> List<OverviewQueryValues.OverviewQueryValuesItem> createQueryValuesItemsForEnum(Class<E> enumClass) {
+    private <E extends Enum<E>> List<OverviewQueryValues.OverviewQueryValuesItem> createQueryValuesItemsForEnum(Class<E> enumClass, String localizationPrefix) {
         return Stream.of(enumClass.getEnumConstants())
-            .map(enumInstance -> OverviewQueryValues.OverviewQueryValuesItem.forTextKey(enumClass.getSimpleName() + "." + enumInstance.name(), enumInstance.name()))
+            .map(enumInstance -> OverviewQueryValues.OverviewQueryValuesItem.forTextKey(localizationPrefix + "." + enumInstance.name(), enumInstance.name()))
             .toList();
     }
 

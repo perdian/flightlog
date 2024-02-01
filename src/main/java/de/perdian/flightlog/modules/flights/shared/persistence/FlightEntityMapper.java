@@ -8,6 +8,7 @@ import de.perdian.flightlog.modules.airports.model.AirportContact;
 import de.perdian.flightlog.modules.airports.persistence.AirportsRepository;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.support.FlightlogHelper;
+import de.perdian.flightlog.support.types.FlightDistance;
 import de.perdian.flightlog.support.types.FlightType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class FlightEntityMapper {
         flight.setDepartureContact(departureContact);
         flight.setEntityId(sourceEntity.getId());
         flight.setFlightDistance(sourceEntity.getFlightDistance());
+        flight.setFlightDistanceType(this.computeFlightDistance(sourceEntity.getFlightDistance()));
         flight.setFlightDuration(sourceEntity.getFlightDuration() == null ? null : Duration.ofMinutes(sourceEntity.getFlightDuration()));
         flight.setFlightNumber(sourceEntity.getFlightNumber());
         flight.setFlightReason(sourceEntity.getFlightReason());
@@ -124,6 +126,17 @@ public class FlightEntityMapper {
         } else {
             return null;
         }
+    }
+
+    private FlightDistance computeFlightDistance(Integer flightDistanceValue) {
+        if (flightDistanceValue != null) {
+            for (FlightDistance flightDistance : FlightDistance.values()) {
+                if (flightDistance.matches(flightDistanceValue)) {
+                    return flightDistance;
+                }
+            }
+        }
+        return null;
     }
 
     public void applyModel(Flight flight, FlightEntity targetEntity) {

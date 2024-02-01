@@ -16,7 +16,67 @@
           </div>
         </div>
         <div class="eight wide mobile sixteen wide tablet sixteen wide computer column">
-
+          <div class="field">
+            <label th:text="#{airline}">Airline</label>
+            <select th:field="*{restrictAirlineCodes}" multiple class="ui fluid dropdown">
+              <option value=""></option>
+              <option th:each="airlineValue : ${overviewQueryValues.airlines}" th:value="${airlineValue.value}" th:text="${airlineValue.text}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="eight wide mobile sixteen wide tablet sixteen wide computer column">
+          <div class="field">
+            <label th:text="#{airport}">Airport</label>
+            <select th:field="*{restrictAirportCodes}" multiple class="ui fluid dropdown">
+              <option value=""></option>
+              <option th:each="airportValue : ${overviewQueryValues.airports}" th:value="${airportValue.value}" th:text="${airportValue.text}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="eight wide mobile sixteen wide tablet sixteen wide computer column">
+          <div class="field">
+            <label th:text="#{aircraftType}">Aircraft type</label>
+            <select th:field="*{restrictAircraftTypes}" multiple class="ui fluid dropdown">
+              <option value=""></option>
+              <option th:each="aircraftTypeValue : ${overviewQueryValues.aircraftTypes}" th:value="${aircraftTypeValue.value}" th:text="${aircraftTypeValue.text}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="eight wide mobile sixteen wide tablet sixteen wide computer column">
+          <div class="field">
+            <label th:text="#{cabinClass}">Cabin class</label>
+            <select th:field="*{restrictCabinClasses}" multiple class="ui fluid dropdown">
+              <option value=""></option>
+              <option th:each="cabinClassValue : ${overviewQueryValues.cabinClasses}" th:value="${cabinClassValue.value}" th:text="${#messages.msg(cabinClassValue.textKey)}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="eight wide mobile sixteen wide tablet sixteen wide computer column">
+          <div class="field">
+            <label th:text="#{flightReason}">Flight reason</label>
+            <select th:field="*{restrictFlightReasons}" multiple class="ui fluid dropdown">
+              <option value=""></option>
+              <option th:each="flightReasonValue : ${overviewQueryValues.flightReasons}" th:value="${flightReasonValue.value}" th:text="${#messages.msg(flightReasonValue.textKey)}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="eight wide mobile sixteen wide tablet sixteen wide computer column">
+          <div class="field">
+            <label th:text="#{flightDistance}">Flight distance</label>
+            <select th:field="*{restrictFlightDistances}" multiple class="ui fluid dropdown">
+              <option value=""></option>
+              <option th:each="flightDistanceValue : ${overviewQueryValues.flightDistances}" th:value="${flightDistanceValue.value}" th:text="${#messages.msg(flightDistanceValue.textKey)}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="eight wide mobile sixteen wide tablet sixteen wide computer column">
+          <div class="field">
+            <label th:text="#{flightType}">Flight type</label>
+            <select th:field="*{restrictFlightTypes}" multiple class="ui fluid dropdown">
+              <option value=""></option>
+              <option th:each="flightTypeValue : ${overviewQueryValues.flightTypes}" th:value="${flightTypeValue.value}" th:text="${#messages.msg(flightTypeValue.textKey)}"></option>
+            </select>
+          </div>
         </div>
         <div class="sixteen wide column">
           <button type="submit" class="ui fluid primary button">

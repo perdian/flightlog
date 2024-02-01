@@ -5,10 +5,7 @@ import de.perdian.flightlog.modules.airlines.model.Airline;
 import de.perdian.flightlog.modules.airports.model.AirportContact;
 import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 import de.perdian.flightlog.support.FlightlogHelper;
-import de.perdian.flightlog.support.types.CabinClass;
-import de.perdian.flightlog.support.types.FlightReason;
-import de.perdian.flightlog.support.types.FlightType;
-import de.perdian.flightlog.support.types.SeatType;
+import de.perdian.flightlog.support.types.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -28,6 +25,7 @@ public class Flight {
     private FlightType flightType = null;
     private Duration flightDuration = null;
     private Integer flightDistance = null; // Kilometers
+    private FlightDistance flightDistanceType = null;
     private String seatNumber = null;
     private SeatType seatType = null;
     private CabinClass cabinClass = null;
@@ -139,6 +137,13 @@ public class Flight {
     }
     public void setFlightDistance(Integer flightDistance) {
         this.flightDistance = flightDistance;
+    }
+
+    public FlightDistance getFlightDistanceType() {
+        return this.flightDistanceType;
+    }
+    public void setFlightDistanceType(FlightDistance flightDistanceType) {
+        this.flightDistanceType = flightDistanceType;
     }
 
     public String getSeatNumber() {
