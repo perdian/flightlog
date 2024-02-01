@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="trash alternate icon"></i>
+        <div class="content">
+          <span th:text="#{deleteFlight}"></span>
+          <div class="sub header" th:text="#{flightHasBeenSuccessfullyDeleted}"></div>
+        </div>
+      </h3>
+
+      <div class="ui positive message" th:if="${flight != null}">
+        <div class="header" th:text="#{flightDeleted}"></div>
+        <p th:text="#{flightHasBeenSuccessfullyDeleted}"></p>
+      </div>
+
+    </main>
+  </body>
+</html>

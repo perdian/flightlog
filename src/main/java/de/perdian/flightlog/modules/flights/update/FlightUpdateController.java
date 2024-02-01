@@ -123,12 +123,51 @@ class FlightUpdateController {
             if (flightUpdateEditorBindingResult.hasErrors()) {
                 return "/flights/edit";
             } else {
+
+                flightUpdateEditor.copyValuesInto(flight);
+
                 Flight updatedFlight = this.getFlightUpdateService().saveFlight(flight, this.getUserHolder().getCurrentUser());
                 flightUpdateEditor.applyValuesFrom(updatedFlight);
+
                 redirectAttributes.addFlashAttribute("flightUpdated", "true");
                 return "redirect:/flights/edit/" + updatedFlight.getEntityId();
+
             }
         }
+    }
+
+    @GetMapping(path = "/delete/{flightEntityId}")
+    String doDeleteGet(@PathVariable(name = "flightEntityId") UUID flightEntityId, Model model) {
+        FlightQuery flightQuery = new FlightQuery(this.getUserHolder().getCurrentUser());
+        flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
+        PaginatedList<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery, null);
+        Flight flight = flightList.getItem(0).orElse(null);
+        if (flight == null) {
+            return "/flights/not-found";
+        } else {
+            model.addAttribute("flight", flight);
+            return "/flights/delete";
+        }
+    }
+
+    @PostMapping(path = "/delete/{flightEntityId}")
+    String doDeletePost(@PathVariable(name = "flightEntityId") UUID flightEntityId, Model model, RedirectAttributes redirectAttributes) {
+        FlightQuery flightQuery = new FlightQuery(this.getUserHolder().getCurrentUser());
+        flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
+        PaginatedList<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery, null);
+        Flight flight = flightList.getItem(0).orElse(null);
+        if (flight == null) {
+            return "/flights/not-found";
+        } else {
+            this.getFlightUpdateService().deleteFlight(flight, this.getUserHolder().getCurrentUser());
+            redirectAttributes.addFlashAttribute("flight", flight);
+            return "redirect:/flights/delete/success";
+        }
+    }
+
+    @GetMapping(path = "/delete/success")
+    String doDeleteSuccess() {
+        return "/flights/delete/success";
     }
 
     FlightQueryService getFlightQueryService() {

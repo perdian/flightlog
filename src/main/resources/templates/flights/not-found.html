@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="question circle icon"></i>
+        <div class="content">
+          <span th:text="#{flightNotFound}"></span>
+          <div class="sub header" th:text="#{couldNotFindRequestedFlight}"></div>
+        </div>
+      </h3>
+
+      <div class="ui negative message">
+        <div class="header" th:text="#{couldNotFindRequestedFlight}"></div>
+        <br />
+        <a class="ui primary button" th:href="@{/flights/list}" th:text="#{openFlightList}"></a>
+      </div>
+
+    </main>
+  </body>
+</html>

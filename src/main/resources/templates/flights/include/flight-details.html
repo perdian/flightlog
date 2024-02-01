@@ -166,6 +166,10 @@
       <div class="ui horizontal divider" th:text="#{actions}"></div>
       <div class="ui dense grid">
         <div class="sixteen wide right aligned column">
+          <a class="ui negative button" th:if="${flightUpdateEditor.entityId != null}" th:href="@{/flights/delete/{flightEntityId}(flightEntityId=${flightUpdateEditor.entityId})}">
+            <i class="trash alternate icon"></i>
+            <span th:text="#{delete}"></span>
+          </a>
           <button type="submit" class="ui primary button">
             <i class="save icon"></i>
             <span th:text="#{save}"></span>

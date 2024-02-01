@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="trash alternate icon"></i>
+        <div class="content">
+          <span th:text="#{deleteFlight}"></span>
+          <div class="sub header" th:text="#{confirmFlightDeletion}"></div>
+        </div>
+      </h3>
+
+      <form class="ui form" method="post" th:action="@{/flights/delete/{flightEntityId}(flightEntityId=${flight.entityId})}">
+
+        <div class="ui yellow message">
+          <div class="header" th:text="#{confirmFlightDeletion}"></div>
+          <p th:text="#{doYouReallyWantToDeleteTheFlight}"></p>
+          <button type="submit" class="ui negative button">
+            <span th:text="#{deleteFlight}"></span>
+          </button>
+          <a class="ui primary button" th:href="@{/flights/edit/{flightEntityId}(flightEntityId=${flight.entityId})}">
+            <span th:text="#{cancel}"></span>
+          </a>
+        </div>
+
+      </form>
+
+    </main>
+  </body>
+</html>
