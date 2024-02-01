@@ -9,15 +9,19 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class FlightQuery implements Predicate<Flight> {
+public class FlightQuery implements Cloneable, Predicate<Flight> {
 
     private User user = null;
     private Comparator<Flight> comparator = (f1, f2) -> -1 * Flight.compareByDepartureDateAndTime(f1, f2);
     private Collection<UUID> restrictEntityIdentifiers = null;
     private Collection<UUID> excludeEntityIdentifiers = null;
 
-    public FlightQuery(User user) {
-        this.setUser(user);
+    public FlightQuery clone() {
+        try {
+            return (FlightQuery)super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Cannot clone class: " + this.getClass().getName(), e);
+        }
     }
 
     @Override
@@ -35,6 +39,10 @@ public class FlightQuery implements Predicate<Flight> {
         return Objects.equals(flightUserId, queryUserId);
     }
 
+    public FlightQuery withUser(User user) {
+        this.setUser(user);
+        return this;
+    }
     public User getUser() {
         return this.user;
     }

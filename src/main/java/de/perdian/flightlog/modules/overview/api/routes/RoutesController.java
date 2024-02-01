@@ -1,9 +1,10 @@
 package de.perdian.flightlog.modules.overview.api.routes;
 
 import de.perdian.flightlog.modules.airports.model.Airport;
+import de.perdian.flightlog.modules.authentication.UserHolder;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
-import de.perdian.flightlog.modules.overview.OverviewQuery;
-import de.perdian.flightlog.modules.overview.OverviewQueryService;
+import de.perdian.flightlog.modules.flights.shared.service.FlightQuery;
+import de.perdian.flightlog.modules.flights.shared.service.FlightQueryService;
 import de.perdian.flightlog.modules.overview.api.routes.model.Routes;
 import de.perdian.flightlog.modules.overview.api.routes.model.RoutesItem;
 import de.perdian.flightlog.modules.overview.api.routes.model.RoutesPoint;
@@ -13,19 +14,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 class RoutesController {
 
-    private OverviewQueryService overviewQueryService = null;
+    private UserHolder userHolder = null;
+    private FlightQueryService flightQueryService = null;
 
     @RequestMapping(path = "/overview/api/routes", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    Routes createRoutes(OverviewQuery overviewQuery) {
+    Routes createRoutes(FlightQuery flightQuery) {
 
         Map<String, RoutesPoint> airportPointsByCode = new LinkedHashMap<>();
         Map<String, RoutesItem> itemsByKey = new LinkedHashMap<>();
-        for (Flight flight : this.getOverviewQueryService().loadFlights(overviewQuery)) {
+        List<Flight> filteredFlights = this.getFlightQueryService().loadFlights(flightQuery.clone().withUser(this.getUserHolder().getCurrentUser()));
+        for (Flight flight : filteredFlights) {
             Airport departureAirport = flight.getDepartureContact().getAirport();
             Airport arrivalAirport = flight.getArrivalContact().getAirport();
             if (departureAirport.getLatitude() != null && departureAirport.getLongitude() != null && arrivalAirport.getLatitude() != null && arrivalAirport.getLongitude() != null) {
@@ -58,12 +62,20 @@ class RoutesController {
         return routesPoint;
     }
 
-    OverviewQueryService getOverviewQueryService() {
-        return this.overviewQueryService;
+    FlightQueryService getFlightQueryService() {
+        return this.flightQueryService;
     }
     @Autowired
-    void setOverviewQueryService(OverviewQueryService overviewQueryService) {
-        this.overviewQueryService = overviewQueryService;
+    void setFlightQueryService(FlightQueryService flightQueryService) {
+        this.flightQueryService = flightQueryService;
+    }
+
+    UserHolder getUserHolder() {
+        return this.userHolder;
+    }
+    @Autowired
+    void setUserHolder(UserHolder userHolder) {
+        this.userHolder = userHolder;
     }
 
 }

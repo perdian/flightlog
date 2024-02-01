@@ -30,7 +30,8 @@ public class FlightsListController {
     @RequestMapping(path = "/list/{pageNumber}")
     String doList(@PathVariable("pageNumber") int pageNumber, Model model) {
         PaginationRequest paginationRequest = new PaginationRequest(pageNumber, 75);
-        model.addAttribute("flights", this.getQueryService().loadFlights(new FlightQuery(this.getUserHolder().getCurrentUser()), paginationRequest));
+        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
+        model.addAttribute("flights", this.getQueryService().loadFlightsPaginated(flightQuery, paginationRequest));
         return "flights/list";
     }
 

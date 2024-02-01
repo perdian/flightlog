@@ -27,7 +27,7 @@ class FlightQueryServiceImpl implements FlightQueryService {
     private FlightEntityMapper flightEntityMapper = null;
 
     @Override
-    public PaginatedList<Flight> loadFlights(FlightQuery flightQuery, PaginationRequest paginationRequest) {
+    public PaginatedList<Flight> loadFlightsPaginated(FlightQuery flightQuery, PaginationRequest paginationRequest) {
 
         Sort flightEntitiesSort = Sort.by(Sort.Order.desc("departureDateLocal"), Sort.Order.desc("departureTimeLocal"));
         Pageable pageable = paginationRequest == null ? Pageable.unpaged() : paginationRequest.toPageable(flightEntitiesSort);

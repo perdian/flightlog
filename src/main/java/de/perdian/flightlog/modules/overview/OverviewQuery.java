@@ -5,9 +5,18 @@ import de.perdian.flightlog.modules.flights.shared.service.FlightQuery;
 
 public class OverviewQuery {
 
-    public FlightQuery toFlightQuery(User user) {
-        FlightQuery flightQuery = new FlightQuery(user);
+    private User user = null;
+
+    public FlightQuery toFlightQuery() {
+        FlightQuery flightQuery = new FlightQuery();
         return flightQuery;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

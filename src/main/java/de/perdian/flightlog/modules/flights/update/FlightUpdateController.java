@@ -6,7 +6,6 @@ import de.perdian.flightlog.modules.flights.lookup.FlightLookupService;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQuery;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQueryService;
-import de.perdian.flightlog.support.pagination.PaginatedList;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,10 +93,10 @@ class FlightUpdateController {
         @PathVariable(name = "flightEntityId") UUID flightEntityId,
         Model model
     ) {
-        FlightQuery flightQuery = new FlightQuery(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
-        PaginatedList<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery, null);
-        Flight flight = flightList.getItem(0).orElse(null);
+        List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
+        Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
         if (flight == null) {
             return "/flights/not-found";
         } else {
@@ -113,10 +112,10 @@ class FlightUpdateController {
         RedirectAttributes redirectAttributes,
         Model model
     ) {
-        FlightQuery flightQuery = new FlightQuery(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
-        PaginatedList<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery, null);
-        Flight flight = flightList.getItem(0).orElse(null);
+        List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
+        Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
         if (flight == null) {
             return "/flights/not-found";
         } else {
@@ -138,10 +137,10 @@ class FlightUpdateController {
 
     @GetMapping(path = "/delete/{flightEntityId}")
     String doDeleteGet(@PathVariable(name = "flightEntityId") UUID flightEntityId, Model model) {
-        FlightQuery flightQuery = new FlightQuery(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
-        PaginatedList<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery, null);
-        Flight flight = flightList.getItem(0).orElse(null);
+        List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
+        Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.get(0);
         if (flight == null) {
             return "/flights/not-found";
         } else {
@@ -152,10 +151,10 @@ class FlightUpdateController {
 
     @PostMapping(path = "/delete/{flightEntityId}")
     String doDeletePost(@PathVariable(name = "flightEntityId") UUID flightEntityId, Model model, RedirectAttributes redirectAttributes) {
-        FlightQuery flightQuery = new FlightQuery(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
-        PaginatedList<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery, null);
-        Flight flight = flightList.getItem(0).orElse(null);
+        List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
+        Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.get(0);
         if (flight == null) {
             return "/flights/not-found";
         } else {
