@@ -15,6 +15,7 @@ public class FlightQuery implements Cloneable, Predicate<Flight> {
     private Comparator<Flight> comparator = (f1, f2) -> -1 * Flight.compareByDepartureDateAndTime(f1, f2);
     private Collection<UUID> restrictEntityIdentifiers = null;
     private Collection<UUID> excludeEntityIdentifiers = null;
+    private Collection<Integer> restrictYears = null;
 
     public FlightQuery clone() {
         try {
@@ -28,6 +29,8 @@ public class FlightQuery implements Cloneable, Predicate<Flight> {
     public boolean test(Flight flight) {
         if (!this.testUser(flight)) {
             return false;
+        } else if (!this.testYear(flight)) {
+            return false;
         } else {
             return true;
         }
@@ -37,6 +40,14 @@ public class FlightQuery implements Cloneable, Predicate<Flight> {
         UUID flightUserId = flight.getUser() == null ? null : flight.getUser().getUserId();
         UUID queryUserId = this.getUser() == null || this.getUser().getEntity() == null ? null : this.getUser().getEntity().getUserId();
         return Objects.equals(flightUserId, queryUserId);
+    }
+
+    private boolean testYear(Flight flight) {
+        if (this.getRestrictYears() != null && !this.getRestrictYears().isEmpty()) {
+            return this.getRestrictYears().contains(flight.getDepartureContact().getDateLocal().getYear());
+        } else {
+            return true;
+        }
     }
 
     public FlightQuery withUser(User user) {
@@ -69,6 +80,13 @@ public class FlightQuery implements Cloneable, Predicate<Flight> {
     }
     public void setExcludeEntityIdentifiers(Collection<UUID> excludeEntityIdentifiers) {
         this.excludeEntityIdentifiers = excludeEntityIdentifiers;
+    }
+
+    public Collection<Integer> getRestrictYears() {
+        return this.restrictYears;
+    }
+    public void setRestrictYears(Collection<Integer> restrictYears) {
+        this.restrictYears = restrictYears;
     }
 
 }

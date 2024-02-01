@@ -3,7 +3,7 @@
   <body th:remove="tag">
 
       <div id="map" class="map" tabindex="0"></div>
-      <script>
+      <script >
 
         const tileLayer = new ol.layer.Tile({
           source : new ol.source.OSM()
@@ -24,14 +24,17 @@
 
         map.render();
 
-        (async () => {
+        $(document).ready(async function() {
 
-          const routesSource = new ol.source.Vector();
-          const routesDataResponse = await fetch($("#flightlogRootUrl").val() + "overview/api/routes");
+          const routesDataResponse = await fetch($("#flightlogRootUrl").val() + "overview/api/routes", {
+            method: "post",
+            body: new FormData(document.getElementById("overviewQuery"))
+          });
           const routesDataRoot = await routesDataResponse.json();
 
           // PAINT ROUTES
 
+          const routesSource = new ol.source.Vector();
           for (let routesItem of routesDataRoot.items) {
 
             const startLongitude = routesItem.departurePoint.longitude;
@@ -107,7 +110,7 @@
 
           map.addLayer(new ol.layer.Vector({ source: airportsSource }));
 
-        })();
+        });
 
       </script>
 

@@ -4,5 +4,28 @@
 
     <h3 th:text="#{filterFlights}">Filter flights</h3>
 
+    <form id="overviewQuery" class="ui form" method="post" th:action="@{/overview}" th:object="${overviewQuery}">
+      <div class="ui dense grid">
+        <div class="eight wide mobile sixteen wide tablet sixteen wide computer column">
+          <div class="field">
+            <label th:text="#{year}">Year</label>
+            <select th:field="*{restrictYears}" multiple class="ui fluid dropdown">
+              <option value=""></option>
+              <option th:each="yearValue : ${overviewQueryValues.years}" th:value="${yearValue.value}" th:text="${yearValue.text}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="eight wide mobile sixteen wide tablet sixteen wide computer column">
+
+        </div>
+        <div class="sixteen wide column">
+          <button type="submit" class="ui fluid primary button">
+            <i class="filter icon"></i>
+            <span th:text="#{filterFlights}"></span>
+          </button>
+        </div>
+      </div>
+    </form>
+
   </body>
 </html>

@@ -30,8 +30,8 @@ class OverviewController {
     }
 
     @ModelAttribute("filteredFlights")
-    List<Flight> filteredFlights(OverviewQuery filteredFlightsQuery) {
-        FlightQuery flightQuery = filteredFlightsQuery.toFlightQuery().withUser(this.getUserHolder().getCurrentUser());
+    List<Flight> filteredFlights(@ModelAttribute("overviewQuery") FlightQuery filteredFlightsQuery) {
+        FlightQuery flightQuery = filteredFlightsQuery.clone().withUser(this.getUserHolder().getCurrentUser());
         return this.getFlightQueryService().loadFlights(flightQuery);
     }
 
@@ -41,8 +41,8 @@ class OverviewController {
     }
 
     @ModelAttribute("overviewQuery")
-    OverviewQuery overviewQuery() {
-        return new OverviewQuery();
+    FlightQuery overviewQuery() {
+        return new FlightQuery();
     }
 
     @ModelAttribute("overviewQueryValues")
