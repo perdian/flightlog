@@ -13,6 +13,7 @@
     <logger name="org.jboss.logging" level="WARN" />
     <logger name="_org.springframework" level="INFO" />
     <logger name="org.springframework" level="INFO" />
+    <logger name="org.springframework.boot.devtools" level="WARN" />
     <logger name="org.thymeleaf" level="INFO" />
 
     <root level="DEBUG">

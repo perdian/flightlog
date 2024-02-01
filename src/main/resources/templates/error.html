@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="bug icon"></i>
+        <div class="content">
+          <span th:text="#{error}"></span> [<span th:text="${httpStatusCode}"></span>]
+          <div class="sub header" th:text="#{anErrorOccured}"></div>
+        </div>
+      </h3>
+
+      <div class="ui red segment">
+        <div class="ui fluid accordion">
+          <div th:each="exception, exceptionStatus : *{exceptions}" th:remove="tag">
+            <div class="title">
+              <i class="dropdown icon"></i>
+              <span th:if="${exceptionStatus.index > 0}">
+                <small>caused by:</small>
+              </span>
+              <span th:text="${exception.message}"></span>
+            </div>
+            <div class="content">
+              <p class="transition hidden">
+                <pre th:text="${exception.stacktrace}"></pre>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        $('.ui.accordion').accordion();
+      </script>
+
+    </main>
+  </body>
+</html>
