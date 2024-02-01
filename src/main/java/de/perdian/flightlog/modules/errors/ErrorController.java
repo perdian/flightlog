@@ -3,6 +3,8 @@ package de.perdian.flightlog.modules.errors;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +17,12 @@ import java.util.List;
 @Controller
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 
+    private static final Logger log = LoggerFactory.getLogger(ErrorController.class);
+
     @RequestMapping("/error")
     public String handleError(HttpServletRequest servletRequest, HttpServletResponse servletResponse, Model model) {
         Exception exception = (Exception)servletRequest.getAttribute(DispatcherServlet.EXCEPTION_ATTRIBUTE);
+        log.error("Caught exception", exception);
         model.addAttribute("httpStatusCode", servletResponse.getStatus());
         model.addAttribute("exceptions", this.createExceptionWrappers(exception));
         return "/error";

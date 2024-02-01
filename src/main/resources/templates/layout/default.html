@@ -10,11 +10,9 @@
 
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/fomantic-ui/dist/semantic.min.js}"></script>
-    <script th:src="@{/webjars/openlayers/ol.js}"></script>
     <script th:src="@{/assets/flightlog/js/flight-details.js}"></script>
 
     <link rel="stylesheet" th:href="@{/webjars/fomantic-ui/dist/semantic.min.css}" />
-    <link rel="stylesheet" th:href="@{/webjars/openlayers/ol.css}" />
     <link rel="stylesheet" th:href="@{/assets/flightlog/css/flightlog.css}" />
 
     <div th:if="${#strings.length(head) > 1}" th:replace="${head}">Additional header content</div>

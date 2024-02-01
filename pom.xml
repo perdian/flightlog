@@ -44,7 +44,7 @@
         <jquery.version>3.7.1</jquery.version>
         <jsoup.version>1.17.2</jsoup.version>
         <okhttp.version>4.12.0</okhttp.version>
-        <openlayers.version>6.14.1</openlayers.version>
+        <openlayers.version>8.2.0</openlayers.version>
         <thymeleaf-extras-springsecurity.version>3.1.2.RELEASE</thymeleaf-extras-springsecurity.version>
         <webjars-locator-core.version>0.55</webjars-locator-core.version>
     </properties>
