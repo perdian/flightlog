@@ -1,5 +1,7 @@
 package de.perdian.flightlog.modules.errors;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -21,14 +23,25 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
 
     @RequestMapping("/error")
     public String handleError(HttpServletRequest servletRequest, HttpServletResponse servletResponse, Model model) {
-        Exception exception = (Exception)servletRequest.getAttribute(DispatcherServlet.EXCEPTION_ATTRIBUTE);
+        Throwable exception = this.resolveException(servletRequest);
         log.error("Caught exception", exception);
         model.addAttribute("httpStatusCode", servletResponse.getStatus());
         model.addAttribute("exceptions", this.createExceptionWrappers(exception));
         return "/error";
     }
 
-    private List<ExceptionWrapper> createExceptionWrappers(Exception exception) {
+    private Throwable resolveException(HttpServletRequest servletRequest) {
+        Exception requestDispatcherException = (Exception)servletRequest.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+        if (requestDispatcherException instanceof ServletException servletException) {
+            return servletException.getCause();
+        } else if (requestDispatcherException != null) {
+            return requestDispatcherException;
+        } else {
+            return (Exception) servletRequest.getAttribute(DispatcherServlet.EXCEPTION_ATTRIBUTE);
+        }
+    }
+
+    private List<ExceptionWrapper> createExceptionWrappers(Throwable exception) {
         List<ExceptionWrapper> exceptionWrappers = new ArrayList<>();
         for (Throwable e = exception ; e != null; e = e.getCause()) {
             exceptionWrappers.add(new ExceptionWrapper(e));

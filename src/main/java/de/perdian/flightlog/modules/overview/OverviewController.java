@@ -4,22 +4,19 @@ import de.perdian.flightlog.modules.authentication.UserHolder;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQuery;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQueryService;
-import de.perdian.flightlog.support.types.CabinClass;
-import de.perdian.flightlog.support.types.FlightDistance;
-import de.perdian.flightlog.support.types.FlightReason;
-import de.perdian.flightlog.support.types.FlightType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Controller
 class OverviewController {
+
+    public static final String MODEL_ATTRIBUTE_FILTERED_FLIGHTS = "filteredFlights";
+    public static final String MODEL_ATTRIBUTE_ALL_FLIGHTS = "allFlights";
 
     private UserHolder userHolder = null;
     private FlightQueryService flightQueryService = null;
@@ -29,76 +26,20 @@ class OverviewController {
         return "overview";
     }
 
-    @ModelAttribute("filteredFlights")
+    @ModelAttribute(name = MODEL_ATTRIBUTE_FILTERED_FLIGHTS, binding = false)
     List<Flight> filteredFlights(@ModelAttribute("overviewQuery") FlightQuery filteredFlightsQuery) {
         FlightQuery flightQuery = filteredFlightsQuery.clone().withUser(this.getUserHolder().getCurrentUser());
         return this.getFlightQueryService().loadFlights(flightQuery);
     }
 
-    @ModelAttribute("allFlights")
+    @ModelAttribute(name = MODEL_ATTRIBUTE_ALL_FLIGHTS, binding = false)
     List<Flight> allFlights() {
         return this.getFlightQueryService().loadFlights(new FlightQuery().withUser(this.getUserHolder().getCurrentUser()));
     }
 
-    @ModelAttribute("overviewQuery")
+    @ModelAttribute(name = "overviewQuery")
     FlightQuery overviewQuery() {
         return new FlightQuery();
-    }
-
-    @ModelAttribute("overviewQueryValues")
-    OverviewQueryValues overviewQueryValues(@ModelAttribute("allFlights") List<Flight> allFlights) {
-        OverviewQueryValues queryValues = new OverviewQueryValues();
-        queryValues.setYears(this.createQueryValuesItemsForYears(allFlights));
-        queryValues.setAirlines(this.createQueryValuesItemsForAirlines(allFlights));
-        queryValues.setAirports(this.createQueryValuesItemsForAirports(allFlights));
-        queryValues.setAircraftTypes(this.createQueryValuesItemsForAircraftTypes(allFlights));
-        queryValues.setCabinClasses(this.createQueryValuesItemsForEnum(CabinClass.class, "cabinClass"));
-        queryValues.setFlightReasons(this.createQueryValuesItemsForEnum(FlightReason.class, "flightReason"));
-        queryValues.setFlightDistances(this.createQueryValuesItemsForEnum(FlightDistance.class, "flightDistance"));
-        queryValues.setFlightTypes(this.createQueryValuesItemsForEnum(FlightType.class, "flightType"));
-        return queryValues;
-    }
-
-    private List<OverviewQueryValues.OverviewQueryValuesItem> createQueryValuesItemsForYears(List<Flight> allFlights) {
-        return allFlights.stream()
-            .map(flight -> flight.getDepartureContact().getDateLocal().getYear())
-            .distinct()
-            .sorted(Comparator.reverseOrder())
-            .map(year -> OverviewQueryValues.OverviewQueryValuesItem.forText(String.valueOf(year), String.valueOf(year)))
-            .toList();
-    }
-
-    private List<OverviewQueryValues.OverviewQueryValuesItem> createQueryValuesItemsForAirlines(List<Flight> allFlights) {
-        return allFlights.stream()
-            .map(flight -> flight.getAirline())
-            .map(airline -> OverviewQueryValues.OverviewQueryValuesItem.forText(airline.getName(), airline.getCode()))
-            .distinct()
-            .sorted(OverviewQueryValues.OverviewQueryValuesItem::compareByText)
-            .toList();
-    }
-
-    private List<OverviewQueryValues.OverviewQueryValuesItem> createQueryValuesItemsForAirports(List<Flight> allFlights) {
-        return allFlights.stream()
-            .flatMap(flight -> Stream.of(flight.getDepartureContact().getAirport(), flight.getArrivalContact().getAirport()))
-            .map(airport -> OverviewQueryValues.OverviewQueryValuesItem.forText(airport.getName(), airport.getCode()))
-            .distinct()
-            .sorted(OverviewQueryValues.OverviewQueryValuesItem::compareByText)
-            .toList();
-    }
-
-    private List<OverviewQueryValues.OverviewQueryValuesItem> createQueryValuesItemsForAircraftTypes(List<Flight> allFlights) {
-        return allFlights.stream()
-            .map(flight -> flight.getAircraft().getType())
-            .map(aircraftType -> OverviewQueryValues.OverviewQueryValuesItem.forText(aircraftType))
-            .distinct()
-            .sorted(OverviewQueryValues.OverviewQueryValuesItem::compareByText)
-            .toList();
-    }
-
-    private <E extends Enum<E>> List<OverviewQueryValues.OverviewQueryValuesItem> createQueryValuesItemsForEnum(Class<E> enumClass, String localizationPrefix) {
-        return Stream.of(enumClass.getEnumConstants())
-            .map(enumInstance -> OverviewQueryValues.OverviewQueryValuesItem.forTextKey(localizationPrefix + "." + enumInstance.name(), enumInstance.name()))
-            .toList();
     }
 
     UserHolder getUserHolder() {

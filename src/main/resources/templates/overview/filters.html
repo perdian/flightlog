@@ -10,8 +10,8 @@
           <div class="field">
             <label th:text="#{year}">Year</label>
             <select th:field="*{restrictYears}" multiple class="ui fluid dropdown">
-              <option value=""></option>
-              <option th:each="yearValue : ${overviewQueryValues.years}" th:value="${yearValue.value}" th:text="${yearValue.text}"></option>
+              <option value="" th:text="#{allYears}"></option>
+              <option th:each="option : ${overviewQueryValues.years}" th:value="${option.value}" th:text="${option.title.value}"></option>
             </select>
           </div>
         </div>
@@ -19,8 +19,8 @@
           <div class="field">
             <label th:text="#{airline}">Airline</label>
             <select th:field="*{restrictAirlineCodes}" multiple class="ui fluid dropdown">
-              <option value=""></option>
-              <option th:each="airlineValue : ${overviewQueryValues.airlines}" th:value="${airlineValue.value}" th:text="${airlineValue.text}"></option>
+              <option value="" th:text="#{allAirlines}"></option>
+              <option th:each="option : ${overviewQueryValues.airlines}" th:value="${option.value}" th:text="${option.title.value}"></option>
             </select>
           </div>
         </div>
@@ -28,8 +28,8 @@
           <div class="field">
             <label th:text="#{airport}">Airport</label>
             <select th:field="*{restrictAirportCodes}" multiple class="ui fluid dropdown">
-              <option value=""></option>
-              <option th:each="airportValue : ${overviewQueryValues.airports}" th:value="${airportValue.value}" th:text="${airportValue.text}"></option>
+              <option value="" th:text="#{allAirports}"></option>
+              <option th:each="option : ${overviewQueryValues.airports}" th:value="${option.value}" th:text="${option.title.value}"></option>
             </select>
           </div>
         </div>
@@ -37,8 +37,8 @@
           <div class="field">
             <label th:text="#{aircraftType}">Aircraft type</label>
             <select th:field="*{restrictAircraftTypes}" multiple class="ui fluid dropdown">
-              <option value=""></option>
-              <option th:each="aircraftTypeValue : ${overviewQueryValues.aircraftTypes}" th:value="${aircraftTypeValue.value}" th:text="${aircraftTypeValue.text}"></option>
+              <option value="" th:text="#{allAircraftTypes}"></option>
+              <option th:each="option : ${overviewQueryValues.aircraftTypes}" th:value="${option.value}" th:text="${option.title.value}"></option>
             </select>
           </div>
         </div>
@@ -46,8 +46,8 @@
           <div class="field">
             <label th:text="#{cabinClass}">Cabin class</label>
             <select th:field="*{restrictCabinClasses}" multiple class="ui fluid dropdown">
-              <option value=""></option>
-              <option th:each="cabinClassValue : ${overviewQueryValues.cabinClasses}" th:value="${cabinClassValue.value}" th:text="${#messages.msg(cabinClassValue.textKey)}"></option>
+              <option value="" th:text="#{allCabinClasses}"></option>
+              <option th:each="option : ${overviewQueryValues.cabinClasses}" th:value="${option.value}" th:text="${#messages.msg(option.title.key)}"></option>
             </select>
           </div>
         </div>
@@ -55,8 +55,8 @@
           <div class="field">
             <label th:text="#{flightReason}">Flight reason</label>
             <select th:field="*{restrictFlightReasons}" multiple class="ui fluid dropdown">
-              <option value=""></option>
-              <option th:each="flightReasonValue : ${overviewQueryValues.flightReasons}" th:value="${flightReasonValue.value}" th:text="${#messages.msg(flightReasonValue.textKey)}"></option>
+              <option value="" th:text="#{allFlightReasons}"></option>
+              <option th:each="option : ${overviewQueryValues.flightReasons}" th:value="${option.value}" th:text="${#messages.msg(option.title.key)}"></option>
             </select>
           </div>
         </div>
@@ -64,8 +64,8 @@
           <div class="field">
             <label th:text="#{flightDistance}">Flight distance</label>
             <select th:field="*{restrictFlightDistances}" multiple class="ui fluid dropdown">
-              <option value=""></option>
-              <option th:each="flightDistanceValue : ${overviewQueryValues.flightDistances}" th:value="${flightDistanceValue.value}" th:text="${#messages.msg(flightDistanceValue.textKey)}"></option>
+              <option value="" th:text="#{allFlightDistances}"></option>
+              <option th:each="option : ${overviewQueryValues.flightDistances}" th:value="${option.value}" th:text="${#messages.msg(option.title.key)}"></option>
             </select>
           </div>
         </div>
@@ -73,8 +73,8 @@
           <div class="field">
             <label th:text="#{flightType}">Flight type</label>
             <select th:field="*{restrictFlightTypes}" multiple class="ui fluid dropdown">
-              <option value=""></option>
-              <option th:each="flightTypeValue : ${overviewQueryValues.flightTypes}" th:value="${flightTypeValue.value}" th:text="${#messages.msg(flightTypeValue.textKey)}"></option>
+              <option value="" th:text="#{allFlightTypes}"></option>
+              <option th:each="option : ${overviewQueryValues.flightTypes}" th:value="${option.value}" th:text="${#messages.msg(option.title.key)}"></option>
             </select>
           </div>
         </div>

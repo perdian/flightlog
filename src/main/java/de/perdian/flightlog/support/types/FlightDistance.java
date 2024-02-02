@@ -1,5 +1,10 @@
 package de.perdian.flightlog.support.types;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public enum FlightDistance {
 
     SHORT(null, 1500),
@@ -19,6 +24,20 @@ public enum FlightDistance {
         boolean minMatches = this.getMinValue() == null || this.getMinValue().intValue() < value;
         boolean maxMatches = this.getMaxValue() == null || this.getMaxValue().intValue() >= value;
         return minMatches && maxMatches;
+    }
+
+    public String toRangeString() {
+        NumberFormat numberFormat = new DecimalFormat("#,##0", new DecimalFormatSymbols(Locale.GERMANY));
+        StringBuilder rangeString = new StringBuilder();
+        if (this.getMinValue() == null) {
+            rangeString.append("< ").append(numberFormat.format(this.getMaxValue())).append(" km");
+        } else if (this.getMaxValue() == null) {
+            rangeString.append("> ").append(numberFormat.format(this.getMinValue())).append(" km");
+        } else {
+            rangeString.append(numberFormat.format(this.getMinValue())).append(" - ");
+            rangeString.append(numberFormat.format(this.getMaxValue())).append(" km");
+        }
+        return rangeString.toString();
     }
 
     public Integer getMinValue() {

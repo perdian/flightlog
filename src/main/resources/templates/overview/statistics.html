@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <body>
+
+    <div th:fragment="totals" class="ui grid">
+      <div class="sixteen wide mobile eight wide tablet five wide computer column">
+        <h3 th:text="#{flightTotals}">Flight totals</h3>
+        <div th:replace="~{overview/statistics :: statistics-table(${overviewStatistics.flightTotals})}">FILTERS</div>
+      </div>
+      <div class="sixteen wide mobile eight wide tablet five wide computer column">
+        <h3 th:text="#{flightsByDistance}">Flights by distance</h3>
+        <div th:replace="~{overview/statistics :: statistics-table(${overviewStatistics.flightsByDistance})}">FILTERS</div>
+      </div>
+      <div class="sixteen wide mobile eight wide tablet six wide computer column">
+        <h3 th:text="#{otherStatistics}">Other statistics</h3>
+        <div th:replace="~{overview/statistics :: statistics-table(${overviewStatistics.otherStatistics})}">FILTERS</div>
+      </div>
+    </div>
+
+    <div th:fragment="statistics-table(valuesList)">
+      <table class="ui very basic compact unstackable table">
+        <tbody>
+          <tr th:each="value : ${valuesList}">
+            <td th:text="${#strings.isEmpty(value.title.key) ? value.title.value : #messages.msg(value.title.key)}"></td>
+            <td th:if="${not #strings.isEmpty(value.description)}">
+              <small th:text="${#strings.isEmpty(value.description.key) ? value.description.value : #messages.msg(value.description.key)}"></small>
+            </td>
+            <td class="right aligned" th:text="${value.valueString}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </body>
+</html>
