@@ -72,6 +72,19 @@ public class OverviewStatisticsItem {
         this.valueFormat = valueFormat;
     }
 
+    public String getPercentageString() {
+        if (this.getPercentage() == null) {
+            return null;
+        } else {
+            int percentageValue = (int)(Math.round(this.getPercentage().doubleValue() * 100d));
+            if (percentageValue <= 0 && this.getPercentage().doubleValue() > 0) {
+                return "< 1";
+            } else {
+                return String.valueOf(percentageValue);
+            }
+        }
+    }
+
     public OverviewStatisticsItem withPercentage(Number percentage) {
         this.setPercentage(percentage);
         return this;

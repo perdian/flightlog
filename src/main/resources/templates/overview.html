@@ -25,9 +25,11 @@
 
       <div class="ui grid">
         <div class="sixteen wide mobile eleven wide tablet twelve wide computer column">
-          <div th:replace="~{overview/statistics :: totals}">TOTALS</div>
+          <div th:replace="~{overview/statistics :: totals-top}">TOTALS</div>
           <br />
           <div th:replace="~{overview/map :: body}">MAP</div>
+          <br />
+          <div th:replace="~{overview/statistics :: totals-bottom}">TOTALS</div>
         </div>
         <div class="sixteen wide mobile five wide tablet four wide computer column">
           <div th:replace="~{overview/filters :: body}">FILTERS</div>

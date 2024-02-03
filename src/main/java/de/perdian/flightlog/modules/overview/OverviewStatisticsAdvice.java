@@ -1,7 +1,10 @@
 package de.perdian.flightlog.modules.overview;
 
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
+import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightDistance;
+import de.perdian.flightlog.support.types.FlightReason;
+import de.perdian.flightlog.support.types.SeatType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -29,6 +32,24 @@ class OverviewStatisticsAdvice {
         overviewStatistics.setFlightsByDistance(
             OverviewStatisticsCounter.forEnum(FlightDistance.class, flight -> flight.getFlightDistanceType())
                 .withValueToDescriptionFunction(value -> OverviewString.forValue(value.toRangeString()))
+                .createStatisticsItems(flights)
+        );
+
+        overviewStatistics.setFlightsByCabinClasses(
+            OverviewStatisticsCounter.forEnum(CabinClass.class, flight -> flight.getCabinClass())
+                .withIncludePercentages(true)
+                .createStatisticsItems(flights)
+        );
+
+        overviewStatistics.setFlightsByFlightReasons(
+            OverviewStatisticsCounter.forEnum(FlightReason.class, flight -> flight.getFlightReason())
+                .withIncludePercentages(true)
+                .createStatisticsItems(flights)
+        );
+
+        overviewStatistics.setFlightsBySeatTypes(
+            OverviewStatisticsCounter.forEnum(SeatType.class, flight -> flight.getSeatType())
+                .withIncludePercentages(true)
                 .createStatisticsItems(flights)
         );
 
