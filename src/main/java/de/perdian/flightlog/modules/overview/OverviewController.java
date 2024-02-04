@@ -15,8 +15,8 @@ import java.util.List;
 @Controller
 class OverviewController {
 
-    public static final String MODEL_ATTRIBUTE_FILTERED_FLIGHTS = "filteredFlights";
-    public static final String MODEL_ATTRIBUTE_ALL_FLIGHTS = "allFlights";
+    static final String MODEL_ATTRIBUTE_FILTERED_FLIGHTS = "filteredFlights";
+    static final String MODEL_ATTRIBUTE_ALL_FLIGHTS = "allFlights";
 
     private UserHolder userHolder = null;
     private FlightQueryService flightQueryService = null;

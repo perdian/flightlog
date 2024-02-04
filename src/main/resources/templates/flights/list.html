@@ -57,6 +57,8 @@
               <strong><span th:text="${flight.seatNumber}"></span></strong>
               <br />
               <span th:if="${flight.seatType != null}" th:text="${#messages.msg('seatType.' + flight.seatType)}"></span>
+              <br />
+              <span th:if="${flight.flightReason != null}" th:text="${#messages.msg('flightReason.' + flight.flightReason)}"></span>
             </div>
             <div class="eight wide mobile two wide tablet one wide computer column">
               <div class="mobile only">

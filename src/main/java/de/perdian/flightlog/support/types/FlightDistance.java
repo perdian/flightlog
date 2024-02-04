@@ -5,7 +5,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public enum FlightDistance {
+public enum FlightDistance implements DescriptionContainer {
 
     SHORT(null, 1500),
     MEDIUM(1500, 3500),
@@ -26,7 +26,8 @@ public enum FlightDistance {
         return minMatches && maxMatches;
     }
 
-    public String toRangeString() {
+    @Override
+    public String description() {
         NumberFormat numberFormat = new DecimalFormat("#,##0", new DecimalFormatSymbols(Locale.GERMANY));
         StringBuilder rangeString = new StringBuilder();
         if (this.getMinValue() == null) {

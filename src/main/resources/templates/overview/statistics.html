@@ -4,46 +4,41 @@
 
     <div th:fragment="totals-top" class="ui grid">
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <h3 th:text="#{flightTotals}">Flight totals</h3>
-        <div th:replace="~{overview/statistics :: statistics-table(${overviewStatistics.flightTotals})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsTotals})}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <h3 th:text="#{distances}">Flights by distance</h3>
-        <div th:replace="~{overview/statistics :: statistics-table(${overviewStatistics.flightsByDistance})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsByDistance})}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet six wide computer column">
-        <h3 th:text="#{otherStatistics}">Other statistics</h3>
-        <div th:replace="~{overview/statistics :: statistics-table(${overviewStatistics.otherStatistics})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsOthers})}">FILTERS</div>
       </div>
     </div>
 
     <div th:fragment="totals-bottom" class="ui grid">
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <h3 th:text="#{cabinClasses}">Cabin classes</h3>
-        <div th:replace="~{overview/statistics :: statistics-table(${overviewStatistics.flightsByCabinClasses})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsByCabinClass})}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <h3 th:text="#{flightReasons}">Flight reasons</h3>
-        <div th:replace="~{overview/statistics :: statistics-table(${overviewStatistics.flightsByFlightReasons})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsByFlightReason})}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet six wide computer column">
-        <h3 th:text="#{seatTypes}">Seat types</h3>
-        <div th:replace="~{overview/statistics :: statistics-table(${overviewStatistics.flightsBySeatTypes})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsBySeatType})}">FILTERS</div>
       </div>
     </div>
 
-    <div th:fragment="statistics-table(valuesList)">
+    <div th:fragment="statistics-group(group)">
+      <h3 th:text="${#strings.isEmpty(group.title.key) ? group.title.value : #messages.msg(group.title.key)}"></h3>
       <table class="ui very basic compact unstackable table">
         <tbody>
-          <tr th:each="value : ${valuesList}">
-            <td th:text="${#strings.isEmpty(value.title.key) ? value.title.value : #messages.msg(value.title.key)}"></td>
-            <td th:if="${not #strings.isEmpty(value.description)}">
-              <small th:text="${#strings.isEmpty(value.description.key) ? value.description.value : #messages.msg(value.description.key)}"></small>
+          <tr th:each="groupItem : ${group.items}">
+            <td th:text="${#strings.isEmpty(groupItem.title.key) ? groupItem.title.value : #messages.msg(groupItem.title.key)}"></td>
+            <td th:if="${not #strings.isEmpty(groupItem.description)}">
+              <small th:text="${#strings.isEmpty(groupItem.description.key) ? groupItem.description.value : #messages.msg(groupItem.description.key)}"></small>
             </td>
-            <td class="right aligned" th:text="${value.valueString}"></td>
-            <td width="50" class="right aligned" th:if="${value.percentage != null}">
-              <span th:if="${value.percentage > 0}">
-                (<span th:text="${value.percentageString}">XX</span>&nbsp;%)
+            <td class="right aligned" th:text="${groupItem.valueString}"></td>
+            <td width="50" class="right aligned" th:if="${groupItem.percentage != null}">
+              <span th:if="${groupItem.percentage > 0}">
+                (<span th:text="${groupItem.percentageString}">XX</span>&nbsp;%)
               </span>
             </td>
           </tr>
