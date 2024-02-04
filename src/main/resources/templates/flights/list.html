@@ -17,7 +17,7 @@
         <div th:replace="~{flights/include/list-pagination :: pagination}">Pagination</div>
 
         <div class="ui segments">
-          <div th:each="flight, flightStatus : *{flights.items}" class="ui segment">
+          <div th:each="flight : *{flights.items}" class="ui segment">
             <div class="ui dense grid">
               <div class="eight wide mobile four wide tablet four wide computer column">
                 <span th:text="${#temporals.format(flight.departureContact.dateLocal, 'dd.MM.yyyy')}"></span>

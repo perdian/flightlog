@@ -170,12 +170,12 @@ class OverviewStatisticsAdvice {
         return this.extractFlight(flights, flight -> flight.getFlightDistance(), (o, n) -> n.doubleValue() < o.doubleValue());
     }
 
-    @ModelAttribute(name = "recordFlightBySpeedMaximum", binding = false)
+    @ModelAttribute(name = "recordFlightByAverageSpeedMaximum", binding = false)
     Flight recordFlightByAverageSpeedMaxium(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return this.extractFlight(flights, flight -> flight.getFlightAverageSpeed(), (o, n) -> n.doubleValue() > o.doubleValue());
     }
 
-    @ModelAttribute(name = "recordFlightBySpeedMinimum", binding = false)
+    @ModelAttribute(name = "recordFlightByAverageSpeedMinimum", binding = false)
     Flight recordFlightByAverageSpeedMinimum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return this.extractFlight(flights, flight -> flight.getFlightAverageSpeed(), (o, n) -> n.doubleValue() < o.doubleValue());
     }
