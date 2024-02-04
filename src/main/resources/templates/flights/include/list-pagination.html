@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <div th:remove="tag" th:fragment="pagination">
+    <div th:remove="tag" th:fragment="pagination" th:if="${flights.pagination.totalPages > 1}">
 
       <div class="ui center aligned pagination menu">
         <div class="disabled item" th:text="#{page}">Page</div>

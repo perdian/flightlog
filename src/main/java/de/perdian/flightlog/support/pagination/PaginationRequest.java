@@ -1,10 +1,8 @@
 package de.perdian.flightlog.support.pagination;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
 
 public class PaginationRequest implements Serializable {
 
@@ -26,8 +24,19 @@ public class PaginationRequest implements Serializable {
         return result.append("]").toString();
     }
 
-    public Pageable toPageable(Sort sort) {
-        return PageRequest.of(this.getPageNumber(), this.getPageSize(), sort);
+    public <T> PaginatedList<T> slice(List<T> inputList) {
+        int inputStart = this.getPageNumber() * this.getPageSize();
+        int inputEnd = Math.min(inputStart + this.getPageSize(), inputList.size());
+        List<T> slicedList = inputStart >= inputList.size() ? Collections.emptyList() : inputList.subList(inputStart, inputEnd);
+        return new PaginatedList<>(slicedList, this.toPaginationData(inputList.size()));
+    }
+
+    public PaginationData toPaginationData(long totalSize) {
+        PaginationData paginationData = new PaginationData();
+        paginationData.setPageNumber(this.getPageNumber());
+        paginationData.setTotalElements(totalSize);
+        paginationData.setTotalPages((int)Math.ceil((double)totalSize / (double)this.getPageSize()));
+        return paginationData;
     }
 
     public int getPageNumber() {
@@ -41,7 +50,7 @@ public class PaginationRequest implements Serializable {
         return this.pageSize;
     }
     private void setPageSize(int pageSize) {
-        this.pageSize = Math.min(100, Math.abs(pageSize));
+        this.pageSize = pageSize;
     }
 
 }

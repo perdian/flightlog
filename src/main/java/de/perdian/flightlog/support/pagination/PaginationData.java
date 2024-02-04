@@ -1,7 +1,5 @@
 package de.perdian.flightlog.support.pagination;
 
-import org.springframework.data.domain.Page;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +13,6 @@ public class PaginationData implements Serializable {
     private long totalElements = 0;
 
     public PaginationData() {
-    }
-
-    public PaginationData(Page<?> page) {
-        this.setPageNumber(page.getPageable().isPaged() ? page.getPageable().getPageNumber() : 0);
-        this.setTotalPages(page.getTotalPages());
-        this.setTotalElements(page.getTotalElements());
     }
 
     @Override

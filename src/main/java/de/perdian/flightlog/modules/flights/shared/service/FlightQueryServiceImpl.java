@@ -5,14 +5,11 @@ import de.perdian.flightlog.modules.flights.shared.persistence.FlightEntity;
 import de.perdian.flightlog.modules.flights.shared.persistence.FlightEntityMapper;
 import de.perdian.flightlog.modules.flights.shared.persistence.FlightRepository;
 import de.perdian.flightlog.support.pagination.PaginatedList;
-import de.perdian.flightlog.support.pagination.PaginationData;
 import de.perdian.flightlog.support.pagination.PaginationRequest;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -30,17 +27,16 @@ class FlightQueryServiceImpl implements FlightQueryService {
     public PaginatedList<Flight> loadFlightsPaginated(FlightQuery flightQuery, PaginationRequest paginationRequest) {
 
         Sort flightEntitiesSort = Sort.by(Sort.Order.desc("departureDateLocal"), Sort.Order.desc("departureTimeLocal"));
-        Pageable pageable = paginationRequest == null ? Pageable.unpaged() : paginationRequest.toPageable(flightEntitiesSort);
         Specification<FlightEntity> flightEntitiesSpecification = this.createFlightsSpecification(flightQuery);
-        Page<FlightEntity> flightEntitiesPage = this.getFlightRepository().findAll(flightEntitiesSpecification, pageable);
-
-        List<Flight> flights = flightEntitiesPage.stream()
+        List<FlightEntity> allFlightEntities = this.getFlightRepository().findAll(flightEntitiesSpecification, flightEntitiesSort);
+        List<Flight> allFlights = allFlightEntities.stream()
             .map(flightEntity -> this.getFlightEntityMapper().createModel(flightEntity))
             .filter(flightQuery)
             .sorted(flightQuery.getComparator())
             .toList();
 
-        return new PaginatedList<>(flights, new PaginationData(flightEntitiesPage));
+        PaginationRequest computedPaginationRequest = paginationRequest == null ? new PaginationRequest(0, Integer.MAX_VALUE) : paginationRequest;
+        return computedPaginationRequest.slice(allFlights);
 
     }
 

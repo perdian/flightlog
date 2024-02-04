@@ -22,16 +22,25 @@ public class FlightsListController {
         return "redirect:/flights/list";
     }
 
+    @RequestMapping(path = "/list/all")
+    String doListAll(FlightQuery flightQuery, Model model) {
+        return this.doList(flightQuery, new PaginationRequest(0, Integer.MAX_VALUE), model);
+    }
+
     @RequestMapping(path = "/list")
-    String doList(Model model) {
-        return this.doList(0, model);
+    String doListForPageZero(FlightQuery flightQuery, Model model) {
+        return this.doListForPage(0, flightQuery, model);
     }
 
     @RequestMapping(path = "/list/{pageNumber}")
-    String doList(@PathVariable("pageNumber") int pageNumber, Model model) {
+    String doListForPage(@PathVariable("pageNumber") int pageNumber, FlightQuery flightQuery, Model model) {
         PaginationRequest paginationRequest = new PaginationRequest(pageNumber, 75);
-        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
-        model.addAttribute("flights", this.getQueryService().loadFlightsPaginated(flightQuery, paginationRequest));
+        return this.doList(flightQuery, paginationRequest, model);
+    }
+
+    private String doList(FlightQuery flightQuery, PaginationRequest paginationRequest, Model model) {
+        FlightQuery userFlightQuery = flightQuery.clone().withUser(this.getUserHolder().getCurrentUser());
+        model.addAttribute("flights", this.getQueryService().loadFlightsPaginated(userFlightQuery, paginationRequest));
         return "flights/list";
     }
 
