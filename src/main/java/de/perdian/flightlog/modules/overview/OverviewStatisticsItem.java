@@ -17,6 +17,10 @@ public class OverviewStatisticsItem {
         return Double.compare(i1.getValue().doubleValue(), i2.getValue().doubleValue());
     }
 
+    public static int compareByTitle(OverviewStatisticsItem i1, OverviewStatisticsItem i2) {
+        return String.CASE_INSENSITIVE_ORDER.compare(i1.getTitle().getValue(), i2.getTitle().getValue());
+    }
+
     public OverviewString getTitle() {
         return this.title;
     }

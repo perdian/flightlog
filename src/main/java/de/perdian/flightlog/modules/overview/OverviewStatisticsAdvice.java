@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @ControllerAdvice(assignableTypes = OverviewController.class)
-class OverviewControllerAdvice {
+class OverviewStatisticsAdvice {
 
     @ModelAttribute(name = "overviewStatisticsTotals", binding = false)
     OverviewStatisticsGroup statisticsTotals(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
@@ -77,7 +77,7 @@ class OverviewControllerAdvice {
 
         return OverviewStatisticsGroupFactory.forItemFactories(itemFactories)
             .withTitle(OverviewString.forKey("topAirports"))
-            .withItemComparator((i1, i2) -> -1 * OverviewStatisticsItem.compareByValue(i1, i2))
+            .withItemComparatorByValueDesc()
             .withMaxItems(15)
             .createGroup(flights);
 
@@ -100,7 +100,7 @@ class OverviewControllerAdvice {
 
         return OverviewStatisticsGroupFactory.forItemFactories(itemFactories)
             .withTitle(OverviewString.forKey("topAirlines"))
-            .withItemComparator((i1, i2) -> -1 * OverviewStatisticsItem.compareByValue(i1, i2))
+            .withItemComparatorByValueDesc()
             .withMaxItems(15)
             .createGroup(flights);
 
@@ -120,7 +120,7 @@ class OverviewControllerAdvice {
 
         return OverviewStatisticsGroupFactory.forItemFactories(itemFactories)
             .withTitle(OverviewString.forKey("topRoutes"))
-            .withItemComparator((i1, i2) -> -1 * OverviewStatisticsItem.compareByValue(i1, i2))
+            .withItemComparatorByValueDesc()
             .withMaxItems(15)
             .createGroup(flights);
 
@@ -141,7 +141,7 @@ class OverviewControllerAdvice {
 
         return OverviewStatisticsGroupFactory.forItemFactories(itemFactories)
             .withTitle(OverviewString.forKey("topAircraftTypes"))
-            .withItemComparator((i1, i2) -> -1 * OverviewStatisticsItem.compareByValue(i1, i2))
+            .withItemComparatorByValueDesc()
             .withMaxItems(15)
             .createGroup(flights);
 

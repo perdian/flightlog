@@ -79,7 +79,9 @@ class OverviewStatisticsGroupFactory<V> {
     }
 
     OverviewStatisticsGroupFactory<V> withItemComparatorByValueDesc() {
-        return this.withItemComparator((i1, i2) -> -1 * Double.compare(i1.getValue().doubleValue(), i1.getValue().doubleValue()));
+        Comparator<OverviewStatisticsItem> valueComparator = OverviewStatisticsItem::compareByValue;
+        Comparator<OverviewStatisticsItem> titleComparator = OverviewStatisticsItem::compareByTitle;
+        return this.withItemComparator(valueComparator.reversed().thenComparing(titleComparator));
     }
     OverviewStatisticsGroupFactory<V> withItemComparator(Comparator<OverviewStatisticsItem> itemComparator) {
         this.setItemComparator(itemComparator);
