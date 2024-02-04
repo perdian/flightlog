@@ -4,37 +4,57 @@
 
     <div th:fragment="totals-top" class="ui grid">
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsTotals})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsTotals}, false, 'column-left')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsByDistance})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsByDistance}, false, 'column-left')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet six wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsOthers})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsOthers}, false, 'column-left')}">FILTERS</div>
       </div>
     </div>
 
     <div th:fragment="totals-bottom" class="ui grid">
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsByCabinClass})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsByCabinClass}, false, 'column-left')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsByFlightReason})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsByFlightReason}, false, 'column-left')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet six wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsBySeatType})}">FILTERS</div>
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsBySeatType}, false, 'column-left')}">FILTERS</div>
       </div>
     </div>
 
-    <div th:fragment="statistics-group(group)">
+    <div th:fragment="totals-after" class="ui grid">
+      <div class="sixteen wide mobile eight wide tablet eight wide computer column">
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsTopAirports}, true, 'inline')}">FILTERS</div>
+      </div>
+      <div class="sixteen wide mobile eight wide tablet eight wide computer column">
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsTopAirlines}, true, 'inline')}">FILTERS</div>
+      </div>
+      <div class="sixteen wide mobile eight wide tablet eight wide computer column">
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsTopRoutes}, true, 'column-right')}">FILTERS</div>
+      </div>
+      <div class="sixteen wide mobile eight wide tablet eight wide computer column">
+        <div th:replace="~{overview/statistics :: statistics-group(${overviewStatisticsTopAircraftTypes}, true, 'column-right')}">FILTERS</div>
+      </div>
+    </div>
+
+    <div th:fragment="statistics-group(group, includeIndex, descriptionPosition)">
       <h3 th:text="${#strings.isEmpty(group.title.key) ? group.title.value : #messages.msg(group.title.key)}"></h3>
       <table class="ui very basic compact unstackable table">
         <tbody>
-          <tr th:each="groupItem : ${group.items}">
-            <td th:text="${#strings.isEmpty(groupItem.title.key) ? groupItem.title.value : #messages.msg(groupItem.title.key)}"></td>
-            <td th:if="${not #strings.isEmpty(groupItem.description)}">
-              <small th:text="${#strings.isEmpty(groupItem.description.key) ? groupItem.description.value : #messages.msg(groupItem.description.key)}"></small>
+          <tr th:each="groupItem, groupItemStatus : ${group.items}">
+            <td width="15" class="right aligned" th:text="${groupItemStatus.index + 1}" th:if="${includeIndex}">X</td>
+            <td>
+              <div>
+                <i th:if="${not #strings.isEmpty(groupItem.iconCode)}" class="flag" th:classappend="${groupItem.iconCode}"></i>
+                <span th:text="${#strings.isEmpty(groupItem.title.key) ? groupItem.title.value : #messages.msg(groupItem.title.key)}">Title</span>
+              </div>
+              <div class="smalltext" th:if="${descriptionPosition == 'inline' && not #strings.isEmpty(groupItem.description)}" th:text="${#strings.isEmpty(groupItem.description.key) ? groupItem.description.value : #messages.msg(groupItem.description.key)}">Description</div>
             </td>
+            <td class="smalltext" th:if="${#strings.startsWith(descriptionPosition, 'column') && not #strings.isEmpty(groupItem.description)}" th:classappend="${descriptionPosition == 'column-right' ? 'right aligned' : ''}" th:text="${#strings.isEmpty(groupItem.description.key) ? groupItem.description.value : #messages.msg(groupItem.description.key)}">Description</td>
             <td class="right aligned" th:text="${groupItem.valueString}"></td>
             <td width="50" class="right aligned" th:if="${groupItem.percentage != null}">
               <span th:if="${groupItem.percentage > 0}">

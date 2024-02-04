@@ -1,5 +1,7 @@
 package de.perdian.flightlog.modules.airlines.model;
 
+import java.util.Objects;
+
 public class Airline implements Cloneable {
 
     private String name = null;
@@ -15,11 +17,28 @@ public class Airline implements Cloneable {
         return result.append("]").toString();
     }
 
+    @Override
     public Airline clone() {
         try {
             return (Airline)super.clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("Cannot clone class: " + this.getClass().getName(), e);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getCode() == null ? 0 : this.getCode().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        } else if (that instanceof Airline thatAirline) {
+            return Objects.equals(this.getCode(), thatAirline.getCode());
+        } else {
+            return false;
         }
     }
 

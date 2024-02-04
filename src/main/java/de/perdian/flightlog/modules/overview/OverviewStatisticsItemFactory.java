@@ -28,11 +28,18 @@ class OverviewStatisticsItemFactory<V> {
         return item;
     }
 
-    static <E extends Enum<E>> OverviewStatisticsItemFactory<E> forEnum(E enumValue) {
+    static <T> OverviewStatisticsItemFactory<T> forValue(T value) {
+        return new OverviewStatisticsItemFactory<T>()
+            .withItemValue(value)
+        ;
+    }
+
+    static <E extends Enum<E>> OverviewStatisticsItemFactory<E> forEnum(E enumValue, boolean withPercentages) {
         return new OverviewStatisticsItemFactory<E>()
             .withItemValue(enumValue)
             .withItemTitle(OverviewString.forEnum(enumValue))
             .withItemDescription(enumValue instanceof DescriptionContainer descriptionValue ? OverviewString.forValue(descriptionValue.description()) : null)
+            .withItemPercentage(withPercentages)
         ;
     }
 

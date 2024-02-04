@@ -13,13 +13,16 @@ class OverviewStatisticsGroupFactory<V> {
     private OverviewString title = null;
     private List<OverviewStatisticsItemFactory<V>> itemFactories = null;
     private Comparator<OverviewStatisticsItem> itemComparator = null;
-    private boolean itemPercentages = false;
     private Integer maxItems = null;
 
-    static <E extends Enum<E>> OverviewStatisticsGroupFactory<E> forEnum(Class<E> enumClass, BiFunction<List<Flight>, E, Number> resultValueFunction) {
+    static <V> OverviewStatisticsGroupFactory<V> forItemFactories(List<OverviewStatisticsItemFactory<V>> itemFactories) {
+        return new OverviewStatisticsGroupFactory<V>().withItemFactories(itemFactories);
+    }
+
+    static <E extends Enum<E>> OverviewStatisticsGroupFactory<E> forEnum(Class<E> enumClass, BiFunction<List<Flight>, E, Number> resultValueFunction, boolean withPercentages) {
 
         List<OverviewStatisticsItemFactory<E>> itemFactoriesForEnumMatchingCount = Stream.of(enumClass.getEnumConstants())
-            .map(enumValue -> OverviewStatisticsItemFactory.forEnum(enumValue).withResultValueFunction(resultValueFunction))
+            .map(enumValue -> OverviewStatisticsItemFactory.forEnum(enumValue, withPercentages).withResultValueFunction(resultValueFunction))
             .toList();
 
         return new OverviewStatisticsGroupFactory<E>().withItemFactories(itemFactoriesForEnumMatchingCount);
@@ -36,7 +39,6 @@ class OverviewStatisticsGroupFactory<V> {
     private List<OverviewStatisticsItem> createGroupItems(List<Flight> flights) {
 
         List<OverviewStatisticsItem> allUnsortedItems = this.getItemFactories().stream()
-            .peek(itemFactory -> itemFactory.withItemPercentage(this.isItemPercentages()))
             .map(itemFactory -> itemFactory.createItem(flights))
             .toList();
 
@@ -88,17 +90,6 @@ class OverviewStatisticsGroupFactory<V> {
     }
     void setItemComparator(Comparator<OverviewStatisticsItem> itemComparator) {
         this.itemComparator = itemComparator;
-    }
-
-    public OverviewStatisticsGroupFactory<V> withItemPercentages(boolean itemPercentages) {
-        this.setItemPercentages(itemPercentages);
-        return this;
-    }
-    boolean isItemPercentages() {
-        return this.itemPercentages;
-    }
-    void setItemPercentages(boolean itemPercentages) {
-        this.itemPercentages = itemPercentages;
     }
 
     public OverviewStatisticsGroupFactory<V> withMaxItems(Integer maxItems) {

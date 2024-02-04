@@ -13,6 +13,10 @@ public class OverviewStatisticsItem {
     private String valueFormat = "#,##0.#";
     private Number percentage = null;
 
+    public static int compareByValue(OverviewStatisticsItem i1, OverviewStatisticsItem i2) {
+        return Double.compare(i1.getValue().doubleValue(), i2.getValue().doubleValue());
+    }
+
     public OverviewString getTitle() {
         return this.title;
     }

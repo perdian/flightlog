@@ -1,6 +1,7 @@
 package de.perdian.flightlog.modules.airports.model;
 
 import java.time.*;
+import java.util.Objects;
 
 public class Airport {
 
@@ -26,6 +27,22 @@ public class Airport {
             return null;
         } else {
             return localTime.atDate(localDate).atZone(this.getTimezoneId());
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getCode() == null ? 0 : this.getCode().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        } else if (that instanceof Airport thatAirport) {
+            return Objects.equals(this.getCode(), thatAirport.getCode());
+        } else {
+            return false;
         }
     }
 

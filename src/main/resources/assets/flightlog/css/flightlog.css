@@ -9,7 +9,7 @@ input.uppercase { text-transform: uppercase; }
 .dense.grid .column { padding: 0.5rem 0.25rem 0.5rem 0.25rem !important; }
 .compact.table td { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
 
-.smalltext { display: inline-block; line-height: 1.5; }
+.smalltext { font-size: 0.75rem; line-height: 1.5; }
 
 /* Mobile */
 @media only screen and (max-width: 767px) {
