@@ -139,6 +139,10 @@ public class Flight {
         this.flightDistance = flightDistance;
     }
 
+    public Number getFlightAverageSpeed() {
+        return this.getFlightDistance().doubleValue() / (this.getFlightDuration().toMinutes() * 60d);
+    }
+
     public FlightDistance getFlightDistanceType() {
         return this.flightDistanceType;
     }

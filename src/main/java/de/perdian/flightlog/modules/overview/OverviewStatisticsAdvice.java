@@ -12,7 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 @ControllerAdvice(assignableTypes = OverviewController.class)
@@ -145,6 +148,49 @@ class OverviewStatisticsAdvice {
             .withMaxItems(15)
             .createGroup(flights);
 
+    }
+
+    @ModelAttribute(name = "recordFlightByDurationMaximum", binding = false)
+    Flight recordFlightByDurationMaximum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+        return this.extractFlight(flights, flight -> flight.getFlightDuration() == null ? null : flight.getFlightDuration().toMinutes(), (o, n) -> n.doubleValue() > o.doubleValue());
+    }
+
+    @ModelAttribute(name = "recordFlightByDurationMinimum", binding = false)
+    Flight recordFlightByDurationMinimum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+        return this.extractFlight(flights, flight -> flight.getFlightDuration() == null ? null : flight.getFlightDuration().toMinutes(), (o, n) -> n.doubleValue() < o.doubleValue());
+    }
+
+    @ModelAttribute(name = "recordFlightByDistanceMaximum", binding = false)
+    Flight recordFlightByDistanceMaximum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+        return this.extractFlight(flights, flight -> flight.getFlightDistance(), (o, n) -> n.doubleValue() > o.doubleValue());
+    }
+
+    @ModelAttribute(name = "recordFlightByDistanceMinimum", binding = false)
+    Flight recordFlightByDistanceMinimum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+        return this.extractFlight(flights, flight -> flight.getFlightDistance(), (o, n) -> n.doubleValue() < o.doubleValue());
+    }
+
+    @ModelAttribute(name = "recordFlightBySpeedMaximum", binding = false)
+    Flight recordFlightByAverageSpeedMaxium(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+        return this.extractFlight(flights, flight -> flight.getFlightAverageSpeed(), (o, n) -> n.doubleValue() > o.doubleValue());
+    }
+
+    @ModelAttribute(name = "recordFlightBySpeedMinimum", binding = false)
+    Flight recordFlightByAverageSpeedMinimum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+        return this.extractFlight(flights, flight -> flight.getFlightAverageSpeed(), (o, n) -> n.doubleValue() < o.doubleValue());
+    }
+
+    private Flight extractFlight(Collection<Flight> flights, Function<Flight, Number> valueExtractorFuntion, BiPredicate<Double, Double> comparator) {
+        Number resultValue = null;
+        Flight resultFlight = null;
+        for (Flight flight : flights) {
+            Number flightValue = valueExtractorFuntion.apply(flight);
+            if (flightValue != null && (resultValue == null || comparator.test(resultValue.doubleValue(), flightValue.doubleValue()))) {
+                resultValue = flightValue;
+                resultFlight = flight;
+            }
+        }
+        return resultFlight;
     }
 
 }
