@@ -10,6 +10,7 @@ input.uppercase { text-transform: uppercase; }
 .compact.table td { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
 
 .smalltext { font-size: 0.75rem; line-height: 1.5; }
+.monospacedtext { font-family: "JetBrains Mono", "Monaco", monospace !important; }
 
 /* Mobile */
 @media only screen and (max-width: 767px) {
