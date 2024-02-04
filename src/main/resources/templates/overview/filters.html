@@ -78,10 +78,16 @@
             </select>
           </div>
         </div>
-        <div class="sixteen wide column">
+        <div class="eight wide column">
+          <a class="ui fluid button" th:href="@{/overview}">
+            <i class="undo icon"></i>
+            <span th:text="#{reset}"></span>
+          </a>
+        </div>
+        <div class="eight wide column">
           <button type="submit" class="ui fluid primary button">
             <i class="filter icon"></i>
-            <span th:text="#{filterFlights}"></span>
+            <span th:text="#{filter}"></span>
           </button>
         </div>
       </div>
