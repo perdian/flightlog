@@ -40,18 +40,18 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: ${{ github.ref_type == 'tag' && startsWith(github.action_ref, 'v') }}
+          push: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/flightlog:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/flightlog:${{ github.action_ref }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/flightlog:${{ github.ref_name }}
       - name: Create Release
-        if: ${{ github.ref_type == 'tag' && startsWith(github.action_ref, 'v') }}
+        if: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') }}
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          release_name: ${{ github.ref_name }}
           body: |
             Release automatically created by GitHub Actions
           draft: false
