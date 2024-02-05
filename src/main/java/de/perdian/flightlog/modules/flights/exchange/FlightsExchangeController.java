@@ -58,7 +58,6 @@ class FlightsExchangeController {
     @PostMapping("/import/verify")
     String doImportVerifyPost(@ModelAttribute("exchangeEditor") FlightsExchangeEditor exchangeEditor) {
         this.getExchangeService().importPackage(exchangeEditor.getExchangePackage(), this.getUserHolder().getCurrentUser());
-        log.error("IMPLEMENT DATABASE IMPORT!");
         return "flights/import/done";
     }
 
