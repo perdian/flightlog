@@ -9,6 +9,8 @@
 
       <style>
         #map { height: 464px; border: 1px solid #dedede; }
+        #filtered-flights-list { max-height: 500px; overflow-y: auto; }
+        #filtered-flights-list.busy { min-height: 100px; }
       </style>
 
     </head>
@@ -25,20 +27,23 @@
 
       <div class="ui grid">
         <div class="sixteen wide mobile eleven wide tablet twelve wide computer column">
-          <div th:replace="~{overview/statistics :: totals-top}">TOTALS</div>
+          <div th:replace="~{overview/statistics :: totals-top}">STATISTICS</div>
           <br />
           <div th:replace="~{overview/map :: body}">MAP</div>
           <br />
-          <div th:replace="~{overview/statistics :: totals-bottom}">TOTALS</div>
+          <div th:replace="~{overview/statistics :: totals-bottom}">STATISTICS</div>
         </div>
         <div class="sixteen wide mobile five wide tablet four wide computer column">
           <div th:replace="~{overview/filters :: body}">FILTERS</div>
         </div>
-        <div class="sixteen wide column">
-          <div th:replace="~{overview/statistics :: records}">RECORDS</div>
+        <div class="sixteen wide column" th:unless="${#lists.isEmpty(filteredFlights)}">
+          <div th:replace="~{overview/statistics :: records}">STATISTICS</div>
         </div>
-        <div class="sixteen wide column">
-          <div th:replace="~{overview/statistics :: totals-after}">TOTALS</div>
+        <div class="sixteen wide column" th:unless="${#lists.isEmpty(filteredFlights)}">
+          <div th:replace="~{overview/flights :: body}">STATISTICS</div>
+        </div>
+        <div class="sixteen wide column" th:unless="${#lists.isEmpty(filteredFlights)}">
+          <div th:replace="~{overview/statistics :: totals-after}">STATISTICS</div>
         </div>
       </div>
 

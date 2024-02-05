@@ -11,11 +11,11 @@
         </div>
       </h3>
 
-      <div th:replace="~{flights/include/flight-lookup :: selection-list}">Flight selection</div>
-      <div th:replace="~{flights/include/flight-lookup :: selection-form}">Flight lookup</div>
+      <div th:replace="~{flights/include/editor-lookup :: selection-list}">Flight selection</div>
+      <div th:replace="~{flights/include/editor-lookup :: selection-form}">Flight lookup</div>
 
       <form class="ui form" method="post" th:action="@{/flights/add}" th:object="${flightUpdateEditor}">
-        <div th:replace="~{flights/include/flight-details :: form-body}">Form Body</div>
+        <div th:replace="~{flights/include/editor-details :: form-body}">Form Body</div>
       </form>
 
     </main>

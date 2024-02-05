@@ -22,7 +22,7 @@
 
       <form class="ui form" method="post" th:action="@{/flights/edit/{flightEntityId}(flightEntityId=${flightUpdateEditor.entityId})}" th:object="${flightUpdateEditor}">
         <input type="hidden" th:field="*{entityId}" />
-        <div th:replace="~{flights/include/flight-details :: form-body}">Form Body</div>
+        <div th:replace="~{flights/include/editor-details :: form-body}">Form Body</div>
       </form>
 
     </main>

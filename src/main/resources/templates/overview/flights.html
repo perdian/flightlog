@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <body th:remove="tag" th:unless="${#lists.isEmpty(filteredFlights)}">
+
+    <div class="mobile hidden ui segments">
+      <div class="ui segment">
+        <h3 th:text="#{filteredFlights}"></h3>
+      </div>
+      <div class="ui segment" id="filtered-flights-list">
+        <div class="ui inverted dimmer">
+          <div class="ui text loader" th:text="#{loadingFlights}"></div>
+        </div>
+        <button class="ui primary button" id="filtered-flights-load-button">
+          <i class="plane icon"></i>
+          <span th:text="#{loadFilteredFlights}"></span>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      $("button#filtered-flights-load-button").on("click", async function() {
+        const filteredFlightsList = $(this).parent("#filtered-flights-list");
+        const filteredFlightsDimmer = filteredFlightsList.find(".ui.dimmer");
+        try {
+
+          filteredFlightsList.addClass("busy");
+          filteredFlightsDimmer.addClass("active");
+          $(this).remove();
+
+          const filteredFlightsResponse = await fetch($("#flightlogRootUrl").val() + "flights/list/all", {
+            method: "post",
+            body: new FormData(document.getElementById("overviewQuery"))
+          });
+          const filteredFlightsResponseText = await filteredFlightsResponse.text();
+          const filteredFlightsParser = new DOMParser();
+          const filteredFlightsDocument = $(filteredFlightsParser.parseFromString(filteredFlightsResponseText, "text/html"));
+          const filteredFlightsListElement = filteredFlightsDocument.find("div#flights-list");
+          const filteredFlightsListHtml = filteredFlightsListElement.prop('outerHTML');
+          filteredFlightsList.append(filteredFlightsListElement);
+
+        } catch(e) {
+          const errorElement = $("<div class='ui icon negative message'>").append(
+            $("<i class='bug icon'></i>"),
+            $("<div class='content'></div>").append(
+              $("<p></p>").text(e.toString())
+            )
+          );
+          filteredFlightsList.append(errorElement);
+        } finally {
+          filteredFlightsDimmer.remove();
+          filteredFlightsList.removeClass("busy");
+        }
+
+      });
+    </script>
+
+  </body>
+</html>

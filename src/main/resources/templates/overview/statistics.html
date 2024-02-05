@@ -4,40 +4,40 @@
 
     <div th:fragment="totals-top" class="ui grid">
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsTotals}, descriptionPosition='column-left')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsTotals}, descriptionPosition='column-left')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsByDistance}, descriptionPosition='column-left')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsByDistance}, descriptionPosition='column-left')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet six wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsOthers}, descriptionPosition='column-left')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsOthers}, descriptionPosition='column-left')}">FILTERS</div>
       </div>
     </div>
 
     <div th:fragment="totals-bottom" class="ui grid">
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsByCabinClass}, descriptionPosition='column-left')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsByCabinClass}, descriptionPosition='column-left')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet five wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsByFlightReason}, descriptionPosition='column-left')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsByFlightReason}, descriptionPosition='column-left')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet six wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsBySeatType}, descriptionPosition='column-left')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsBySeatType}, descriptionPosition='column-left')}">FILTERS</div>
       </div>
     </div>
 
     <div th:fragment="totals-after" class="ui grid">
       <div class="sixteen wide mobile eight wide tablet eight wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsTopAirports}, includeIndex=true, descriptionPosition='inline', titleCssClass='monospacedtext')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsTopAirports}, includeIndex=true, descriptionPosition='inline', titleCssClass='monospacedtext')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet eight wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsTopAirlines}, includeIndex=true, descriptionPosition='inline', titleCssClass='monospacedtext')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsTopAirlines}, includeIndex=true, descriptionPosition='inline', titleCssClass='monospacedtext')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet eight wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsTopRoutes}, includeIndex=true, descriptionPosition='column-right', titleCssClass='monospacedtext')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsTopRoutes}, includeIndex=true, descriptionPosition='column-right', titleCssClass='monospacedtext')}">FILTERS</div>
       </div>
       <div class="sixteen wide mobile eight wide tablet eight wide computer column">
-        <div th:replace="~{overview/statistics :: statistics-group(group=${overviewStatisticsTopAircraftTypes}, includeIndex=true, descriptionPosition='column-right')}">FILTERS</div>
+        <div th:replace="~{this :: statistics-group(group=${overviewStatisticsTopAircraftTypes}, includeIndex=true, descriptionPosition='column-right')}">FILTERS</div>
       </div>
     </div>
 
@@ -67,12 +67,12 @@
     </div>
 
     <div th:fragment="records" class="ui segments">
-      <div th:replace="~{overview/statistics :: record-flight(title=${#messages.msg('longestFlightByDistance')}, flight=${recordFlightByDistanceMaximum})}">FILTERS</div>
-      <div th:replace="~{overview/statistics :: record-flight(title=${#messages.msg('longestFlightByDuration')}, flight=${recordFlightByDurationMaximum})}">FILTERS</div>
-      <div th:replace="~{overview/statistics :: record-flight(title=${#messages.msg('shortestFlightByDistance')}, flight=${recordFlightByDistanceMinimum})}">FILTERS</div>
-      <div th:replace="~{overview/statistics :: record-flight(title=${#messages.msg('shortestFlightByDuration')}, flight=${recordFlightByDurationMinimum})}">FILTERS</div>
-      <div th:replace="~{overview/statistics :: record-flight(title=${#messages.msg('fastestFlightByAverageSpeed')}, flight=${recordFlightByAverageSpeedMaximum})}">FILTERS</div>
-      <div th:replace="~{overview/statistics :: record-flight(title=${#messages.msg('slowestFlightByAverageSpeed')}, flight=${recordFlightByAverageSpeedMinimum})}">FILTERS</div>
+      <div th:replace="~{this :: record-flight(title=${#messages.msg('longestFlightByDistance')}, flight=${recordFlightByDistanceMaximum})}">FILTERS</div>
+      <div th:replace="~{this :: record-flight(title=${#messages.msg('longestFlightByDuration')}, flight=${recordFlightByDurationMaximum})}">FILTERS</div>
+      <div th:replace="~{this :: record-flight(title=${#messages.msg('shortestFlightByDistance')}, flight=${recordFlightByDistanceMinimum})}">FILTERS</div>
+      <div th:replace="~{this :: record-flight(title=${#messages.msg('shortestFlightByDuration')}, flight=${recordFlightByDurationMinimum})}">FILTERS</div>
+      <div th:replace="~{this :: record-flight(title=${#messages.msg('fastestFlightByAverageSpeed')}, flight=${recordFlightByAverageSpeedMaximum})}">FILTERS</div>
+      <div th:replace="~{this :: record-flight(title=${#messages.msg('slowestFlightByAverageSpeed')}, flight=${recordFlightByAverageSpeedMinimum})}">FILTERS</div>
     </div>
 
     <div th:fragment="record-flight(title, flight)" class="ui segment">
