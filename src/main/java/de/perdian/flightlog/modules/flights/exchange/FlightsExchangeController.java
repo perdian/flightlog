@@ -29,7 +29,7 @@ class FlightsExchangeController {
 
     @RequestMapping("/import/file")
     String doImportFileGet() {
-        return "/flights/import";
+        return "flights/import";
     }
 
     @PostMapping(value = "/import/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -46,7 +46,7 @@ class FlightsExchangeController {
                     FlightsExchangeHandler exchangeHandler = exchangeFormat.getHandler();
                     FlightsExchangePackage exchangePackage = exchangeHandler.importPackage(exchangePackageStream);
                     exchangeEditor.setExchangePackage(exchangePackage);
-                    return "/flights/import/verify";
+                    return "flights/import/verify";
                 }
             }
         } catch (Exception e) {
@@ -59,7 +59,7 @@ class FlightsExchangeController {
     String doImportVerifyPost(@ModelAttribute("exchangeEditor") FlightsExchangeEditor exchangeEditor) {
         this.getExchangeService().importPackage(exchangeEditor.getExchangePackage(), this.getUserHolder().getCurrentUser());
         log.error("IMPLEMENT DATABASE IMPORT!");
-        return "/flights/import/done";
+        return "flights/import/done";
     }
 
     @RequestMapping("/export/{format}")

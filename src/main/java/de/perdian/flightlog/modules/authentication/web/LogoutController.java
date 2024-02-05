@@ -9,7 +9,7 @@ public class LogoutController {
 
     @RequestMapping("/authentication/logout/completed")
     String doLogoutCompleted(Model model) {
-        return "/authentication/logout/completed";
+        return "authentication/logout/completed";
     }
 
 }

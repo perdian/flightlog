@@ -4,19 +4,13 @@
 [![Build](https://img.shields.io/circleci/build/github/perdian/flightlog/master)](https://circleci.com/gh/perdian/flightlog)
 [![License](http://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-Flightlog was born out of my nerdy necessity to have a bookkeeping tool of all the flights that I have undertaken so far.
+Flightlog was born from my nerdy need for a bookkeeping tool to track all the flights I have taken so far.
 
-For years I was quite happy with flugstatistik.de but unfortunately it hasn't really evolved over the last years leaving a UI that looks quite outdated and a feature set that is okayish but lacks some of the things I would like to see.
-In addition there was (and still is!) no way to backup the data stored there, which leads to a formidable vendor lock-in.
-What happens when they decide to stop providing their service or I simply forget my login credentials?
-No, that's just not good enough.
+For years, I was quite happy with flugstatistik.de, but unfortunately, it hasn't evolved much over the past few years, resulting in a UI that looks quite outdated and a feature set that is okay-ish, but lacking some elements I would like to see. Additionally, there was (and still is!) no way to back up the data stored there, which leads to considerable vendor lock-in. What happens if they decide to stop providing their service, or if I simply forget my login credentials? No, that's just not acceptable.
 
-From what I saw at the time (and from what I see today) there are no real alternatives.
-Openflights.org is an excellent idea but the UI is even worse than flugstatistik.de, looking like it has been hacked together in an hour or two.
-Don't get me wrong I'm pretty sure a good amount of time has been invested but for me it simply looks awful.
+From what I observed at the time (and still see today), there are no real alternatives. Openflights.org is an excellent idea, but the UI is even worse than flugstatistik.de's, looking as though it was thrown together in an hour or two. Don't get me wrong, I'm pretty sure a significant amount of time has been invested, but to me, it just looks terrible.
 
-So, as no appropriate tool was available I simply decided to write one myself.
-The overall UI somewhat borrows some of the ideas from flugstatistik.de but is a bit more modern and streamlined.
+Therefore, with no suitable tool available, I decided to create one myself. The overall UI somewhat incorporates ideas from flugstatistik.de but is a bit more modern and streamlined.
 
 ![Home screen](docs/screenshots/home.png)
 
@@ -28,22 +22,22 @@ Flightlog is a [Spring Boot application](https://spring.io/guides/gs/spring-boot
     $ cd flightlog
     $ mvn clean package
 
-This creates the application WAR file into `target/flightlog.war`
+This creates the application JAR file into `target/flightlog.jar`
 
 # Run
 
-## WAR
+## JAR
 
-The WAR file already contains everything needed to start Flighlog with its default settings:
+The JAR file already contains everything needed to start Flighlog with its default settings:
 
     $ mvn clean package
-    $ java -jar target/flightlog.war
+    $ java -jar target/flightlog.jar
 
-The application will now start and accessible at
+The application will now start and is accessible at
 
     http://localhost:8080/flightlog/
 
-An embedded H2 database file will stored at `/var/flightlog/database`. Both the database location as well as the database type can be configured using environment variables (see the **Configuration** section for details).
+An embedded H2 database file will be stored at `~/.flightlog/`. Both the database location as well as the database type can be configured using environment variables (see the **Configuration** section for details).
 
 ## Docker container
 

@@ -27,7 +27,7 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
         log.error("Caught exception", exception);
         model.addAttribute("httpStatusCode", servletResponse.getStatus());
         model.addAttribute("exceptions", this.createExceptionWrappers(exception));
-        return "/error";
+        return "error";
     }
 
     private Throwable resolveException(HttpServletRequest servletRequest) {

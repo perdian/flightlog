@@ -98,10 +98,10 @@ class FlightUpdateController {
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
         Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
         if (flight == null) {
-            return "/flights/not-found";
+            return "flights/not-found";
         } else {
             flightUpdateEditor.applyValuesFrom(flight);
-            return "/flights/edit";
+            return "flights/edit";
         }
     }
 
@@ -117,10 +117,10 @@ class FlightUpdateController {
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
         Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
         if (flight == null) {
-            return "/flights/not-found";
+            return "flights/not-found";
         } else {
             if (flightUpdateEditorBindingResult.hasErrors()) {
-                return "/flights/edit";
+                return "flights/edit";
             } else {
 
                 flightUpdateEditor.copyValuesInto(flight);
@@ -142,10 +142,10 @@ class FlightUpdateController {
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
         Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.get(0);
         if (flight == null) {
-            return "/flights/not-found";
+            return "flights/not-found";
         } else {
             model.addAttribute("flight", flight);
-            return "/flights/delete";
+            return "flights/delete";
         }
     }
 
@@ -156,7 +156,7 @@ class FlightUpdateController {
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
         Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.get(0);
         if (flight == null) {
-            return "/flights/not-found";
+            return "flights/not-found";
         } else {
             this.getFlightUpdateService().deleteFlight(flight, this.getUserHolder().getCurrentUser());
             redirectAttributes.addFlashAttribute("flight", flight);
@@ -166,7 +166,7 @@ class FlightUpdateController {
 
     @GetMapping(path = "/delete/success")
     String doDeleteSuccess() {
-        return "/flights/delete/success";
+        return "flights/delete/success";
     }
 
     FlightQueryService getFlightQueryService() {

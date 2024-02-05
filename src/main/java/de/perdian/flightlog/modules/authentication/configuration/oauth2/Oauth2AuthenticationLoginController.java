@@ -32,7 +32,7 @@ class Oauth2AuthenticationLoginController {
             }
             log.debug("Exception occurred during login", authenticationException);
             httpSession.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-            return "/authentication/login/oauth-error";
+            return "authentication/login/oauth-error";
         } else {
             return "redirect:/oauth2/authorization/google";
         }
