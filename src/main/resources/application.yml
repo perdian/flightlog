@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: ${FLIGHTLOG_DB_URL:jdbc:h2:~/.flightlog/database}
+    url: ${FLIGHTLOG_DB_URL:jdbc:h2:${FLIGHTLOG_DB_DIRECTORY:~/.flightlog/}/flightlogdb}
     driver-class-name: ${FLIGHTLOG_DB_DRIVER_CLASS_NAME:org.h2.Driver}
     username: ${FLIGHTLOG_DB_USERNAME:sa}
     password: ${FLIGHTLOG_DB_PASSWORD:}
@@ -41,7 +41,7 @@ flightlog:
     type: ${FLIGHTLOG_AUTHENTICATION_TYPE:fixed}
   registration:
     emailAddressesAllowlist: ${FLIGHTLOG_REGISTRATION_EMAIL_ADDRESSES_ALLOWLIST:}
-    allowByDefault: false
+    allowByDefault: ${FLIGHTLOG_REGISTRATION_ALLOW_BY_DEFAULT:false}
   backup:
     cron: ${FLIGHTLOG_BACKUP_CRON:}
     target: ${FLIGHTLOG_BACKUP_TARGET:}
