@@ -45,6 +45,15 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/flightlog:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/flightlog:${{ github.ref_name }}
+      - name: Update Docker Hub Description
+        if: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') }}
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/flightlog
+          readme-filepath: ./README.md
+          enable-url-completion: true
       - name: Create Release
         if: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') }}
         uses: actions/create-release@v1
