@@ -4,88 +4,7 @@
 
     <div th:fragment="flights" class="ui segments" id="flights-list">
       <div th:each="flight : *{flights.items}" class="ui segment">
-        <div class="ui dense grid">
-          <div class="eight wide mobile four wide tablet four wide computer column">
-            <span th:text="${#temporals.format(flight.departureContact.dateLocal, 'dd.MM.yyyy')}"></span>
-            <span th:text="${#temporals.format(flight.departureContact.timeLocal, 'HH:mm')}"></span>
-            <br />
-            <strong><span th:text="${flight.departureContact.airport.code}">XXX</span></strong>
-            <i class="flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
-            <br />
-            <small><span class="smalltext" th:text="${flight.departureContact.airport.name}">Airport name</span></small>
-          </div>
-          <div class="eight wide mobile four wide tablet four wide computer column">
-            <span th:text="${#temporals.format(flight.arrivalContact.dateLocal, 'dd.MM.yyyy')}"></span>
-            <span th:text="${#temporals.format(flight.arrivalContact.timeLocal, 'HH:mm')}"></span>
-            <span th:if="${flight.arrivalContact.dateOffset}">
-              (<span th:text="${flight.arrivalContact.dateOffset}">+0</span>)
-            </span>
-            <br />
-            <strong><span th:text="${flight.arrivalContact.airport.code}">XXX</span></strong>
-            <i class="flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
-            <br />
-            <small><span class="smalltext" th:text="${flight.arrivalContact.airport.name}">Airport name</span></small>
-          </div>
-          <div class="eight wide mobile four wide tablet three wide computer column">
-            <span th:text="${flight.airline.name}"></span>
-            <br />
-            <strong><span th:text="${flight.airline.code}"></span> <span th:text="${flight.flightNumber}"></span></strong>
-            <br />
-            <span th:text="${flight.aircraft.type}"></span>
-            <span th:if="${not #strings.isEmpty(flight.aircraft.registration)}">
-              <br /> <span th:text="${flight.aircraft.registration}"></span>
-            </span>
-            <span th:if="${not #strings.isEmpty(flight.aircraft.name)}">
-              <br /> <span th:text="${flight.aircraft.name}"></span>
-            </span>
-          </div>
-          <div class="eight wide mobile two wide tablet two wide computer column">
-            <span th:if="${flight.cabinClass != null}" th:text="${#messages.msg('cabinClass.' + flight.cabinClass)}"></span>
-            <br />
-            <strong><span th:text="${flight.seatNumber}"></span></strong>
-            <br />
-            <span th:if="${flight.seatType != null}" th:text="${#messages.msg('seatType.' + flight.seatType)}"></span>
-            <br />
-            <span th:if="${flight.flightReason != null}" th:text="${#messages.msg('flightReason.' + flight.flightReason)}"></span>
-          </div>
-          <div class="eight wide mobile two wide tablet one wide computer column">
-            <div class="mobile only">
-              <span style="display: inline-block; min-width: 60px;"><span th:text="#{duration}"></span>:</span>
-              <span style="display: inline-block; min-width: 50px; text-align: right;" th:text="${flight.flightDurationString}"></span> h
-              <br />
-              <span style="display: inline-block; min-width: 60px;"><span th:text="#{distance}"></span>:</span>
-              <span style="display: inline-block; min-width: 50px; text-align: right;" th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
-            </div>
-            <span class="mobile hidden" style="float: right; text-align: right;">
-              <span th:text="${flight.flightDurationString}"></span> h
-              <br />
-              <span th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
-            </span>
-          </div>
-          <div class="eight wide mobile sixteen wide table two wide computer column">
-            <span class="mobile hidden tablet hidden" style="float: right;">
-              <a class="fluid ui primary mini button" th:href="@{/flights/edit/{id}(id=${flight.entityId})}">
-                <i class="edit icon"></i>
-                <span th:text="#{edit}"></span>
-              </a>
-              <br />
-              <a class="fluid ui negative mini button" th:href="@{/flights/delete/{id}(id=${flight.entityId})}">
-                <i class="trash alternate icon"></i>
-                <span th:text="#{delete}"></span>
-              </a>
-            </span>
-            <span class="mobile only tablet only">
-              <a class="ui primary mini button" th:href="@{/flights/edit/{id}(id=${flight.entityId})}">
-                <i class="edit icon"></i>
-                <span th:text="#{edit}"></span>
-              </a>
-              <a class="ui negative mini button" th:href="@{/flights/delete/{id}(id=${flight.entityId})}">
-                <i class="trash alternate icon"></i>
-                <span th:text="#{delete}"></span>
-              </a>
-            </span>
-          </div>
-        </div>
+        <div th:replace="~{this :: flight(flight=${flight})}">FLIGHT</div>
       </div>
     </div>
 
@@ -102,5 +21,160 @@
       </div>
     </div>
 
+    <div th:fragment="flight(flight)" class="ui dense grid">
+      <div class="eight wide mobile four wide tablet four wide computer column">
+        <div>
+          <span th:text="${#temporals.format(flight.departureContact.dateLocal, 'dd.MM.yyyy')}"></span>
+          <span th:text="${#temporals.format(flight.departureContact.timeLocal, 'HH:mm')}"></span>
+        </div>
+        <div>
+          <strong><span th:text="${flight.departureContact.airport.code}">XXX</span></strong>
+          <i class="flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
+        </div>
+        <div class="smalltext" th:text="${flight.departureContact.airport.name}">Airport name</div>
+      </div>
+      <div class="eight wide mobile four wide tablet four wide computer column">
+        <div>
+          <span th:text="${#temporals.format(flight.arrivalContact.dateLocal, 'dd.MM.yyyy')}"></span>
+          <span th:text="${#temporals.format(flight.arrivalContact.timeLocal, 'HH:mm')}"></span>
+          <span th:if="${flight.arrivalContact.dateOffset}">
+            (<span th:text="${flight.arrivalContact.dateOffset}">+0</span>)
+          </span>
+        </div>
+        <div>
+          <strong><span th:text="${flight.arrivalContact.airport.code}">XXX</span></strong>
+          <i class="flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
+        </div>
+        <div class="smalltext" th:text="${flight.arrivalContact.airport.name}">Airport name</div>
+      </div>
+      <div class="eight wide mobile four wide tablet three wide computer column">
+        <div th:text="${flight.airline.name}"></div>
+        <div>
+          <strong>
+            <span th:text="${flight.airline.code}"></span>
+            <span th:text="${flight.flightNumber}"></span>
+          </strong>
+        </div>
+        <div th:text="${#strings.isEmpty(flight.aircraft.type) ? '&nbsp;' : flight.aircraft.type}"></div>
+        <div th:text="${flight.aircraft.registration}"></div>
+        <div th:text="${flight.aircraft.name}"></div>
+      </div>
+      <div class="eight wide mobile two wide tablet two wide computer column">
+        <div th:text="${flight.cabinClass == null ? '' : #messages.msg('cabinClass.' + flight.cabinClass)}"></div>
+        <div>
+          <strong th:text="${flight.seatNumber}"></strong>
+        </div>
+        <div th:text="${flight.seatType == null ? '' : #messages.msg('seatType.' + flight.seatType)}"></div>
+        <div th:text="${flight.flightReason == null ? '' : #messages.msg('flightReason.' + flight.flightReason)}"></div>
+      </div>
+      <div class="eight wide mobile two wide tablet one wide computer column">
+        <div class="mobile only">
+          <span style="display: inline-block; min-width: 60px;"><span th:text="#{duration}"></span>:</span>
+          <span style="display: inline-block; min-width: 50px; text-align: right;" th:text="${flight.flightDurationString}"></span> h
+        </div>
+        <div class="mobile only">
+          <span style="display: inline-block; min-width: 60px;"><span th:text="#{distance}"></span>:</span>
+          <span style="display: inline-block; min-width: 50px; text-align: right;" th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
+        </div>
+        <span class="mobile hidden" style="float: right; text-align: right;">
+          <div>
+            <span th:text="${flight.flightDurationString}"></span> h
+          </div>
+          <div>
+            <span th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
+          </div>
+        </span>
+      </div>
+      <div class="eight wide mobile sixteen wide table two wide computer column">
+        <span class="mobile hidden tablet hidden" style="float: right;">
+          <a class="fluid ui primary mini button" th:href="@{/flights/edit/{id}(id=${flight.entityId})}">
+            <i class="edit icon"></i>
+            <span th:text="#{edit}"></span>
+          </a>
+          <br />
+          <a class="fluid ui negative mini button" th:href="@{/flights/delete/{id}(id=${flight.entityId})}">
+            <i class="trash alternate icon"></i>
+            <span th:text="#{delete}"></span>
+          </a>
+        </span>
+        <span class="mobile only tablet only">
+          <a class="ui primary mini button" th:href="@{/flights/edit/{id}(id=${flight.entityId})}">
+            <i class="edit icon"></i>
+            <span th:text="#{edit}"></span>
+          </a>
+          <a class="ui negative mini button" th:href="@{/flights/delete/{id}(id=${flight.entityId})}">
+            <i class="trash alternate icon"></i>
+            <span th:text="#{delete}"></span>
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <div th:fragment="flight-compact(flight)" class="ui dense grid">
+      <div class="eight wide mobile four wide tablet four wide computer column">
+        <span th:text="${#temporals.format(flight.departureContact.dateLocal, 'dd.MM.yyyy')}"></span>
+        <span th:text="${#temporals.format(flight.departureContact.timeLocal, 'HH:mm')}"></span>
+        &nbsp;
+        <strong><span th:text="${flight.departureContact.airport.code}">XXX</span></strong>
+        <i class="mobile hidden  flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
+        <div class="smalltext">
+          <i class="mobile only flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
+          <span th:text="${flight.departureContact.airport.name}"></span>
+        </div>
+      </div>
+      <div class="eight wide mobile four wide tablet four wide computer column">
+        <span th:text="${#temporals.format(flight.arrivalContact.dateLocal, 'dd.MM.yyyy')}"></span>
+        <span th:text="${#temporals.format(flight.arrivalContact.timeLocal, 'HH:mm')}"></span>
+        <span th:if="${flight.arrivalContact.dateOffset}" class="mobile hidden">
+          (<span th:text="${flight.arrivalContact.dateOffset}">+0</span>)
+        </span>
+        &nbsp;
+        <strong><span th:text="${flight.arrivalContact.airport.code}">XXX</span></strong>
+        <i class="mobile hidden flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
+        <div class="smalltext">
+          <i class="mobile only flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
+          <span th:text="${flight.arrivalContact.airport.name}"></span>
+          <span th:if="${flight.arrivalContact.dateOffset}" class="mobile only">
+            (<span th:text="${flight.arrivalContact.dateOffset}">+0</span>)
+          </span>
+        </div>
+      </div>
+      <div class="four wide mobile two wide tablet two wide computer column">
+        <div>
+          <strong>
+            <span th:text="${flight.airline.code}"></span>
+            <span th:text="${flight.flightNumber}"></span>
+          </strong>
+        </div>
+        <div class="smalltext" th:text="${flight.airline.name}"></div>
+      </div>
+      <div class="four wide mobile two wide tablet two wide computer column">
+        <div>
+          <strong th:text="${flight.seatNumber}"></strong>
+          <span class="smalltext" th:unless="${flight.cabinClass == null}">
+            (<span th:text="${#messages.msg('cabinClass.' + flight.cabinClass)}"></span>)
+          </span>
+        </div>
+        <div class="smalltext" th:text="${flight.aircraft.type}"></div>
+      </div>
+      <div class="four wide mobile two wide tablet two wide computer column">
+        <div>
+          <strong>
+            <span th:text="${flight.flightDurationString}"></span> h
+          </strong>
+        </div>
+        <div class="smalltext" th:text="#{duration}"></div>
+      </div>
+      <div class="four wide mobile two wide tablet two wide computer column">
+        <div>
+          <strong>
+            <span th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
+          </strong>
+        </div>
+        <div class="smalltext" th:if="${flight.flightAverageSpeed != null}">
+          ~ <span th:text="${flight.flightAverageSpeedString}">123</span> km/h
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -7,6 +7,7 @@ import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 import de.perdian.flightlog.support.FlightlogHelper;
 import de.perdian.flightlog.support.types.*;
 
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -140,7 +141,16 @@ public class Flight {
     }
 
     public Number getFlightAverageSpeed() {
-        return this.getFlightDistance().doubleValue() / (this.getFlightDuration().toMinutes() * 60d);
+        return this.getFlightDistance().doubleValue() / (this.getFlightDuration().toMinutes() / 60d);
+    }
+
+    public String getFlightAverageSpeedString() {
+        Number averageSpeed = this.getFlightAverageSpeed();
+        if (averageSpeed == null) {
+            return null;
+        } else {
+            return new DecimalFormat("0").format(averageSpeed);
+        }
     }
 
     public FlightDistance getFlightDistanceType() {

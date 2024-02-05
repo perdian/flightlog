@@ -69,14 +69,15 @@
     <div th:fragment="records" class="ui segments">
       <div th:replace="~{this :: record-flight(title=${#messages.msg('longestFlightByDistance')}, flight=${recordFlightByDistanceMaximum})}">FILTERS</div>
       <div th:replace="~{this :: record-flight(title=${#messages.msg('longestFlightByDuration')}, flight=${recordFlightByDurationMaximum})}">FILTERS</div>
+      <div th:replace="~{this :: record-flight(title=${#messages.msg('fastestFlightByAverageSpeed')}, flight=${recordFlightByAverageSpeedMaximum})}">FILTERS</div>
       <div th:replace="~{this :: record-flight(title=${#messages.msg('shortestFlightByDistance')}, flight=${recordFlightByDistanceMinimum})}">FILTERS</div>
       <div th:replace="~{this :: record-flight(title=${#messages.msg('shortestFlightByDuration')}, flight=${recordFlightByDurationMinimum})}">FILTERS</div>
-      <div th:replace="~{this :: record-flight(title=${#messages.msg('fastestFlightByAverageSpeed')}, flight=${recordFlightByAverageSpeedMaximum})}">FILTERS</div>
       <div th:replace="~{this :: record-flight(title=${#messages.msg('slowestFlightByAverageSpeed')}, flight=${recordFlightByAverageSpeedMinimum})}">FILTERS</div>
     </div>
 
     <div th:fragment="record-flight(title, flight)" class="ui segment">
-      [[ ${flight} ]]
+      <h4 th:text="${title}"></h4>
+      <div th:replace="~{flights/include/list-flights :: flight-compact(flight=${flight})}">FLIGHT</div>
     </div>
 
   </body>
