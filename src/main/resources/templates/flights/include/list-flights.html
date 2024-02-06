@@ -29,7 +29,9 @@
         </div>
         <div>
           <strong><span th:text="${flight.departureContact.airport.code}">XXX</span></strong>
-          <i class="flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
+          <span>
+            <i class="flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
+          </span>
         </div>
         <div class="smalltext" th:text="${flight.departureContact.airport.name}">Airport name</div>
       </div>
@@ -43,7 +45,9 @@
         </div>
         <div>
           <strong><span th:text="${flight.arrivalContact.airport.code}">XXX</span></strong>
-          <i class="flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
+          <span>
+            <i class="flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
+          </span>
         </div>
         <div class="smalltext" th:text="${flight.arrivalContact.airport.name}">Airport name</div>
       </div>
@@ -116,9 +120,13 @@
         <span th:text="${#temporals.format(flight.departureContact.timeLocal, 'HH:mm')}"></span>
         &nbsp;
         <strong><span th:text="${flight.departureContact.airport.code}">XXX</span></strong>
-        <i class="mobile hidden  flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
+        <span class="mobile hidden">
+          <i class="flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
+        </span>
         <div class="smalltext">
-          <i class="mobile only flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
+          <span class="mobile only">
+            <i class="flag" th:classappend="${#strings.toLowerCase(flight.departureContact.airport.countryCode)}"></i>
+          </span>
           <span th:text="${flight.departureContact.airport.name}"></span>
         </div>
       </div>
@@ -130,9 +138,13 @@
         </span>
         &nbsp;
         <strong><span th:text="${flight.arrivalContact.airport.code}">XXX</span></strong>
-        <i class="mobile hidden flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
+        <span class="mobile hidden">
+          <i class="flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
+        </span>
         <div class="smalltext">
-          <i class="mobile only flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
+          <span class="mobile only">
+            <i class="flag" th:classappend="${#strings.toLowerCase(flight.arrivalContact.airport.countryCode)}"></i>
+          </span>
           <span th:text="${flight.arrivalContact.airport.name}"></span>
           <span th:if="${flight.arrivalContact.dateOffset}" class="mobile only">
             (<span th:text="${flight.arrivalContact.dateOffset}">+0</span>)

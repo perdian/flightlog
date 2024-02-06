@@ -49,7 +49,9 @@
             <td width="15" class="right aligned" th:text="${groupItemStatus.index + 1}" th:if="${includeIndex}">X</td>
             <td>
               <div>
-                <i th:if="${not #strings.isEmpty(groupItem.iconCode)}" class="flag" th:classappend="${groupItem.iconCode}"></i>
+                <span th:if="${not #strings.isEmpty(groupItem.iconCode)}">
+                  <i class="flag" th:classappend="${groupItem.iconCode}"></i>
+                </span>
                 <span th:classappend="${titleCssClass}" th:text="${#strings.isEmpty(groupItem.title.key) ? groupItem.title.value : #messages.msg(groupItem.title.key)}">Title</span>
               </div>
               <div class="smalltext" th:if="${descriptionPosition == 'inline' && not #strings.isEmpty(groupItem.description)}" th:text="${#strings.isEmpty(groupItem.description.key) ? groupItem.description.value : #messages.msg(groupItem.description.key)}">Description</div>
