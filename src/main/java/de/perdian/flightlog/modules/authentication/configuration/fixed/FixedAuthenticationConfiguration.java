@@ -4,6 +4,7 @@ import de.perdian.flightlog.modules.authentication.configuration.AbstractAuthent
 import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 import de.perdian.flightlog.modules.authentication.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,7 @@ public class FixedAuthenticationConfiguration extends AbstractAuthenticationConf
         UserEntity entity = this.getUserRepository().findOne(entitySpecification).orElse(null);
         if (entity == null) {
             entity = new UserEntity();
+            entity.setEmail(this.getEmailAddress());
             entity.setUsername(this.getEmailAddress());
             entity.setAuthenticationSource("fixed");
             entity = this.getUserRepository().save(entity);
@@ -44,6 +46,7 @@ public class FixedAuthenticationConfiguration extends AbstractAuthenticationConf
     String getEmailAddress() {
         return this.emailAddress;
     }
+    @Value("${flightlog.authentication.fixed.defaultEmailAddress:}")
     void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }

@@ -13,6 +13,8 @@ import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
+import java.util.Objects;
+
 class Oauth2AuthenticationUserService extends OidcUserService {
 
     private static final Logger log = LoggerFactory.getLogger(Oauth2AuthenticationUserService.class);
@@ -52,6 +54,10 @@ class Oauth2AuthenticationUserService extends OidcUserService {
             }
         } else {
             log.debug("Found user '{}' in database (ID: {})", oidcUser.getEmail(), entity.getUserId());
+        }
+        if (!Objects.equals(entity.getEmail(), oidcUser.getEmail())) {
+            entity.setEmail(oidcUser.getEmail());
+            entity = this.getUserRepository().save(entity);
         }
         return entity;
 

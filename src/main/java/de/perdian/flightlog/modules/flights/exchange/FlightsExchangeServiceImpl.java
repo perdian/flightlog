@@ -140,6 +140,7 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
         flight.setFlightDuration(flightEntity.getFlightDuration() == null ? null : FlightlogHelper.formatDuration(Duration.ofMinutes(flightEntity.getFlightDuration())));
         flight.setFlightNumber(flightEntity.getFlightNumber());
         flight.setFlightReason(flightEntity.getFlightReason());
+        flight.setLastUpdatedAt(flightEntity.getLastUpdatedAt());
         flight.setSeatNumber(flightEntity.getSeatNumber());
         flight.setSeatType(flightEntity.getSeatType());
         return flight;

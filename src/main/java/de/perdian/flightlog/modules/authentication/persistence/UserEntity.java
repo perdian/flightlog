@@ -15,6 +15,7 @@ public class UserEntity implements Serializable {
     private UUID userId = null;
     private String username = null;
     private String password = null;
+    private String email = null;
     private String authenticationSource = null;
 
     @Override
@@ -36,6 +37,7 @@ public class UserEntity implements Serializable {
         StringBuilder result = new StringBuilder();
         result.append("[userId=").append(this.getUserId());
         result.append(",username=").append(this.getUsername());
+        result.append(",email=").append(this.getEmail());
         result.append(",authenticationSource=").append(this.getAuthenticationSource());
         return result.append("]").toString();
     }
@@ -64,6 +66,14 @@ public class UserEntity implements Serializable {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Column(length = 64)
+    public String getEmail() {
+        return this.email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Column(length = 64)

@@ -39,9 +39,13 @@ server:
 flightlog:
   authentication:
     type: ${FLIGHTLOG_AUTHENTICATION_TYPE:fixed}
+    fixed:
+      defaultEmailAddress: ${FLIGHTLOG_AUTHENTICATION_FIXED_DEFAULT_EMAIL_ADDRESS:example@example.com}
   registration:
     emailAddressesAllowlist: ${FLIGHTLOG_REGISTRATION_EMAIL_ADDRESSES_ALLOWLIST:}
     allowByDefault: ${FLIGHTLOG_REGISTRATION_ALLOW_BY_DEFAULT:false}
   backup:
     cron: ${FLIGHTLOG_BACKUP_CRON:}
-    target: ${FLIGHTLOG_BACKUP_TARGET:}
+    onlyForNewContent: ${FLIGHTLOG_BACKUP_ONLYFORNEWCONTENT:true}
+    filesystem:
+      directory: ${FLIGHTLOG_BACKUP_FILESYSTEM_DIRECTORY:}

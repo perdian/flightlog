@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -35,6 +36,7 @@ public class FlightsExchangePackageFlight implements Serializable {
     private String seatNumber = null;
     private SeatType seatType = null;
     private Boolean include = Boolean.TRUE;
+    private Instant lastUpdatedAt = null;
 
     public String toString() {
         StringBuilder result = new StringBuilder();
@@ -202,6 +204,14 @@ public class FlightsExchangePackageFlight implements Serializable {
     }
     public void setInclude(Boolean include) {
         this.include = include;
+    }
+
+    @JsonIgnore
+    public Instant getLastUpdatedAt() {
+        return this.lastUpdatedAt;
+    }
+    public void setLastUpdatedAt(Instant lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
     }
 
 }
