@@ -2,7 +2,12 @@ package de.perdian.flightlog.modules.flights.exchange;
 
 import de.perdian.flightlog.modules.flights.exchange.impl.JsonExchangeHandler;
 import de.perdian.flightlog.modules.flights.exchange.impl.XmlExchangeHandler;
+import jakarta.activation.DataSource;
+import jakarta.mail.util.ByteArrayDataSource;
 import org.springframework.http.MediaType;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public enum FlightsExchangeFormat {
 
@@ -15,6 +20,15 @@ public enum FlightsExchangeFormat {
     FlightsExchangeFormat(FlightsExchangeHandler handler, MediaType mimeType) {
         this.setHandler(handler);
         this.setMimeType(mimeType);
+    }
+
+    public DataSource toDataSource(FlightsExchangePackage exchangePackage) {
+        try (ByteArrayOutputStream backupStream = new ByteArrayOutputStream()) {
+            this.getHandler().exportPackage(exchangePackage, backupStream);
+            return new ByteArrayDataSource(backupStream.toByteArray(), this.getMimeType().toString());
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot encode exchange package using format: " + this.name(), e);
+        }
     }
 
     public FlightsExchangeHandler getHandler() {
