@@ -33,9 +33,9 @@ class FlightUpdateController {
 
     @GetMapping(path = "/add")
     String doAddGet(
-        @ModelAttribute(name = "flightLookupRequest") FlightLookupRequest flightLookupRequest,
-        @ModelAttribute(name = "flightUpdateEditor") FlightUpdateEditor flightUpdateEditor,
-        @RequestParam(name = "showLookupForm", required = false) Boolean showLookupForm,
+        @ModelAttribute FlightLookupRequest flightLookupRequest,
+        @ModelAttribute FlightUpdateEditor flightUpdateEditor,
+        @RequestParam(required = false) Boolean showLookupForm,
         Model model
     ) {
         if (showLookupForm != null) {
@@ -46,8 +46,8 @@ class FlightUpdateController {
 
     @RequestMapping(path = "/add")
     String doAddPost(
-        @ModelAttribute(name = "flightLookupRequest") FlightLookupRequest flightLookupRequest,
-        @ModelAttribute(name = "flightUpdateEditor") @Valid FlightUpdateEditor flightUpdateEditor, BindingResult flightUpdateEditorBindingResult,
+        @ModelAttribute FlightLookupRequest flightLookupRequest,
+        @ModelAttribute @Valid FlightUpdateEditor flightUpdateEditor, BindingResult flightUpdateEditorBindingResult,
         RedirectAttributes redirectAttributes,
         Model model
     ) {
@@ -70,8 +70,8 @@ class FlightUpdateController {
 
     @RequestMapping(path = "/add/lookup")
     String doAddLookup(
-        @ModelAttribute(name = "flightLookupRequest") FlightLookupRequest flightLookupRequest,
-        @ModelAttribute(name = "flightUpdateEditor") FlightUpdateEditor flightUpdateEditor,
+        @ModelAttribute FlightLookupRequest flightLookupRequest,
+        @ModelAttribute FlightUpdateEditor flightUpdateEditor,
         Model model
     ) {
         if (flightLookupRequest.isPopulated()) {
@@ -89,8 +89,8 @@ class FlightUpdateController {
 
     @GetMapping(path = "/edit/{flightEntityId}")
     String doEditGet(
-        @ModelAttribute(name = "flightUpdateEditor") FlightUpdateEditor flightUpdateEditor,
-        @PathVariable(name = "flightEntityId") UUID flightEntityId,
+        @ModelAttribute FlightUpdateEditor flightUpdateEditor,
+        @PathVariable UUID flightEntityId,
         Model model
     ) {
         FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
@@ -107,8 +107,8 @@ class FlightUpdateController {
 
     @PostMapping(path = "/edit/{flightEntityId}")
     String doEditPost(
-        @ModelAttribute(name = "flightUpdateEditor") @Valid FlightUpdateEditor flightUpdateEditor, BindingResult flightUpdateEditorBindingResult,
-        @PathVariable(name = "flightEntityId") UUID flightEntityId,
+        @ModelAttribute @Valid FlightUpdateEditor flightUpdateEditor, BindingResult flightUpdateEditorBindingResult,
+        @PathVariable UUID flightEntityId,
         RedirectAttributes redirectAttributes,
         Model model
     ) {
@@ -136,7 +136,7 @@ class FlightUpdateController {
     }
 
     @GetMapping(path = "/delete/{flightEntityId}")
-    String doDeleteGet(@PathVariable(name = "flightEntityId") UUID flightEntityId, Model model) {
+    String doDeleteGet(@PathVariable UUID flightEntityId, Model model) {
         FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
@@ -150,7 +150,7 @@ class FlightUpdateController {
     }
 
     @PostMapping(path = "/delete/{flightEntityId}")
-    String doDeletePost(@PathVariable(name = "flightEntityId") UUID flightEntityId, Model model, RedirectAttributes redirectAttributes) {
+    String doDeletePost(@PathVariable UUID flightEntityId, Model model, RedirectAttributes redirectAttributes) {
         FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
