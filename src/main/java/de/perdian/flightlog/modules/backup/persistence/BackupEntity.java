@@ -29,7 +29,7 @@ public class BackupEntity implements Serializable {
         if (this == that) {
             return true;
         } else {
-            return this.getBackupId() != null && (that instanceof BackupEntity) && this.getBackupId().equals(((BackupEntity)that).getBackupId());
+            return this.getBackupId() != null && (that instanceof BackupEntity thatEntity) && this.getBackupId().equals(thatEntity.getBackupId());
         }
     }
 

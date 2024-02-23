@@ -78,7 +78,7 @@ class FlightUpdateController {
             List<Flight> flightLookupResults = this.getFlightLookupService().lookupFlights(flightLookupRequest);
             model.addAttribute("flightLookupResults", flightLookupResults);
             if (flightLookupResults != null && flightLookupResults.size() == 1) {
-                flightUpdateEditor.applyValuesFrom(flightLookupResults.get(0));
+                flightUpdateEditor.applyValuesFrom(flightLookupResults.getFirst());
             } else if (flightLookupResults != null && flightLookupResults.size() > 1) {
                 model.addAttribute("showLookupResults", true);
             }
@@ -140,7 +140,7 @@ class FlightUpdateController {
         FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
-        Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.get(0);
+        Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
         if (flight == null) {
             return "flights/not-found";
         } else {
@@ -154,7 +154,7 @@ class FlightUpdateController {
         FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
-        Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.get(0);
+        Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
         if (flight == null) {
             return "flights/not-found";
         } else {

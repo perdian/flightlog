@@ -55,7 +55,7 @@ public class FlightEntity implements Serializable {
         if (this == that) {
             return true;
         } else {
-            return (that instanceof FlightEntity) && this.getId() != null && this.getId().equals(((FlightEntity)that).getId());
+            return (that instanceof FlightEntity thatEntity) && this.getId() != null && this.getId().equals(thatEntity.getId());
         }
     }
 

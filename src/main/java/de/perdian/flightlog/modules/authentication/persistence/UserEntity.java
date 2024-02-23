@@ -28,7 +28,7 @@ public class UserEntity implements Serializable {
         if (this == that) {
             return true;
         } else {
-            return this.getUserId() != null && (that instanceof UserEntity) && this.getUserId().equals(((UserEntity)that).getUserId());
+            return this.getUserId() != null && (that instanceof UserEntity thatEntity) && this.getUserId().equals(thatEntity.getUserId());
         }
     }
 
