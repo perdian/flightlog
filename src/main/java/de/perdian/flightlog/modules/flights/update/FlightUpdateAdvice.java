@@ -20,14 +20,14 @@ class FlightUpdateAdvice {
     @ModelAttribute("flightUpdateEditor")
     FlightUpdateEditor flightUpdateEditor(FlightUpdateEditor flightUpdateEditor) {
         if (StringUtils.isNotEmpty(flightUpdateEditor.getDepartureAirportCode())) {
-            Airport departureAirport = this.getAirportsRepository().loadAirportByIataCode(flightUpdateEditor.getDepartureAirportCode());
+            Airport departureAirport = this.getAirportsRepository().loadAirportByCode(flightUpdateEditor.getDepartureAirportCode());
             if (departureAirport != null) {
                 flightUpdateEditor.setDepartureAirportName(departureAirport.getName());
                 flightUpdateEditor.setDepartureAirportCountryCode(departureAirport.getCountryCode());
             }
         }
         if (StringUtils.isNotEmpty(flightUpdateEditor.getArrivalAirportCode())) {
-            Airport arrivalAirport = this.getAirportsRepository().loadAirportByIataCode(flightUpdateEditor.getArrivalAirportCode());
+            Airport arrivalAirport = this.getAirportsRepository().loadAirportByCode(flightUpdateEditor.getArrivalAirportCode());
             if (arrivalAirport != null) {
                 flightUpdateEditor.setArrivalAirportName(arrivalAirport.getName());
                 flightUpdateEditor.setArrivalAirportCountryCode(arrivalAirport.getCountryCode());

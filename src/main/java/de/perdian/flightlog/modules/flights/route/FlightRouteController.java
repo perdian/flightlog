@@ -27,8 +27,8 @@ class FlightRouteController {
         @RequestParam(name = "arrivalTimeLocal", required = false) LocalTime arrivalTimeLocal
     ) {
 
-        Airport departureAirport = this.getAirportsRepository().loadAirportByIataCode(departureAirportCode);
-        Airport arrivalAirport = this.getAirportsRepository().loadAirportByIataCode(arrivalAirportCode);
+        Airport departureAirport = this.getAirportsRepository().loadAirportByCode(departureAirportCode);
+        Airport arrivalAirport = this.getAirportsRepository().loadAirportByCode(arrivalAirportCode);
         if (departureAirport == null || arrivalAirport == null) {
             return ResponseEntity.notFound().build();
         } else {

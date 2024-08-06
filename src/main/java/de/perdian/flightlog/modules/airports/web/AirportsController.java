@@ -16,7 +16,7 @@ class AirportsController {
 
     @GetMapping(path = "/airport/{airportCode}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Airport> doAirport(@PathVariable String airportCode) {
-        Airport airport = this.getAirportsRepository().loadAirportByIataCode(airportCode);
+        Airport airport = this.getAirportsRepository().loadAirportByCode(airportCode);
         return airport == null ? ResponseEntity.noContent().build() : ResponseEntity.ofNullable(airport);
     }
 

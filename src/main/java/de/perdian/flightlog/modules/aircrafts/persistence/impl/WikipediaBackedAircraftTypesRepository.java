@@ -1,6 +1,7 @@
-package de.perdian.flightlog.modules.aircrafts.persistence;
+package de.perdian.flightlog.modules.aircrafts.persistence.impl;
 
 import de.perdian.flightlog.modules.aircrafts.model.AircraftType;
+import de.perdian.flightlog.modules.aircrafts.persistence.AircraftTypesRepository;
 import de.perdian.flightlog.support.openflights.OpenflightsHelper;
 import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
@@ -19,9 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
+class WikipediaBackedAircraftTypesRepository implements AircraftTypesRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(AircraftTypesRepositoryImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(WikipediaBackedAircraftTypesRepository.class);
 
     private ResourceLoader resourceLoader = null;
     private Map<String, AircraftType> aircraftTypeBeansByIataCode = null;
@@ -30,7 +31,7 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
     @PostConstruct
     void initialize() throws IOException {
 
-        Resource aircraftTypesResource = this.getResourceLoader().getResource("classpath:data/aircrafttypes.dat");
+        Resource aircraftTypesResource = this.getResourceLoader().getResource("classpath:data/wikipedia/aircrafttypes.dat");
         log.info("Loading aircraftTypes from resource: {}", aircraftTypesResource);
 
         int totalAircraftTypesLoaded = 0;
@@ -72,16 +73,6 @@ class AircraftTypesRepositoryImpl implements AircraftTypesRepository {
         this.setAircraftTypeBeansByIcaoCode(aircraftTypeBeansByIcaoCode);
         log.debug("Loaded {} aircraftTypes from resource: {}", totalAircraftTypesLoaded, aircraftTypesResource);
 
-    }
-
-    @Override
-    public AircraftType loadAircraftTypeByIataCode(String code) {
-        return StringUtils.isEmpty(code) ? null : this.getAircraftTypeBeansByIataCode().get(code);
-    }
-
-    @Override
-    public AircraftType loadAircraftTypeByIcaoCode(String code) {
-        return StringUtils.isEmpty(code) ? null : this.getAircraftTypeBeansByIcaoCode().get(code);
     }
 
     @Override

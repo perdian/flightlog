@@ -98,7 +98,7 @@ public class FlightEntityMapper {
     }
 
     private Airport createFlightAirport(String airportCode) {
-        Airport airport = this.getAirportsRepository().loadAirportByIataCode(airportCode);
+        Airport airport = this.getAirportsRepository().loadAirportByCode(airportCode);
         if (airport == null) {
             airport = new Airport();
             airport.setCode(airportCode);

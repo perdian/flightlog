@@ -4,6 +4,6 @@ import de.perdian.flightlog.modules.airports.model.Airport;
 
 public interface AirportsRepository {
 
-    Airport loadAirportByIataCode(String iataAirportCode);
+    Airport loadAirportByCode(String airportCode);
 
 }

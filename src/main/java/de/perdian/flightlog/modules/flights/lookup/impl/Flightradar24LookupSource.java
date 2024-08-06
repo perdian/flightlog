@@ -126,13 +126,13 @@ public class Flightradar24LookupSource implements FlightLookupSource {
         String departureAirportCodePlusBrackets = departureAirportCell.selectFirst("a").text().strip();
         Matcher departureAirportMatcher = AIRPORT_CODE_PATTERN.matcher(departureAirportCodePlusBrackets);
         String departureAirportCode = departureAirportMatcher.matches() ? departureAirportMatcher.group(1) : null;
-        Airport departureAirport = this.getAirportsRepository().loadAirportByIataCode(departureAirportCode);
+        Airport departureAirport = this.getAirportsRepository().loadAirportByCode(departureAirportCode);
 
         Element arrivalAirportCell = cells.get(4);
         String arrivalAirportCodePlusBrackets = arrivalAirportCell.selectFirst("a").text().strip();
         Matcher arrivalAirportMatcher = AIRPORT_CODE_PATTERN.matcher(arrivalAirportCodePlusBrackets);
         String arrivalAirportCode = arrivalAirportMatcher.matches() ? arrivalAirportMatcher.group(1) : null;
-        Airport arrivalAirport = this.getAirportsRepository().loadAirportByIataCode(arrivalAirportCode);
+        Airport arrivalAirport = this.getAirportsRepository().loadAirportByCode(arrivalAirportCode);
 
         Element aircraftCell = cells.get(5);
         String aircraftTypeValue = aircraftCell.text().strip();
