@@ -14,7 +14,7 @@ if [[ "$1" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     mvn versions:set -DnewVersion=$RELEASE_VERSION
     mvn clean package
     git commit -am "Release version $RELEASE_VERSION"
-    git tag -f release-$RELEASE_VERSION
+    git tag -f v$RELEASE_VERSION
     mvn versions:set -DnewVersion=$NEXT_VERSION-SNAPSHOT
     git commit -am "Prepare next version"
     mvn versions:commit
