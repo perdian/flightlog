@@ -34,7 +34,7 @@ class Oauth2AuthenticationLoginController {
             httpSession.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
             return "authentication/login/oauth-error";
         } else {
-            return "redirect:/oauth2/authorization/google";
+            return "redirect:/oauth2/authorization/" + Oauth2AuthenticationConfiguration.REGISTRATION_ID;
         }
 
     }

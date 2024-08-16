@@ -63,10 +63,6 @@ class Oauth2AuthenticationUserService extends OidcUserService {
 
     }
 
-    private boolean checkUserAllowedToRegister(OidcUser oidcUser) {
-        return false;
-    }
-
     UserRepository getUserRepository() {
         return this.userRepository;
     }

@@ -8,13 +8,6 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${FLIGHTLOG_AUTHENTICATION_OAUTH2_GOOGLE_CLIENT_ID:null}
-            client-secret: ${FLIGHTLOG_AUTHENTICATION_OAUTH2_GOOGLE_CLIENT_SECRET:null}
   servlet:
     multipart:
       max-file-size: 10MB
@@ -40,10 +33,6 @@ server:
       force: true
 
 flightlog:
-  authentication:
-    type: ${FLIGHTLOG_AUTHENTICATION_TYPE:fixed}
-    fixed:
-      defaultEmailAddress: ${FLIGHTLOG_AUTHENTICATION_FIXED_DEFAULT_EMAIL_ADDRESS:example@example.com}
   registration:
     emailAddressesAllowlist: ${FLIGHTLOG_REGISTRATION_EMAIL_ADDRESSES_ALLOWLIST:}
     allowByDefault: ${FLIGHTLOG_REGISTRATION_ALLOW_BY_DEFAULT:false}

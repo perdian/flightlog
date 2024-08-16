@@ -5,14 +5,14 @@ import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 import de.perdian.flightlog.modules.authentication.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 @Configuration
-@ConditionalOnProperty(name = "flightlog.authentication.type", havingValue = "fixed")
+@ConditionalOnExpression("#{environment['FLIGHTLOG_AUTHENTICATION_TYPE'] == null or environment['FLIGHTLOG_AUTHENTICATION_TYPE'].toUpperCase() == 'FIXED'}")
 public class FixedAuthenticationConfiguration extends AbstractAuthenticationConfiguration {
 
     private UserRepository userRepository = null;
@@ -46,7 +46,7 @@ public class FixedAuthenticationConfiguration extends AbstractAuthenticationConf
     String getEmailAddress() {
         return this.emailAddress;
     }
-    @Value("${flightlog.authentication.fixed.defaultEmailAddress:}")
+    @Value("${FLIGHTLOG_AUTHENTICATION_FIXED_DEFAULT_EMAIL_ADDRESS:example@example.com}")
     void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
