@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
+        <version>3.3.3</version>
     </parent>
 
     <groupId>de.perdian.flightlog</groupId>
@@ -40,7 +40,7 @@
     <properties>
         <arcjs.version>0.1.1</arcjs.version>
         <fomanticui.version>2.9.3</fomanticui.version>
-        <java.version>21</java.version>
+        <java.version>22</java.version>
         <jquery.version>3.7.1</jquery.version>
         <jsoup.version>1.17.2</jsoup.version>
         <okhttp.version>4.12.0</okhttp.version>
@@ -196,7 +196,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.1</version><!--$NO-MVN-MAN-VER$ -->
+                <version>3.13.0</version><!--$NO-MVN-MAN-VER$ -->
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <release>${java.version}</release>
@@ -205,16 +205,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version><!--$NO-MVN-MAN-VER$ -->
+                <version>3.5.0</version><!--$NO-MVN-MAN-VER$ -->
             </plugin>
             <plugin>
                 <groupId>org.openrewrite.maven</groupId>
                 <artifactId>rewrite-maven-plugin</artifactId>
-                <version>5.23.1</version>
+                <version>5.39.2</version>
                 <configuration>
                     <activeRecipes>
                         <recipe>org.openrewrite.java.migrate.UpgradeToJava21</recipe>
-                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_2</recipe>
+                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3</recipe>
                         <recipe>org.openrewrite.java.spring.boot3.MigrateThymeleafDependencies</recipe>
                     </activeRecipes>
                 </configuration>
@@ -222,12 +222,12 @@
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-migrate-java</artifactId>
-                        <version>2.9.0</version>
+                        <version>2.23.0</version>
                     </dependency>
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-spring</artifactId>
-                        <version>5.5.0</version>
+                        <version>5.18.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
