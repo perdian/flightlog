@@ -31,6 +31,8 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+  compression:
+    enabled: true
 
 flightlog:
   registration:
