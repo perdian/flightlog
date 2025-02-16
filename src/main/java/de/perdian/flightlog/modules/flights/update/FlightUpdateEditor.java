@@ -282,7 +282,7 @@ public class FlightUpdateEditor {
         return this.seatNumber;
     }
     public void setSeatNumber(String seatNumber) {
-        this.seatNumber = seatNumber;
+        this.seatNumber = seatNumber == null ? null : seatNumber.toUpperCase();
     }
 
     public String getSeatType() {
