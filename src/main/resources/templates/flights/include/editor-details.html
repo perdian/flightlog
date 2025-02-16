@@ -104,7 +104,7 @@
         <div class="eight wide mobile two wide tablet two wide computer column">
           <div class="field" th:classappend="${#fields.hasErrors('aircraftRegistration') ? 'error' : ''}">
             <label th:text="#{registration}"></label>
-            <input type="text" class="uppercase" th:field="*{aircraftRegistration}" maxlength="6" />
+            <input type="text" class="uppercase" th:field="*{aircraftRegistration}" />
           </div>
         </div>
         <div class="sixteen wide mobile three wide tablet four wide computer column">
