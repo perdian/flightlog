@@ -1,4 +1,4 @@
-FROM openjdk:22-slim
+FROM openjdk:23-slim
 
 VOLUME /var/flightlog/database/
 
