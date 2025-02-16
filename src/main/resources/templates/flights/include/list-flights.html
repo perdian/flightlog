@@ -59,9 +59,9 @@
             <span th:text="${flight.flightNumber}"></span>
           </strong>
         </div>
-        <div th:text="${#strings.isEmpty(flight.aircraft.type) ? '&nbsp;' : flight.aircraft.type}"></div>
-        <div th:text="${flight.aircraft.registration}"></div>
-        <div th:text="${flight.aircraft.name}"></div>
+        <div th:unless="${#strings.isEmpty(flight.aircraft.type)}" th:text="${flight.aircraft.type}"></div>
+        <div th:unless="${#strings.isEmpty(flight.aircraft.registration)}" th:text="${flight.aircraft.registration}"></div>
+        <div th:unless="${#strings.isEmpty(flight.aircraft.name)}" th:text="${flight.aircraft.name}"></div>
       </div>
       <div class="eight wide mobile two wide tablet two wide computer column">
         <div th:text="${flight.cabinClass == null ? '' : #messages.msg('cabinClass.' + flight.cabinClass)}"></div>
@@ -72,20 +72,20 @@
         <div th:text="${flight.flightReason == null ? '' : #messages.msg('flightReason.' + flight.flightReason)}"></div>
       </div>
       <div class="eight wide mobile two wide tablet one wide computer column">
-        <div class="mobile only">
+        <div class="mobile only" th:unless="${#strings.isEmpty(flight.flightDurationString)}">
           <span style="display: inline-block; min-width: 60px;"><span th:text="#{duration}"></span>:</span>
           <span style="display: inline-block; min-width: 50px; text-align: right;" th:text="${flight.flightDurationString}"></span> h
         </div>
         <div class="mobile only">
           <span style="display: inline-block; min-width: 60px;"><span th:text="#{distance}"></span>:</span>
-          <span style="display: inline-block; min-width: 50px; text-align: right;" th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
+          <span style="display: inline-block; min-width: 50px; text-align: right;" th:text="${#numbers.formatDecimal(flight.flightDistance, 2, 'POINT', 0, 'COMMA')}"></span> km
         </div>
         <span class="mobile hidden" style="float: right; text-align: right;">
-          <div>
+          <div th:unless="${#strings.isEmpty(flight.flightDurationString)}">
             <span th:text="${flight.flightDurationString}"></span> h
           </div>
           <div>
-            <span th:text="${#numbers.formatDecimal(flight.flightDistance, 3, 'POINT', 0, 'COMMA')}"></span> km
+            <span th:text="${#numbers.formatDecimal(flight.flightDistance, 2, 'POINT', 0, 'COMMA')}"></span> km
           </div>
         </span>
       </div>

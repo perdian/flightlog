@@ -14,7 +14,7 @@
 
       <div th:if="${not #lists.isEmpty(flights.items)}">
         <div th:replace="~{flights/include/list-flights :: pagination}">Pagination</div>
-        <div th:replace="~{flights/include/list-flights :: flights}">Pagination</div>
+        <div th:replace="~{flights/include/list-flights :: flights}">Flights</div>
         <div th:replace="~{flights/include/list-flights :: pagination}">Pagination</div>
       </div>
 
