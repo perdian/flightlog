@@ -33,7 +33,7 @@ class FlightsExchangeController {
     }
 
     @PostMapping(value = "/import/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    String doImportFilePost(@ModelAttribute FlightsExchangeEditor exchangeEditor, Model model) {
+    String doImportFilePost(@ModelAttribute("exchangeEditor") FlightsExchangeEditor exchangeEditor, Model model) {
         try {
             if (exchangeEditor.getFile() == null || exchangeEditor.getFile().isEmpty()) {
                 throw new FileNotFoundException("No uploaded file found");
@@ -56,7 +56,7 @@ class FlightsExchangeController {
     }
 
     @PostMapping("/import/verify")
-    String doImportVerifyPost(@ModelAttribute FlightsExchangeEditor exchangeEditor) {
+    String doImportVerifyPost(@ModelAttribute("exchangeEditor") FlightsExchangeEditor exchangeEditor) {
         this.getExchangeService().importPackage(exchangeEditor.getExchangePackage(), this.getUserHolder().getCurrentUser());
         return "flights/import/done";
     }
