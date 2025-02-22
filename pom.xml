@@ -208,6 +208,25 @@
                 <version>3.5.2</version><!--$NO-MVN-MAN-VER$ -->
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>3.2.1</version><!--$NO-MVN-MAN-VER$ -->
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create-metadata</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                    <addOutputDirectoryToResources>true</addOutputDirectoryToResources>
+                    <shortRevisionLength>6</shortRevisionLength>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.openrewrite.maven</groupId>
                 <artifactId>rewrite-maven-plugin</artifactId>
                 <version>6.1.4</version>

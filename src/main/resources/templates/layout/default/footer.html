@@ -7,6 +7,9 @@
         <div class="active item">
           <i class="plane icon"></i> &nbsp; <strong>Flightlog</strong>
         </div>
+        <div class="item">
+          <span th:text="${'Version ' + buildInfo}"></span>
+        </div>
         <a tabindex="-1" class="right aligned item" th:href="@{https://github.com/perdian/flightlog}" target="_blank">
           <i class="code icon"></i>
           https://github.com/perdian/flightlog
