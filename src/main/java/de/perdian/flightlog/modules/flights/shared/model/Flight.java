@@ -141,7 +141,7 @@ public class Flight {
     }
 
     public Number getFlightAverageSpeed() {
-        return this.getFlightDistance().doubleValue() / (this.getFlightDuration().toMinutes() / 60d);
+        return this.getFlightDistance() == null || this.getFlightDuration() == null ? null : this.getFlightDistance().doubleValue() / (this.getFlightDuration().toMinutes() / 60d);
     }
 
     public String getFlightAverageSpeedString() {

@@ -5,6 +5,7 @@ import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightDistance;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.FlightType;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -58,7 +59,8 @@ class OverviewQueryValuesAdvice {
 
     private List<OverviewQueryValuesItem> createQueryValuesItemsForAircraftTypes(List<Flight> allFlights) {
         return allFlights.stream()
-            .map(flight -> flight.getAircraft().getType())
+            .map(flight -> flight == null || flight.getAircraft() == null ? null : flight.getAircraft().getType())
+            .filter(aircraftType -> StringUtils.isNotEmpty(aircraftType))
             .map(aircraftType -> new OverviewQueryValuesItem(aircraftType))
             .distinct()
             .sorted()

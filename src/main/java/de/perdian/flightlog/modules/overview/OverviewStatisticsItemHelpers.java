@@ -12,6 +12,7 @@ class OverviewStatisticsItemHelpers {
 
     static <V> BiFunction<List<Flight>, V, Number> sumValues(BiFunction<Flight, V, Number> valueExtractor) {
         return (flights, value) -> flights.stream()
+            .filter(flight -> flight != null)
             .map(flight -> valueExtractor.apply(flight, value))
             .mapToDouble(flightValue -> flightValue == null ? 0d : flightValue.doubleValue())
             .sum();
@@ -19,6 +20,7 @@ class OverviewStatisticsItemHelpers {
 
     static <V> BiFunction<List<Flight>, V, Number> countMatchingValues(Function<Flight, List<V>> valueExtractor) {
         return (flights, value) -> flights.stream()
+            .filter(flight -> flight != null)
             .map(flight -> valueExtractor.apply(flight))
             .flatMap(flightValues -> flightValues == null ? Stream.empty() : flightValues.stream())
             .filter(flightValue -> Objects.equals(flightValue, value))
@@ -27,6 +29,7 @@ class OverviewStatisticsItemHelpers {
 
     static <V> BiFunction<List<Flight>, V, Number> countDistinctValues(BiFunction<Flight, V, List<Object>> valuesExtractor) {
         return (flights, value) -> flights.stream()
+            .filter(flight -> flight != null)
             .map(flight -> valuesExtractor.apply(flight, value))
             .flatMap(flightValues -> flightValues == null ? Stream.empty() : flightValues.stream())
             .distinct()
