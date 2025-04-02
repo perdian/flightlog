@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.2</version>
+        <version>3.4.4</version>
     </parent>
 
     <groupId>de.perdian.flightlog</groupId>
@@ -40,9 +40,9 @@
     <properties>
         <arcjs.version>0.1.1</arcjs.version>
         <fomanticui.version>2.9.3</fomanticui.version>
-        <java.version>23</java.version>
+        <java.version>24</java.version>
         <jquery.version>3.7.1</jquery.version>
-        <jsoup.version>1.18.3</jsoup.version>
+        <jsoup.version>1.19.1</jsoup.version>
         <okhttp.version>4.12.0</okhttp.version>
         <openlayers.version>8.2.0</openlayers.version>
         <thymeleaf-extras-springsecurity.version>3.1.3.RELEASE</thymeleaf-extras-springsecurity.version>
@@ -233,7 +233,7 @@
                 <configuration>
                     <activeRecipes>
                         <recipe>org.openrewrite.java.migrate.UpgradeToJava21</recipe>
-                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3</recipe>
+                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_4</recipe>
                         <recipe>org.openrewrite.java.spring.boot3.MigrateThymeleafDependencies</recipe>
                     </activeRecipes>
                 </configuration>
@@ -241,12 +241,12 @@
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-migrate-java</artifactId>
-                        <version>3.2.0</version>
+                        <version>3.5.0</version>
                     </dependency>
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-spring</artifactId>
-                        <version>6.1.0</version>
+                        <version>6.4.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
