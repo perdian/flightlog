@@ -30,6 +30,18 @@ public class Airport {
         }
     }
 
+    public LocalDateTime computeLocalDateTime(Instant instant) {
+        if (instant == null) {
+            return null;
+        } else if (this.getTimezoneId() != null) {
+            return instant.atZone(this.getTimezoneId()).toLocalDateTime();
+        } else if (this.getTimezoneOffset() != null) {
+            return instant.atOffset(this.getTimezoneOffset()).toLocalDateTime();
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public int hashCode() {
         return this.getCode() == null ? 0 : this.getCode().hashCode();
