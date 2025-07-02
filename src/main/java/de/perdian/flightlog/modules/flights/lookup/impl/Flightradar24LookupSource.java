@@ -127,10 +127,14 @@ public class Flightradar24LookupSource implements FlightLookupSource {
         arrivalContact.setTimeLocal(arrivalLocalTime.toLocalTime());
         arrivalContact.setDateTimeUtc(internalFlight.getArrivalTime());
 
-        AircraftType aircraftType = this.getAircraftTypesRepository().loadAircraftTypeByCode(internalFlight.getAircraftTypeCode());
         Aircraft aircraft = new Aircraft();
-        aircraft.setType(aircraftType.getTitle());
         aircraft.setRegistration(internalFlight.getAircraftRegistration());
+        AircraftType aircraftType = this.getAircraftTypesRepository().loadAircraftTypeByCode(internalFlight.getAircraftTypeCode());
+        if (aircraftType == null) {
+            log.warn("Cannot find aircraft type for code: {}", internalFlight.getAircraftTypeCode());
+        } else {
+            aircraft.setType(aircraftType.getTitle());
+        }
 
         Flight externalFlight = new Flight();
         externalFlight.setDepartureContact(departureContact);

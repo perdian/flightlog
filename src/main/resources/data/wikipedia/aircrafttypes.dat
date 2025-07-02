@@ -260,6 +260,11 @@ DHS,DHC3,De Havilland Canada DHC-3
 DHT,DHC6,De Havilland Canada DHC-6
 E70,E170,Embraer 170
 E90,E190,Embraer 190
+E95,E195,Embraer 195
+E275,E275,Embraer 175-E2
+E75S,E75S,Embraer 175-E2
+E290,E290,Embraer 190-E2
+E295,E295,Embraer 195-E2
 EM2,E120,Embraer EMB 120
 EMB,E110,Embraer EMB 110
 EMJ,,Embraer 170
