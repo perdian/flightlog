@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.overview;
 
-import de.perdian.flightlog.modules.authentication.UserHolder;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetailsHolder;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQuery;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQueryService;
@@ -18,7 +18,7 @@ class OverviewController {
     static final String MODEL_ATTRIBUTE_FILTERED_FLIGHTS = "filteredFlights";
     static final String MODEL_ATTRIBUTE_ALL_FLIGHTS = "allFlights";
 
-    private UserHolder userHolder = null;
+    private FlightlogUserDetailsHolder flightlogUserDetailsHolder = null;
     private FlightQueryService flightQueryService = null;
 
     @RequestMapping({ "/", "/overview" })
@@ -28,13 +28,13 @@ class OverviewController {
 
     @ModelAttribute(name = MODEL_ATTRIBUTE_FILTERED_FLIGHTS, binding = false)
     List<Flight> filteredFlights(@ModelAttribute("overviewQuery") FlightQuery filteredFlightsQuery) {
-        FlightQuery flightQuery = filteredFlightsQuery.clone().withUser(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = filteredFlightsQuery.clone().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         return this.getFlightQueryService().loadFlights(flightQuery);
     }
 
     @ModelAttribute(name = MODEL_ATTRIBUTE_ALL_FLIGHTS, binding = false)
     List<Flight> allFlights() {
-        return this.getFlightQueryService().loadFlights(new FlightQuery().withUser(this.getUserHolder().getCurrentUser()));
+        return this.getFlightQueryService().loadFlights(new FlightQuery().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails()));
     }
 
     @ModelAttribute(name = "overviewQuery")
@@ -42,12 +42,12 @@ class OverviewController {
         return new FlightQuery();
     }
 
-    UserHolder getUserHolder() {
-        return this.userHolder;
+    FlightlogUserDetailsHolder getFlightlogUserDetailsHolder() {
+        return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(UserHolder userHolder) {
-        this.userHolder = userHolder;
+    void setFlightlogUserDetailsHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+        this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 
     FlightQueryService getFlightQueryService() {

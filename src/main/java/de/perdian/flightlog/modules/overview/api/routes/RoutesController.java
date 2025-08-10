@@ -1,7 +1,7 @@
 package de.perdian.flightlog.modules.overview.api.routes;
 
 import de.perdian.flightlog.modules.airports.model.Airport;
-import de.perdian.flightlog.modules.authentication.UserHolder;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetailsHolder;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQuery;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQueryService;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RestController
 class RoutesController {
 
-    private UserHolder userHolder = null;
+    private FlightlogUserDetailsHolder flightlogUserDetailsHolder = null;
     private FlightQueryService flightQueryService = null;
 
     @RequestMapping(path = "/overview/api/routes", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
@@ -28,7 +28,7 @@ class RoutesController {
 
         Map<String, RoutesPoint> airportPointsByCode = new LinkedHashMap<>();
         Map<String, RoutesItem> itemsByKey = new LinkedHashMap<>();
-        List<Flight> filteredFlights = this.getFlightQueryService().loadFlights(flightQuery.clone().withUser(this.getUserHolder().getCurrentUser()));
+        List<Flight> filteredFlights = this.getFlightQueryService().loadFlights(flightQuery.clone().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails()));
         for (Flight flight : filteredFlights) {
             Airport departureAirport = flight.getDepartureContact().getAirport();
             Airport arrivalAirport = flight.getArrivalContact().getAirport();
@@ -70,12 +70,12 @@ class RoutesController {
         this.flightQueryService = flightQueryService;
     }
 
-    UserHolder getUserHolder() {
-        return this.userHolder;
+    FlightlogUserDetailsHolder getFlightlogUserDetailsHolder() {
+        return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(UserHolder userHolder) {
-        this.userHolder = userHolder;
+    void setFlightlogUserDetailsHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+        this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 
 }

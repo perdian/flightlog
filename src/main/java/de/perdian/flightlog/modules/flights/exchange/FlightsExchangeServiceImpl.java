@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.exchange;
 
-import de.perdian.flightlog.modules.authentication.User;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetails;
 import de.perdian.flightlog.modules.flights.shared.persistence.FlightEntity;
 import de.perdian.flightlog.modules.flights.shared.persistence.FlightRepository;
 import de.perdian.flightlog.support.FlightlogHelper;
@@ -28,31 +28,31 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
 
     @Override
     @Transactional
-    public List<FlightsExchangePackageFlight> importPackage(FlightsExchangePackage exchangePackage, User targetUser) {
+    public List<FlightsExchangePackageFlight> importPackage(FlightsExchangePackage exchangePackage, FlightlogUserDetails targetUserDetails) {
 
         List<FlightsExchangePackageFlight> importedFlights = exchangePackage.getFlights()
             .stream()
             .filter(flight -> Boolean.TRUE.equals(flight.getInclude()))
             .toList();
 
-        log.debug("Loading all currently available flights for user: {}", targetUser);
-        List<FlightEntity> allFlightEntities = this.loadAllFlightEntities(targetUser);
-        log.debug("Synchronizing {} imported flights with {} currently available flights for user: {}", importedFlights.size(), allFlightEntities.size(), targetUser);
+        log.debug("Loading all currently available flights for user: {}", targetUserDetails);
+        List<FlightEntity> allFlightEntities = this.loadAllFlightEntities(targetUserDetails);
+        log.debug("Synchronizing {} imported flights with {} currently available flights for user: {}", importedFlights.size(), allFlightEntities.size(), targetUserDetails);
 
         for (FlightsExchangePackageFlight importedFlight : importedFlights) {
-            log.trace("Importing flight for user '{}' from: {}", targetUser, importedFlight);
-            this.importPackageFlight(importedFlight, targetUser, allFlightEntities);
+            log.trace("Importing flight for user '{}' from: {}", targetUserDetails, importedFlight);
+            this.importPackageFlight(importedFlight, targetUserDetails, allFlightEntities);
         }
         return importedFlights;
 
     }
 
-    private void importPackageFlight(FlightsExchangePackageFlight importedFlight, User targetUser, List<FlightEntity> allFlightEntities) {
+    private void importPackageFlight(FlightsExchangePackageFlight importedFlight, FlightlogUserDetails targetUser, List<FlightEntity> allFlightEntities) {
         FlightEntity flightEntity = this.findFlightEntityForPackageFlight(importedFlight, allFlightEntities);
         if (flightEntity == null) {
             log.debug("Creating new FlightEntity for package flight: {}", importedFlight);
             flightEntity = new FlightEntity();
-            flightEntity.setUser(targetUser.getEntity());
+            flightEntity.setUser(targetUser.getUserEntity());
         }
         this.updateFlightEntityFromPackageFlight(flightEntity, importedFlight);
         this.getFlightRepository().save(flightEntity);
@@ -99,9 +99,9 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
     }
 
     @Override
-    public FlightsExchangePackage createPackage(User sourceUser) {
+    public FlightsExchangePackage createPackage(FlightlogUserDetails sourceUserDetails) {
 
-        List<FlightEntity> flightEntities = this.loadAllFlightEntities(sourceUser);
+        List<FlightEntity> flightEntities = this.loadAllFlightEntities(sourceUserDetails);
 
         List<FlightsExchangePackageFlight> exchangePackageFlights = flightEntities.stream()
             .map(flightEntity -> this.createPackageFlight(flightEntity))
@@ -113,7 +113,7 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
             .max(Comparator.naturalOrder())
             .orElseGet(() -> Instant.now());
 
-        log.debug("Exporting {} flights for user: {}", flightEntities.size(), sourceUser);
+        log.debug("Exporting {} flights for user: {}", flightEntities.size(), sourceUserDetails);
         FlightsExchangePackage exchangePackage = new FlightsExchangePackage();
         exchangePackage.setFlights(exchangePackageFlights);
         exchangePackage.setCreationTime(latestUpdateTime);
@@ -146,8 +146,8 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
         return flight;
     }
 
-    private List<FlightEntity> loadAllFlightEntities(User user) {
-        Specification<FlightEntity> allFlightEntitiesSpecification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), user.getEntity());
+    private List<FlightEntity> loadAllFlightEntities(FlightlogUserDetails userDetails) {
+        Specification<FlightEntity> allFlightEntitiesSpecification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), userDetails.getUserEntity());
         Sort allFlightEntitiesSort = Sort.by(Sort.Order.asc("departureDateLocal"), Sort.Order.asc("departureTimeLocal"));
         return this.getFlightRepository().findAll(allFlightEntitiesSpecification);
     }

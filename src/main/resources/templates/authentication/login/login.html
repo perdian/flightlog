@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: html(_, _, ~{::main})}">
+  <body>
+    <main>
+
+      <h3 class="ui header">
+        <i class="user icon"></i>
+        <div class="content">
+          <span th:text="#{login}">Login</span>
+        </div>
+      </h3>
+
+      <div class="ui negative message" th:if="${authenticationException != null}">
+        <div class="header" th:text="#{loginFailed}"></div>
+      </div>
+
+      <form method="post" class="ui large form" th:action="@{/authentication/login/submit}">
+        <div class="field">
+          <label th:text="#{username}">Username</label>
+          <input type="text" name="username" />
+        </div>
+        <div class="field">
+          <label th:text="#{password}">Password</label>
+          <input type="password" name="password" />
+        </div>
+        <input type="submit" class="ui primary button" th:value="#{executeLogin}" />
+      </form>
+
+    </main>
+  </body>
+</html>

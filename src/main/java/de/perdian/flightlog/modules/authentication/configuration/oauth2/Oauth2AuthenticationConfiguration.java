@@ -22,14 +22,12 @@ class Oauth2AuthenticationConfiguration extends AbstractAuthenticationConfigurat
 
     @Override
     protected void configureSecurityFilterChainHttpSecurity(HttpSecurity httpSecurity) throws Exception {
-
         httpSecurity.oauth2Login(oauthLogin -> {
             oauthLogin.loginPage("/authentication/login/oauth2");
             oauthLogin.userInfoEndpoint(userInfoEndpointCustomizer -> {
                 userInfoEndpointCustomizer.oidcUserService(this.oidcUserService());
             });
         });
-
     }
 
     @Bean

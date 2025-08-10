@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.backup.impl;
 
-import de.perdian.flightlog.modules.authentication.User;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetails;
 import de.perdian.flightlog.modules.backup.BackupConsumer;
 import de.perdian.flightlog.modules.flights.exchange.FlightsExchangePackage;
 import de.perdian.flightlog.modules.flights.exchange.impl.XmlExchangeHandler;
@@ -27,12 +27,12 @@ class FileSystemBackupConsumer implements BackupConsumer {
     private XmlExchangeHandler xmlExchangeHandler = new XmlExchangeHandler();
 
     @Override
-    public void consumeBackupPackage(FlightsExchangePackage backupPackage, User user) {
+    public void consumeBackupPackage(FlightsExchangePackage backupPackage, FlightlogUserDetails userDetails) {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmssX");
         String targetFileDate = dateTimeFormatter.format(backupPackage.getCreationTime().atZone(ZoneId.of("UTC")));
         StringBuilder targetFileName = new StringBuilder();
-        targetFileName.append("flightlog-backup-").append(user.getUsername());
+        targetFileName.append("flightlog-backup-").append(userDetails.getUsername());
         targetFileName.append("-").append(targetFileDate).append(".xml");
         Path targetFile = this.getDirectory().resolve(targetFileName.toString());
 
@@ -45,12 +45,12 @@ class FileSystemBackupConsumer implements BackupConsumer {
             }
         }
 
-        log.debug("Writing backup into file '{}' for user {}", targetFile.toUri(), user);
+        log.debug("Writing backup into file '{}' for user {}", targetFile.toUri(), userDetails);
         try (OutputStream targetFileStream = Files.newOutputStream(targetFile)) {
             this.getXmlExchangeHandler().exportPackage(backupPackage, targetFileStream);
             targetFileStream.flush();
         } catch (IOException e) {
-            log.error("Cannot write backup into file '{}' for user {}", targetFile.toUri(), user, e);
+            log.error("Cannot write backup into file '{}' for user {}", targetFile.toUri(), userDetails, e);
         }
 
     }

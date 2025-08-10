@@ -35,9 +35,6 @@ server:
     enabled: true
 
 flightlog:
-  registration:
-    emailAddressesAllowlist: ${FLIGHTLOG_REGISTRATION_EMAIL_ADDRESSES_ALLOWLIST:}
-    allowByDefault: ${FLIGHTLOG_REGISTRATION_ALLOW_BY_DEFAULT:false}
   backup:
     cron: ${FLIGHTLOG_BACKUP_CRON:}
     onlyForNewContent: ${FLIGHTLOG_BACKUP_ONLYFORNEWCONTENT:true}

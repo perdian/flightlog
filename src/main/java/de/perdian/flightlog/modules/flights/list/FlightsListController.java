@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.list;
 
-import de.perdian.flightlog.modules.authentication.UserHolder;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetailsHolder;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQuery;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQueryService;
 import de.perdian.flightlog.support.pagination.PaginationRequest;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FlightsListController {
 
     private FlightQueryService queryService = null;
-    private UserHolder userHolder = null;
+    private FlightlogUserDetailsHolder flightlogUserDetailsHolder = null;
 
     @RequestMapping(path = "/")
     String doIndex(Model model) {
@@ -39,7 +39,7 @@ public class FlightsListController {
     }
 
     private String doList(FlightQuery flightQuery, PaginationRequest paginationRequest, Model model) {
-        FlightQuery userFlightQuery = flightQuery.clone().withUser(this.getUserHolder().getCurrentUser());
+        FlightQuery userFlightQuery = flightQuery.clone().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         model.addAttribute("flights", this.getQueryService().loadFlightsPaginated(userFlightQuery, paginationRequest));
         return "flights/list";
     }
@@ -52,12 +52,12 @@ public class FlightsListController {
         this.queryService = queryService;
     }
 
-    UserHolder getUserHolder() {
-        return this.userHolder;
+    FlightlogUserDetailsHolder getFlightlogUserDetailsHolder() {
+        return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(UserHolder userHolder) {
-        this.userHolder = userHolder;
+    void setFlightlogUserDetailsHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+        this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 
 }

@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.exchange;
 
-import de.perdian.flightlog.modules.authentication.UserHolder;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetailsHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ class FlightsExchangeController {
     private static final Logger log = LoggerFactory.getLogger(FlightsExchangeController.class);
 
     private FlightsExchangeService exchangeService = null;
-    private UserHolder userHolder = null;
+    private FlightlogUserDetailsHolder flightlogUserDetailsHolder = null;
 
     @RequestMapping("/import/file")
     String doImportFileGet() {
@@ -57,14 +57,14 @@ class FlightsExchangeController {
 
     @PostMapping("/import/verify")
     String doImportVerifyPost(@ModelAttribute("exchangeEditor") FlightsExchangeEditor exchangeEditor) {
-        this.getExchangeService().importPackage(exchangeEditor.getExchangePackage(), this.getUserHolder().getCurrentUser());
+        this.getExchangeService().importPackage(exchangeEditor.getExchangePackage(), this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         return "flights/import/done";
     }
 
     @RequestMapping("/export/{format}")
     ResponseEntity<?> doExport(@PathVariable("format") String formatValue) throws IOException  {
         FlightsExchangeFormat exchangeFormat = FlightsExchangeFormat.valueOf(formatValue.toUpperCase());
-        FlightsExchangePackage exchangePackage = this.getExchangeService().createPackage(this.getUserHolder().getCurrentUser());
+        FlightsExchangePackage exchangePackage = this.getExchangeService().createPackage(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         try (ByteArrayOutputStream exchangeStream = new ByteArrayOutputStream()) {
 
             exchangeFormat.getHandler().exportPackage(exchangePackage, exchangeStream);
@@ -102,12 +102,12 @@ class FlightsExchangeController {
         this.exchangeService = exchangeService;
     }
 
-    UserHolder getUserHolder() {
-        return this.userHolder;
+    FlightlogUserDetailsHolder getFlightlogUserDetailsHolder() {
+        return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(UserHolder userHolder) {
-        this.userHolder = userHolder;
+    void setFlightlogUserDetailsHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+        this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 
 }
