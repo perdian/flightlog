@@ -1,32 +1,32 @@
 package de.perdian.flightlog.modules.authentication.configuration.fixed;
 
-import de.perdian.flightlog.modules.authentication.User;
 import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetails;
 
-class FixedAuthenticationUser implements User {
+class FixedAuthenticationUser implements FlightlogUserDetails {
 
-    private UserEntity entity = null;
+    private UserEntity userEntity = null;
 
-    FixedAuthenticationUser(UserEntity entity) {
-        this.setEntity(entity);
+    FixedAuthenticationUser(UserEntity userEntity) {
+        this.setUserEntity(userEntity);
     }
 
     @Override
     public String toString() {
-        return "FixedAuthenticationUser[" + this.getEntity() + "]";
+        return "FixedAuthenticationUser[" + this.getUserEntity() + "]";
     }
 
     @Override
     public String getUsername() {
-        return this.getEntity().getUsername();
+        return this.getUserEntity().getUsername();
     }
 
     @Override
-    public UserEntity getEntity() {
-        return this.entity;
+    public UserEntity getUserEntity() {
+        return this.userEntity;
     }
-    private void setEntity(UserEntity entity) {
-        this.entity = entity;
+    private void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
 }

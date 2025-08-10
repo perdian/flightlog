@@ -97,23 +97,44 @@ The examples listed below are taken from an [Authentik](https://goauthentik.io) 
 | `FLIGHTLOG_AUTHENTICATION_OAUTH2_USER_NAME_ATTRIBUTE` | No | `name` | |
 | `FLIGHTLOG_AUTHENTICATION_OAUTH2_JWK_SET_URI` | Yes | | `http://localhost:9000/application/o/flightlog/jwks/` |
 
+## LDAP authentication
+
+Flightlog supports LDAP authentication. To enable an LDAP authentication provider you have to set the `FLIGHTLOG_AUTHENTICATION_TYPE` environment variable to `LDAP`.
+
+For each login the application will perform an OAuth2 authentication.
+After the successful authentication an entry within the `flightuser_user` database table will be made, populated with the values retrieved from the LDAP entry.
+
+The following environment variables can/must be set when using LDAP
+
+| Environment variable | Required | Default value | Example |
+| -------------------- | -------- | ------------- | ------- |
+| `FLIGHTLOG_AUTHENTICATION_LDAP_SERVER_URL` | Yes | | `ldaps://example.com/` |
+| `FLIGHTLOG_AUTHENTICATION_LDAP_BASE_DN` | Yes | | `dc=example,dc=com` |
+| `FLIGHTLOG_AUTHENTICATION_LDAP_BIND_USER_DN` | No | | `cn=bind-user,dc=example,dc=com` |
+| `FLIGHTLOG_AUTHENTICATION_LDAP_BIND_USER_PASSWORD` | No | | `CorrectHorseBatteryStaple` |
+| `FLIGHTLOG_AUTHENTICATION_LDAP_USER_SEARCH_BASE` | No | `ou=users` | |
+| `FLIGHTLOG_AUTHENTICATION_LDAP_USER_SEARCH_FILTER` | No | | |
+| `FLIGHTLOG_AUTHENTICATION_LDAP_USER_DN_PATTERNS` | No | `uid={0},ou=users` | |
+
 ## Whitelisting users
 
 **By default no new users can register themselves in a Flightlog application**.
 
-This is a conscious choice to prohibit someone spamming the system and creating entries in the database by simply performing multiple OAuth2 authentications.
+This is a conscious choice to prohibit someone spamming the system and creating entries in the database by simply performing multiple authentications with users known in the authentication provider but not in flightlog itself.
 
-There are two ways to allow an authentication from a new OAuth2 account:
+There are two ways to allow an authentication from a new user:
 
 ### Disabling registration blocker
 
-Setting the environment variable `FLIGHTLOG_REGISTRATION_ALLOW_BY_DEFAULT` to `true` will bypass the check for existence and will create a new entry in the local database for every new account authenticated via the currently configured OAuth2 authentication provider.
+Setting the environment variable `FLIGHTLOG_REGISTRATION_ALLOW_BY_DEFAULT` to `true` will bypass the check for existence and will create a new entry in the local database for every new account authenticated via the currently configured authentication provider.
 
-### Adding the email address to the allowlist
+### Adding the username to the allowlist
 
-When a new OAuth2 account is found the system will check the internal *allowlist* whether the email address of the new user is found on the allowlist. If that's the case then the new user will be added into the database and the authentication will succeed.
+When a new account is found via the authentication provieer the system will check the internal *allowlist* whether the username of the new user is found on the allowlist. If that's the case then the new user will be added into the database and the authentication will succeed.
 
-To place one or more user(s) on the allowlist add the email addresses to the environment variable `FLIGHTLOG_REGISTRATION_EMAIL_ADDRESSES_ALLOWLIST` (separate multiple addresses by commata).
+To place one or more user(s) on the allowlist add the usernames to the environment variable `FLIGHTLOG_REGISTRATION_USERNAMES_ALLOWLIST` (separate multiple addresses by commata).
+
+*For historic compatibility, the environment variable `FLIGHTLOG_REGISTRATION_EMAIL_ADDRESSES_ALLOWLIST` is also evaluated and merged with the list of usernames. However the email is only used of the username used by the authentication provider itself is also an email adress (this is currently only the case for the OAuth2 authentication provider).*
 
 ## Other environment variables
 

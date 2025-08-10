@@ -1,7 +1,7 @@
 package de.perdian.flightlog.modules.overview.api.routes;
 
 import de.perdian.flightlog.modules.airports.model.Airport;
-import de.perdian.flightlog.modules.authentication.UserHolder;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetailsHolder;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQuery;
 import de.perdian.flightlog.modules.flights.shared.service.FlightQueryService;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RestController
 class RoutesController {
 
-    private UserHolder userHolder = null;
+    private FlightlogUserDetailsHolder flightlogUserDetailsHolder = null;
     private FlightQueryService flightQueryService = null;
 
     @RequestMapping(path = "/overview/api/routes", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
@@ -70,12 +70,12 @@ class RoutesController {
         this.flightQueryService = flightQueryService;
     }
 
-    UserHolder getUserHolder() {
-        return this.userHolder;
+    FlightlogUserDetailsHolder getUserHolder() {
+        return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(UserHolder userHolder) {
-        this.userHolder = userHolder;
+    void setUserHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+        this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 
 }

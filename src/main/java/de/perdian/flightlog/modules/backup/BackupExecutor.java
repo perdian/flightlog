@@ -1,8 +1,8 @@
 package de.perdian.flightlog.modules.backup;
 
-import de.perdian.flightlog.modules.authentication.User;
 import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
 import de.perdian.flightlog.modules.authentication.persistence.UserRepository;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetails;
 import de.perdian.flightlog.modules.backup.persistence.BackupEntity;
 import de.perdian.flightlog.modules.backup.persistence.BackupRepository;
 import de.perdian.flightlog.modules.flights.exchange.FlightsExchangePackage;
@@ -40,7 +40,7 @@ class BackupExecutor {
 
     private void executeBackupForUser(UserEntity userEntity) {
 
-        User backupUser = new BackupUser(userEntity);
+        FlightlogUserDetails backupUser = new BackupUser(userEntity);
         FlightsExchangePackage exchangePackage = this.getFlightsExchangeService().createPackage(backupUser);
         List<FlightsExchangePackageFlight> exchangeFlights = exchangePackage.getFlights();
         if (exchangeFlights == null || exchangeFlights.isEmpty()) {
@@ -80,30 +80,30 @@ class BackupExecutor {
 
     }
 
-    private static class BackupUser implements User {
+    private static class BackupUser implements FlightlogUserDetails {
 
-        private UserEntity entity = null;
+        private UserEntity userEntity = null;
 
-        BackupUser(UserEntity entity) {
-            this.setEntity(entity);
+        BackupUser(UserEntity userEntity) {
+            this.setUserEntity(userEntity);
         }
 
         @Override
         public String toString() {
-            return "BackupUser[" + this.getEntity() + "]";
+            return "BackupUser[" + this.getUserEntity() + "]";
         }
 
         @Override
         public String getUsername() {
-            return this.getEntity().getUsername();
+            return this.getUserEntity().getUsername();
         }
 
         @Override
-        public UserEntity getEntity() {
-            return this.entity;
+        public UserEntity getUserEntity() {
+            return this.userEntity;
         }
-        private void setEntity(UserEntity entity) {
-            this.entity = entity;
+        private void setUserEntity(UserEntity userEntity) {
+            this.userEntity = userEntity;
         }
 
     }

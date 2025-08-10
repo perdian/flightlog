@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.exchange;
 
-import de.perdian.flightlog.modules.authentication.UserHolder;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetailsHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ class FlightsExchangeController {
     private static final Logger log = LoggerFactory.getLogger(FlightsExchangeController.class);
 
     private FlightsExchangeService exchangeService = null;
-    private UserHolder userHolder = null;
+    private FlightlogUserDetailsHolder flightlogUserDetailsHolder = null;
 
     @RequestMapping("/import/file")
     String doImportFileGet() {
@@ -102,12 +102,12 @@ class FlightsExchangeController {
         this.exchangeService = exchangeService;
     }
 
-    UserHolder getUserHolder() {
-        return this.userHolder;
+    FlightlogUserDetailsHolder getUserHolder() {
+        return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(UserHolder userHolder) {
-        this.userHolder = userHolder;
+    void setUserHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+        this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 
 }

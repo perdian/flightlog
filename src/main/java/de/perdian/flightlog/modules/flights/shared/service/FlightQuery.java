@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.shared.service;
 
-import de.perdian.flightlog.modules.authentication.User;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetails;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.support.types.CabinClass;
 import de.perdian.flightlog.support.types.FlightDistance;
@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 
 public class FlightQuery implements Cloneable, Predicate<Flight> {
 
-    private User user = null;
+    private FlightlogUserDetails user = null;
     private Comparator<Flight> comparator = (f1, f2) -> -1 * Flight.compareByDepartureDateAndTime(f1, f2);
     private Collection<UUID> restrictEntityIdentifiers = null;
     private Collection<UUID> excludeEntityIdentifiers = null;
@@ -63,7 +63,7 @@ public class FlightQuery implements Cloneable, Predicate<Flight> {
 
     private boolean testUser(Flight flight) {
         UUID flightUserId = flight.getUser() == null ? null : flight.getUser().getUserId();
-        UUID queryUserId = this.getUser() == null || this.getUser().getEntity() == null ? null : this.getUser().getEntity().getUserId();
+        UUID queryUserId = this.getUser() == null || this.getUser().getUserEntity() == null ? null : this.getUser().getUserEntity().getUserId();
         return Objects.equals(flightUserId, queryUserId);
     }
 
@@ -80,14 +80,14 @@ public class FlightQuery implements Cloneable, Predicate<Flight> {
         }
     }
 
-    public FlightQuery withUser(User user) {
+    public FlightQuery withUser(FlightlogUserDetails user) {
         this.setUser(user);
         return this;
     }
-    public User getUser() {
+    public FlightlogUserDetails getUser() {
         return this.user;
     }
-    public void setUser(User user) {
+    public void setUser(FlightlogUserDetails user) {
         this.user = user;
     }
 

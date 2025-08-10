@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.backup.impl;
 
-import de.perdian.flightlog.modules.authentication.User;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetails;
 import de.perdian.flightlog.modules.backup.BackupConsumer;
 import de.perdian.flightlog.modules.flights.exchange.FlightsExchangePackage;
 import de.perdian.flightlog.modules.flights.exchange.impl.XmlExchangeHandler;
@@ -27,7 +27,7 @@ class FileSystemBackupConsumer implements BackupConsumer {
     private XmlExchangeHandler xmlExchangeHandler = new XmlExchangeHandler();
 
     @Override
-    public void consumeBackupPackage(FlightsExchangePackage backupPackage, User user) {
+    public void consumeBackupPackage(FlightsExchangePackage backupPackage, FlightlogUserDetails user) {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmssX");
         String targetFileDate = dateTimeFormatter.format(backupPackage.getCreationTime().atZone(ZoneId.of("UTC")));

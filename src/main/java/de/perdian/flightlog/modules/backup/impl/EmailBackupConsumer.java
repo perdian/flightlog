@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.backup.impl;
 
-import de.perdian.flightlog.modules.authentication.User;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetails;
 import de.perdian.flightlog.modules.backup.BackupConsumer;
 import de.perdian.flightlog.modules.flights.exchange.FlightsExchangeFormat;
 import de.perdian.flightlog.modules.flights.exchange.FlightsExchangePackage;
@@ -35,7 +35,7 @@ public class EmailBackupConsumer implements BackupConsumer {
     private FlightsExchangeFormat backupFormat = FlightsExchangeFormat.XML;
 
     @Override
-    public void consumeBackupPackage(FlightsExchangePackage backupPackage, User user) {
+    public void consumeBackupPackage(FlightsExchangePackage backupPackage, FlightlogUserDetails user) {
         if (this.getMailSender() == null) {
             log.error("No MailSender available to consume email backup package for user: {}", user);
         } else if (StringUtils.isEmpty(this.getFrom())) {
@@ -44,7 +44,7 @@ public class EmailBackupConsumer implements BackupConsumer {
 
             ZonedDateTime backupTime = backupPackage.getCreationTime().atZone(ZoneId.of("UTC"));
             String emailFrom = this.getFrom();
-            String emailTo = StringUtils.defaultIfEmpty(this.getTo(), user.getEntity().getEmail());
+            String emailTo = StringUtils.defaultIfEmpty(this.getTo(), user.getUserEntity().getEmail());
             StringBuilder emailSubject = new StringBuilder();
             emailSubject.append("[Flightlog] Flights Backup [").append(EMAIL_SUBJECT_DATE_FORMATTER.format(backupTime)).append("]");
 
@@ -72,7 +72,7 @@ public class EmailBackupConsumer implements BackupConsumer {
         }
     }
 
-    private String createEmailBody(FlightsExchangePackage backupPackage, User user) {
+    private String createEmailBody(FlightsExchangePackage backupPackage, FlightlogUserDetails user) {
         return """
                 <html>
                   <head>

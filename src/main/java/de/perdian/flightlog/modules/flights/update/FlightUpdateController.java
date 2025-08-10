@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.update;
 
-import de.perdian.flightlog.modules.authentication.UserHolder;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetailsHolder;
 import de.perdian.flightlog.modules.flights.lookup.FlightLookupRequest;
 import de.perdian.flightlog.modules.flights.lookup.FlightLookupService;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
@@ -29,7 +29,7 @@ class FlightUpdateController {
     private FlightQueryService flightQueryService = null;
     private FlightUpdateService flightUpdateService = null;
     private FlightLookupService flightLookupService = null;
-    private UserHolder userHolder = null;
+    private FlightlogUserDetailsHolder flightlogUserDetailsHolder = null;
 
     @GetMapping(path = "/add")
     String doAddGet(
@@ -193,12 +193,12 @@ class FlightUpdateController {
         this.flightLookupService = flightLookupService;
     }
 
-    UserHolder getUserHolder() {
-        return this.userHolder;
+    FlightlogUserDetailsHolder getUserHolder() {
+        return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(UserHolder userHolder) {
-        this.userHolder = userHolder;
+    void setUserHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+        this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 
 }

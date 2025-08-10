@@ -1,7 +1,7 @@
 package de.perdian.flightlog.modules.authentication.configuration.oauth2;
 
-import de.perdian.flightlog.modules.authentication.User;
 import de.perdian.flightlog.modules.authentication.persistence.UserEntity;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
@@ -9,11 +9,11 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
 import java.util.Collection;
 
-class Oauth2AuthenticationUser extends DefaultOidcUser implements User {
+class Oauth2AuthenticationUser extends DefaultOidcUser implements FlightlogUserDetails {
 
     static final long serialVersionUID = 1L;
 
-    private UserEntity entity = null;
+    private UserEntity userEntity = null;
 
     Oauth2AuthenticationUser(Collection<? extends GrantedAuthority> mappedAuthorities, OidcIdToken idToken, OidcUserInfo userInfo) {
         super(mappedAuthorities, idToken, userInfo);
@@ -21,7 +21,7 @@ class Oauth2AuthenticationUser extends DefaultOidcUser implements User {
 
     @Override
     public String toString() {
-        return "Oauth2AuthenticationUser[" + this.getEntity() + "]";
+        return "Oauth2AuthenticationUser[" + this.getUserEntity() + "]";
     }
 
     @Override
@@ -30,11 +30,11 @@ class Oauth2AuthenticationUser extends DefaultOidcUser implements User {
     }
 
     @Override
-    public UserEntity getEntity() {
-        return this.entity;
+    public UserEntity getUserEntity() {
+        return this.userEntity;
     }
-    void setEntity(UserEntity entity) {
-        this.entity = entity;
+    void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
 }

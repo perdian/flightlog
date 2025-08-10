@@ -1,6 +1,6 @@
 package de.perdian.flightlog.modules.flights.update;
 
-import de.perdian.flightlog.modules.authentication.User;
+import de.perdian.flightlog.modules.authentication.service.userdetails.FlightlogUserDetails;
 import de.perdian.flightlog.modules.flights.shared.model.Flight;
 import de.perdian.flightlog.modules.flights.shared.persistence.FlightEntity;
 import de.perdian.flightlog.modules.flights.shared.persistence.FlightEntityMapper;
@@ -18,12 +18,12 @@ class FlightUpdateServiceImpl implements FlightUpdateService {
 
     @Override
     @Transactional
-    public Flight saveFlight(Flight flight, User user) {
+    public Flight saveFlight(Flight flight, FlightlogUserDetails user) {
 
         FlightEntity flightEntity = this.loadFlightEntity(flight, user);
         if (flightEntity == null) {
             flightEntity = new FlightEntity();
-            flightEntity.setUser(user.getEntity());
+            flightEntity.setUser(user.getUserEntity());
         }
 
         this.getFlightEntityMapper().applyModel(flight, flightEntity);
@@ -35,16 +35,16 @@ class FlightUpdateServiceImpl implements FlightUpdateService {
 
     @Override
     @Transactional
-    public void deleteFlight(Flight flight, User user) {
+    public void deleteFlight(Flight flight, FlightlogUserDetails user) {
         FlightEntity flightEntity = this.loadFlightEntity(flight, user);
         if (flightEntity != null) {
             this.getFlightRepository().delete(flightEntity);
         }
     }
 
-    private FlightEntity loadFlightEntity(Flight flight, User user) {
+    private FlightEntity loadFlightEntity(Flight flight, FlightlogUserDetails user) {
         Specification<FlightEntity> flightEntitySpecification = (root, query, criteriaBuilder) -> criteriaBuilder.and(
-            criteriaBuilder.equal(root.get("user"), user == null ? null : user.getEntity()),
+            criteriaBuilder.equal(root.get("user"), user == null ? null : user.getUserEntity()),
             criteriaBuilder.equal(root.get("id"),flight.getEntityId())
         );
         return flight.getEntityId() == null ? null : this.getFlightRepository().findOne(flightEntitySpecification).orElseThrow(() -> new IllegalArgumentException("Cannot find flight for ID: " + flight.getEntityId()));
