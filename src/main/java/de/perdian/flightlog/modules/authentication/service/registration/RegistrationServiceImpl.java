@@ -46,7 +46,7 @@ class RegistrationServiceImpl implements RegistrationService {
         );
     }
 
-    @Value("${FLIGHTLOG_REGISTRATION_EMAIL_ADDRESSES_ALLOWLIST:}")
+    @Value("${FLIGHTLOG_REGISTRATION_USERNAMES_ALLOWLIST:}")
     void configureUsernamesAllowlist(String usernames) {
         this.getUsernamesAllowlist().addAll(
             Stream.of(StringUtils.split(usernames, ",;"))
@@ -75,7 +75,7 @@ class RegistrationServiceImpl implements RegistrationService {
         );
     }
 
-    @Value("${FLIGHTLOG_REGISTRATION_EMAIL_ADDRESSES_BLOCKLIST:}")
+    @Value("${FLIGHTLOG_REGISTRATION_USERNAMES_BLOCKLIST:}")
     void configureUsernamesBlocklist(String usernames) {
         this.getUsernamesBlocklist().addAll(
             Stream.of(StringUtils.split(usernames, ",;"))
