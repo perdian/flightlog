@@ -9,7 +9,7 @@
 
     <groupId>de.perdian.flightlog</groupId>
     <artifactId>flightlog</artifactId>
-    <version>2.1.7-SNAPSHOT</version>
+    <version>2.1.7</version>
 
     <name>Flightlog</name>
     <description>Flightlog</description>
