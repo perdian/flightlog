@@ -39,7 +39,7 @@ public class FlightsListController {
     }
 
     private String doList(FlightQuery flightQuery, PaginationRequest paginationRequest, Model model) {
-        FlightQuery userFlightQuery = flightQuery.clone().withUser(this.getUserHolder().getCurrentUser());
+        FlightQuery userFlightQuery = flightQuery.clone().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         model.addAttribute("flights", this.getQueryService().loadFlightsPaginated(userFlightQuery, paginationRequest));
         return "flights/list";
     }
@@ -52,11 +52,11 @@ public class FlightsListController {
         this.queryService = queryService;
     }
 
-    FlightlogUserDetailsHolder getUserHolder() {
+    FlightlogUserDetailsHolder getFlightlogUserDetailsHolder() {
         return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+    void setFlightlogUserDetailsHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
         this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 

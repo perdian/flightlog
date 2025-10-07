@@ -28,7 +28,7 @@ class RoutesController {
 
         Map<String, RoutesPoint> airportPointsByCode = new LinkedHashMap<>();
         Map<String, RoutesItem> itemsByKey = new LinkedHashMap<>();
-        List<Flight> filteredFlights = this.getFlightQueryService().loadFlights(flightQuery.clone().withUser(this.getUserHolder().getCurrentUser()));
+        List<Flight> filteredFlights = this.getFlightQueryService().loadFlights(flightQuery.clone().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails()));
         for (Flight flight : filteredFlights) {
             Airport departureAirport = flight.getDepartureContact().getAirport();
             Airport arrivalAirport = flight.getArrivalContact().getAirport();
@@ -70,11 +70,11 @@ class RoutesController {
         this.flightQueryService = flightQueryService;
     }
 
-    FlightlogUserDetailsHolder getUserHolder() {
+    FlightlogUserDetailsHolder getFlightlogUserDetailsHolder() {
         return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+    void setFlightlogUserDetailsHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
         this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 

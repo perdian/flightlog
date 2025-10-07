@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 
 public class FlightQuery implements Cloneable, Predicate<Flight> {
 
-    private FlightlogUserDetails user = null;
+    private FlightlogUserDetails userDetails = null;
     private Comparator<Flight> comparator = (f1, f2) -> -1 * Flight.compareByDepartureDateAndTime(f1, f2);
     private Collection<UUID> restrictEntityIdentifiers = null;
     private Collection<UUID> excludeEntityIdentifiers = null;
@@ -63,7 +63,7 @@ public class FlightQuery implements Cloneable, Predicate<Flight> {
 
     private boolean testUser(Flight flight) {
         UUID flightUserId = flight.getUser() == null ? null : flight.getUser().getUserId();
-        UUID queryUserId = this.getUser() == null || this.getUser().getUserEntity() == null ? null : this.getUser().getUserEntity().getUserId();
+        UUID queryUserId = this.getUserDetails() == null || this.getUserDetails().getUserEntity() == null ? null : this.getUserDetails().getUserEntity().getUserId();
         return Objects.equals(flightUserId, queryUserId);
     }
 
@@ -80,15 +80,15 @@ public class FlightQuery implements Cloneable, Predicate<Flight> {
         }
     }
 
-    public FlightQuery withUser(FlightlogUserDetails user) {
-        this.setUser(user);
+    public FlightQuery withUserDetails(FlightlogUserDetails userDetails) {
+        this.setUserDetails(userDetails);
         return this;
     }
-    public FlightlogUserDetails getUser() {
-        return this.user;
+    public FlightlogUserDetails getUserDetails() {
+        return this.userDetails;
     }
-    public void setUser(FlightlogUserDetails user) {
-        this.user = user;
+    public void setUserDetails(FlightlogUserDetails userDetails) {
+        this.userDetails = userDetails;
     }
 
     public Comparator<Flight> getComparator() {

@@ -6,6 +6,6 @@ import de.perdian.flightlog.modules.flights.exchange.FlightsExchangePackage;
 @FunctionalInterface
 public interface BackupConsumer {
 
-    void consumeBackupPackage(FlightsExchangePackage backupPackage, FlightlogUserDetails user);
+    void consumeBackupPackage(FlightsExchangePackage backupPackage, FlightlogUserDetails userDetails);
 
 }

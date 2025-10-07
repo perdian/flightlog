@@ -18,12 +18,12 @@ class FlightUpdateServiceImpl implements FlightUpdateService {
 
     @Override
     @Transactional
-    public Flight saveFlight(Flight flight, FlightlogUserDetails user) {
+    public Flight saveFlight(Flight flight, FlightlogUserDetails userDetails) {
 
-        FlightEntity flightEntity = this.loadFlightEntity(flight, user);
+        FlightEntity flightEntity = this.loadFlightEntity(flight, userDetails);
         if (flightEntity == null) {
             flightEntity = new FlightEntity();
-            flightEntity.setUser(user.getUserEntity());
+            flightEntity.setUser(userDetails.getUserEntity());
         }
 
         this.getFlightEntityMapper().applyModel(flight, flightEntity);
@@ -35,16 +35,16 @@ class FlightUpdateServiceImpl implements FlightUpdateService {
 
     @Override
     @Transactional
-    public void deleteFlight(Flight flight, FlightlogUserDetails user) {
-        FlightEntity flightEntity = this.loadFlightEntity(flight, user);
+    public void deleteFlight(Flight flight, FlightlogUserDetails userDetails) {
+        FlightEntity flightEntity = this.loadFlightEntity(flight, userDetails);
         if (flightEntity != null) {
             this.getFlightRepository().delete(flightEntity);
         }
     }
 
-    private FlightEntity loadFlightEntity(Flight flight, FlightlogUserDetails user) {
+    private FlightEntity loadFlightEntity(Flight flight, FlightlogUserDetails userDetails) {
         Specification<FlightEntity> flightEntitySpecification = (root, query, criteriaBuilder) -> criteriaBuilder.and(
-            criteriaBuilder.equal(root.get("user"), user == null ? null : user.getUserEntity()),
+            criteriaBuilder.equal(root.get("user"), userDetails == null ? null : userDetails.getUserEntity()),
             criteriaBuilder.equal(root.get("id"),flight.getEntityId())
         );
         return flight.getEntityId() == null ? null : this.getFlightRepository().findOne(flightEntitySpecification).orElseThrow(() -> new IllegalArgumentException("Cannot find flight for ID: " + flight.getEntityId()));

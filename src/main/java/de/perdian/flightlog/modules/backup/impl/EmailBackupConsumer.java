@@ -35,44 +35,44 @@ public class EmailBackupConsumer implements BackupConsumer {
     private FlightsExchangeFormat backupFormat = FlightsExchangeFormat.XML;
 
     @Override
-    public void consumeBackupPackage(FlightsExchangePackage backupPackage, FlightlogUserDetails user) {
+    public void consumeBackupPackage(FlightsExchangePackage backupPackage, FlightlogUserDetails userDetails) {
         if (this.getMailSender() == null) {
-            log.error("No MailSender available to consume email backup package for user: {}", user);
+            log.error("No MailSender available to consume email backup package for user: {}", userDetails);
         } else if (StringUtils.isEmpty(this.getFrom())) {
-            log.error("No email 'from' address configured' to send email backup package for user: {}", user);
+            log.error("No email 'from' address configured' to send email backup package for user: {}", userDetails);
         } else {
 
             ZonedDateTime backupTime = backupPackage.getCreationTime().atZone(ZoneId.of("UTC"));
             String emailFrom = this.getFrom();
-            String emailTo = StringUtils.defaultIfEmpty(this.getTo(), user.getUserEntity().getEmail());
+            String emailTo = StringUtils.defaultIfEmpty(this.getTo(), userDetails.getUserEntity().getEmail());
             StringBuilder emailSubject = new StringBuilder();
             emailSubject.append("[Flightlog] Flights Backup [").append(EMAIL_SUBJECT_DATE_FORMATTER.format(backupTime)).append("]");
 
             StringBuilder attachmentFilename = new StringBuilder();
-            attachmentFilename.append("flightlog-backup-").append(user.getUsername()).append("-");
+            attachmentFilename.append("flightlog-backup-").append(userDetails.getUsername()).append("-");
             attachmentFilename.append(EMAIL_ATTACHMENT_FILENAME_DATE_FORMATTER.format(backupTime)).append(".").append(this.getBackupFormat().name().toLowerCase());
 
             try {
 
-                log.info("Sending email backup package with {} flights to address '{}' for user: {}", backupPackage.getFlights().size(), emailTo, user);
+                log.info("Sending email backup package with {} flights to address '{}' for user: {}", backupPackage.getFlights().size(), emailTo, userDetails);
                 DataSource attachmentDataSource = this.getBackupFormat().toDataSource(backupPackage);
                 MimeMessage emailMessage = this.getMailSender().createMimeMessage();
                 MimeMessageHelper emailMessageHelper = new MimeMessageHelper(emailMessage, true);
                 emailMessageHelper.setFrom(emailFrom);
                 emailMessageHelper.setTo(emailTo);
                 emailMessageHelper.setSubject(emailSubject.toString());
-                emailMessageHelper.setText(this.createEmailBody(backupPackage, user), true);
+                emailMessageHelper.setText(this.createEmailBody(backupPackage, userDetails), true);
                 emailMessageHelper.addAttachment(attachmentFilename.toString(), attachmentDataSource);
                 this.getMailSender().send(emailMessage);
 
             } catch (Exception e) {
-                log.error("Cannot send email backup package to address '{}' for user: ", emailTo, user, e);
+                log.error("Cannot send email backup package to address '{}' for user: ", emailTo, userDetails, e);
             }
 
         }
     }
 
-    private String createEmailBody(FlightsExchangePackage backupPackage, FlightlogUserDetails user) {
+    private String createEmailBody(FlightsExchangePackage backupPackage, FlightlogUserDetails userDetails) {
         return """
                 <html>
                   <head>

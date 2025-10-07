@@ -58,7 +58,7 @@ class FlightUpdateController {
             Flight newFlight = new Flight();
             flightUpdateEditor.copyValuesInto(newFlight);
             log.debug("Adding new flight: {}", newFlight);
-            Flight storedFlight = this.getFlightUpdateService().saveFlight(newFlight, this.getUserHolder().getCurrentUser());
+            Flight storedFlight = this.getFlightUpdateService().saveFlight(newFlight, this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
 
             redirectAttributes.addFlashAttribute("flightAdded", "true");
             redirectAttributes.addFlashAttribute("flightEntityId", storedFlight.getEntityId());
@@ -93,7 +93,7 @@ class FlightUpdateController {
         @PathVariable UUID flightEntityId,
         Model model
     ) {
-        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = new FlightQuery().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
         Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
@@ -112,7 +112,7 @@ class FlightUpdateController {
         RedirectAttributes redirectAttributes,
         Model model
     ) {
-        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = new FlightQuery().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
         Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
@@ -125,7 +125,7 @@ class FlightUpdateController {
 
                 flightUpdateEditor.copyValuesInto(flight);
 
-                Flight updatedFlight = this.getFlightUpdateService().saveFlight(flight, this.getUserHolder().getCurrentUser());
+                Flight updatedFlight = this.getFlightUpdateService().saveFlight(flight, this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
                 flightUpdateEditor.applyValuesFrom(updatedFlight);
 
                 redirectAttributes.addFlashAttribute("flightUpdated", "true");
@@ -137,7 +137,7 @@ class FlightUpdateController {
 
     @GetMapping(path = "/delete/{flightEntityId}")
     String doDeleteGet(@PathVariable UUID flightEntityId, Model model) {
-        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = new FlightQuery().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
         Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
@@ -151,14 +151,14 @@ class FlightUpdateController {
 
     @PostMapping(path = "/delete/{flightEntityId}")
     String doDeletePost(@PathVariable UUID flightEntityId, Model model, RedirectAttributes redirectAttributes) {
-        FlightQuery flightQuery = new FlightQuery().withUser(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = new FlightQuery().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         flightQuery.setRestrictEntityIdentifiers(Collections.singleton(flightEntityId));
         List<Flight> flightList = this.getFlightQueryService().loadFlights(flightQuery);
         Flight flight = flightList == null || flightList.isEmpty() ? null : flightList.getFirst();
         if (flight == null) {
             return "flights/not-found";
         } else {
-            this.getFlightUpdateService().deleteFlight(flight, this.getUserHolder().getCurrentUser());
+            this.getFlightUpdateService().deleteFlight(flight, this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
             redirectAttributes.addFlashAttribute("flight", flight);
             return "redirect:/flights/delete/success";
         }
@@ -193,11 +193,11 @@ class FlightUpdateController {
         this.flightLookupService = flightLookupService;
     }
 
-    FlightlogUserDetailsHolder getUserHolder() {
+    FlightlogUserDetailsHolder getFlightlogUserDetailsHolder() {
         return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+    void setFlightlogUserDetailsHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
         this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 

@@ -28,13 +28,13 @@ class OverviewController {
 
     @ModelAttribute(name = MODEL_ATTRIBUTE_FILTERED_FLIGHTS, binding = false)
     List<Flight> filteredFlights(@ModelAttribute("overviewQuery") FlightQuery filteredFlightsQuery) {
-        FlightQuery flightQuery = filteredFlightsQuery.clone().withUser(this.getUserHolder().getCurrentUser());
+        FlightQuery flightQuery = filteredFlightsQuery.clone().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         return this.getFlightQueryService().loadFlights(flightQuery);
     }
 
     @ModelAttribute(name = MODEL_ATTRIBUTE_ALL_FLIGHTS, binding = false)
     List<Flight> allFlights() {
-        return this.getFlightQueryService().loadFlights(new FlightQuery().withUser(this.getUserHolder().getCurrentUser()));
+        return this.getFlightQueryService().loadFlights(new FlightQuery().withUserDetails(this.getFlightlogUserDetailsHolder().getCurrentUserDetails()));
     }
 
     @ModelAttribute(name = "overviewQuery")
@@ -42,11 +42,11 @@ class OverviewController {
         return new FlightQuery();
     }
 
-    FlightlogUserDetailsHolder getUserHolder() {
+    FlightlogUserDetailsHolder getFlightlogUserDetailsHolder() {
         return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+    void setFlightlogUserDetailsHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
         this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 

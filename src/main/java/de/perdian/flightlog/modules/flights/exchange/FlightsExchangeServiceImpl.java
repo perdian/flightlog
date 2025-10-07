@@ -28,20 +28,20 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
 
     @Override
     @Transactional
-    public List<FlightsExchangePackageFlight> importPackage(FlightsExchangePackage exchangePackage, FlightlogUserDetails targetUser) {
+    public List<FlightsExchangePackageFlight> importPackage(FlightsExchangePackage exchangePackage, FlightlogUserDetails targetUserDetails) {
 
         List<FlightsExchangePackageFlight> importedFlights = exchangePackage.getFlights()
             .stream()
             .filter(flight -> Boolean.TRUE.equals(flight.getInclude()))
             .toList();
 
-        log.debug("Loading all currently available flights for user: {}", targetUser);
-        List<FlightEntity> allFlightEntities = this.loadAllFlightEntities(targetUser);
-        log.debug("Synchronizing {} imported flights with {} currently available flights for user: {}", importedFlights.size(), allFlightEntities.size(), targetUser);
+        log.debug("Loading all currently available flights for user: {}", targetUserDetails);
+        List<FlightEntity> allFlightEntities = this.loadAllFlightEntities(targetUserDetails);
+        log.debug("Synchronizing {} imported flights with {} currently available flights for user: {}", importedFlights.size(), allFlightEntities.size(), targetUserDetails);
 
         for (FlightsExchangePackageFlight importedFlight : importedFlights) {
-            log.trace("Importing flight for user '{}' from: {}", targetUser, importedFlight);
-            this.importPackageFlight(importedFlight, targetUser, allFlightEntities);
+            log.trace("Importing flight for user '{}' from: {}", targetUserDetails, importedFlight);
+            this.importPackageFlight(importedFlight, targetUserDetails, allFlightEntities);
         }
         return importedFlights;
 
@@ -146,8 +146,8 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
         return flight;
     }
 
-    private List<FlightEntity> loadAllFlightEntities(FlightlogUserDetails user) {
-        Specification<FlightEntity> allFlightEntitiesSpecification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), user.getUserEntity());
+    private List<FlightEntity> loadAllFlightEntities(FlightlogUserDetails userDetails) {
+        Specification<FlightEntity> allFlightEntitiesSpecification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), userDetails.getUserEntity());
         Sort allFlightEntitiesSort = Sort.by(Sort.Order.asc("departureDateLocal"), Sort.Order.asc("departureTimeLocal"));
         return this.getFlightRepository().findAll(allFlightEntitiesSpecification);
     }

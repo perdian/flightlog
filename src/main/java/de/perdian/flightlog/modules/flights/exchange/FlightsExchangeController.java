@@ -57,14 +57,14 @@ class FlightsExchangeController {
 
     @PostMapping("/import/verify")
     String doImportVerifyPost(@ModelAttribute("exchangeEditor") FlightsExchangeEditor exchangeEditor) {
-        this.getExchangeService().importPackage(exchangeEditor.getExchangePackage(), this.getUserHolder().getCurrentUser());
+        this.getExchangeService().importPackage(exchangeEditor.getExchangePackage(), this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         return "flights/import/done";
     }
 
     @RequestMapping("/export/{format}")
     ResponseEntity<?> doExport(@PathVariable("format") String formatValue) throws IOException  {
         FlightsExchangeFormat exchangeFormat = FlightsExchangeFormat.valueOf(formatValue.toUpperCase());
-        FlightsExchangePackage exchangePackage = this.getExchangeService().createPackage(this.getUserHolder().getCurrentUser());
+        FlightsExchangePackage exchangePackage = this.getExchangeService().createPackage(this.getFlightlogUserDetailsHolder().getCurrentUserDetails());
         try (ByteArrayOutputStream exchangeStream = new ByteArrayOutputStream()) {
 
             exchangeFormat.getHandler().exportPackage(exchangePackage, exchangeStream);
@@ -102,11 +102,11 @@ class FlightsExchangeController {
         this.exchangeService = exchangeService;
     }
 
-    FlightlogUserDetailsHolder getUserHolder() {
+    FlightlogUserDetailsHolder getFlightlogUserDetailsHolder() {
         return this.flightlogUserDetailsHolder;
     }
     @Autowired
-    void setUserHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
+    void setFlightlogUserDetailsHolder(FlightlogUserDetailsHolder flightlogUserDetailsHolder) {
         this.flightlogUserDetailsHolder = flightlogUserDetailsHolder;
     }
 

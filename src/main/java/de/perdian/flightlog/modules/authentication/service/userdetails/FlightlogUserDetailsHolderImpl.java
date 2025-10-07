@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 class FlightlogUserDetailsHolderImpl implements FlightlogUserDetailsHolder {
 
     @Override
-    public FlightlogUserDetails getCurrentUser() {
+    public FlightlogUserDetails getCurrentUserDetails() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext == null ? null : securityContext.getAuthentication();
         Object principal = authentication == null ? null : authentication.getPrincipal();
-        if (principal instanceof FlightlogUserDetails user) {
-            return user;
+        if (principal instanceof FlightlogUserDetails userDetails) {
+            return userDetails;
         } else {
             throw new IllegalArgumentException("No current user available");
         }

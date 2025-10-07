@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface FlightsExchangeService {
 
-    List<FlightsExchangePackageFlight> importPackage(FlightsExchangePackage exchangePackage, FlightlogUserDetails targetUser);
+    List<FlightsExchangePackageFlight> importPackage(FlightsExchangePackage exchangePackage, FlightlogUserDetails targetUserDetails);
 
-    FlightsExchangePackage createPackage(FlightlogUserDetails sourceUser);
+    FlightsExchangePackage createPackage(FlightlogUserDetails sourceUserDetails);
 
 }
