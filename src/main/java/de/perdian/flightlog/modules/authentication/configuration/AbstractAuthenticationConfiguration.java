@@ -3,7 +3,7 @@ package de.perdian.flightlog.modules.authentication.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 public abstract class AbstractAuthenticationConfiguration {
 
@@ -21,7 +21,7 @@ public abstract class AbstractAuthenticationConfiguration {
 
         httpSecurity.logout(logout -> {
             logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/authentication/logout"))
+                .logoutRequestMatcher(PathPatternRequestMatcher.pathPattern("/authentication/logout"))
                 .logoutSuccessUrl("/authentication/logout/completed");
         });
 

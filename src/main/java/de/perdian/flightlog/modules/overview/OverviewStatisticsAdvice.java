@@ -9,6 +9,7 @@ import de.perdian.flightlog.support.types.FlightDistance;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.SeatType;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.web.ProjectedPayload;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -22,49 +23,49 @@ import java.util.stream.Stream;
 class OverviewStatisticsAdvice {
 
     @ModelAttribute(name = "overviewStatisticsTotals", binding = false)
-    OverviewStatisticsGroup statisticsTotals(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsTotals(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return OverviewStatisticsGroupFactory.forEnum(OverviewStatisticsTotals.class, OverviewStatisticsItemHelpers.sumValues((flight, value) -> value.getResultFromMatchingFlightFunction().apply(flight)), false)
             .withTitle(OverviewString.forKey("flightTotals"))
             .createGroup(flights);
     }
 
     @ModelAttribute(name = "overviewStatisticsOthers", binding = false)
-    OverviewStatisticsGroup statisticsOthers(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsOthers(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return OverviewStatisticsGroupFactory.forEnum(OverviewStatisticsOthers.class, OverviewStatisticsItemHelpers.countDistinctValues((flight, value) -> value.getValuesFromFlightFunction().apply(flight)), false)
             .withTitle(OverviewString.forKey("otherStatistics"))
             .createGroup(flights);
     }
 
     @ModelAttribute(name = "overviewStatisticsByDistance", binding = false)
-    OverviewStatisticsGroup statisticsByDistance(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsByDistance(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return OverviewStatisticsGroupFactory.forEnum(FlightDistance.class, OverviewStatisticsItemHelpers.countMatchingValues(flight -> flight.getFlightDistanceType() == null ? null : List.of(flight.getFlightDistanceType())), false)
             .withTitle(OverviewString.forKey("distances"))
             .createGroup(flights);
     }
 
     @ModelAttribute(name = "overviewStatisticsByCabinClass", binding = false)
-    OverviewStatisticsGroup statisticsByCabinClass(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsByCabinClass(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return OverviewStatisticsGroupFactory.forEnum(CabinClass.class, OverviewStatisticsItemHelpers.countMatchingValues(flight -> flight.getCabinClass() == null ? null : List.of(flight.getCabinClass())), true)
             .withTitle(OverviewString.forKey("cabinClasses"))
             .createGroup(flights);
     }
 
     @ModelAttribute(name = "overviewStatisticsByFlightReason", binding = false)
-    OverviewStatisticsGroup statisticsByFlightReason(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsByFlightReason(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return OverviewStatisticsGroupFactory.forEnum(FlightReason.class, OverviewStatisticsItemHelpers.countMatchingValues(flight -> flight.getFlightReason() == null ? null : List.of(flight.getFlightReason())), true)
             .withTitle(OverviewString.forKey("flightReasons"))
             .createGroup(flights);
     }
 
     @ModelAttribute(name = "overviewStatisticsBySeatType", binding = false)
-    OverviewStatisticsGroup statisticsBySeatType(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsBySeatType(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return OverviewStatisticsGroupFactory.forEnum(SeatType.class, OverviewStatisticsItemHelpers.countMatchingValues(flight -> flight.getSeatType() == null ? null : List.of(flight.getSeatType())), true)
             .withTitle(OverviewString.forKey("seatTypes"))
             .createGroup(flights);
     }
 
     @ModelAttribute(name = "overviewStatisticsTopAirports", binding = false)
-    OverviewStatisticsGroup statisticsTopAirports(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsTopAirports(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
 
         List<OverviewStatisticsItemFactory<Airport>> itemFactories = flights.stream()
             .flatMap(flight -> Stream.of(flight.getDepartureContact().getAirport(), flight.getArrivalContact().getAirport()))
@@ -87,7 +88,7 @@ class OverviewStatisticsAdvice {
     }
 
     @ModelAttribute(name = "overviewStatisticsTopAirlines", binding = false)
-    OverviewStatisticsGroup statisticsTopAirlines(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsTopAirlines(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
 
         List<OverviewStatisticsItemFactory<Airline>> itemFactories = flights.stream()
             .flatMap(flight -> Stream.of(flight.getAirline()))
@@ -110,7 +111,7 @@ class OverviewStatisticsAdvice {
     }
 
     @ModelAttribute(name = "overviewStatisticsTopRoutes", binding = false)
-    OverviewStatisticsGroup statisticsTopRoutes(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsTopRoutes(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
 
         List<OverviewStatisticsItemFactory<Route>> itemFactories = Route.computeDistinctRoutes(flights).stream()
             .map(route -> OverviewStatisticsItemFactory.forValue(route)
@@ -130,7 +131,7 @@ class OverviewStatisticsAdvice {
     }
 
     @ModelAttribute(name = "overviewStatisticsTopAircraftTypes", binding = false)
-    OverviewStatisticsGroup statisticsTopAircraftTypes(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    OverviewStatisticsGroup statisticsTopAircraftTypes(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
 
         List<OverviewStatisticsItemFactory<String>> itemFactories = flights.stream()
             .flatMap(flight -> Stream.of(flight.getAircraft().getType()))
@@ -151,32 +152,32 @@ class OverviewStatisticsAdvice {
     }
 
     @ModelAttribute(name = "recordFlightByDurationMaximum", binding = false)
-    Flight recordFlightByDurationMaximum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    Flight recordFlightByDurationMaximum(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return this.extractFlight(flights, flight -> flight.getFlightDuration() == null ? null : flight.getFlightDuration().toMinutes(), (o, n) -> n.doubleValue() > o.doubleValue());
     }
 
     @ModelAttribute(name = "recordFlightByDurationMinimum", binding = false)
-    Flight recordFlightByDurationMinimum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    Flight recordFlightByDurationMinimum(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return this.extractFlight(flights, flight -> flight.getFlightDuration() == null ? null : flight.getFlightDuration().toMinutes(), (o, n) -> n.doubleValue() < o.doubleValue());
     }
 
     @ModelAttribute(name = "recordFlightByDistanceMaximum", binding = false)
-    Flight recordFlightByDistanceMaximum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    Flight recordFlightByDistanceMaximum(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return this.extractFlight(flights, flight -> flight.getFlightDistance(), (o, n) -> n.doubleValue() > o.doubleValue());
     }
 
     @ModelAttribute(name = "recordFlightByDistanceMinimum", binding = false)
-    Flight recordFlightByDistanceMinimum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    Flight recordFlightByDistanceMinimum(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return this.extractFlight(flights, flight -> flight.getFlightDistance(), (o, n) -> n.doubleValue() < o.doubleValue());
     }
 
     @ModelAttribute(name = "recordFlightByAverageSpeedMaximum", binding = false)
-    Flight recordFlightByAverageSpeedMaxium(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    Flight recordFlightByAverageSpeedMaxium(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return this.extractFlight(flights, flight -> flight.getFlightAverageSpeed(), (o, n) -> n.doubleValue() > o.doubleValue());
     }
 
     @ModelAttribute(name = "recordFlightByAverageSpeedMinimum", binding = false)
-    Flight recordFlightByAverageSpeedMinimum(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
+    Flight recordFlightByAverageSpeedMinimum(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_FILTERED_FLIGHTS) List<Flight> flights) {
         return this.extractFlight(flights, flight -> flight.getFlightAverageSpeed(), (o, n) -> n.doubleValue() < o.doubleValue());
     }
 

@@ -6,6 +6,7 @@ import de.perdian.flightlog.support.types.FlightDistance;
 import de.perdian.flightlog.support.types.FlightReason;
 import de.perdian.flightlog.support.types.FlightType;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.web.ProjectedPayload;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
 class OverviewQueryValuesAdvice {
 
     @ModelAttribute("overviewQueryValues")
-    OverviewQueryValues overviewQueryValues(@ModelAttribute(OverviewController.MODEL_ATTRIBUTE_ALL_FLIGHTS) List<Flight> allFlights) {
+    OverviewQueryValues overviewQueryValues(@ProjectedPayload @ModelAttribute(OverviewController.MODEL_ATTRIBUTE_ALL_FLIGHTS) List<Flight> allFlights) {
         OverviewQueryValues queryValues = new OverviewQueryValues();
         queryValues.setYears(this.createQueryValuesItemsForYears(allFlights));
         queryValues.setAirlines(this.createQueryValuesItemsForAirlines(allFlights));
