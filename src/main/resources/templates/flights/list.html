@@ -12,6 +12,9 @@
       </h3>
       <div class="ui divider"></div>
 
+      <div th:if="${#lists.isEmpty(flights.items)}" class="ui message">
+        <div class="header" th:text="#{noFlightsLoggedYet}"></div>
+      </div>
       <div th:if="${not #lists.isEmpty(flights.items)}">
         <div th:replace="~{flights/include/list-flights :: pagination}">Pagination</div>
         <div th:replace="~{flights/include/list-flights :: flights}">Flights</div>
