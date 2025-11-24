@@ -41,7 +41,7 @@ class FlightQueryServiceImpl implements FlightQueryService {
     }
 
     private Specification<FlightEntity> createFlightsSpecification(FlightQuery flightQuery) {
-        return (root, query, criteriaBuilder) -> {
+        return (root, _, criteriaBuilder) -> {
             List<Predicate> flightEntityPredicates = new ArrayList<>();
             flightEntityPredicates.add(criteriaBuilder.equal(root.get("user"), flightQuery.getUserDetails() == null ? null : flightQuery.getUserDetails().getUserEntity()));
             this.appendFlightQueryPredicates(flightEntityPredicates, flightQuery, root, criteriaBuilder);

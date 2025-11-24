@@ -5,6 +5,6 @@ public enum FlightReason {
     PRIVATE,
     BUSINESS,
     CREW,
-    VIRTUAL;
+    VIRTUAL
 
 }

@@ -26,7 +26,7 @@ public class FixedAuthenticationConfiguration extends AbstractAuthenticationConf
     @Bean
     FixedAuthenticationFilter fixedAuthenticationFilter() {
 
-        Specification<UserEntity> entitySpecification = (root, query, criteriaBuilder) -> criteriaBuilder.and(
+        Specification<UserEntity> entitySpecification = (root, _, criteriaBuilder) -> criteriaBuilder.and(
             criteriaBuilder.equal(root.get("authenticationSource"), "fixed"),
             criteriaBuilder.equal(root.get("username"), this.getEmailAddress())
         );

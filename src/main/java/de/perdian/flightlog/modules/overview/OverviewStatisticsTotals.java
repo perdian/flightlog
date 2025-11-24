@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 enum OverviewStatisticsTotals {
 
-    TOTAL_NUMBER(flight -> 1),
+    TOTAL_NUMBER(_ -> 1),
     DISTANCE_KM(flight -> flight.getFlightDistance()),
     DISTANCE_MILES(flight -> flight.getFlightDistance() == null ? null : Math.round(flight.getFlightDistance()  / 1.609d)),
     DURATION_HOURS(flight -> flight.getFlightDuration() == null ? null : flight.getFlightDuration().toMinutes() / 60d),

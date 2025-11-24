@@ -33,8 +33,8 @@ class RoutesController {
             Airport departureAirport = flight.getDepartureContact().getAirport();
             Airport arrivalAirport = flight.getArrivalContact().getAirport();
             if (departureAirport.getLatitude() != null && departureAirport.getLongitude() != null && arrivalAirport.getLatitude() != null && arrivalAirport.getLongitude() != null) {
-                airportPointsByCode.computeIfAbsent(departureAirport.getCode(), departureAirportCode -> this.createRoutesPoint(departureAirport));
-                airportPointsByCode.computeIfAbsent(arrivalAirport.getCode(), arrivalAirportCode -> this.createRoutesPoint(arrivalAirport));
+                airportPointsByCode.computeIfAbsent(departureAirport.getCode(), _ -> this.createRoutesPoint(departureAirport));
+                airportPointsByCode.computeIfAbsent(arrivalAirport.getCode(), _ -> this.createRoutesPoint(arrivalAirport));
                 String routeKey = departureAirport.getCode() + "-" + arrivalAirport.getCode();
                 RoutesItem item = itemsByKey.get(routeKey);
                 if (item == null) {

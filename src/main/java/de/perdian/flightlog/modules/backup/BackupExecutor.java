@@ -53,7 +53,7 @@ class BackupExecutor {
                 .max(Comparator.naturalOrder())
                 .orElse(null);
 
-            Specification<BackupEntity> latestBackupSpecification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), userEntity);
+            Specification<BackupEntity> latestBackupSpecification = (root, _, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), userEntity);
             Sort latestBackupSort = Sort.by(Sort.Order.desc("latestFlightUpdateInstant"));
             Page<BackupEntity> latestBackupEntities = this.getBackupRepository().findAll(latestBackupSpecification, PageRequest.of(0, 1, latestBackupSort));
             BackupEntity latestBackupEntity = latestBackupEntities.isEmpty() ? null : latestBackupEntities.getContent().getFirst();

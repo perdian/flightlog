@@ -147,7 +147,7 @@ class FlightsExchangeServiceImpl implements FlightsExchangeService {
     }
 
     private List<FlightEntity> loadAllFlightEntities(FlightlogUserDetails userDetails) {
-        Specification<FlightEntity> allFlightEntitiesSpecification = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), userDetails.getUserEntity());
+        Specification<FlightEntity> allFlightEntitiesSpecification = (root, _, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), userDetails.getUserEntity());
         Sort allFlightEntitiesSort = Sort.by(Sort.Order.asc("departureDateLocal"), Sort.Order.asc("departureTimeLocal"));
         return this.getFlightRepository().findAll(allFlightEntitiesSpecification);
     }

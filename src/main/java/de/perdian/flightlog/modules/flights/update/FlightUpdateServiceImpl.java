@@ -43,7 +43,7 @@ class FlightUpdateServiceImpl implements FlightUpdateService {
     }
 
     private FlightEntity loadFlightEntity(Flight flight, FlightlogUserDetails userDetails) {
-        Specification<FlightEntity> flightEntitySpecification = (root, query, criteriaBuilder) -> criteriaBuilder.and(
+        Specification<FlightEntity> flightEntitySpecification = (root, _, criteriaBuilder) -> criteriaBuilder.and(
             criteriaBuilder.equal(root.get("user"), userDetails == null ? null : userDetails.getUserEntity()),
             criteriaBuilder.equal(root.get("id"),flight.getEntityId())
         );

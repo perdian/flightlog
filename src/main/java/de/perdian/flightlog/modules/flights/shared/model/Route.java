@@ -20,7 +20,7 @@ public class Route {
             Airport departureAirport = flight.getDepartureContact().getAirport();
             Airport arrivalAirport = flight.getArrivalContact().getAirport();
             String routeKey = departureAirport.getCode() + "-" + arrivalAirport.getCode();
-            routesByKey.computeIfAbsent(routeKey, computedRouteKey -> new Route(departureAirport, arrivalAirport));
+            routesByKey.computeIfAbsent(routeKey, _ -> new Route(departureAirport, arrivalAirport));
         }
         return routesByKey.entrySet().stream().map(Map.Entry::getValue).toList();
     }
