@@ -4,6 +4,7 @@ main { padding: 0.5rem; }
 pre { font-size: 0.9rem; line-height: 1.3; overflow-x: auto; }
 input[readonly] { background-color: #f3f3f3 !important; }
 input.uppercase { text-transform: uppercase; }
+table td { vertical-align: top; }
 
 .dense.grid { padding: 0.5rem 0.75rem 0.5rem 0.75rem !important; }
 .dense.grid .column { padding: 0.5rem 0.25rem 0.5rem 0.25rem !important; }

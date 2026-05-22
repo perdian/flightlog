@@ -63,12 +63,57 @@
               <input type="hidden" name="arrivalAirportCode" th:value="${flightLookupResult.arrivalContact?.airport?.code}" />
               <input type="hidden" name="flightDuration" th:value="${flightLookupResult.flightDurationString}" />
               <input type="hidden" name="flightDistance" th:value="${flightLookupResult.flightDistance}" />
+              <input type="hidden" name="airlineCode" th:value="${flightLookupResult.airline?.code}" />
+              <input type="hidden" name="flightNumber" th:value="${flightLookupResult.flightNumber}" />
               <input type="hidden" name="aircraftType" th:value="${flightLookupResult.aircraft?.type}" />
               <input type="hidden" name="aircraftRegistration" th:value="${flightLookupResult.aircraft?.registration}" />
               <input type="hidden" name="aircraftName" th:value="${flightLookupResult.aircraft?.name}" />
               <input type="hidden" name="showLookupForm" value="false" />
+              <input type="hidden" name="executeInsert" value="false" />
               <div class="content">
-                <div class="header">HEADER</div>
+                <div class="header">
+                  <span th:text="${flightLookupResult.airline?.code}"></span>
+                  <span th:text="${flightLookupResult.flightNumber}"></span> |
+                  <span th:text="${flightLookupResult.departureContact?.airport?.code}"></span> »
+                  <span th:text="${flightLookupResult.arrivalContact?.airport?.code}"></span>
+                </div>
+                <table class="ui very compact unstackable table">
+                  <colgroup>
+                    <col width="100" />
+                    <col />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td th:text="#{departure}">Departure</td>
+                      <td>
+                        <span th:text="${#temporals.format(flightLookupResult.departureContact?.dateLocal, 'dd.MM.yyyy')}"></span>
+                        <br />
+                        <span th:text="${#temporals.format(flightLookupResult.departureContact?.timeLocal, 'HH:mm')}"></span>
+                        <br />
+                        <span th:text="${flightLookupResult.departureContact?.airport?.code}">Airport</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td th:text="#{arrival}">Arrival</td>
+                      <td>
+                        <span th:text="${#temporals.format(flightLookupResult.arrivalContact?.dateLocal, 'dd.MM.yyyy')}"></span>
+                        <br />
+                        <span th:text="${#temporals.format(flightLookupResult.arrivalContact?.timeLocal, 'HH:mm')}"></span>
+                        <br />
+                        <span th:text="${flightLookupResult.arrivalContact?.airport?.code}">Airport</span>
+                      </td>
+                    </tr>
+                    <tr th:if="${not #strings.isEmpty(flightLookupResult.aircraft?.type)}">
+                      <td th:text="#{aircraft}">Aircraft</td>
+                      <td>
+                        <span th:text="${flightLookupResult.aircraft?.type}"></span>
+                        <span th:if="${not #strings.isEmpty(flightLookupResult.aircraft?.registration)}">
+                          <br /><span th:text="${flightLookupResult.aircraft?.registration}"></span>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <button class="ui bottom attached button">
                 <i class="check circle icon"></i>

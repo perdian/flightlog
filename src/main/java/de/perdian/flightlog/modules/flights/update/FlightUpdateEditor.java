@@ -292,7 +292,6 @@ public class FlightUpdateEditor {
         this.seatType = seatType == null ? null : seatType.toUpperCase();
     }
 
-    @NotNull
     public String getCabinClass() {
         return this.cabinClass;
     }
@@ -300,7 +299,6 @@ public class FlightUpdateEditor {
         this.cabinClass = cabinClass == null ? null : cabinClass.toUpperCase();
     }
 
-    @NotNull
     public String getFlightReason() {
         return this.flightReason;
     }

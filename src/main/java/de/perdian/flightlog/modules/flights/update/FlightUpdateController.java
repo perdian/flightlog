@@ -48,10 +48,11 @@ class FlightUpdateController {
     String doAddPost(
         @ModelAttribute FlightLookupRequest flightLookupRequest,
         @ModelAttribute @Valid FlightUpdateEditor flightUpdateEditor, BindingResult flightUpdateEditorBindingResult,
+        @RequestParam(required = false, defaultValue = "true") Boolean executeInsert,
         RedirectAttributes redirectAttributes,
         Model model
     ) {
-        if (flightUpdateEditorBindingResult.hasErrors()) {
+        if (flightUpdateEditorBindingResult.hasErrors() || !executeInsert) {
             return this.doAddGet(flightLookupRequest, flightUpdateEditor, false, model);
         } else {
 
