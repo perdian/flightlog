@@ -48,7 +48,7 @@ public class Flightradar24LookupSource implements FlightLookupSource {
     public List<Flight> lookupFlights(FlightLookupRequest flightLookupRequest) {
 
         String resolvedFlightNumber = this.resolveActualFlightNumber(flightLookupRequest);
-        Matcher resolvedFlightNumberMatcher = Pattern.compile("([a-zA-Z]+)(\\d+)").matcher(resolvedFlightNumber);
+        Matcher resolvedFlightNumberMatcher = Pattern.compile("([a-zA-Z0-9]{2})(\\d+)").matcher(resolvedFlightNumber);
         String actualAirlineCode = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(1) : flightLookupRequest.getAirlineCode();
         String actualFlightNumber = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(2) : flightLookupRequest.getFlightNumber();
 
