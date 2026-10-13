@@ -42,7 +42,7 @@
         <fomanticui.version>2.9.3</fomanticui.version>
         <java.version>25</java.version>
         <jquery.version>3.7.1</jquery.version>
-        <jsoup.version>1.23.1</jsoup.version>
+        <jsoup.version>1.23.2</jsoup.version>
         <okhttp.version>5.4.0</okhttp.version>
         <openlayers.version>8.2.0</openlayers.version>
         <thymeleaf-extras-springsecurity.version>3.1.5.RELEASE</thymeleaf-extras-springsecurity.version>
