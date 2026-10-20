@@ -1,7 +1,5 @@
 package de.perdian.flightlog.modules.flights.lookup.impl;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.perdian.flightlog.modules.aircrafts.model.Aircraft;
 import de.perdian.flightlog.modules.aircrafts.model.AircraftType;
 import de.perdian.flightlog.modules.aircrafts.persistence.AircraftTypesRepository;
@@ -16,7 +14,6 @@ import de.perdian.flightlog.support.FlightlogHelper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,11 +27,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
-public class Flightradar24LookupSource implements FlightLookupSource {
+class Flightradar24LookupSource implements FlightLookupSource {
 
     private static final Logger log = LoggerFactory.getLogger(Flightradar24LookupSource.class);
 
@@ -42,25 +37,21 @@ public class Flightradar24LookupSource implements FlightLookupSource {
     private AirportsRepository airportsRepository = null;
     private AirlinesRepository airlinesRepository = null;
     private OkHttpClient httpClient = new OkHttpClient.Builder().build();
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public List<Flight> lookupFlights(FlightLookupRequest flightLookupRequest) {
 
-        String resolvedFlightNumber = this.resolveActualFlightNumber(flightLookupRequest);
-        Matcher resolvedFlightNumberMatcher = Pattern.compile("([a-zA-Z0-9]{2})(\\d+)").matcher(resolvedFlightNumber);
-        String actualAirlineCode = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(1) : flightLookupRequest.getAirlineCode();
-        String actualFlightNumber = resolvedFlightNumberMatcher.matches() ? resolvedFlightNumberMatcher.group(2) : flightLookupRequest.getFlightNumber();
-
-        String httpUrl = "https://www.flightradar24.com/data/flights/" + actualAirlineCode + actualFlightNumber;
-        log.debug("Querying flightradar24 for flight {}{} on {} using URL: {}", actualAirlineCode, actualFlightNumber, flightLookupRequest.getDepartureDate(), httpUrl);
-        Request httpRequest = new Request.Builder().get().url(httpUrl).addHeader("User-Agent", "curl").build();
+        String httpUrl = "https://www.flightradar24.com/data/flights/" + flightLookupRequest.getAirlineCode() + flightLookupRequest.getFlightNumber();
+        log.debug("Querying flightradar24 for flight {}{} on {} using URL: {}", flightLookupRequest.getAirlineCode(), flightLookupRequest.getFlightNumber(), flightLookupRequest.getDepartureDate(), httpUrl);
+        Request httpRequest = new Request.Builder()
+            .get().url(httpUrl)
+            .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 OPR/124.0.0.0 (Edition developer)").build();
         try (Response httpResponse = this.getHttpClient().newCall(httpRequest).execute()) {
             String httpResponseBody = httpResponse.body().string();
             Document htmlDocument = Jsoup.parse(httpResponseBody);
             Element dataTableElement = htmlDocument.selectFirst("table#tbl-datatable");
             if (dataTableElement != null) {
-                return this.createFlightFromDataTable(dataTableElement, actualAirlineCode, actualFlightNumber, flightLookupRequest);
+                return this.createFlightFromDataTable(dataTableElement, flightLookupRequest.getAirlineCode(), flightLookupRequest.getFlightNumber(), flightLookupRequest);
             }
         } catch (Exception e) {
             log.debug("Cannot retreive data from flightradar24 for: {}", flightLookupRequest, e);
@@ -68,38 +59,6 @@ public class Flightradar24LookupSource implements FlightLookupSource {
 
         return Collections.emptyList();
 
-    }
-
-    private String resolveActualFlightNumber(FlightLookupRequest flightLookupRequest) {
-        try {
-
-            String completeFlightNumber = flightLookupRequest.getAirlineCode() + flightLookupRequest.getFlightNumber();
-            String httpUrl = "https://www.flightradar24.com/v1/search/web/find?query=" + completeFlightNumber;
-            log.debug("Querying flightradar24 for potential codeshare information of flight on {} using URL: {}", flightLookupRequest, httpUrl);
-            Request httpRequest = new Request.Builder().get().url(httpUrl).addHeader("User-Agent", "curl").build();
-
-            try (Response httpResponse = this.getHttpClient().newCall(httpRequest).execute()) {
-                String httpResponseContent = httpResponse.body().string();
-                JsonNode jsonResponse = this.getObjectMapper().readTree(httpResponseContent);
-                JsonNode resultsArray = jsonResponse.get("results");
-                for (int i=0; i < resultsArray.size(); i++) {
-                    JsonNode result = resultsArray.get(i);
-                    String labelvalue = result.get("label").asText();
-                    String matchValue = result.get("match").asText();
-                    if (labelvalue.startsWith(completeFlightNumber + " ") && "codeshare".equalsIgnoreCase(matchValue)) {
-                        JsonNode resultDetail = result.get("detail");
-                        String actualFlightNumber = resultDetail.get("flight").asText();
-                        if (StringUtils.isNotEmpty(actualFlightNumber)) {
-                            return actualFlightNumber;
-                        }
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            log.debug("Cannot evaluate flightradar24 codeshare result", e);
-        }
-        return flightLookupRequest.getAirlineCode() + flightLookupRequest.getFlightNumber();
     }
 
     private List<Flight> createFlightFromDataTable(Element dataTableElement, String airlineCode, String flightNumber, FlightLookupRequest flightLookupRequest) {
@@ -177,13 +136,6 @@ public class Flightradar24LookupSource implements FlightLookupSource {
     }
     void setHttpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;
-    }
-
-    ObjectMapper getObjectMapper() {
-        return this.objectMapper;
-    }
-    void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
     }
 
 }

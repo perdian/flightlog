@@ -9,13 +9,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
-public class FlightLookupRequest implements Predicate<Flight> {
+public class FlightLookupRequest implements Predicate<Flight>, Cloneable {
 
     private String airlineCode = null;
     private String flightNumber = null;
     private LocalDate departureDate = LocalDate.now();
     private String departureAirportCode = null;
 
+    public FlightLookupRequest clone() {
+        try {
+            return (FlightLookupRequest) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Cannot clone class: " + this.getClass().getName());
+        }
+    }
+
+    @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.NO_CLASS_NAME_STYLE);
     }
